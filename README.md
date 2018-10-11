@@ -1,0 +1,57 @@
+# Sorting Algorithms
+
+정렬 알고리즘의 실행 순서를 시각적으로 표현해내는 과제입니다. 상세 내용은 아래 TODO 부분을 참고해주세요.
+
+## Setup
+
+Install dependencies
+
+```sh
+$ yarn install (or npm install)
+```
+
+## Development
+
+```sh
+$ yarn dev (or npm run dev)
+# visit http://localhost:8080
+```
+
+- HTML 수정: `index.ejs`를 수정하시면 됩니다.
+- JS 수정: `/app/index.js`를 수정하시면 됩니다.
+- CSS 수정: `/assets/styles/index.less`를 수정하시면 됩니다. (파일 형식을 `.scss`로 바꿔서 SCSS를 사용하여도 됩니다.)
+
+## TODO
+
+4가지 정렬 알고리즘의 구동 방식을 시각적으로 확인할 수 있도록 표현해야 합니다. *[Visualgo](https://visualgo.net/en/sorting)의 화면을 만드는 것과 같습니다.*
+
+그리고 아래의 조건이 충족되어야 합니다. 
+
+* 사용자가 "숫자"들을 최소 5개에서 최대 10개까지 선택할 수 있는 UI가 있어야 합니다.
+* 숫자들을 입력한 후, 사용자가 원하는 정렬 방식을 선택할 수 있어야 합니다.
+* 정렬 방식을 선택한 후, 실행할 수 있는 "실행" 버튼이 있어야 합니다.
+* 실행시킬 경우, 시각적으로 해당 정렬 로직이 어떤 식으로 작동되는지 보여주어야 합니다.
+* 숫자의 갯수가 충족되지 않았거나, 정렬 방식이 선택되지 않은 상황에서는 "실행"을 시킬 수 없어야 합니다.
+* 숫자가 아닌 값은 받을 수 없어야 합니다.
+* 명시된 조건 이외에는 여러분께서 상식적으로 구현해주시기 바랍니다.
+
+### 정렬 알고리즘 종류
+
+아래 4가지의 정렬 방식 중 세 가지를 선택하여 구현해주세요.
+각 알고리즘의 시간 복잡도에 대해 반드시 이해하셔야 합니다. (시간 복잡도 참고 링크: [Big-O Cheatsheet](http://bigocheatsheet.com/))
+
+1. [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort)
+
+![Bubble Sort](https://upload.wikimedia.org/wikipedia/commons/0/06/Bubble-sort.gif)
+
+2. [Insertion Sort](https://en.wikipedia.org/wiki/Insertion_sort)
+
+![Insertion Sort](https://upload.wikimedia.org/wikipedia/commons/4/42/Insertion_sort.gif)
+
+3. [Merge Sort](https://en.wikipedia.org/wiki/Merge_sort)
+
+![Merge Sort](https://upload.wikimedia.org/wikipedia/commons/c/cc/Merge-sort-example-300px.gif)
+
+4. [Quick Sort](https://en.wikipedia.org/wiki/Quicksort)
+
+![Quick Sort](https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif)
