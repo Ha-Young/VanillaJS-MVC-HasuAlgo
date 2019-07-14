@@ -40,9 +40,10 @@ $ yarn dev (or npm run dev)
 
 ### 정렬 알고리즘 종류
 
-- 아래 4가지의 정렬 방식 중 세 가지를 선택하여 구현해주세요.
+- 아래 4가지의 정렬 방식에서 Bubble과 Insertion 중 하나, 그리고 Quick과 Merge 중 하나를 선택하셔서 총 2개를 구현해주세요.
 - 각 알고리즘의 시간 복잡도에 대해 반드시 이해하셔야 합니다.
 - 시간 복잡도 참고 링크: [Big-O Cheatsheet](http://bigocheatsheet.com/)
+- Stable과 In-place의 의미에 대해서 반드시 생각해보고 본인의 로직을 확인해보세요.
 
 1. [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort)
 
