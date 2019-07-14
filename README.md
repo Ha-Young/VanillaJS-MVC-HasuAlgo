@@ -37,7 +37,7 @@ $ yarn dev (or npm run dev)
 * 숫자가 아닌 값은 받을 수 없어야 합니다.
 * 중복된 값을 허용해야만 합니다.
 * 명시된 조건 이외에는 여러분께서 상식적으로 구현해주시기 바랍니다.
-* 아래 4가지의 정렬 방식에서 Bubble과 Insertion 중 하나, 그리고 Quick과 Merge 중 하나를 선택하셔서 총 2개를 구현해주세요.
+* 아래 4가지의 정렬 방식에서 Bubble과 Insertion 중 하나, 그리고 Quick과 Merge 중 하나를 선택하셔서 **총 2 가지를 구현해주세요.**
 * **창의적이고 멋있는 UI/UX를 보여주세요.**
 
 1. [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort)
