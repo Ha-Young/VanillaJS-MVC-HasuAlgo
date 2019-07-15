@@ -13,7 +13,7 @@ $ yarn install (or npm install)
 ## Development
 
 ```sh
-$ yarn dev (or npm run dev)
+$ yarn start (or npm start)
 # visit http://localhost:8080
 ```
 
