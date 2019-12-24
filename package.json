@@ -4,7 +4,7 @@
   "description": "Visual implementation of sorting algorithms",
   "author": "Ken Huh <ken@vanillacoding.co>",
   "license": "MIT",
-  "homepage": "https://github.com/vanilla-coding/vanilla-sorting",
+  "homepage": "https://gitlab.com/vanilla-coding/bootcamp/foundations/sorting-algorithms",
   "scripts": {
     "start": "cross-env NODE_ENV=dev webpack-dev-server --progress --mode development --config webpack.config.dev.js"
   },
