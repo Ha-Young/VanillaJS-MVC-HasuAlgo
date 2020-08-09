@@ -7,20 +7,22 @@
 Install dependencies
 
 ```sh
-$ yarn install (or npm install)
+$ npm install
 ```
 
 ## Development
 
 ```sh
-$ yarn start (or npm start)
-# visit http://localhost:8080
+$ npm start
+# visit http://localhost:1234
 ```
 
-- HTML 수정: `index.ejs`를 수정하시면 됩니다.
-- JS 수정: `/app/index.js`를 수정하시면 됩니다.
-- CSS 수정: `/assets/styles/index.less`를 수정하시면 됩니다. (파일 형식을 `.scss`로 바꿔서 SCSS를 사용하여도 됩니다.)
-- Image 추가: `/assets/images` 디렉토리를 이용하시면 됩니다.
+- HTML 수정: `index.html`를 수정하세요.
+- JS 수정: `/app/index.js`를 수정하세요.
+- CSS 수정: `/assets/styles/index.less`를 수정하세요.
+- Image 추가: `/assets/images` 디렉토리를 이용하세요.
+
+> 기타 파일 설정 관련은 [Parcel](https://parceljs.org/getting_started.html) 문서를 참고하세요.
 
 ## TODO
 
@@ -37,8 +39,8 @@ $ yarn start (or npm start)
 * 실행시킬 경우, 사용자가 선택한 정렬 로직이 어떤 순서로 요소들을 정렬시키는지 시각적으로 보여주어야 합니다.
 * 숫자의 갯수가 충족되지 않았거나, 정렬 방식이 선택되지 않은 상황에서는 "실행"을 시킬 수 없어야 합니다.
 * 숫자가 아닌 값은 받을 수 없어야 합니다.
-* 중복된 값을 허용해야만 합니다.
-* 명시된 조건 이외에는 여러분께서 상식적으로 구현해주시기 바랍니다.
+* 중복된 값을 허용해야 합니다.
+* 명시된 조건 이외에는 최대한 상식적으로 구현해주시기 바랍니다.
 * **창의적이고 멋있는 UI/UX를 보여주세요.**
 
 1. [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort)
