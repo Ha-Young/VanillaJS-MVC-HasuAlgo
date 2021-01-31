@@ -32,7 +32,7 @@ $ npm start
 
 그리고 아래의 조건이 충족되어야 합니다.
 
-### 1. MVC Pattern
+### 1. MVC Pattern (Model-View-Controller)
 
 이번 과제에서 여러분은 MVC 패턴을 이용하여 구현해야 합니다.
 
