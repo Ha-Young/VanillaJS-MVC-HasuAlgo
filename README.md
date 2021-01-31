@@ -34,7 +34,7 @@ $ npm start
 
 ### 1. MVC Pattern (Model-View-Controller)
 
-이번 과제에서 여러분은 MVC 패턴을 이용하여 구현해야 합니다.
+이번 과제에서 여러분은 MVC 패턴을 학습하고 응용하여 구현해야 합니다.
 
 #### References
 - https://www.smashingmagazine.com/2012/07/journey-through-the-javascript-mvc-jungle/
