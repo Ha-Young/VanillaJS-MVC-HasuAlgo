@@ -37,8 +37,9 @@ $ npm start
 이번 과제에서 여러분은 MVC 패턴을 이용하여 구현해야 합니다.
 
 #### References
-- https://gist.github.com/Ken123777/0afa5643834575786eb4f4b2c9bfe1ba
+- https://www.smashingmagazine.com/2012/07/journey-through-the-javascript-mvc-jungle/
 - https://github.com/tastejs/todomvc/tree/gh-pages/examples/vanillajs/js
+- https://gist.github.com/Ken123777/0afa5643834575786eb4f4b2c9bfe1ba
 
 ### 2. 상세 구현내용
 
