@@ -1,3 +1,5 @@
+@border: 1px solid black;
+
 html, body {
   box-sizing: border-box;
 }
@@ -6,13 +8,36 @@ html, body {
   box-sizing: inherit;
 }
 
-.content {
+.sorting-algorithms {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   max-width: 500px;
   margin: 100px auto;
   text-align: center;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+.sorting__input {
+  outline: none;
+}
+
+.sorting__number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 50px;
+  margin: 20px;
+  border: @border;
+}
+
+.sortButton {
+}
+
+.display-container {
+  width: 500px;
+  height: 500px;
+  margin: 20px;
+  border: @border;
 }

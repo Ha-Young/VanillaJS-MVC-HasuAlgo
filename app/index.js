@@ -1,8 +1,9 @@
 // Load application styles
 import '../assets/styles/index.less';
+import App from './App';
 
 // ================================
 // START YOUR APP HERE
 // ================================
 
-console.log('여기서 작업하세요!');
+App();
