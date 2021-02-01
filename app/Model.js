@@ -3,6 +3,10 @@ function Model() {
 }
 
 Model.prototype.getSortList = function (number) {
+  if (!number) {
+    return;
+  }
+
   if (this.sortList.length < 10) {
     this.sortList.push(number);
     return;
@@ -12,7 +16,7 @@ Model.prototype.getSortList = function (number) {
 }
 
 Model.prototype.giveSortList = function () {
-  return this.sortList.join(", ");
+  return this.sortList;
 }
 
 export const newModel = new Model();
