@@ -4,5 +4,7 @@
     function HYAlgoController() {
 
     }
-    window.HYAlgoController = HYAlgoController;
+    
+    window.app = window.app || {};
+    window.app.HYAlgoController = HYAlgoController;
 })();
