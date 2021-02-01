@@ -1,5 +1,5 @@
 function Model() {
-  this.sortList = []; 
+  this.sortList = [];
 }
 
 Model.prototype.getSortList = function (number) {

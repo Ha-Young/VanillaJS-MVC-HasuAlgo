@@ -12,7 +12,6 @@ View.prototype.printNumbers = function (sortList) {
 };
 
 View.prototype.createNumbers = function (sortList) {
-  console.log(sortList)
 };
 
 export const newView = new View();
