@@ -8,7 +8,6 @@ Model.prototype.getSortList = function (number) {
     return;
   }
 
-  console.log(this.sortList);
   throw new Error("max 10 numbers!!");
 }
 
