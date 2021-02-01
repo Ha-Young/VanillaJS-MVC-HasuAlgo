@@ -12,21 +12,21 @@ export default class Model {
     if (!data && typeof data !== 'string') {
       throw new Error("Model's initDatas data parameter is not right");
     }
-
-    const splitParseData = data.split(',').trim();
-    splitParseData.map((char) => {
+    
+    const splittedData = data.split(',');
+    const parsedData = splittedData.map((char) => {
       const parsedInt = parseInt(char);
 
-      if (parsedInt === NaN) {
-        // Error 처리
+      if (Number.isNaN(parsedInt)) {
+        throw new Error("Input Number is not number");
       }
 
       return parsedInt;
     });
 
-    this.sortList = splitParseData;
+    this.sortList = parsedData;
 
-    console.log(this.sortList);
+    console.log('init Data :', this.sortList);
   }
 
   get sortList() {
