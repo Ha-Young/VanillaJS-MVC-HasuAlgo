@@ -1,8 +1,6 @@
-// Load application styles
+import { View } from './view';
+import { Model } from './model';
+import { Controller } from './controller';
 import '../assets/styles/index.less';
 
-// ================================
-// START YOUR APP HERE
-// ================================
-
-console.log('여기서 작업하세요!');
+new Controller(new Model(), new View());
