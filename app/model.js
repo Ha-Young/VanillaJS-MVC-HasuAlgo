@@ -4,5 +4,7 @@
     function HYAlgoModel() {
 
     }
-    window.HYAlgoModel = HYAlgoModel;
+    
+    window.app = window.app || {};
+    window.app.HYAlgoModel = HYAlgoModel;
 })(window);

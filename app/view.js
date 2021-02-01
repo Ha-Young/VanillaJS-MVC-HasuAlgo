@@ -4,5 +4,7 @@
     function HYAlgoView() {
 
     }
-    window.HYAlgoView = HYAlgoView;
+
+    window.app = window.app || {};
+    window.app.HYAlgoView = HYAlgoView;
 })(window);
