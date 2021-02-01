@@ -5,11 +5,32 @@ html, body {
 *, *:before, *:after {
   box-sizing: inherit;
 }
-
-.content {
-  max-width: 500px;
-  margin: 100px auto;
+body {
   text-align: center;
+  //text
+}
+.content {
+  border: 1px solid black;
+  width: 900px;
+  height: 900px;
+  margin: 100px auto;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  //flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.content > div {
+  margin: 10px auto;
+}
+
+.number-block {
+  border: 1px solid black;
+  flex-basis: 20px;
+  max-height: 850px;
+  background-color: black;
 }
 
 img {
