@@ -5,9 +5,8 @@ import View from './view';
 
 import '../assets/styles/index.less';
 
-console.log('여기서 작업하세요!');
 const model = new Model();
-const view = new View(template);
+const view = new View();
 
 /**
  * @type {Controller}

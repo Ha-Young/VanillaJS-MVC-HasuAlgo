@@ -2,8 +2,9 @@ const LS_THEME = 'theme';
 
 export default class Model {
 	constructor() {
+    console.log('Model Constructor!');
     const localStorage = window.localStorage;
-		const sortList = [];
+		let sortList = [];
   }
 
   initDatas(data) {
@@ -11,8 +12,8 @@ export default class Model {
       throw new Error("Model's initDatas data parameter is not right");
     }
 
-    const splitData = data.split(',').trim();
-    splitData.map((char) => {
+    const splitParseData = data.split(',').trim();
+    splitParseData.map((char) => {
       const parsedInt = parseInt(char);
 
       if (parsedInt === NaN) {
@@ -22,6 +23,9 @@ export default class Model {
       return parsedInt;
     });
 
-    this.sortList = splitData;
+    this.sortList = splitParseData;
+
+    console.log(this.sortList);
   }
+
 }

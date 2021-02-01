@@ -1,4 +1,3 @@
-import {emptyItemQuery} from './item';
 import Model from './model';
 import View from './view';
 
@@ -8,6 +7,15 @@ export default class Controller {
 	 * @param  {!View} view A View instance
 	 */
 	constructor(model, view) {
-		
+		console.log('Controller Constructor!');
+		this.model = model;
+		this.view = view;
+
+		view.bindOnClickSortKindsBtns();
+	}
+
+	startView() {
+
+		this.model.initDatas();
 	}
 }
