@@ -1,18 +1,42 @@
 html, body {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #24252a;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
+header {
+  padding: 30px;
+  color: #fff;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+}
+
 .content {
-  max-width: 500px;
+  max-width: 100%;
   margin: 100px auto;
   text-align: center;
 }
 
-img {
+.sorting-box {
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #fff;
+  padding: 14px 10px;
   width: 300px;
-  height: 400px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+}  
+
+.sort-box {
+  background: #fff;
+  display: block;
+  height: 600px;
 }
