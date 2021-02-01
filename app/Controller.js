@@ -4,7 +4,7 @@ import {newView as View} from './View.js';
 function handleSubmit(event) {
   event.preventDefault();
 
-  Model.getSortList(View.sortInput.value);
+  Model.getSortList(View.$sortInput.value);
 }
 
 function handlePrintNumbers(event) {
@@ -21,15 +21,15 @@ function handleClickSortButton() {
   }
 
   View.printDisplay(Model.giveSortList());
-  View.sortButton.removeEventListener("click", handleClickSortButton);
-  View.sortForm.removeEventListener("submit", handleSubmit);
+  View.$sortButton.removeEventListener("click", handleClickSortButton);
+  View.$sortForm.removeEventListener("submit", handleSubmit);
   //sorting이 끝난 후 다시 addEvent해준다.
 }
 
 function Controller() {
-  View.sortForm.addEventListener("submit", handleSubmit);
-  View.sortForm.addEventListener("submit", handlePrintNumbers);
-  View.sortButton.addEventListener("click", handleClickSortButton);
+  View.$sortForm.addEventListener("submit", handleSubmit);
+  View.$sortForm.addEventListener("submit", handlePrintNumbers);
+  View.$sortButton.addEventListener("click", handleClickSortButton);
 }
 
 export default Controller;
