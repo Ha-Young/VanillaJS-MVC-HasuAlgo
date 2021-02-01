@@ -1,10 +1,13 @@
 @border: 1px solid black;
 
-html, body {
+html,
+body {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -33,6 +36,7 @@ html, body {
 }
 
 .display-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,10 +47,11 @@ html, body {
 }
 
 .sorting__lists {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  width:450px;
+  width: 450px;
   height: 450px;
   padding: 0;
 }
