@@ -1,48 +1,174 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <title>바닐라코딩</title>
-</head>
-<body>
-  <div class="container light">
-    <header>
-      <h1>Visualize Sorting Algorithms</h1>
-    </header>
-    <div class="theme-switch">
-      <label id="switch" class="switch">
-        <input type="checkbox" id="slider">
-        <span class="slider round"></span>
-      </label>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>바닐라코딩</title>
+  </head>
+  <body>
+    <div class="container light">
+      <header>
+        <h1>Visualize Sorting Algorithms</h1>
+      </header>
+      <div class="theme-switch">
+        <label id="switch" class="switch">
+          <input type="checkbox" id="slider" />
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <main>
+        <section class="input-menus">
+          <div class="sort-kinds-btns">
+            <button class="selected" data-btn-name="insertion">
+              Insertion Sort
+            </button>
+            <button data-btn-name="quick">Quick Sort</button>
+          </div>
+
+          <div class="type-area">
+            <input
+              type="input"
+              class="input-numbers"
+              placeholder="Numbers"
+              name="numbers"
+              id="numbers"
+              required
+            />
+            <label for="numbers" class="label-numbers">Numbers</label>
+            <button class="start-btn" data-btn-name="start">Go!</button>
+          </div>
+        </section>
+        <section class="visual-wrapper">
+          <div class="visual-algo">
+            <svg id="viz-canvas" height="490" width="1000">
+              <g transform="translate(125,216.1999969482422)">
+                <rect
+                  height="13.799999999999999"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="-15">3</text>
+              </g>
+              <g transform="translate(175,27.600000381469727)">
+                <rect
+                  height="202.4"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="187.4">44</text>
+              </g>
+              <g transform="translate(225,55.20000076293945)">
+                <rect
+                  height="174.8"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="159.8">38</text>
+              </g>
+              <g transform="translate(275,207)">
+                <rect
+                  height="23"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="-15">5</text>
+              </g>
+              <g transform="translate(325,13.800000190734863)">
+                <rect
+                  height="216.2"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="201.2">47</text>
+              </g>
+              <g transform="translate(375, 161)">
+                <rect
+                  height="69"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="54">15</text>
+              </g>
+              <g transform="translate(425, 64.4)">
+                <rect
+                  height="165.6"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="150.6">36</text>
+              </g>
+              <g transform="translate(475, 110.39999999999999)">
+                <rect
+                  height="119.60000000000001"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="104.60000000000001">26</text>
+              </g>
+              <g transform="translate(525, 105.8)">
+                <rect
+                  height="124.2"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="109.2">27</text>
+              </g>
+              <g transform="translate(575, 220.8)">
+                <rect
+                  height="9.200000000000001"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="-15">2</text>
+              </g>
+              <g transform="translate(625, 18.399999999999977)">
+                <rect
+                  height="211.60000000000002"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="196.60000000000002">46</text>
+              </g>
+              <g transform="translate(675, 211.6)">
+                <rect
+                  height="18.400000000000002"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="-15">4</text>
+              </g>
+              <g transform="translate(725, 142.6)">
+                <rect
+                  height="87.4"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="72.4">19</text>
+              </g>
+              <g transform="translate(775, 0)">
+                <rect
+                  height="230"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="215">50</text>
+              </g>
+              <g transform="translate(825, 9.200000000000017)">
+                <rect
+                  height="220.79999999999998"
+                  width="45"
+                  style="fill: rgb(173, 216, 230)"
+                ></rect>
+                <text dy=".35em" x="22.5" y="205.79999999999998">48</text>
+              </g>
+            </svg>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <p>Copyright © 2021.02 hychoi on vanillacoding</p>
+      </footer>
     </div>
-    <main>
-      <section class="input-menus">
-        <div class="sort-kinds-btns">
-          <button class="selected" data-btn-name="insertion">Insertion Sort</button>
-          <button data-btn-name="quick">Quick Sort</button>
-        </div>
-        
-        <div class="type-area">
-          <input type="input" class="input-numbers" placeholder="Numbers" name="numbers" id='numbers' required />
-          <label for="numbers" class="label-numbers">Numbers</label>
-          <button class="start-btn" data-btn-name="start">Go!</button>
-        </div>
-      </section>
-      <section class="visual-wrapper">
-        <div class="visual-algo">
-          <ul class="visual-list">
-            
-          </ul>
-        </div>
-      </section>
-    </main>
-    <footer>
-      <p>
-        Copyright © 2021.02 hychoi on vanillacoding
-      </p>
-    </footer>
-  </div>
-  <script src="./app/index.js"></script>
-</body>
+    <script src="./app/index.js"></script>
+  </body>
 </html>
