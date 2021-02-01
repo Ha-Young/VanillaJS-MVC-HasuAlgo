@@ -1,12 +1,37 @@
 // Load application styles
 import '../assets/styles/index.less';
-import Bubble from './model/bubbleSort.js';
-import model from './model/model.js';
-import {view} from './view.js';
+import dataModel from './model';
+import controller from './controller';
+import view from './view';
 
 // ================================
 // START YOUR APP HERE
 // ================================
+
+(function () {
+  'use strict';
+
+  /**
+	 * Sets up a brand new Todo list.
+	 *
+	 * @param {string} name The name of your new to do list.
+	 */
+	function visualSort(name) {
+		this.storage = new app.Store(name);
+		this.model = new app.Model(this.storage);
+		// this.template = new app.Template();
+		this.view = new app.View(this.template);
+		this.controller = new app.Controller(this.model, this.view);
+	}
+
+	const visualSort = new visualSort('visual-sort');
+
+	function setView() {
+		todo.controller.setView(document.location.hash);
+	}
+  window.addEventListener('load', callback);
+  window.addEventListener('updateState', callback);
+})();
 
 // should know about the existence of Models in order to observe them,
 // but don’t directly communicate with them.
@@ -22,44 +47,13 @@ const content = document.querySelector(".content");
 
 function numberSubmit(event) {
   event.preventDefault();
-  const result = model.getData(inputNumbers.value);
-  sortStart(result);
+  // number - model에 보내서 validate
+  const result = dataModel.getData(inputNumbers.value);
+  newTemplate(result);
+  controller.getState(result);
 }
-
-// number - model에 보내서 validate
 
 // bubble 시작
-let isSwitched = false;
-
-function sortStart(data) {
-  newTemplate(data);
-
-  bubble(data);
-}
-
-function bubble(numList) {
-  for (let i = 1; i < numList.length; i++) {
-    if (numList[i - 1] > numList[i]) {
-      isSwitched = true;
-      [numList[i - 1], numList[i]] = [numList[i], numList[i - 1]];
-      // debugger;
-      // content.innerHTML = newTemplate(numList);
-      // await displayNumbers(numList);
-      // console.log('hi')
-      newTemplate(numList);
-    }
-  }
-
-  if (isSwitched) {
-    isSwitched = false;
-    bubble(numList);
-  }
-
-  newTemplate(numList);
-
-  // displayNumbers(numList);
-}
-
 
 
 // 변화가 일어나면 view render
@@ -71,19 +65,14 @@ function displayNumbers(data) {
 
 function newTemplate(data) {
   content.innerHTML = `<div class="content">
-  <input type="text" name="numbers" class="inputNumbers">
-  <input type="button" value="send" class="button">
-  ​<h3>${data}</h3>
-  <h1>Visualize Sorting Algorithms</h1>
-  <p>README.md를 읽어보고 과제를 시작하세요.</p>
-  </div>`;
+    <input type="text" name="numbers" class="inputNumbers">
+    <input type="button" value="send" class="button">
+    ​<h3>${data}</h3>
+    <h1>Visualize Sorting Algorithms</h1>
+    <p>README.md를 읽어보고 과제를 시작하세요.</p>
+    </div>`;
 }
 
 
-function init() {
-  button.addEventListener('click', numberSubmit);
-}
+button.addEventListener('click', numberSubmit);
 
-init();
-
-export {numberSubmit};
