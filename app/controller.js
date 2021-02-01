@@ -1,10 +1,6 @@
 // import {Model} from '../app/model';
 // import {View} from '../app/view';
 
-import { result } from "lodash";
-
-
-
 function Controller(model, view) {
   this.model = model;
   this.view = view;

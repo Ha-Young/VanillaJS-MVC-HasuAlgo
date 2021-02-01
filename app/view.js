@@ -10,7 +10,7 @@ View.prototype.render = function () {
 
 View.prototype.showResult = function (result) {
   const div = document.querySelector(".visualization");
-    
+  console.log(result);
   let resultString = "";
   for (let i = 0; i < result.length; i++) {
       resultString += result[i] + "  ";
