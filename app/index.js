@@ -1,8 +1,13 @@
-// Load application styles
 import '../assets/styles/index.less';
+import {Model} from '../app/model';
+import {View} from '../app/view';
+import {Controller} from '../app/controller';
 
-// ================================
-// START YOUR APP HERE
-// ================================
+function Main() {
+  this.model = new Model();
+  this.view = new View();
+  this.controller = new Controller(this.model, this.view);
+}
 
-console.log('여기서 작업하세요!');
+var main = new Main();
+main.controller.getData();
