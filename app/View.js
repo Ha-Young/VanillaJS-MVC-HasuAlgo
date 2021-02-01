@@ -1,9 +1,10 @@
 function View() {
   this.sortForm = document.querySelector(".sorting__form");
   this.sortInput = document.querySelector(".sorting__input");
-  this.sortNumbers = document.querySelector(".sorting__number");
+  this.sortNumbers = document.querySelector(".sorting__numbers");
   this.sortButton = document.querySelector(".sortButton");
   this.sortDisplay = document.querySelector(".display-container");
+  this.sortLists = document.querySelector(".sorting__lists");
 }
 
 View.prototype.printNumbers = function (sortList) {
@@ -11,7 +12,20 @@ View.prototype.printNumbers = function (sortList) {
   this.sortInput.value = "";
 };
 
-View.prototype.createNumbers = function (sortList) {
+View.prototype.createNumbers = function (number) {
+  const Number = document.createElement("li");
+
+  Number.textContent = number;
+  Number.classList.add("sorting__item");
+  Number.style.height = `${number}px`;
+
+  return Number;
+}
+
+View.prototype.printDisplay = function (sortList) {
+  for (let i = 0; i < sortList.length; i++) {
+    this.sortLists.appendChild(this.createNumbers(sortList[i]));
+  }
 };
 
 export const newView = new View();

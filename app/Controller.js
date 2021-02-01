@@ -20,7 +20,7 @@ function handleClickSortButton() {
     throw new Error("min 5 number!!");
   }
 
-  View.createNumbers(Model.giveSortList());
+  View.printDisplay(Model.giveSortList());
   View.sortButton.removeEventListener("click", handleClickSortButton);
   View.sortForm.removeEventListener("submit", handleSubmit);
   //sorting이 끝난 후 다시 addEvent해준다.

@@ -22,7 +22,7 @@ html, body {
   outline: none;
 }
 
-.sorting__number {
+.sorting__numbers {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,8 +33,28 @@ html, body {
 }
 
 .display-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 500px;
   height: 500px;
   margin: 20px;
   border: @border;
+}
+
+.sorting__lists {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width:450px;
+  height: 450px;
+  padding: 0;
+}
+
+.sorting__item {
+  width: 50px;
+  max-height: 450px;
+  margin: 0 10px;
+  background-color: skyblue;
+  list-style: none;
 }
