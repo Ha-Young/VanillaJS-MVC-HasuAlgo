@@ -1,18 +1,36 @@
 html, body {
   box-sizing: border-box;
+  background-color: #004B87;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
-.content {
-  max-width: 500px;
-  margin: 100px auto;
-  text-align: center;
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-img {
-  width: 300px;
+.headContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.title {
+  font-size: 15px;
+}
+
+.textInput {
+}
+
+.contentContainer {
+  border: solid;
+  border-color: yellow;
+  width: 800px;
   height: 400px;
+  margin-top: 50px;
 }
