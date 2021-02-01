@@ -7,6 +7,8 @@
 
 */
 
+import view from '../View/view';
+
 const submitButton = document.querySelector("#submitButton");
 const textBox = (document.querySelector('#textBox'));
 
@@ -36,10 +38,15 @@ function buttonClickEvent() {
   }
 
   if (textArray === -1) {
-    console.error('You only can input Number');
+    console.error('You only can input Number lower than 10');
   }
 
   console.log(textArray);
+
+  textArray.forEach((el) => {
+    view(el);
+  });
+  
 }
 
 function splitString (textBoxString, seperator) {
@@ -48,7 +55,7 @@ function splitString (textBoxString, seperator) {
   for (let word of splitedArray) {
     word = word.replace(/[\s]/g, '').trim();
     word = Number.parseInt(word);
-    if(Number.isNaN(word) || word > 100) {
+    if(Number.isNaN(word) || word > 10) {
         
       return -1;
     }

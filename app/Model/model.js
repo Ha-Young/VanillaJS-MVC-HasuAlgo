@@ -19,4 +19,6 @@ export default function () {
   model.setValue = function (value) {
     model.numberArray.push(value);
   }
+
+  
 }
