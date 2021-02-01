@@ -3,14 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <title>바닐라코딩</title>
 </head>
 <body>
-  <div class="content">
-    <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
-  </div>
+  <h1>SORTING ALGORITHM</h1>
+  <section class="content">
+    <article class="input-data">
+      <select name="sort-selection" id="sort-selection">
+        <option value="SELECT" selected>SELECT</option>
+        <option value="BUBBLE SORT">BUBBLE SORT</option>
+      </select>
+      <input type="text" value="" placeholder="Type data">
+      <button type="button">GO</button>
+    </article>
+    <article class="graph-data">
+      <ul class="graph-list">
+        <li><span>1</span></li>
+      </ul>
+    </article>
+  </section>
   <script src="./app/index.js"></script>
 </body>
 </html>
