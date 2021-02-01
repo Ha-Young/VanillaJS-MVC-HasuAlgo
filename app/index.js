@@ -14,7 +14,7 @@ class Model {
   set(str) {
     const splitted = str.split(',');
     for (const elem of splitted) {
-      this.userInputData.push(elem);
+      this.userInputData.push(Number(elem));
     }
     this.checkInput();
     return this.userInputData;
@@ -39,7 +39,7 @@ class Model {
       swapped = false;
       for (let i = 0; i < nums.length; i++) {
         if (nums[i] > nums[i + 1]) {
-          const temp = nums[i];
+          let temp = nums[i];
           nums[i] = nums[i + 1];
           nums[i + 1] = temp;
           swapped = true;
@@ -52,6 +52,7 @@ class Model {
 
 class View {
   render(valueInData) {
+    $graphTable.innerHTML = null;
     for (let i = 0; i < valueInData.length; i++) {
       const graphPercent = valueInData[i];
       $graphTable.innerHTML += `<div style="width:10%; height:${graphPercent}%;" class="graph-item"></div>`;
@@ -71,7 +72,10 @@ class Controller {
       if (!isClicked && $userInputTable.value) {
         const result = this.model.set($userInputTable.value);
         this.view.render(result);
-        this.model.sort(this.model.userInputData);
+        const sorted = this.model.sort(this.model.userInputData);
+        this.view.render(sorted);
+
+        // for 문 돌려서 소트 하고 어웨잇으로 받아서 렌더링?
 
         isClicked = true;
       }
@@ -81,7 +85,7 @@ class Controller {
 
 const app = new Controller(new Model(), new View());
 app.addOnclickHandeler();
-console.log(app.model.userInputData);
+
 /*
 
 1. 인풋값을 모델에 전해주고
