@@ -4,7 +4,8 @@ export default class View {
 	constructor() {
 		console.log('View Constructor!');
 
-		this.$themeSwitch = qs('.theme-switch');
+		this.$container = qs('.container');
+		this.$themeSwitch = qs('#theme-switch');
 		this.$sortKindsBtns = qs('.sort-kinds-btns');
 		this.$inputNumbers = qs('.input-numbers');
 		this.$startBtn = qs('.start-btn');
@@ -31,5 +32,15 @@ export default class View {
 			console.log('start btn clicked!');
 			handler(this.$inputNumbers.value);
 		});
+	}
+
+	bindOnClickThemeSwitch(handler) {
+		$on(this.$themeSwitch, 'change', () => {
+			handler();
+		});
+	}
+
+	setTheme(theme) {
+		this.$container.className = `container ${theme}`;
 	}
 }
