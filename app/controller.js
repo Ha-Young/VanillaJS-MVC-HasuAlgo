@@ -12,10 +12,11 @@ export default class Controller {
 		this.view = view;
 
 		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
+		view.bindOnClickStartBtn(this.startView.bind(this));
 	}
 
-	startView() {
-		this.model.initDatas();
+	startView(inputData) {
+		this.model.initDatas(inputData);
 	}
 
 	setSortKinds(sortKinds) {

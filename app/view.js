@@ -25,4 +25,11 @@ export default class View {
 			handler(target.dataset.btnName);
 		});
 	}
+
+	bindOnClickStartBtn(handler) {
+		$on(this.$startBtn, 'click', () => {
+			console.log('start btn clicked!');
+			handler(this.$inputNumbers.value);
+		});
+	}
 }
