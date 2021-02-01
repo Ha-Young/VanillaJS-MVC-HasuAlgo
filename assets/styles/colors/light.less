@@ -3,24 +3,47 @@
 .light {
   background-color: @light-background-color;
 
+  button {
+    color: rgba(30, 22, 54, 0.6);
+    box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.85);
+      box-shadow: rgba(30, 22, 54, 0.7) 0 0px 0px 40px inset;
+    }
+  }
+
+  button.selected {
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(30, 22, 54, 0.7) 0 0px 0px 40px inset;
+  }
+
   header {
     color: @light-hilight-color;
   }
 
-  section.sort-btns {
-    button {
-      color: rgba(30, 22, 54, 0.6);
-      box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
-
-      &:hover {
-        color: rgba(255, 255, 255, 0.85);
-        box-shadow: rgba(30, 22, 54, 0.7) 0 0px 0px 40px inset;
-      }
+  .type-area {
+    .input-numbers {
+      border-bottom: 2px solid @light-nomal-font-color !important;
     }
+    .label-numbers {
+      color: @light-nomal-font-color;
+    }
+    .input-numbers:focus {
+      border-image: linear-gradient(to right,  #E85A4F,#E98074);
 
-    button.selected {
-      color: rgba(255, 255, 255, 0.85);
-      box-shadow: rgba(30, 22, 54, 0.7) 0 0px 0px 40px inset;
+      ~ .label-numbers {
+        color: @light-hilight-color;
+      }
+      ~ .start-btn {
+        color: rgba(232, 90, 79, 0.6);
+        box-shadow: rgba(232, 90, 79, 0.4) 0 0px 0px 2px inset;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.85);
+          box-shadow: rgba(232, 90, 79, 0.7) 0 0px 0px 40px inset;
+        }
+      }
     }
   }
 

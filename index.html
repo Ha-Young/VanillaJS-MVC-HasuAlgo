@@ -10,21 +10,37 @@
     <header>
       <h1>Visualize Sorting Algorithms</h1>
     </header>
+    <div class="theme-switch">
+      <label id="switch" class="switch">
+        <input type="checkbox" id="slider">
+        <span class="slider round"></span>
+      </label>
+    </div>
     <main>
-      <section class="sort-btns">
-        <button class="selected">Insertion Sort</button>
-        <button>Quick Sort</button>
+      <section class="input-menus">
+        <div class="sort-btns">
+          <button class="selected">Insertion Sort</button>
+          <button>Quick Sort</button>
+        </div>
+        
+        <div class="type-area">
+          <input type="input" class="input-numbers" placeholder="Numbers" name="numbers" id='numbers' required />
+          <label for="numbers" class="label-numbers">Numbers</label>
+          <button class="start-btn">Go!</button>
+        </div>
+        
+
       </section>
       <section class="visual-wrapper">
         <div class="visual-algo">
-
+          
         </div>
       </section>
     </main>
     <footer>
-      <h3>
+      <p>
         Copyright © 2021.02 hychoi on vanillacoding
-      </h3>
+      </p>
     </footer>
   </div>
   <script src="./app/index.js"></script>

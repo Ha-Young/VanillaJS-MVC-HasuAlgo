@@ -4,24 +4,47 @@
   background-color: @dark-background-color;
   color: white;
 
+  button {
+    color: rgba(109, 204, 46, 0.8);
+    box-shadow: rgba(82, 151, 36, 0.4) 0 0px 0px 2px inset;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.85);
+      box-shadow: rgba(82, 151, 36, 0.7) 0 0px 0px 40px inset;
+    }
+  }
+
+  button.selected {
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(82, 151, 36, 0.7) 0 0px 0px 40px inset;
+  }
+
   header {
     color: @dark-hilight-color;
   }
 
-  section.sort-btns {
-    button {
-      color: rgba(109, 204, 46, 0.8);
-      box-shadow: rgba(82, 151, 36, 0.4) 0 0px 0px 2px inset;
-
-      &:hover {
-        color: rgba(255, 255, 255, 0.85);
-        box-shadow: rgba(82, 151, 36, 0.7) 0 0px 0px 40px inset;
-      }
+  .type-area {
+    .input-numbers {
+      border-bottom: 2px solid @dark-nomal-font-color !important;
     }
+    .label-numbers {
+      color: @dark-nomal-font-color;
+    }
+    .input-numbers:focus {
+      border-image: linear-gradient(to right,  #29648A,#2E9CCA);
 
-    button.selected {
-      color: rgba(255, 255, 255, 0.85);
-      box-shadow: rgba(82, 151, 36, 0.7) 0 0px 0px 40px inset;
+      ~ .label-numbers {
+        color: @dark-hilight-color;
+      }
+      ~ .start-btn {
+        color: rgba(46, 156, 202, 0.9);
+        box-shadow: rgba(46, 156, 202, 0.4) 0 0px 0px 2px inset;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.85);
+          box-shadow: rgba(46, 156, 202, 0.7) 0 0px 0px 40px inset;
+        }
+      }
     }
   }
 
@@ -30,7 +53,6 @@
       background-color: @dark-main-section-background-color;
     }
   }
-
 
   footer {
     background-color: @dark-footer-background-color;
