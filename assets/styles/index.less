@@ -9,6 +9,10 @@ html, body {
   box-sizing: inherit;
 }
 
+.hidden {
+  display: none;
+}
+
 h1 {
   font-size: 3rem;
   color: #ffffff;
@@ -36,8 +40,12 @@ h1 {
   border-color: #cccccc;
 }
 
-.input-data input {
+.input-data .input-box {
   flex: 1;
+  position: relative;
+}
+.input-data .input-box input {
+  width: 100%; height: 100%;
   padding: 0.3rem;
   border-color: #cccccc;
   border-left-color: transparent;
@@ -45,12 +53,21 @@ h1 {
   border-style: solid;
   border-width: 1px;
 }
+.input-data .input-box .validation-text {
+  position: absolute;
+  margin: 5px 0 0 0;
+  font-size: 0.8rem;
+  letter-spacing: -0.05rem;
+  color: #ff7d7d;
+}
 
 .input-data button {
   width: 70px;
   padding: 0.3rem;
   background-color: #FDE563;
   border: transparent;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
   transition: background-color 0.5s;
   cursor: pointer;
 }
