@@ -13,6 +13,7 @@ export default class Controller {
 
 		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
 		view.bindOnClickStartBtn(this.startView.bind(this));
+		view.bindOnClickThemeSwitch(this.toggleTheme.bind(this));
 	}
 
 	startView(inputData) {
@@ -21,5 +22,10 @@ export default class Controller {
 
 	setSortKinds(sortKinds) {
 		this.model.currentSortKinds = sortKinds;
+	}
+
+	toggleTheme() {
+		const theme = this.model.toggleTheme();
+		this.view.setTheme(theme);
 	}
 }

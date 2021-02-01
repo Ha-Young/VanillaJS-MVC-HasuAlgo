@@ -1,11 +1,12 @@
-const LS_THEME = 'theme';
+const LIGHT_THEME = 'light';
+const DARK_THEME = 'dark';
 
 export default class Model {
 	constructor() {
     console.log('Model Constructor!');
-    const localStorage = window.localStorage;
-    let _sortList = [];
-    let _currentSortKinds;
+    this._sortList = [];
+    this._currentSortKinds;
+    this._currentTheme = LIGHT_THEME;
   }
 
   initDatas(data) {
@@ -44,5 +45,16 @@ export default class Model {
   set currentSortKinds(sortKinds) {
     console.log('set', sortKinds);
     this._currentSortKinds = sortKinds;
+  }
+
+  toggleTheme() {
+    if (this.currentTheme === LIGHT_THEME) this._currentTheme = DARK_THEME;
+    else this._currentTheme = LIGHT_THEME;
+
+    return this._currentTheme;
+  }
+
+  get currentTheme() {
+    return this._currentTheme;
   }
 }
