@@ -1,52 +1,58 @@
-/*global NodeList */
-(function (window) {
-	'use strict';
+/**
+ * querySelector wrapper
+ *
+ * @param {string} selector Selector to query
+ * @param {Element} [scope] Optional scope element for the selector
+ */
+export function qs(selector, scope) {
+	return (scope || document).querySelector(selector);
+}
 
-	// Get element(s) by CSS selector:
-	window.qs = function (selector, scope) {
-		return (scope || document).querySelector(selector);
-	};
-	window.qsa = function (selector, scope) {
-		return (scope || document).querySelectorAll(selector);
-	};
+/**
+ * addEventListener wrapper
+ *
+ * @param {Element|Window} target Target Element
+ * @param {string} type Event name to bind to
+ * @param {Function} callback Event callback
+ * @param {boolean} [capture] Capture the event
+ */
+export function $on(target, type, callback, capture) {
+	target.addEventListener(type, callback, !!capture);
+}
 
-	// addEventListener wrapper:
-	window.$on = function (target, type, callback, useCapture) {
-		target.addEventListener(type, callback, !!useCapture);
-	};
+/**
+ * Attach a handler to an event for all elements matching a selector.
+ *
+ * @param {Element} target Element which the event must bubble to
+ * @param {string} selector Selector to match
+ * @param {string} type Event name
+ * @param {Function} handler Function called when the event bubbles to target
+ *                           from an element matching selector
+ * @param {boolean} [capture] Capture the event
+ */
+export function $delegate(target, selector, type, handler, capture) {
+	const dispatchEvent = event => {
+		const targetElement = event.target;
+		const potentialElements = target.querySelectorAll(selector);
+		let i = potentialElements.length;
 
-	// Attach a handler to event for all elements that match the selector,
-	// now or in the future, based on a root element
-	window.$delegate = function (target, selector, type, handler) {
-		function dispatchEvent(event) {
-			var targetElement = event.target;
-			var potentialElements = window.qsa(selector, target);
-			var hasMatch = Array.prototype.indexOf.call(potentialElements, targetElement) >= 0;
-
-			if (hasMatch) {
+		while (i--) {
+			if (potentialElements[i] === targetElement) {
 				handler.call(targetElement, event);
+				break;
 			}
 		}
-
-		// https://developer.mozilla.org/en-US/docs/Web/Events/blur
-		var useCapture = type === 'blur' || type === 'focus';
-
-		window.$on(target, type, dispatchEvent, useCapture);
 	};
 
-	// Find the element's parent with the given tag name:
-	// $parent(qs('a'), 'div');
-	window.$parent = function (element, tagName) {
-		if (!element.parentNode) {
-			return;
-		}
-		if (element.parentNode.tagName.toLowerCase() === tagName.toLowerCase()) {
-			return element.parentNode;
-		}
-		return window.$parent(element.parentNode, tagName);
-	};
+	$on(target, type, dispatchEvent, !!capture);
+}
 
-	// Allow for looping on nodes by chaining:
-	// qsa('.foo').forEach(function () {})
-	NodeList.prototype.forEach = Array.prototype.forEach;
-})(window);
+/**
+ * Encode less-than and ampersand characters with entity codes to make user-
+ * provided text safe to parse as HTML.
+ *
+ * @param {string} s String to escape
+ *
+ * @returns {string} String with unsafe characters escaped with entity codes
+ */
+export const escapeForHTML = s => s.replace(/[&<]/g, c => c === '&' ? '&amp;' : '&lt;');

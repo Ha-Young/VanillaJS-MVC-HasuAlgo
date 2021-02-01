@@ -1,10 +1,7 @@
-(function (window) {
-    'use strict';
-
-    function HYAlgoView() {
-
-    }
-
-    window.app = window.app || {};
-    window.app.HYAlgoView = HYAlgoView;
-})(window);
+export default class View {
+	/**
+	 * @param {!Template} template A Template instance
+	 */
+	constructor(template) {
+	}
+}
