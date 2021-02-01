@@ -6,11 +6,29 @@
   <title>바닐라코딩</title>
 </head>
 <body>
-  <div class="content">
+  <div class="container">
     <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
+    <div class="contents">
+      <div class="input-box">
+        <form class="main-form">
+          <input class="main-input" type="text" name="sort-target-input">
+          <select class="select-sort-type" name="sort">
+            <option value="bubble">Bubble</option>
+            <option value="quick">Quick</option>
+          </select>
+          <input class="main-input-submit" type="submit" value="Sort">
+        </form>
+        <div class="message-box">Please input numbers.</div>
+      </div>
+      <div class="view-port-box">
+        <div class="view-port">
+          <svg class="svg" viewBox="0 0 450 300">
+            <rect width="100" height="100" fill="#3d87fb"></rect>
+          </svg>
+        </div>
+      </div>
+    </div>
   </div>
-  <script src="./app/index.js"></script>
+  <script src="./app/app.js"></script>
 </body>
 </html>
