@@ -14,9 +14,11 @@ $inputText.addEventListener('submit', function () {
 });
 
 function addChildNode (value) {
-  const child = document.createElement('child');
+  const $child = document.createElement('child');
 
-  child.innerHTML = value;
+  $child.innerHTML = value;
 
-  $contentContainer.appendChild(child);
+  $child.style.height = value + 5 + 'px';
+
+  $contentContainer.appendChild($child);
 }
