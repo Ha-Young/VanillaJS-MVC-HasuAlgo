@@ -15,6 +15,7 @@
     ],
     "extends": "airbnb-base",
     "rules": {
+        "class-methods-use-this": "off",
         "no-console": "warn",
         "no-plusplus": "off",
         "no-shadow": "off",

@@ -1,32 +1,61 @@
 // Load application styles
+import { reject } from 'lodash';
 import '../assets/styles/index.less';
 
 const $userInputBtn = document.querySelector('.user-input-btn');
 const $userInputTable = document.querySelector('.user-input-table');
 const $graphTable = document.querySelector('.article');
 
-console.log($userInputBtn);
-$userInputBtn.addEventListener('click', ev => {
-  console.log($userInputTable.value);
-});
-
 class Model {
   constructor() {
     this.userInputData = [];
   }
 
-  set(value) {
-    return this.userInputData.push(value);
+  set(str) {
+    const splitted = str.split(',');
+    for (const elem of splitted) {
+      this.userInputData.push(elem);
+    }
+    this.checkInput();
+    return this.userInputData;
   }
 
-  get(value) {
-    return this.userInputData.indexOf(value);
+  checkInput() {
+    if (!this.userInputData.every(elem => elem < 100)) {
+      throw console.log('number is too high');
+    }
+    if (this.userInputData.length > 8) {
+      throw console.log('too many numbers');
+    }
+  }
+
+  delete() {
+    this.userInputData = [];
+  }
+
+  sort(nums) {
+    let swapped;
+    do {
+      swapped = false;
+      for (let i = 0; i < nums.length; i++) {
+        if (nums[i] > nums[i + 1]) {
+          const temp = nums[i];
+          nums[i] = nums[i + 1];
+          nums[i + 1] = temp;
+          swapped = true;
+        }
+      }
+    } while (swapped);
+    return nums;
   }
 }
 
 class View {
-  createGraph(graphValue) {
-    $graphTable.innerHTML = `<div class="graph-item"></div>`;
+  render(valueInData) {
+    for (let i = 0; i < valueInData.length; i++) {
+      const graphPercent = valueInData[i];
+      $graphTable.innerHTML += `<div style="width:10%; height:${graphPercent}%;" class="graph-item"></div>`;
+    }
   }
 }
 
@@ -35,10 +64,29 @@ class Controller {
     this.model = model;
     this.view = view;
   }
+
+  addOnclickHandeler() {
+    let isClicked = false;
+    $userInputBtn.addEventListener(('click'), () => {
+      if (!isClicked && $userInputTable.value) {
+        const result = this.model.set($userInputTable.value);
+        this.view.render(result);
+        this.model.sort(this.model.userInputData);
+
+        isClicked = true;
+      }
+    });
+  }
 }
 
 const app = new Controller(new Model(), new View());
+app.addOnclickHandeler();
+console.log(app.model.userInputData);
+/*
 
-const modelTest = new Model();
-console.log(modelTest);
-modelTest.set('4');
+1. 인풋값을 모델에 전해주고
+2. 전해준 모델값을 통해서 처음에 렌더링
+3. 소팅 시작
+4. 소팅할때 스왑될때마다 리렌더링
+
+*/
