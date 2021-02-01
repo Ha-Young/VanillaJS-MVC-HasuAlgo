@@ -17,6 +17,7 @@ function addChildNode (value) {
   const $child = document.createElement('child');
 
   $child.innerHTML = value;
+  $child.classList.add("graphNode");
 
   $child.style.height = value + 5 + 'px';
 
