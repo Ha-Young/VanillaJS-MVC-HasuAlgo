@@ -19,4 +19,7 @@ Model.prototype.giveSortList = function () {
   return this.sortList;
 }
 
+Model.prototype.startSort = function () {
+}
+
 export const newModel = new Model();

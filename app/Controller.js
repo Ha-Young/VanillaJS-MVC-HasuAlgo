@@ -13,7 +13,7 @@ function handlePrintNumbers(event) {
   View.printNumbers(Model.giveSortList());
 }
 
-function handleClickSortButton() {
+function handlePrintDisplay() {
   const sortList = Model.giveSortList();
 
   if (sortList.length < 5) {
@@ -21,15 +21,24 @@ function handleClickSortButton() {
   }
 
   View.printDisplay(Model.giveSortList());
-  View.$sortButton.removeEventListener("click", handleClickSortButton);
   View.$sortForm.removeEventListener("submit", handleSubmit);
+  View.$sortButton.removeEventListener("click", handlePrintDisplay);
   //sorting이 끝난 후 다시 addEvent해준다.
+}
+
+function handleStartSort() {
+  View.$sortButton.removeEventListener("click", handleStartSort);
+
+  setTimeout(function () {
+    Model.startSort();
+  }, 2000);
 }
 
 function Controller() {
   View.$sortForm.addEventListener("submit", handleSubmit);
   View.$sortForm.addEventListener("submit", handlePrintNumbers);
-  View.$sortButton.addEventListener("click", handleClickSortButton);
+  View.$sortButton.addEventListener("click", handlePrintDisplay);
+  View.$sortButton.addEventListener("click", handleStartSort);
 }
 
 export default Controller;
