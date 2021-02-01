@@ -1,25 +1,33 @@
-export function BubbleModel() {
-  this.sort = [...arguments];
+import {  } from '../controlles/control';
+
+export function BubbleModel(input) {
+  this.sort = input;
 }
 
 BubbleModel.prototype.execute = function() {
   let sorting = this.sort;
-  let temp = null;
   
-  if (sorting[i] > sorting[i + 1]) {
-    temp = sorting[i];
-    sorting[i] = sorting[i + 1];
-    sorting[i + 1] = temp;
-    
-    return [i, i + 1, true];
-  };
+  for (let i = 0; i < sorting.length -1; i++) {
+    for (let j = 0; j < sorting.length -i -1; j++) {
+      if (sorting[j] > sorting[j + 1]) {
+        let temp = sorting[j];
+        sorting[j] = sorting[j + 1];
+        sorting[j + 1] = temp;
+        console.log(sorting);
+      };
+      
+    }
+  }
 }
 
-BubbleModel.prototype.getRemain = function() {
-  return this.sort;
+BubbleModel.prototype.changeBlock = function() {
+  
 }
 
-const test = new BubbleModel(1, 2, 3); 
+BubbleModel.prototype.stayBlock = function() {
 
-console.log(test.sort);
-console.log(test.getRemain());
+}
+
+
+// 일단 초기값으로 시각화하기.
+// 스왑될시 애니메이션으로 움직임 반영하기.
