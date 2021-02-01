@@ -15,8 +15,14 @@ export default class View {
 
 	bindOnClickSortKindsBtns(handler) {
 		$on(this.$sortKindsBtns, 'click', ({currentTarget, target}) => {
-			console.log('currentTarget', currentTarget);
-			console.log('target', target);
+			target.classList.add('selected');
+			for (const childNode of currentTarget.childNodes) {
+				if (childNode !== target) {
+					childNode.classList && childNode.classList.remove('selected');
+				}
+			}
+			
+			handler(target.dataset.btnName);
 		});
 	}
 }

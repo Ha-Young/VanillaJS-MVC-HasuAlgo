@@ -11,11 +11,14 @@ export default class Controller {
 		this.model = model;
 		this.view = view;
 
-		view.bindOnClickSortKindsBtns();
+		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
 	}
 
 	startView() {
-
 		this.model.initDatas();
+	}
+
+	setSortKinds(sortKinds) {
+		this.model.currentSortKinds = sortKinds;
 	}
 }
