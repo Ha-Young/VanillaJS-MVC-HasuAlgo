@@ -7,12 +7,68 @@ html, body {
 }
 
 .content {
-  max-width: 500px;
+  // max-width: 500px;
   margin: 100px auto;
   text-align: center;
+  color: #4A6FC3;
 }
 
-img {
+.input-box {
   width: 300px;
-  height: 400px;
+  height: 50px;
+  border: none;
+  border-bottom: 2px solid #4A6FC3;
+  font-size: 15px;
+  outline: none;
+}
+
+form {
+  display: inline;
+}
+
+button {
+  width: 100px;
+  height: 50px;
+  border: 2px solid #4A6FC3;
+  border-radius: 10px;
+  background-color: white;
+  color: #4A6FC3;
+  font-size: 15px;
+  transition-duration: 0.4s;
+}
+
+button:hover {
+  background-color: #4A6FC3;
+  color: white;
+}
+
+.bottom {
+  width: 800px;
+  margin: 20px auto;
+  border: 2px solid #4A6FC3;
+}
+
+.graph-container {
+  position: relative;
+  // width: 800px;
+  text-align: center;
+  height: 500px;
+  padding: 0 auto;
+}
+
+.graph-container span {
+  position: absolute;
+  bottom: 10px;
+  width: 20px;
+
+  background-color: #4A6FC3;
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none;
 }

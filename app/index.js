@@ -1,8 +1,7 @@
 // Load application styles
 import '../assets/styles/index.less';
+import BubbleController from './bubble_sort/bubble.controller.js';
 
-// ================================
-// START YOUR APP HERE
-// ================================
-
-console.log('여기서 작업하세요!');
+window.addEventListener("DOMContentLoaded", function () {
+  new BubbleController();
+});

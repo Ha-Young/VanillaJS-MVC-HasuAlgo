@@ -8,9 +8,20 @@
 <body>
   <div class="content">
     <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
+    <form class="input-container">
+      <input type="text" class="input-box" placeholder="입력"/>
+      <!-- <button class="input-button">데이터 삽입</button> -->
+    </form>
+    <button class="excute-button">정렬 실행</button>
+    <section class="bottom">
+      <div class="graph-container"></div>
+    </section>
+    <!-- <img src="./assets/images/chicken.jpg" /> -->
+    <!-- <p>README.md를 읽어보고 과제를 시작하세요.</p> -->
   </div>
+  <script src="./app/bubble_sort/bubble.model.js"></script>
+  <script src="./app/bubble_sort/bubble.view.js"></script>
+  <script src="./app/bubble_sort/bubble.controller.js"></script>
   <script src="./app/index.js"></script>
 </body>
 </html>
