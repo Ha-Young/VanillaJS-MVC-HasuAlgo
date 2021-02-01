@@ -1,4 +1,7 @@
 html, body {
+  font-family: 'Roboto Mono', monospace, sans-serif;
+  font-size: 16px;
+  background-color: #598BFF;
   box-sizing: border-box;
 }
 
@@ -6,13 +9,79 @@ html, body {
   box-sizing: inherit;
 }
 
-.content {
-  max-width: 500px;
-  margin: 100px auto;
+h1 {
+  font-size: 3rem;
+  color: #ffffff;
+  padding: 1rem 0;
   text-align: center;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+.content {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.input-data {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.input-data select {
+  width: 150px;
+  padding: 0.3rem;
+  border-color: #cccccc;
+}
+
+.input-data input {
+  flex: 1;
+  padding: 0.3rem;
+  border-color: #cccccc;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.input-data button {
+  width: 70px;
+  padding: 0.3rem;
+  background-color: #FDE563;
+  border: transparent;
+  transition: background-color 0.5s;
+  cursor: pointer;
+}
+.input-data button:hover {
+  background-color: #FFD701;
+}
+
+.graph-data {
+  width: 100%; height: auto;
+  min-height: 350px;
+  margin: 2rem 0 0 0;
+  border: 1px solid #f1f0f0;
+  border-radius: 5px;
+}
+
+.graph-list {
+  margin: 3rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.graph-list li {
+  width: 30px; height: 300px;
+  margin: 0 3px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: center;
+  background-color: #DDDBF1;
+}
+.graph-list li span {
+  margin: 0 0 5px 0;
 }
