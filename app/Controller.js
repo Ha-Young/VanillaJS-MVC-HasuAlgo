@@ -29,16 +29,14 @@ function handlePrintDisplay() {
 function handleStartSort() {
   View.$sortButton.removeEventListener("click", handleStartSort);
 
-  setTimeout(function () {
-    bubbleSort();
-  });
+  bubbleSort();
 }
 
 function bubbleSort(i = 0) {
   const all = View.$sortLists.childNodes;
 
   return new Promise(function (resolve, reject) {
-    if (all[i].textContent > all[i + 1].textContent) {
+    if (Number(all[i].textContent) > Number(all[i + 1].textContent)) {
       resolve(i);
     } else {
       reject();
