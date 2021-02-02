@@ -1,5 +1,3 @@
-export default Model;
-
 export default Model
 
 function Model(storage) {
