@@ -27,6 +27,11 @@ export const THEME = {
   DARK_THEME: 'dark',
 }
 
+export const SORT_KINDS = {
+  Insertion: 'insertion',
+  Quick: 'quick',
+}
+
 export default {
   LIMIT_MAX_NUMBER,
   LIMIT_MIN_NUMBER,
