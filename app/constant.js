@@ -1,3 +1,8 @@
+const distance = 5;
+export const LIMIT_MAX_NUMBER = 50;
+export const LIMIT_MIN_NUMBER = 1;
+export const LIMIT_NUMBERS_OF = 20;
+
 const rect = {
   WIDTH: 45,
 }
@@ -8,10 +13,6 @@ const text = {
   Y_POS_DISTANCE: 15,
   BASE_HEIGHT: 30,
 }
-
-const distance = 5;
-export const LIMIT_MAX_NUMBER = 50;
-export const LIMIT_MIN_NUMBER = 1;
 
 export const ITEM = {
   RECT: rect,
@@ -24,4 +25,10 @@ export const ITEM = {
 export const THEME = {
   LIGHT_THEME: 'light',
   DARK_THEME: 'dark',
+}
+
+export default {
+  LIMIT_MAX_NUMBER,
+  LIMIT_MIN_NUMBER,
+  LIMIT_NUMBERS_OF,
 }
