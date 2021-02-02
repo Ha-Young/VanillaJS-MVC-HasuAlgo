@@ -24,5 +24,8 @@ graph.controller.clickEvent(graph.view.inputButton, function() {
 
   if (resultCheckData && resultCheckSort) {
     graph.view.renderGraph(graph.data.dataArray);
+    graph.controller.clickEvent(graph.view.sortButton, function() {
+      graph.controller.doBubbleSort(graph.data.dataArray);
+    });
   }
-})
+});
