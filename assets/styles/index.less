@@ -1,6 +1,7 @@
 html, body {
   box-sizing: border-box;
   margin: 0;
+  background-color: #eee;
 }
 
 *, *:before, *:after {
@@ -13,12 +14,11 @@ html, body {
   align-items: center;
   min-width: 100vw;
   min-height: 100vh;;
-  background-color: #eee;
 }
 
 .contents {
-  width: 550px;
-  height: 500px;
+  width: 700px;
+  height: 600px;
   padding: 40px;
   border-radius: 15px;
   background-color: white;
@@ -51,6 +51,7 @@ html, body {
   width: 20%;
   border: 0.5px solid #aaa;
   border-radius: 5px;
+  font-size: 1.3rem;
   text-align: center;
   outline: none;
 }
@@ -59,6 +60,7 @@ html, body {
   width: 60%;
   border: 0.5px solid #aaa;
   border-radius: 5px;
+  font-size: 1.3rem;
   outline: none;
 }
 
@@ -67,6 +69,7 @@ html, body {
   border: 0.5px solid #aaa;
   border-radius: 5px;
   background-color: white;
+  font-size: 1.3rem;
   outline: none;
   cursor: pointer;
 }
@@ -76,17 +79,87 @@ html, body {
 }
 
 .view-port-box {
-  height: 330px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  border-radius: 5px;
+  border: 0.5px solid #aaa;
 }
 
 .view-port {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
-  height: 100%;
-  border-radius: 5px;
-  border: 0.5px solid #aaa;
+  justify-content: space-around;
+  align-items: flex-end;
+  width: 90%;
+  height: 300px;
+  overflow: hidden;
+  perspective: 500px;
 }
 
-.svg {
+.bar-box {
+  position: relative;
+  display: flex;
+  flex-flow: column, nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  width: 20px;
+  transition: all ease 0.5s;
 }
+
+.bar {
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  width: 20px;
+  height: 0px;
+  box-shadow: 0px 0px 9px -5px #000000;
+  transform-style: preserve-3d;
+}
+
+div[data-idx="0"] > .bar {
+  background-color:#1ffdff;
+}
+div[data-idx="1"] > .bar {
+  background-color:#1ce8f5;
+}
+div[data-idx="2"] > .bar {
+  background-color:#18d2ea;
+}
+div[data-idx="3"] > .bar {
+  background-color:#15bde0;
+}
+div[data-idx="4"] > .bar {
+  background-color:#11a8d5;
+}
+div[data-idx="5"] > .bar {
+  background-color:#0e93cb;
+}
+div[data-idx="6"] > .bar {
+  background-color:#0a7ec1;
+}
+div[data-idx="7"] > .bar {
+  background-color:#0769b7;
+}
+div[data-idx="8"] > .bar {
+  background-color:#0454ad;
+}
+div[data-idx="9"] > .bar {
+  background-color:#003fa3;
+}
+
+
+/*
+#003fa3  9
+#0454ad  8
+#0769b7  7
+#0769b7  6
+#0e93cb  5
+#11a8d5  4
+#15bde0  3
+#18d2ea  2
+#1ce8f5  1
+#1ffdff  0
+*/
