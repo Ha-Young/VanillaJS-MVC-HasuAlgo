@@ -29,58 +29,34 @@ function handlePrintDisplay() {
 function handleStartSort() {
   View.$sortButton.removeEventListener("click", handleStartSort);
 
-  const all = View.$sortLists.childNodes;
-
-  // for (let i = 0, p = Promise.resolve(); i < all.length - 1; i++) {
-  //   p = p.then(_ => new Promise(resolve => {
-  //     if (all[i].textContent > all[i + 1].textContent) {
-  //       setTimeout(function () {
-  //         View.chageDisplayPosition(all[i], all[i + 1]);
-  //         Model.changeListOrder(i, i + 1);
-
-  //         setTimeout(function () {
-  //           View.removeMovingClass(all[i], all[i]);
-  //           View.changeDomPosition(all[i], all[i + 1]);
-  //         }, 1000)
-
-  //         resolve();
-  //       }, 1000)
-  //     }
-  //   }
-  //     ));
-  // }
   setTimeout(function () {
-    bubbleSort(0)
-  })
+    bubbleSort();
+  });
 }
 
-function bubbleSort(i) {
+function bubbleSort(i = 0) {
   const all = View.$sortLists.childNodes;
 
-  return new Promise((resolve, reject) => {
+  return new Promise(function (resolve, reject) {
     if (all[i].textContent > all[i + 1].textContent) {
       resolve(i);
     } else {
       reject();
     }
-  }).then(i => {
-    return new Promise(resolve => {
+  }).then(function (i) {
+    return new Promise(function (resolve) {
       setTimeout(function () {
         View.chageDisplayPosition(all[i], all[i + 1]);
-      }, 1000)
-      resolve(i)
-    })
-  }).then(i => {
-    View.removeMovingClass(all[i], all[i]);
-    return i;
-  }).then(i => {
-    View.resetTranslate(all[i], all[i + 1]);
-    return i;
-  }).then(i => {
-    Model.changeListOrder(i, i + 1);
-    return i;
-  }).then(i => {
-    View.changeDomPosition(all[i], all[i + 1]);
+        resolve(i);
+      }, 1000);
+    });
+  }).then(function (i) {
+    setTimeout(function () {
+      View.removeMovingClass(all[i], all[i + 1]);
+      View.resetTranslate(all[i], all[i + 1]);
+      Model.changeListOrder(i, i + 1);
+      View.changeDomPosition(all[i], all[i + 1]);
+    }, 1000);
   });
 }
 

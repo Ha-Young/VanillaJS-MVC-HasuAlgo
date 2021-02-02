@@ -24,7 +24,6 @@ Model.prototype.changeListOrder = function (left, right) {
 
   this.sortList[left] = this.sortList[right];
   this.sortList[right] = temp;
-  console.log(this.sortList);
 };
 
 export const model = new Model();
