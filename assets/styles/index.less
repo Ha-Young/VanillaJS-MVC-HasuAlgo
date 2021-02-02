@@ -1,18 +1,84 @@
 html, body {
   box-sizing: border-box;
+  background-color: #004B87;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
-.content {
-  max-width: 500px;
-  margin: 100px auto;
-  text-align: center;
+h1 {
+  color: #FFCD00;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+.flex-container {
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+
+.flex-item {
+  display: inline-block;
+  align-self: bottom;
+}
+
+.margin {
+  margin: 20px;
+}
+
+.input-form {
+  height: 40px;
+  width: 260px;
+}
+
+button {
+  background:#FFCD00;
+  height: 40px;
+  font-size: 1.3em;
+  padding:0 1.3em;
+  border: none;
+  cursor:pointer;
+}
+
+button:hover {
+  background-color: #ffa801;
+}
+
+.select-algo-btn {
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+}
+
+.execute-window {
+  align-items: flex-end;
+  width: 800px;
+  height: 500px;
+  margin: auto;
+  border: solid;
+  border-radius: 10px;
+  border-color: #FFCD00;
+}
+
+.sort-list {
+  height: 150px;
+  width: 30px;
+  margin: 0px 4px;
+  text-align: center;
+  background-color: #FFCD00;
+}
+
+.sorted {
+  background-color: #20bf6b;
+}
+
+.selected {
+  background-color:  #ff5e57;
+}
+
+#errorMsg {
+  height: 10px;
+  color: red;
+  font-size: 20px;
+  vertical-align: center;
 }

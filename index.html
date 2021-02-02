@@ -6,11 +6,24 @@
   <title>바닐라코딩</title>
 </head>
 <body>
-  <div class="content">
+  <div class="flex-container">
     <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
   </div>
+  <div class="flex-container">
+    <div class="flex-item margin"><input id="input-form" class="input-form" placeholder="5~10개의 숫자를 콤마로 구분하여 입력"type="text"></div>
+    <div class="flex-item margin"><button id="input-btn" class="input btn">입력</button></div>
+  </div>
+  <div class="flex-container">
+    <div class="flex-item margin" id="errorMsg"></div>
+  </div>
+  <div class="flex-container">
+    <div class="flex-item margin bubble"><button id="bubble" class="select-algo-btn">Bubble</button></div>
+    <div class="flex-item margin"><button id="quick" class="select-algo-btn">Quick</button></div>
+  </div>
+  <div class="flex-container">
+    <div class="flex-item margin"><button id="execute-btn" class="execute btn">정렬</button></div>
+  </div>
+  <div class="execute-window flex-container"></div>
   <script src="./app/index.js"></script>
 </body>
 </html>
