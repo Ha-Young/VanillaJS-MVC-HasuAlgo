@@ -9,10 +9,5 @@ function Main() {
   this.controller = new Controller(this.model, this.view);
 }
 
-function checkInput () {
-  const input = document.querySelector("input");
-  console.log(input);
-}
-
 var main = new Main();
 main.controller.getData();

@@ -35,7 +35,6 @@ Model.prototype.bubbleSort = function (storage, callback) {
     
 // }
 
-
 Model.prototype.handleSort = function (type, callback) {
   if (type === "bubbleSort") {
     this.bubbleSort(this._storage, callback);

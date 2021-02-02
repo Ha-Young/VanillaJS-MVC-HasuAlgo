@@ -10,16 +10,22 @@
     <h1>Visualize Sorting Algorithms</h1>
     <div class="visualization"></div>
 
-    <form name="sortForm" onsubmit="checkInput">
-      <input name="numberInput" class="numbers" type="text">
+    <form class="sortForm" name="sortForm" onsubmit="checkInput">
+      <input class="numberInput" name="numberInput" class="numbers" type="text">
       <select class="sortType">
         <option value="bubbleSort">Bubble Sort</option>
         <option value="quickSort">Quick Sort</option>
       </select>
-      <input type="submit" value="실행" />
+      <input class="button" type="submit" value="실행" />
     </form>
 
   </div>
   <script src="./app/index.js"></script>
+  <script>
+    function checkInput () {
+      const input = document.querySelector("input");
+      console.log(input);
+    }
+  </script>
 </body>
 </html>

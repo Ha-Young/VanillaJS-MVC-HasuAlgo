@@ -14,10 +14,6 @@ Controller.prototype.getData = function () {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    this.model.setData(input.value, (err) => {
-      
-    });
-
     this.model.handleSort(dropList.value, (result, index) => {
         this.view.showResult(result, index);
     });
