@@ -50,6 +50,10 @@ export default class View {
 		this.$container.className = `container ${theme}`;
 	}
 
+	getItemListsOnView() {
+		return this.$vizCanvas.querySelectorAll('g');
+	}
+
 	/**
 	 * Format the contents of a sort list.
 	 *
@@ -58,5 +62,32 @@ export default class View {
 	 */
 	showSortItems(sortItemList) {
 		this.$vizCanvas.innerHTML = this.template.sortItemList(sortItemList);
+	}
+
+	setItemSortedColor(index) {
+		const gTagCollection = this.getItemListsOnView();
+		gTagCollection[index].removeAttribute('class');
+		gTagCollection[index].classList.add('sorted');
+	}
+
+	setItemSelection(index) {
+		const gTagCollection = this.getItemListsOnView();
+		gTagCollection[index].removeAttribute('class');
+		gTagCollection[index].classList.add('selected');
+
+		console.log(gTagCollection[index].attributes);
+
+		// Getting
+		var xforms = gTagCollection[index].transform.baseVal; // An SVGTransformList
+		var firstXForm = xforms.getItem(0);       // An SVGTransform
+		if (firstXForm.type == SVGTransform.SVG_TRANSFORM_TRANSLATE){
+			var firstX = firstXForm.matrix.e,
+					firstY = firstXForm.matrix.f;
+		}
+
+		// Setting
+		gTagCollection[index].transform.baseVal.getItem(0).setTranslate(`${firstX}`,`${firstY + 200}`);
+		// console.log(gTagCollection[index]);
+		// console.log(gTagCollection[index].style);
 	}
 }
