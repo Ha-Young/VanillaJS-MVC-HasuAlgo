@@ -1,3 +1,5 @@
+import { BubbleController } from "../controlles/control";
+
 export const BubbleView = function(template) {
   this._template = template;
   this._$visual = document.querySelector('.visual');
@@ -12,7 +14,7 @@ BubbleView.prototype.addItem = function(input) {
   const $box = document.createElement('div');
   $box.className = 'sort-box';
   $box.innerText = input;
-  this._$visual.append($box);
+  this._$visual.appendChild($box);
 }
 
 BubbleView.prototype.deleteItem = function() {
@@ -23,4 +25,15 @@ BubbleView.prototype.resetItem = function(n) {
   for (let i = 0; i < n; i++) {
     this._$visual.removeChild(this._$visual.lastChild);
   }
+}
+
+BubbleView.prototype.swap = function(a, b) {
+  console.log(a,b);
+  
+  const $boxs = document.querySelectorAll('.sort-box');
+  this._$visual.insertBefore($boxs[b], $boxs[a])
+}
+
+BubbleView.prototype.stay = function() {
+  console.log('stay');
 }

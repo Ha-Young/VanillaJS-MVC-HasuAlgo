@@ -1,21 +1,22 @@
 import { BubbleView } from '../views/view';
 
 export function BubbleModel(input) {
-  this.sort = input;
+  this._view = new BubbleView();
+  this._sort = input;
 }
 
 BubbleModel.prototype.execute = function() {
-  let sorting = this.sort;
-  
+  let sorting = this._sort;
   for (let i = 0; i < sorting.length -1; i++) {
     for (let j = 0; j < sorting.length -i -1; j++) {
       if (sorting[j] > sorting[j + 1]) {
         let temp = sorting[j];
         sorting[j] = sorting[j + 1];
         sorting[j + 1] = temp;
-        BubbleView
+
+        this._view.swap(j, j + 1);
       };
-      console.log('sorted')
+      this._view.stay();
     }
   }
 }

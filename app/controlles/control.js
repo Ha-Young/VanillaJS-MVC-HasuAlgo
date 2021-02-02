@@ -1,10 +1,6 @@
 import { BubbleModel } from '../models/model';
 import { BubbleView } from '../views/view';
 
-export const BubbleController = function() {
-  
-}
-
 const bubbleView = new BubbleView();
 const $userInput = document.querySelector('.user-value');
 const $start = document.querySelector('.start');
@@ -13,9 +9,9 @@ const $reset = document.querySelector('.reset');
 const test = [];
 
 function addItem(b) {
-  if (b.key === 'Enter') {
-    let value = $userInput.value;
+  let value = $userInput.value;
 
+  if (b.key === 'Enter' && value !== '') {
     test.push(value);
     $userInput.value = '';
     
@@ -24,6 +20,11 @@ function addItem(b) {
 }
 
 function deleteItem() {
+  if (!test.length) {
+    $userInput.value = '';
+    return;
+  }
+  
   test.pop();
   bubbleView.deleteItem();
 }
@@ -39,20 +40,24 @@ function resetItem() {
   bubbleView.resetItem(leng);
 }
 
-function runSort() {
+function startSort() {
+  if (!test.length) {
+    $userInput.value = '';
+    return;
+  }
+
   const refineValue = test.map(n => {
     return Number(n);
   });
-  console.log(test);
-  const bubbleModel = new BubbleModel(refineValue);
   
+  const bubbleModel = new BubbleModel(refineValue);
   bubbleModel.execute();
 }
 
 function init() {
   $userInput.addEventListener('keyup', addItem);
   $delete.addEventListener('click', deleteItem);
-  $start.addEventListener('click', runSort);
+  $start.addEventListener('click', startSort);
   $reset.addEventListener('click', resetItem);
 }
 
