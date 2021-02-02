@@ -7,46 +7,97 @@
 
 */
 
-import view from '../View/view';
+import {renderNumber} from '../View/view';
+import initGraphPannel from '../View/initGraphPannel';
+import numModel from '../Model/model';
+
+import insertSort from './insertSort/insertSortController';
 
 const submitButton = document.querySelector("#submitButton");
-const textBox = (document.querySelector('#textBox'));
+const textBox = document.querySelector('#textBox');
+const contentDiv = document.querySelector('.content');
+const graphPannelDiv = document.querySelector('.graphPannel');
+let numbersObjArray = [];
 
 //submit 버튼에 이벤트 심기
 submitButton.addEventListener('click', buttonClickEvent);
 
-function buttonClickEvent() {
+async function buttonClickEvent() {
   const blank = " ";
   const comma = ",";
+  // init
+  numbersObjArray = [];
+  initGraphPannel();
 
-  const textBoxString = textBox.value.trim();
+  // TODO : 다 끝나고 const로 바꿔주기
+  let textBoxString = textBox.value.trim();
   // err handling
   if (!textBoxString) {
-    console.error('No text!!');
+    //console.error('No text!!');
+    // test
+    textBoxString = '1,3,2,4,5';
   }
 
-  let textArray;
+  let numbersArray;
   if (textBoxString.includes(comma)) {
-    console.log('comma has!');
-    textArray = splitString(textBoxString, comma);
+    //console.log('comma has!');
+    numbersArray = splitString(textBoxString, comma);
   } else if (textBoxString.includes(blank)) {
-    console.log('blank has!');
-    textArray = splitString(textBoxString, blank);
+    //console.log('blank has!');
+    numbersArray = splitString(textBoxString, blank);
   } else {
-    console.log('none has!');
-    textArray = splitString(textBoxString, '');
+    //console.log('none has!');
+    numbersArray = splitString(textBoxString, '');
   }
 
-  if (textArray === -1) {
+  if (numbersArray === -1) {
     console.error('You only can input Number lower than 10');
   }
 
-  console.log(textArray);
-
-  textArray.forEach((el) => {
-    view(el);
-  });
+  //console.log(numbersArray);
   
+  const oneSectionPx = Number.parseInt(Math.round(950 / (numbersArray.length - 1)));
+
+  //console.log(oneSectionPx);
+
+  // First rendering
+  numbersArray.forEach((el, index) => {
+    const cordinateX = oneSectionPx * index;
+    const cordinateY = 0;
+    const newNumObj = new numModel(el, index, cordinateX, cordinateY);
+    numbersObjArray.push(newNumObj);
+    renderNumber(newNumObj.getNumRecords());
+  });
+
+  const shadowDiv = document.querySelector('.shadow');
+
+  contentDiv.style.opacity = 0;
+  setTimeout(() => {
+    contentDiv.style.display = 'none';
+    graphPannelDiv.style.display = 'inline-block'
+    /* 나중에 살림!!
+    shadowDiv.style.display = 'flex';
+    setTimeout(() => {
+      shadowDiv.innerText = 'insert Sort!';
+      setTimeout(() => {
+        shadowDiv.style.display = 'none';
+      }, 1000);
+    }, 1000);
+    */
+  }, 1000);
+
+  // TODO : insert와 Quick을 구분해 시작하기
+  // 우선 insert부터
+
+  for (let i = 1; i < numbersObjArray.length; i++) {
+    await insertSort(numbersObjArray, numbersObjArray[i], numbersObjArray[i-1])
+      .then(result => {
+        if (result) {
+          i--;
+        }
+      });
+  }
+
 }
 
 function splitString (textBoxString, seperator) {

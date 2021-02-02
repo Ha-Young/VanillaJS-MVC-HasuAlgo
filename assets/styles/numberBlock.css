@@ -1,15 +1,14 @@
 .numberOuter {
-  position: relative;
+  position: absolute;
+  height: 300px;
   width: 50px;
-  transition: all 3s ease;
+  transition: all 1s ease;
 }
 
 .numberInner {
-  position: absolute;
-  vertical-align: bottom;
+  font-size: 20px;
   color: white;
   background-color: red;
-  top: 150px;
   width: 100%;
   text-align: center;
   display: flex;

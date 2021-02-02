@@ -6,19 +6,28 @@
 
 */
 
+export default function numModel (value, index, cordinateX, cordinateY) {
+  this.value = value;
+  this.index = index;
+  this.order = index;
+  this.cordinateX = cordinateX;
+  this.cordinateY = cordinateY;
+}
 
+numModel.prototype.getNumRecords = function () {
+  const returnObj = {
+    value : this.value,
+    index : this.index,
+    cordinateX : this.cordinateX,
+    cordinateY : this.cordinateY
+  };
 
-export default function () {
-  const model = {};
-  model.numberArray = [];
+  return returnObj;
+}
 
-  model.getArray = function () {
-    return model.numberArray;
-  }
-
-  model.setValue = function (value) {
-    model.numberArray.push(value);
-  }
-
-  
+numModel.prototype.setNumRecords = function (value, index, cordinateX, cordinateY) {
+  this.value = value;
+  this.index = index;
+  this.cordinateX = cordinateX;
+  this.cordinateY = cordinateY;
 }
