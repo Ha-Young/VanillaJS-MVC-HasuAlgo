@@ -20,9 +20,11 @@ function init() {
     const sortType = $sortSelection.options[$sortSelection.selectedIndex].text;
     const numbers = $numbers.value;
     const numberArray = numbers.split(",");
+    //console.log(numberArray);
 
     if (numberArray.length < 5 || numberArray.length > 10) {
       window.alert("out of range");
+      return;
     }
 
     if (numberArray.some(element => element === "," || element === "")) {
@@ -32,14 +34,14 @@ function init() {
     const model = new Model(sortType, numberArray);
     const maxNum = model.findMaxNum();
     const template = new Template();
-    const view = new View(template.generateNumberBlocks(numberArray, maxNum));
+    const view = new View(template.generateNumberBlocks(numberArray, maxNum), $content);
     const controller = new Controller(model, view);
+    let maxHeight = sortType === "Merge Sort" ? 20 : 800;
 
-    console.log(sortType);
-    console.log(numberArray)
-    console.log(controller);
-
-    controller.initialize($content);
+    //should fix height
+    controller.initialize(sortType, maxHeight);
+    controller.bubbleSort();
+    //controller.bubbleSort();
   });
 }
 

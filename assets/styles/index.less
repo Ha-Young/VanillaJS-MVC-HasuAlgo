@@ -7,33 +7,37 @@ html, body {
 }
 body {
   text-align: center;
-  //text
 }
 .content {
   border: 1px solid black;
-  width: 900px;
+  width: 90vw;
   height: 900px;
   margin: 100px auto;
   padding: 10px;
   text-align: center;
   display: flex;
-  //flex-direction: row;
-  justify-content: space-around;
   align-items: flex-end;
-}
-
-.content > div {
-  margin: 10px auto;
+  position: relative;
 }
 
 .number-block {
-  border: 1px solid black;
-  flex-basis: 20px;
-  max-height: 850px;
-  background-color: black;
+  width: 28px;
+  max-height: 800px;
+  margin: 10px;
+  left: 30%;
+  background-color: #a0c4ff;
+  transition: all 1s ease-in-out;
+  position: absolute;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+// .normal {
+//   background-color: #a0c4ff;
+// }
+
+.picked {
+  background-color: #ffadad;
+}
+
+.sorted {
+  background-color: #caffbf;
 }

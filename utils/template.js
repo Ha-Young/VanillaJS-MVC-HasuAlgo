@@ -14,6 +14,6 @@ export default class Template {
    */
   generateNumberBlocks(numberArray, maxNum) {
     return numberArray.reduce((a, number) => a +
-      `<div class="number-block" id="${number}" style = "height: ${(100 / maxNum)*number}vh;">${number}</div>`, "");
+      `<div class="number-blocks" id="block${number}" style = "height: ${(100 / maxNum) * number}vh;">${number}</div>`, "");
   }
 }
