@@ -1,11 +1,18 @@
 // Load application styles
-import '../assets/styles/index.less';
+import '../assets/styles/index.less'
+import Model from './model.js'
+import View from './view.js'
+import Controller from './controller'
 
-const $typed = document.querySelector(".typed");
-const $inputText = document.querySelector(".inputText");
-const $contentContainer = document.querySelector(".contentContainer");
+function Todo () {
+  this.model = new Model();
+  this.view = new View();
+  this.controller = new Controller();
+}
 
-$inputText.addEventListener('submit', function () {
+const todo = new Todo();
+
+$inputText.addEventListener('keyup', function () {
   event.preventDefault();
 
   addChildNode($typed.value);
@@ -23,3 +30,5 @@ function addChildNode (value) {
 
   $contentContainer.appendChild($child);
 }
+
+console.log(document.querySelectorAll('.graphNode'));
