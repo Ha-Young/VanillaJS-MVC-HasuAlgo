@@ -13,13 +13,16 @@ Model.prototype.setData = function (string) {
 Model.prototype.bubbleSort = function (storage, callback) {
   let time = 0;
 
+  callback(storage);
+
   for (let i = 0; i < storage.length; i++) {
     for (let j = 0; j < storage.length - 1 - i; j++) {
 
-      if (storage[j + 1] < storage[j]) {
+
+      if (parseInt(storage[j]) > parseInt(storage[j + 1])) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
       }
-
+    
       const currentStorage = JSON.parse(JSON.stringify(storage));
 
       (function (data, index, t) {
@@ -41,7 +44,6 @@ Model.prototype.handleSort = function (type, callback) {
     this.bubbleSort(this._storage, callback);
   } 
 //   else if (type === "quickSort") {
-
 //   } 
 }
 

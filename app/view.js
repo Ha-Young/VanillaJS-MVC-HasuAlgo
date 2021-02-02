@@ -18,7 +18,7 @@ View.prototype.showResult = function (result, index) {
       const bar = document.createElement("div");
 
       bar.classList.add("divBar");
-      bar.style.height = ((result[i] * 20) + "px");
+      bar.style.height = ((result[i] * 10) + "px");
       bar.innerText = result[i];
 
       if (i === index || i === index + 1) {
