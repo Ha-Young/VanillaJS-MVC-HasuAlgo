@@ -94,7 +94,12 @@ export default class Controller {
         if (listToSort[innerIndex] > listToSort[innerIndex + 1]) {
           this.sortCount++;
           listToSort.splice(innerIndex+1, 0, listToSort.splice(innerIndex,1)[0]);
-          this.view.changeOrder(innerIndex, innerIndex+2);
+          this.view.moveRight(innerIndex);
+          this.view.moveLeft(innerIndex+1);
+          setTimeout(function (innerIndex) {
+            this.view.changeOrder(innerIndex, innerIndex+2);
+          }.bind(this, innerIndex), 500)
+          
         }
 
         if (outerIndex === 1 && innerIndex === 0) {
@@ -114,8 +119,8 @@ export default class Controller {
         }
 
         return this.bubbleSortRecursion(outerIndex, ++innerIndex);
-      }.bind(this), 150)
-    }.bind(this), 300);
+      }.bind(this), 500)
+    }.bind(this), 500);
   }
 
   quickSort = function () {

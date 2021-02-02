@@ -61,9 +61,11 @@ button:hover {
 }
 
 .sort-list {
+  position: relative;
   height: 150px;
-  width: 30px;
-  margin: 0px 4px;
+  width: 40px;
+  left: auto;
+  margin: 0px 15px;
   text-align: center;
   background-color: #FFCD00;
 }
@@ -81,4 +83,14 @@ button:hover {
   color: red;
   font-size: 20px;
   vertical-align: center;
+}
+
+.move-right {
+  transition: all 0.5s;
+  transform: translateX(70px);
+}
+
+.move-left {
+  transition: all 0.5s;
+  transform: translateX(-70px);
 }

@@ -35,8 +35,19 @@ export default class View {
 
   changeOrder = function (firstOrder, secondOrder) {
     const nodeList = this.$sortingWindow.childNodes;
-
+    nodeList[firstOrder].classList.remove('move-right');
+    nodeList[secondOrder - 1].classList.remove('move-left');
     this.$sortingWindow.insertBefore(nodeList[firstOrder], nodeList[secondOrder]);
+  }
+
+  moveRight (index) {
+    const nodeList = this.$sortingWindow.childNodes;
+    nodeList[index].classList.add('move-right');
+  }
+
+  moveLeft (index) {
+    const nodeList = this.$sortingWindow.childNodes;
+    nodeList[index].classList.add('move-left');
   }
 
   changeColorOfSelectedItem = function (index1, index2) {
