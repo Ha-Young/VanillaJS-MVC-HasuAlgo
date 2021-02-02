@@ -4,31 +4,34 @@ function View (template) {
 }
 
 View.prototype.render = function () {
-    const content = document.querySelector(".content");
-    
+  const content = document.querySelector(".content");
+
 }
 
-View.prototype.showResult = function (result) {
-  const div = document.querySelector(".visualization");
-  let resultString = "";
+View.prototype.showResult = function (result, index) {
+  const container = document.querySelector(".visualization");
+  const frame = document.createElement("div");
+
+  container.innerHTML = " ";
 
   for (let i = 0; i < result.length; i++) {
-      resultString += result[i] + "  ";
-  }    
-  console.log(resultString);
-  div.innerHTML = resultString;
+      const bar = document.createElement("div");
+
+      bar.classList.add("divBar");
+      bar.style.height = ((result[i] * 20) + "px");
+      bar.innerText = result[i];
+
+      if (i === index || i === index + 1) {
+        bar.style.backgroundColor = "#ffcc5c";
+      }
+
+    frame.appendChild(bar);   
+  }  
+
+  container.appendChild(frame);
 }
 
 export {View};
-
-
-
-
-
-
-
-
-
 
 
 // content.innerHTML = '<h1>Visualize Sorting Algorithms</h1>'
