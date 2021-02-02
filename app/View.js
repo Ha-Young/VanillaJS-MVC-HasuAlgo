@@ -5,9 +5,7 @@ function View() {
   this.$sortButton = document.querySelector(".sortButton");
 
   this.$sortDisplay = document.querySelector(".display-container");
-
-  this.$sortLists = document.createElement("ul");
-  this.$sortLists.classList.add("sorting__lists");
+  this.$sortLists = document.querySelector(".sorting__lists");
 }
 
 View.prototype.printNumbers = function (sortList) {
@@ -20,17 +18,51 @@ View.prototype.createNumbers = function (number) {
 
   $number.textContent = number;
   $number.classList.add("sorting__item");
-  $number.style.height = `${number}px`;
+  this.setNumbersHeigth($number, number);
 
   return $number;
-}
+};
+
+View.prototype.setNumbersHeigth = function (targetNumber, height) {
+  targetNumber.style.height = `${height}px`;
+};
 
 View.prototype.printDisplay = function (sortList) {
   for (let i = 0; i < sortList.length; i++) {
-    this.$sortLists.appendChild(this.createNumbers(sortList[i]));
+    const item = this.createNumbers(sortList[i]);
+    this.$sortLists.appendChild(item);
   }
-
-  this.$sortDisplay.appendChild(this.$sortLists);
 };
 
-export const newView = new View();
+View.prototype.chageDisplayPosition = function (left, right) {
+  const temp1 = left.getBoundingClientRect().x;
+  const temp2 = right.getBoundingClientRect().x;
+
+  this.addMovingClass(left, right);
+
+  left.style.transform = `translateX(${temp2 - temp1}px)`;
+  right.style.transform = `translateX(${temp1 - temp2}px)`;
+};
+
+View.prototype.resetTranslate = function (left, right) {
+  left.style.transform = null
+  right.style.transform = null;
+}
+
+View.prototype.addMovingClass = function (...arg) {
+  arg.forEach(function (item) {
+    item.classList.add("moving");
+  });
+};
+
+View.prototype.removeMovingClass = function (...arg) {
+  arg.forEach(function (item) {
+    item.classList.remove("moving");
+  });
+};
+
+View.prototype.changeDomPosition = function (left, right, index) {
+  this.$sortLists.insertBefore(right, left);
+};
+
+export const view = new View();

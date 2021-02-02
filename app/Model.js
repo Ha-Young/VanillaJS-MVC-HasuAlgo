@@ -13,13 +13,18 @@ Model.prototype.getSortList = function (number) {
   }
 
   throw new Error("max 10 numbers!!");
-}
+};
 
 Model.prototype.giveSortList = function () {
   return this.sortList;
-}
+};
 
-Model.prototype.startSort = function () {
-}
+Model.prototype.changeListOrder = function (left, right) {
+  const temp = this.sortList[left];
 
-export const newModel = new Model();
+  this.sortList[left] = this.sortList[right];
+  this.sortList[right] = temp;
+  console.log(this.sortList);
+};
+
+export const model = new Model();

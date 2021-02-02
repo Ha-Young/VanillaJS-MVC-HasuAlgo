@@ -1,5 +1,5 @@
-import {newModel as Model} from './Model';
-import {newView as View} from './View.js';
+import {model as Model} from './Model';
+import {view as View} from './View.js';
 
 function handleSubmit(event) {
   event.preventDefault();
@@ -29,9 +29,59 @@ function handlePrintDisplay() {
 function handleStartSort() {
   View.$sortButton.removeEventListener("click", handleStartSort);
 
+  const all = View.$sortLists.childNodes;
+
+  // for (let i = 0, p = Promise.resolve(); i < all.length - 1; i++) {
+  //   p = p.then(_ => new Promise(resolve => {
+  //     if (all[i].textContent > all[i + 1].textContent) {
+  //       setTimeout(function () {
+  //         View.chageDisplayPosition(all[i], all[i + 1]);
+  //         Model.changeListOrder(i, i + 1);
+
+  //         setTimeout(function () {
+  //           View.removeMovingClass(all[i], all[i]);
+  //           View.changeDomPosition(all[i], all[i + 1]);
+  //         }, 1000)
+
+  //         resolve();
+  //       }, 1000)
+  //     }
+  //   }
+  //     ));
+  // }
   setTimeout(function () {
-    Model.startSort();
-  }, 2000);
+    bubbleSort(0)
+  })
+}
+
+function bubbleSort(i) {
+  const all = View.$sortLists.childNodes;
+
+  return new Promise((resolve, reject) => {
+    if (all[i].textContent > all[i + 1].textContent) {
+      resolve(i);
+    } else {
+      reject();
+    }
+  }).then(i => {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        View.chageDisplayPosition(all[i], all[i + 1]);
+      }, 1000)
+      resolve(i)
+    })
+  }).then(i => {
+    View.removeMovingClass(all[i], all[i]);
+    return i;
+  }).then(i => {
+    View.resetTranslate(all[i], all[i + 1]);
+    return i;
+  }).then(i => {
+    Model.changeListOrder(i, i + 1);
+    return i;
+  }).then(i => {
+    View.changeDomPosition(all[i], all[i + 1]);
+  });
 }
 
 function Controller() {
