@@ -1,12 +1,26 @@
 export const BubbleView = function(template) {
-  this.template = template;
-  this.$visualBox = document.querySelector('.visual');
-  this.$form = document.querySelector('form');
-  this.$userValue = document.querySelector('.user-choose');
-  this.$SubmitBtn = document.querySelector('.submit-button');
+  this._template = template;
+  this._$visual = document.querySelector('.visual');
+  this._$form = document.querySelector('form');
+  this._$userValue = document.querySelector('.user-value');
+  this._$deleteBtn = document.querySelector('.delete');
+  this._$startBtn = document.querySelector('.start');
+  this._$resetBtn = document.querySelector('.reset');
 }
 
-BubbleView.prototype.setInit = function(input) {
+BubbleView.prototype.addItem = function(input) {
+  const $box = document.createElement('div');
+  $box.className = 'sort-box';
+  $box.innerText = input;
+  this._$visual.append($box);
 }
 
-BubbleView.setInit;
+BubbleView.prototype.deleteItem = function() {
+  this._$visual.removeChild(this._$visual.lastChild);
+}
+
+BubbleView.prototype.resetItem = function(n) {
+  for (let i = 0; i < n; i++) {
+    this._$visual.removeChild(this._$visual.lastChild);
+  }
+}

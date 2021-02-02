@@ -13,7 +13,7 @@ BubbleModel.prototype.execute = function() {
         let temp = sorting[j];
         sorting[j] = sorting[j + 1];
         sorting[j + 1] = temp;
-        console.log(sorting);
+        BubbleView
       };
       console.log('sorted')
     }
