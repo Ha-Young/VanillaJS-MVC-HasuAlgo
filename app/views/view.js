@@ -28,10 +28,20 @@ BubbleView.prototype.resetItem = function(n) {
 }
 
 BubbleView.prototype.swap = function(a, b) {
-  console.log(a,b);
-  
   const $boxs = document.querySelectorAll('.sort-box');
-  this._$visual.insertBefore($boxs[b], $boxs[a])
+  const rightBoxLocation = $boxs[b].getBoundingClientRect().left;
+  const leftBoxLocation = $boxs[a].getBoundingClientRect().left;
+  const distance = rightBoxLocation - leftBoxLocation;
+  
+  $boxs[a].classList.add('move-right');
+  $boxs[b].classList.add('move-left');
+  $boxs[a].classList.remove('move-right');
+  $boxs[b].classList.remove('move-left');
+  
+}
+
+BubbleView.prototype.move = function() {
+  
 }
 
 BubbleView.prototype.stay = function() {

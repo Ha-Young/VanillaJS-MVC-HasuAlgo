@@ -30,5 +30,5 @@ BubbleModel.prototype.stayBlock = function() {
 }
 
 
-// 일단 초기값으로 시각화하기.
-// 스왑될시 애니메이션으로 움직임 반영하기.
+// execute 실행결과를 바로 swap으로 보내지 말고, 결과값들을 모아서 control로 보냄
+// control이 받은 결과를 비동기로 view의 이동작업을 실행하여 하나씩 이동되게 만들어 보자.
