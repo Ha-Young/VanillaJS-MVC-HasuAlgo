@@ -1,3 +1,5 @@
+import { swapNode } from './utils/sortUtils';
+
 export class View {
   constructor() {
     this.form = document.querySelector('form');
@@ -16,25 +18,33 @@ export class View {
   }
 
   displayNodes(nodeLists) { // validation 어디서 해줘야 할 지 찾아보기..
-    if (nodeLists.length === 0) {
-      const warningMessage = document.createElement('p');
-      warningMessage.textContent = 'Put some numbers';
-      this.table.appendChild(warningMessage);
+    // if (nodeLists.length === 0) {
+    //   console.log(24);
+    //   const warningMessage = document.createElement('p');
+    //   warningMessage.textContent = 'Put some numbers';
+    //   this.table.appendChild(warningMessage);
 
-      return;
-    }
+    //   return;
+    // }
 
-    for (const nodeValue of nodeLists) {
+    const DEFAULT_HEIGHTS = 2;
+
+    for (let i = 0; i < nodeLists.length; i++) {
       const nodeParent = document.createElement('div');
       const nodeChild = document.createElement('div');
-      nodeParent.className = `${nodeValue}`; // classList로 수정해주기
+
+      nodeParent.classList.add('content-field-node-parent');
+      nodeChild.classList.add('content-field-node');
+      nodeChild.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
+      nodeParent.style.transform = `translateX(${i * 10}px)`; // magic number 수정
+      console.log(nodeParent.style.transform);
 
       this.table.appendChild(nodeParent);
       nodeParent.appendChild(nodeChild);
     }
   }
 
-  bindInputNode(handler) {
+  bindInputNode(handler) { // eventlistener 다 remove해주기.. 근데 그럼 유명함수로 만들어야하는데... 그럼 디스바인딩해줘야하는데... // if flag거는건 어때..?
     this.form.addEventListener('submit', event => {
       event.preventDefault();
 
@@ -52,12 +62,21 @@ export class View {
     });
   }
 
-  render(targetNode, ...args) {
-    const viewsCommands = {
-      startSorting: function() {},
-      checkNodes: function() {},
-      swapNodes: function() {},
-      finishSorting: function() {},
+  render(args) {
+    const state = args.shift();
+
+    const viewCommands = {
+      startSorting: function() {
+      },
+      checkNodes: function(args) {
+      },
+      swapNodes: async function(args) {
+        await swapNode(args[0], args[1]);
+      },
+      finishSorting: function() {
+      },
     };
+    
+    viewCommands[state](args);
   }
 }

@@ -8,6 +8,7 @@ html, body {
 
 .content {
   max-width: 500px;
+  min-height: 400px;
   margin: 100px auto;
   text-align: center;
 }
@@ -15,4 +16,26 @@ html, body {
 img {
   width: 300px;
   height: 400px;
+}
+
+.content-field {
+  display: flex;
+  min-height: 400px;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.content-field-node-parent {
+  display: flex;
+  width: 40px;
+  min-height: 300px;
+  margin-left: 5px;
+  margin-right: 5px;
+  align-items: flex-end;
+}
+
+.content-field-node {
+  width: 40px;
+  background-color: pink;
+  transition: all ease-in 0.5s;
 }
