@@ -65,29 +65,51 @@ export default class View {
 	}
 
 	setItemSortedColor(index) {
-		const gTagCollection = this.getItemListsOnView();
-		gTagCollection[index].removeAttribute('class');
-		gTagCollection[index].classList.add('sorted');
+		const sortItemElement = this.getItemListsOnView()[index];
+		sortItemElement.removeAttribute('class');
+		sortItemElement.classList.add('sorted');
 	}
 
 	setItemSelection(index) {
-		const gTagCollection = this.getItemListsOnView();
-		gTagCollection[index].removeAttribute('class');
-		gTagCollection[index].classList.add('selected');
-
-		console.log(gTagCollection[index].attributes);
+		const sortItemElement = this.getItemListsOnView()[index];
+		sortItemElement.removeAttribute('class');
+		sortItemElement.classList.add('selected');
 
 		// Getting
-		var xforms = gTagCollection[index].transform.baseVal; // An SVGTransformList
-		var firstXForm = xforms.getItem(0);       // An SVGTransform
-		if (firstXForm.type == SVGTransform.SVG_TRANSFORM_TRANSLATE){
-			var firstX = firstXForm.matrix.e,
-					firstY = firstXForm.matrix.f;
-		}
-
-		// Setting
-		gTagCollection[index].transform.baseVal.getItem(0).setTranslate(`${firstX}`,`${firstY + 200}`);
-		// console.log(gTagCollection[index]);
-		// console.log(gTagCollection[index].style);
+		var xforms = sortItemElement.transform.baseVal.getItem(0); // An SVGTransformList
+		
+		var firstX = xforms.matrix.e, firstY = xforms.matrix.f;
+		
+		var from     = firstY;  // x="10"
+		var to       = firstY + 200;  // x="70"
+		var duration = 1000; // 500ms
+	
+		var start = new Date().getTime();
+	 
+		var timer = setInterval(function() {
+			var time = new Date().getTime() - start;
+			var x = easeInOutQuart(time, from, to - from, duration);
+			sortItemElement.setAttribute('x', x);
+			sortItemElement.setAttribute('transform', `translate(${firstX}, ${x})`);
+			if (time >= duration) clearInterval(timer);
+		}, 1000 / 60);
 	}
+
+	setItemCheckColor(index) {
+		const sortItemElement = this.getItemListsOnView()[index];
+		sortItemElement.removeAttribute('class');
+		sortItemElement.classList.add('check');
+	}
+}
+
+//
+// http://easings.net/#easeInOutQuart
+//  t: current time
+//  b: beginning value
+//  c: change in value
+//  d: duration
+//
+function easeInOutQuart(t, b, c, d) {
+  if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
+  return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
 }

@@ -96,17 +96,32 @@ export default class Controller {
 		await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
 
 		for (let i = 1; i < sortList.length; i++) {
-			const selectionIndex = i;
+			debugger;
+			let selectionIndex = i;
 			await this.doUIWork([this.viewItemSelection.bind(this, selectionIndex)]);
+
 			let checkIndex = selectionIndex - 1;
-			while (checkIndex >= 0 && sortList[index - 1] > sortList[index]) {
+
+			while (checkIndex >= 0) {
 				await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
 
-				let temp = sortList[index - 1];
-				sortList[index - 1] = sortList[index];
-				sortList[index] = temp;
-				index--;
-				await this.setNumsView(sortList, this.delayTimeOnChange);
+				if (sortList[checkIndex] > sortList[selectionIndex]) {
+					// change
+					let temp = sortList[checkIndex];
+					sortList[checkIndex] = sortList[selectionIndex];
+					sortList[selectionIndex] = temp;
+					checkIndex--;
+					selectionIndex--;
+				} else {
+					await this.doUIWork(
+						[
+							this.viewItemSortedColor.bind(this, checkIndex),
+							this.viewItemSortedColor.bind(this, selectionIndex),
+						]);
+					break;
+				}
+				
+				//await this.setNumsView(sortList, this.delayTimeOnChange);
 			}
 		}
 
