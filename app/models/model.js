@@ -1,4 +1,4 @@
-import {  } from '../controlles/control';
+import { BubbleView } from '../views/view';
 
 export function BubbleModel(input) {
   this.sort = input;
@@ -15,7 +15,7 @@ BubbleModel.prototype.execute = function() {
         sorting[j + 1] = temp;
         console.log(sorting);
       };
-      
+      console.log('sorted')
     }
   }
 }
