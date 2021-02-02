@@ -16,9 +16,18 @@ Controller.prototype.getData = function () {
 
     this.model.setData(input.value);
 
-    this.model.handleSort(dropList.value, (result, index) => {
-        this.view.showResult(result, index);
-    });
+
+
+    this.model.handleSort(dropList.value, 
+      (result) => {
+        this.view.showInitial(result);
+      },
+      (index) => {
+        this.view.showSwap(index);
+      },
+      (index) => {
+        this.view.paintSorted(index);
+      });
   });
 }
 
