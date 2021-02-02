@@ -43,7 +43,27 @@ Model.prototype.resetList = function (callback) {
   callback();
 };
 
-Model.prototype.remove = function (num) {};
+Model.prototype.shuffleNum = function (callback) {
+  const shuffledArray = [...this.inputArray];
+
+  for (let i = shuffledArray.length; i; i--) {
+    const j = Math.floor(Math.random() * i);
+    let temp = shuffledArray[i - 1];
+    shuffledArray[i - 1] = shuffledArray[j];
+    shuffledArray[j] = temp;
+  }
+
+  this.inputArray = [...shuffledArray];
+  callback(shuffledArray);
+};
+
+Model.prototype.setRandom = function (callback) {
+  const newRandom = Math.floor(Math.random() * 20);
+
+  this.inputArray.push(newRandom);
+
+  callback(newRandom);
+};
 
 Model.prototype.move = function (index1, index2) {};
 

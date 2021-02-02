@@ -15,12 +15,12 @@ export const Controller = function (model, view) {
     self.resetList();
   });
 
-  self.view.connectHandler("randomNum", function () {
-    self.randomNum();
-  });
-
   self.view.connectHandler("shuffleNum", function (array) {
     self.shuffleNum(array);
+  });
+
+  self.view.connectHandler("setRandom", function () {
+    self.setRandom();
   });
 
   self.view.connectHandler("bubbleSort", function (array) {
@@ -79,12 +79,21 @@ Controller.prototype.resetList = function () {
   });
 };
 
-Controller.prototype.randomNum = function () {
+Controller.prototype.setRandom = function () {
   console.log("Controller: randomNum");
+  const self = this;
+
+  self.model.setRandom((number) => {
+    self.view.render("paintNewNumber", number);
+  });
 };
 
 Controller.prototype.shuffleNum = function () {
-  console.log("Controller: shuffleNum");
+  const self = this;
+
+  self.model.shuffleNum((shuffledArray) => {
+    self.view.render("paintWholeList", shuffledArray);
+  });
 };
 
 Controller.prototype.bubbleSort = function () {

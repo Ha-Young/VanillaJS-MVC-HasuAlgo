@@ -21,12 +21,9 @@ export const View = function () {
 View.prototype.render = function (viewCommand, parameter, ...args) {
   const self = this;
   const viewCommands = {
-    paintNewNumber: function () {
+    paintWholeList: function () {
+      self.$sortContainer.innerHTML = "";
       for (const number of parameter) {
-        const elementCount = self.$sortContainer.childElementCount;
-        if (elementCount > 9) {
-          return;
-        }
         const li = document.createElement("li");
         li.classList.add("sort-element");
         li.innerHTML = `
@@ -36,7 +33,24 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
         self.$sortContainer.appendChild(li);
       }
     },
+    paintNewNumber: function () {
+      const elementCount = self.$sortContainer.childElementCount;
+      if (elementCount > 9) {
+        return;
+      }
+
+      if (!Array.isArray(parameter)) {
+        self.paintBar(parameter);
+      } else {
+        for (const number of parameter) {
+          self.paintBar(number);
+        }
+      }
+    },
     colorElement: function () {
+      self.$shuffleButton.classList.add("hide");
+      self.$randomButton.classList.add("hide");
+      self.$startButton.classList.add("hide");
       self.$sortElementList = qsa(".sort-element");
       const firstIndex = parameter;
       const secondIndex = firstIndex + 1;
@@ -79,22 +93,22 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
       }
     },
     finishSort: function () {
-      self.$startButton.classList.add("hide");
       self.$resetButton.classList.remove("hide");
     },
     paintReset: function () {
       self.$sortContainer.innerHTML = "";
       self.$startButton.classList.remove("hide");
+      self.$shuffleButton.classList.remove("hide");
+      self.$randomButton.classList.remove("hide");
       self.$resetButton.classList.add("hide");
     },
-    removeNumber: function () {},
-    clearResetButton: function () {},
-    contentBlockVisibility: function () {},
+    console: function () {
+      console.log(parameter);
+      console.log(args);
+    },
     bubbleSortPage: function () {},
     insertionSortPage: function () {},
-    mergeSortPage: function () {
-      // self.$todoList.innerHTML = self.template.show(parameter);
-    },
+    mergeSortPage: function () {},
   };
 
   viewCommands[viewCommand]();
@@ -114,12 +128,28 @@ View.prototype.connectHandler = function (event, handler) {
       handler();
     });
   } else if (event === "shuffleNum") {
-    $on(self.$shuffleButton, "click", function () {});
+    $on(self.$shuffleButton, "click", function () {
+      handler();
+    });
   } else if (event === "resetList") {
     $on(self.$resetButton, "click", function () {
+      handler();
+    });
+  } else if (event === "setRandom") {
+    $on(self.$randomButton, "click", function () {
       handler();
     });
   }
 };
 
 View.prototype.getHeight = function (value) {};
+
+View.prototype.paintBar = function (number) {
+  const li = document.createElement("li");
+  li.classList.add("sort-element");
+  li.innerHTML = `
+				<div class="sort-bar" style="height: ${number * 15 + 20}px"></div>
+				<span class="sort-number">${number}</span>
+				`;
+  this.$sortContainer.appendChild(li);
+};
