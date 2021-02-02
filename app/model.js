@@ -1,14 +1,8 @@
 export default Model
-export {modleInstance}
+export {modelInstance}
 
-const modleInstance = new Model();
+const modelInstance = new Model();
 
-function Model(storage) {
+function Model() {
   this.storage = [];
 }
-
-Model.prototype.create = function (title, callback) {}
-
-Model.prototype.read = function (query, callback) {}
-
-Model.prototype.update = function (id, data, callback) {}

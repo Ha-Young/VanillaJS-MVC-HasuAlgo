@@ -6,7 +6,8 @@ const viewInstance = new View();
 function View () {
   this.$typed = document.querySelector(".typed");
   this.$contentContainer = document.querySelector(".contentContainer");
-  this.$child = document.createElement('child');
+  this.$bubbleSortButton = document.querySelector(".bubbleSortButton");
+  this.$errorMessage = document.querySelector(".errorMessage");
 }
 
 
