@@ -1,18 +1,177 @@
-html, body {
+@mainColor: #0a174e;
+@subColor: #f5d042;
+@subColor-white: #f5f6fa;
+@subColor-gray: #dcdde1;
+@import (inline) "./font.css";
+
+html,
+body {
   box-sizing: border-box;
+  background-color: @mainColor;
 }
 
-*, *:before, *:after {
+button {
+  border: none;
+  border-radius: none;
+  background-color: #fff;
+}
+
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
 .content {
   max-width: 500px;
-  margin: 100px auto;
+  margin: 0 auto;
   text-align: center;
 }
 
 img {
   width: 300px;
   height: 400px;
+}
+
+.main-title {
+  margin-top: 80px;
+  margin-bottom: 70px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 60px;
+  color: @subColor;
+}
+
+.input-space {
+  width: 50vw;
+  margin: 0 auto;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.select-box select {
+  color: @mainColor;
+  background-color: @subColor-white;
+  padding: 8px;
+  width: 200px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+}
+
+.input-form {
+  margin-top: 30px;
+}
+
+.input-form .input-box {
+  margin-right: 10px;
+  padding: 3px 20px;
+  height: 40px;
+  width: 300px;
+  border-radius: 20px;
+  border-style: none;
+}
+
+.input-form .insert-button {
+  width: 120px;
+  height: 38px;
+  margin-right: 10px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  background-color: @subColor;
+  cursor: pointer;
+}
+
+// sort-space
+.sort-space {
+  width: 70vw;
+  height: 55vh;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sort-buttons {
+  margin-top: 30px;
+  margin-left: 30px;
+  margin-right: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sort-options .option-button {
+  width: 120px;
+  height: 36px;
+  margin-right: 10px;
+  border-radius: 18px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: @subColor-gray;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.sort-options .random-button {
+  width: 160px;
+}
+
+.sort-operation .operation-button {
+  width: 120px;
+  height: 36px;
+  margin-left: 10px;
+  border-radius: 18px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: @subColor;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.sort-operation .reset-button {
+  color: @subColor;
+  background-color: @mainColor;
+  cursor: pointer;
+}
+
+.sort-list {
+  background-color: #fff;
+  height: 400px;
+  list-style: none;
+  padding: 0 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.sort-element {
+  text-align: center;
+}
+
+.sort-element .sort-bar {
+  margin-bottom: 10px;
+  // height: 90px;
+  width: 30px;
+  background-color: @subColor;
+}
+
+.sort-element .compare {
+  background-color: #e84118;
+}
+
+.sort-element .sort-number {
+  font-weight: 900;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
 }

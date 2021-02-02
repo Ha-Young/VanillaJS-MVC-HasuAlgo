@@ -1,16 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <title>바닐라코딩</title>
-</head>
-<body>
-  <div class="content">
-    <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
-  </div>
-  <script src="./app/index.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>바닐라코딩</title>
+  </head>
+  <body>
+    <header class="content">
+      <h1 class="main-title">SORTimate</h1>
+      <!-- <img src="./assets/images/chicken.jpg" />
+      <p>README.md를 읽어보고 과제를 시작하세요.</p> -->
+    </header>
+
+    <!-- input space -->
+    <section class="input-space">
+      <div class="select-box">
+        <select name="sortStyle" id="" class="sort-style">
+          <option value="bubble" selected="selected">Bubble Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="merge">Merge Sort</option>
+          <option value="quick">Quick Sort</option>
+        </select>
+      </div>
+      <form action="" class="input-form">
+        <input
+          type="text"
+          class="input-box"
+          placeholder="input number : 1 ~ 20"
+        />
+        <input type="submit" class="insert-button" value="INSERT" />
+      </form>
+    </section>
+
+    <!-- sort space -->
+    <section class="sort-space">
+      <section class="sort-buttons">
+        <div class="sort-options">
+          <button class="shuffle-button option-button">SHUFFLE</button>
+          <button class="random-button option-button">SET RANDOM</button>
+        </div>
+        <div class="sort-operation">
+          <button class="reset-button operation-button hide">RESET</button>
+          <button class="start-button operation-button">START</button>
+        </div>
+      </section>
+      <!-- <h2 class="alert-message"></h2> -->
+      <ul class="sort-list">
+        <!-- <li class="sort-element">
+          <div class="sort-bar" style="height: 200px"></div>
+          <span class="sort-number" ≈>5</span>
+        </li>
+        <li class="sort-element">
+          <div class="sort-bar" style="height: 160px"></div>
+          <span class="sort-number">4</span>
+        </li>
+        <li class="sort-element">
+          <div class="sort-bar" style="height: 80px"></div>
+          <span class="sort-number">2</span>
+        </li>
+        <li class="sort-element">
+          <div class="sort-bar" style="height: 40px"></div>
+          <span class="sort-number">1</span>
+        </li>
+        <li class="sort-element">
+          <div class="sort-bar" style="height: 120px"></div>
+          <span class="sort-number">3</span>
+        </li>
+        <li class="sort-element">
+          <div class="sort-bar" style="height: 280px"></div>
+          <span class="sort-number">7</span>
+        </li>
+        <li class="sort-element">
+          <div class="sort-bar" style="height: 240px"></div>
+          <span class="sort-number">6</span>
+        </li> -->
+      </ul>
+    </section>
+
+    <script src="./app/getDOM.js"></script>
+    <script src="./app/index.js"></script>
+    <script src="./app/test.js"></script>
+  </body>
 </html>
