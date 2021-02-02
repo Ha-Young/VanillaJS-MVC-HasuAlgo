@@ -10,9 +10,9 @@ export default class View {
 		this.$themeSwitch = qs('#theme-switch');
 		this.$sortKindsBtns = qs('.sort-kinds-btns');
 		this.$inputNumbers = qs('.input-numbers');
-		this.$startBtn = qs('.start-btn');
+		this.$setBtn = qs('.set-btn');
 		this.$vizCanvas = qs('#viz-canvas');
-
+		this.$sortBtn = qs('.sort-btn');
 	}
 
 	bindOnClickSortKindsBtns(handler) {
@@ -23,19 +23,25 @@ export default class View {
 					childNode.classList && childNode.classList.remove('selected');
 				}
 			}
-			
+
 			handler(target.dataset.btnName);
 		});
 	}
 
-	bindOnClickStartBtn(handler) {
-		$on(this.$startBtn, 'click', () => {
+	bindOnClickSetBtn(handler) {
+		$on(this.$setBtn, 'click', () => {
 			handler(this.$inputNumbers.value);
 		});
 	}
 
 	bindOnClickThemeSwitch(handler) {
 		$on(this.$themeSwitch, 'change', () => {
+			handler();
+		});
+	}
+
+	bindOnClickSortBtns(handler) {
+		$on(this.$sortBtn, 'click', () => {
 			handler();
 		});
 	}

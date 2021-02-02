@@ -8,7 +8,7 @@ export default class Model {
     console.log('Model Constructor!');
     this._sortList = [];
     this._sortMaxNum = -1;
-    this._currentSortKinds;
+    this._currentSortKinds = 'insertion';
     this._currentTheme = THEME.LIGHT_THEME;
   }
 
@@ -24,7 +24,7 @@ export default class Model {
 
     const parsedData = splittedData.map((char) => {
       const parsedInt = +char;
-      debugger;
+
       if (Number.isNaN(parsedInt)) {
         throw new Error("입력받은 숫자가 잘못되었습니다.");
       }
@@ -84,10 +84,10 @@ export default class Model {
    * @returns {SortItemList} sort list items
    *
    */
-  getSortItemList() {
-    let xPos = ITEM.FIRST_X_POS - (ITEM.DISTANCE_POS / 2) * (this.sortList.length - 1);
+  getSortItemList(sortList) {
+    let xPos = ITEM.FIRST_X_POS - (ITEM.DISTANCE_POS / 2) * (sortList.length - 1);
 
-    const sortItemList = this.sortList.map((value) => {
+    const sortItemList = sortList.map((value) => {
       const sortItem = this.createSortItem(value, xPos);
       xPos += ITEM.DISTANCE_POS;
       return sortItem;
