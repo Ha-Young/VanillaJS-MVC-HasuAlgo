@@ -1,76 +1,89 @@
-(function (window) {
-  'use strict';
+import Model from "./model";
+import View from "./view";
 
-  /**
-	 * Takes a model and view and acts as the controller between them
-	 *
-	 * @constructor
-	 * @param {object} model The model instance
-	 * @param {object} view The view instance
-	 */
-	function Controller(model, view) {
-		var self = this;
-		self.model = model;
-		self.view = view;
+const $inputNumbers = document.querySelector('.inputNumbers');
+const $form = document.querySelector('form');
 
-		self.view.bind('inputNumbers', function (title) {
-			self.addList(title);
-		});
-  }
+const controller = new Controller();
 
-  Controller.prototype.addList = function (currentState) {
-
-  }
-
-
-	// Export to window
-	window.app = window.app || {};
-	window.app.Controller = Controller;
-})(window);
-
-const state = {};
-const content = document.querySelector(".content");
+$form.addEventListener('submit', controller.submitHandler);
 
 function Controller() {
-  this.getState = function (data) {
-    state['bubble'] = data;
+  const model = new Model();
+  const view = new View();
 
-    return this.sortStart(state['bubble']);
-  }
+  this.submitHandler = function (event) {
+    try {
+      event.preventDefault();
 
-  this.updateState = function (data) {
-    return data;
-  }
+      const inputList = model.makeNumber($inputNumbers.value);
+      const sortType = $form.querySelector('select').value;
 
-  this.sortStart = function () {
-    after1second();
-
-    this.bubble(state['bubble']);
-  }
-
-  this.bubble = async function (numList) {
-    let isSwitched = false;
-
-    for (let i = 1; i < numList.length; i++) {
-      if (numList[i - 1] > numList[i]) {
-        isSwitched = true;
-        [numList[i - 1], numList[i]] = [numList[i], numList[i - 1]];
-
-        // index.js로 내보내기
-        this.updateState
-        await after1second();
-      }
+      $inputNumbers.value = '';
+      // model.checkValidation(inputList);
+      model.saveModel(sortType, inputList); // save
+      view.render(inputList); // view
+      selectSorting(sortType, inputList); //sort start
+    } catch(err) {
+      console.log(err.message);
     }
+  }
 
-    if (isSwitched) {
-      isSwitched = false;
-      this.bubble(numList);
+  this.sort = function () {
+
+    async function bubble() {
+      console.log('times');
+      const $list = view.getCurrentDom();
+      let isSwitched = false;
       await after1second();
+
+      for (let i = 1; i < $list.length; i++) {
+        if ($list[i - 1].textContent > $list[i].textContent) {
+          debugger;
+          isSwitched = true;
+          // view.changePosition($list[i - 1], $list[i]);
+          view.changeDom($list[i - 1], $list[i]);
+
+          await after1second();
+        }
+      }
+      return isSwitched;
     }
 
-    newTemplate(numList);
-    await after1second();
+    return bubble().then(result => {
+      if (result) {
+        return this.sort();
+      }
+      return result;
+    });
+
   }
+
+  // this.bubble = async function () {
+  //   console.log('times')
+  //   const $list = view.getCurrentDom();
+  //   let isSwitched = false;
+  //   await after1second();
+
+  //   for (let i = 1; i < $list.length; i++) {
+  //     if ($list[i - 1].textContent > $list[i].textContent) {
+  //       isSwitched = true;
+  //       // view.changePosition($list[i - 1], $list[i]);
+  //       view.changeDom($list[i - 1], $list[i]);
+
+  //       await after1second();
+  //     }
+  //   }
+
+  //   return isSwitched;
+  // }
+}
+
+async function selectSorting (type) {
+  if (type === 'bubble') {
+    controller.sort();
+  }
+  await after1second();
 }
 
 function after1second() {
@@ -81,5 +94,4 @@ function after1second() {
 
 
 
-const controller = new Controller();
 export default controller;

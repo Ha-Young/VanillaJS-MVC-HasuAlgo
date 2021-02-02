@@ -1,61 +1,54 @@
-(function (window) {
-  'use strict';
+function View() {
 
-  function View(template) {
-		this.template = template;
+  this.makeTemplate = function (list) {
+    const $section = document.createElement('section');
 
-		this.ENTER_KEY = 13;
-    this.ESCAPE_KEY = 27;
+    list.forEach(elem => {
+      const div = document.createElement('div');
+      div.textContent = elem;
+      div.classList.add('sortItems');
+      $section.appendChild(div);
+    });
 
-    this.$content = document.querySelector(".content h3");
-    this.$inputNumber = document.querySelector(".inputNumber");
+    return $section;
   }
 
-  View.prototype.bind = function (event, handler) {
-		var self = this;
-		if (event === 'newTodo') {
-			$on(self.$newTodo, 'change', function () {
-				handler(self.$newTodo.value);
-			});
+  this.render = function(list) {
+    const $resultView = document.querySelector('.resultView');
 
-		}
-	};
-
-  // Export to window
-	window.app = window.app || {};
-	window.app.View = View;
-})(window);
-
-const result = document.querySelector(".content h3");
-const content = document.querySelector(".content");
-
-
-function View(template) {
-  this.template = template;
-  this.render = function(data) {
-    content.innerHTML = `<div class="content">
-    <input type="text" name="numbers" class="inputNumbers">
-    <input type="button" value="send" class="button">
-    ​<h3>${data}</h3>
-    <h1>Visualize Sorting Algorithms</h1>
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
-    </div>`;
+    const $section = this.makeTemplate(list);
+    $resultView.appendChild($section);
   }
 
-  return this;
+  this.getCurrentDom = function() {
+    const $items = document.querySelectorAll('.sortItems');
+    return Array.prototype.slice.call($items);
+  }
+
+  this.changePosition = function (big, small) {
+    // debugger;
+    // big.style.transform = 'translateX(70px)';
+    // small.style.transform = 'translateX(-70px)';
+  }
+
+  this.changeDom = function (big, small) {
+    console.log(big.textContent, small.textContent);
+    const $section = document.querySelector('section');
+
+    $section.insertBefore(small, big);
+    // 5,4,3,2,1
+    // 4,3,2,1,5
+    // 3,2,1,4,5
+    // 2,1,3,4,5
+    // 1,2,3,4,5
+  }
 }
 
-function Template(data) {
-  this.defaultTemplate
-  =	`<div class="content">
-  <input type="text" name="numbers" class="inputNumbers">
-  <input type="button" value="send" class="button">
-  ​<h3>${data}</h3>
-  <h1>Visualize Sorting Algorithms</h1>
-  <p>README.md를 읽어보고 과제를 시작하세요.</p>
-  </div>`;
-}
+// function after1second() {
+//   return new Promise(resolve => {
+//     setTimeout(() => resolve(), 1000);
+//   });
+// }
 
 
-const view = new View();
-export default view;
+export default View;

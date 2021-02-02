@@ -1,4 +1,9 @@
+@itemWidth: 70px;
+@itemHeight: 70px;
+
 html, body {
+  width: 100vw;
+  height: 100vh;
   box-sizing: border-box;
 }
 
@@ -7,12 +12,49 @@ html, body {
 }
 
 .content {
-  max-width: 500px;
-  margin: 100px auto;
+  width: 100%;
+  // height: 90%;
+  padding: 3vw;
   text-align: center;
 }
 
 img {
   width: 300px;
   height: 400px;
+}
+
+.resultView {
+  width: 100%;
+  height: 60vh;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5vh auto;
+}
+
+.sortItems {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: @itemWidth;
+  height: @itemHeight;
+  border: gray solid 0.6vw;
+  border-radius: 50%;
+  padding: 5px;
+  margin: auto 2vw;
+
+  transition: all 2s;
+}
+
+.moveToRight {
+  transform: translateX(@itemWidth);
+}
+
+.moveToLeft {
+  transform: translateX(@itemWidth);
 }
