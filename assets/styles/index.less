@@ -14,6 +14,20 @@ html, body {
   display: none;
 }
 
+.btn {
+  padding: 0.3rem;
+  background-color: #FDE563;
+  border-color: #FFD701;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  transition: background-color 0.5s;
+  cursor: pointer;
+}
+.btn:hover, .btn:focus {
+  background-color: #FFD701;
+}
+
 h1 {
   font-size: 3rem;
   color: #ffffff;
@@ -65,24 +79,17 @@ h1 {
   color: #ff7d7d;
 }
 
-.input-data button {
+.input-data .input-button {
   width: 70px;
-  padding: 0.3rem;
-  background-color: #FDE563;
-  border: transparent;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  transition: background-color 0.5s;
-  cursor: pointer;
-}
-.input-data button:hover {
-  background-color: #FFD701;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .graph-area {
   width: 100%; height: auto;
   min-height: 400px;
   margin: 2rem 0 0 0;
+  position: relative;
   border: 1px solid #f1f0f0;
   border-radius: 5px;
 }
@@ -96,12 +103,14 @@ h1 {
 
 .graph-list li {
   width: 30px; height: 300px;
-  margin: 0 3px;
+  margin-left: 3px;
+  margin-right: 3px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   text-align: center;
   background-color: #DDDBF1;
+  transition: 0.5s all;
 }
 .graph-list li.selected {
   background-color: #598BFF;
@@ -109,7 +118,15 @@ h1 {
 .graph-list li.confirmed {
   background-color: #FFD701;
 }
+.graph-list li.stopped {
+  background-color: #FF7272;
+}
 .graph-list li span {
   margin: 0 0 0.05rem 0;
   font-size: 0.8rem;
+}
+
+.graph-area .sort-start-button {
+  position: absolute;
+  left: 1rem; bottom: 1rem;
 }
