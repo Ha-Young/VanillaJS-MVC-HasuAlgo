@@ -15,6 +15,7 @@ Controller.prototype.getData = function () {
     event.preventDefault();
 
     this.model.setData(input.value);
+
     this.model.handleSort(dropList.value, (result) => {
         this.view.showResult(result);
     });

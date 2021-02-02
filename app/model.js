@@ -15,10 +15,12 @@ Model.prototype.bubbleSort = function (storage, callback) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
       }
 
+      const currentStorage = JSON.parse(JSON.stringify(storage));
+
       (function (data, x, y) {
-        console.log(x * data.length + y);
-        setTimeout(callback(data), (x * data.length + y) * 1000);
-      })(storage, i, j);
+        let time = x * data.length + y;
+        setTimeout(function () {callback(data)}, time * 1000);
+      })(currentStorage, i + 1, j + 1);
 
     }
   }
