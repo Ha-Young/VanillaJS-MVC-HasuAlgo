@@ -6,7 +6,7 @@ export const swap = (arr, left, right) => {
 
 // 파일 이름 바꾸기
 
-export async function delay(seconds) {
+export function delay(seconds) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
@@ -14,22 +14,26 @@ export async function delay(seconds) {
   });
 }
 
-export function swapNode(left, right) { // promise 넣어주기
-  const field  = document.querySelector('.content');
+export async function swapNode(left, right) { //visualize.. sortutil에서 분리..
   const nodeGroup = document.querySelectorAll('.content-field-node-parent');
   const leftNode = nodeGroup[left];
   const rightNode = nodeGroup[right];
 
-  const style1 = window.getComputedStyle(leftNode);
-  const style2 = window.getComputedStyle(rightNode);
+  leftNode.classList.add('transition-effect');
+  rightNode.classList.add('transition-effect');
 
-  const transform1 = style1.getPropertyValue('transform');
-  const transform2 = style2.getPropertyValue('transform');
+  leftNode.style.transform = `translateX(${50 * (right - left)}px)`;
+  rightNode.style.transform = `translateX(-${50 * (right - left)}px)`;
 
-  leftNode.style.transform = transform2;
-  rightNode.style.transform = transform1;
+  await delay(400); // magic number
 
-  await delay(1000);
+  leftNode.classList.remove('transition-effect');
+  rightNode.classList.remove('transition-effect');
 
-  field.insertBefore(rightNode, leftNode);
+  leftNode.style.transform = 'none';
+  rightNode.style.transform = 'none';
+
+  nodeGroup[right].after(nodeGroup[left]);
+
+  await delay(400);
 }

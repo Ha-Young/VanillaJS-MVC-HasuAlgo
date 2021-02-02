@@ -1,4 +1,4 @@
-import { swapNode } from './utils/sortUtils';
+import { swapNode, delay } from './utils/sortUtils';
 
 export class View {
   constructor() {
@@ -34,10 +34,9 @@ export class View {
       const nodeChild = document.createElement('div');
 
       nodeParent.classList.add('content-field-node-parent');
+      nodeParent.classList.add(`${i}`);
       nodeChild.classList.add('content-field-node');
       nodeChild.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
-      nodeParent.style.transform = `translateX(${i * 10}px)`; // magic number 수정
-      console.log(nodeParent.style.transform);
 
       this.table.appendChild(nodeParent);
       nodeParent.appendChild(nodeChild);
@@ -66,17 +65,20 @@ export class View {
     const state = args.shift();
 
     const viewCommands = {
-      startSorting: function() {
+      startSorting: async function() {
+        await delay(250);
       },
-      checkNodes: function(args) {
+      checkNodes: async function(args) {
+        await delay(250);
       },
-      swapNodes: async function(args) {
-        await swapNode(args[0], args[1]);
+      swapNodes: function(args) {
+        swapNode(args[0], args[1]);
       },
-      finishSorting: function() {
+      finishSorting: async function() {
+        await delay(500);
       },
     };
-    
+
     viewCommands[state](args);
   }
 }
