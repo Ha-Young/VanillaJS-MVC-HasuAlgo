@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>DOM Study</title>
+</head>
+<body>
+    <h1>DOM Study</h1>
+        <div class="class1"><p>paragraph#1</p></div>
+        <div class="class2"><p>paragraph#2</p></div>
+        <div class="class3"><p>paragraph#3</p></div>
+        <div class="class4" style="background:red"><p>paragraph#4</p></div>
+        <div class="class5"><p>paragraph#5</p></div>
+        <div class="class6"><p>paragraph#6</p></div>
+</body>
+<script>
+const a = document.querySelector('.class1');
+console.log(document.querySelector('.class1').children[0]);
+
+console.log(document.querySelector('.class2'));
+console.log(document.querySelector('.class2').classList[0]);
+
+console.log(document.querySelector('.class3'));
+console.log(document.querySelector('.class3').innerHTML);
+
+console.log(document.querySelector('.class4'));
+console.log(document.querySelector('.class4').style);
+
+console.log(document.querySelector('.class5'));
+console.log(document.querySelector('.class5').remove());
+
+const p = document.createElement('p');
+p.innerText = 'abc';
+p.style.backgroundColor = 'blue';
+
+console.log(document.querySelector('.class6'));
+console.log(document.querySelector('.class6').appendChild(p));
+</script>
+</html>

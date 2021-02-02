@@ -32,24 +32,38 @@ View.prototype.sendDataToController = function (target, property) {
   return document.querySelector(target)[property];
 }
 
-View.prototype.render = function (data) {
-  let isInitialized = false;
-  if (!isInitialized) {
-    isInitialized = true;
-    const $animationBox = document.querySelector('.animation-box');
-    const maxData = Math.max(...data);
-    const animationBoxHeight = $animationBox.style.height;
-  
-    for (let i = 0; i < data.length; i++) {
-      $animationBox.appendChild(document.createElement('div'));
-      $animationBox.children[i].textContent = data[i];
-      $animationBox.children[i].style.height = `${200 * data[i] / maxData}px`;
-    }
+View.prototype.initialRender = function (data) {
+  const $animationBox = document.querySelector('.animation-box');
+  const maxData = Math.max(...data);
+  const animationBoxHeight = $animationBox.style.height;
+  const oldNodeNumbers = $animationBox.children.length;
 
-    $animationBox.classList.add('run');
+  for (let i = 0; i < oldNodeNumbers; i++) {
+    $animationBox.children[0].remove();
+  }
+
+  for (let i = 0; i < data.length; i++) {
+    $animationBox.appendChild(document.createElement('div'));
+    $animationBox.children[i].textContent = data[i];
+    $animationBox.children[i].style.height = `${200 * data[i] / maxData}px`;
+  }
+
+  $animationBox.classList.add('run');
+}
+
+View.prototype.render = function (data) {
+  const $animationBox = document.querySelector('.animation-box');
+  const maxData = Math.max(...data);
+  const animationBoxHeight = $animationBox.style.height;
+  for (let i = 0; i < data.length; i++) {
+    $animationBox.children[i].textContent = data[i];
+    $animationBox.children[i].style.height = `${200 * data[i] / maxData}px`;
   }
   
+  //$animationBox.insertBefore($animationBox.children[1], $animationBox.children[0])
 
+  $animationBox.classList.add('run');
 
+  //insertBefore
   return;
 }

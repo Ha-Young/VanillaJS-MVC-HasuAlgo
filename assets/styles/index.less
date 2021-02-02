@@ -6,13 +6,119 @@ html, body {
   box-sizing: inherit;
 }
 
-.content {
-  max-width: 500px;
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 900px;
+  height: 600px;
   margin: 100px auto;
+  background-color: gray;
   text-align: center;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 800px;
+  height: 500px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: tomato;
+}
+
+@box-width: 90%;
+.title-box {
+  width: @box-width;
+  height: 60px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: blue;
+}
+
+.control-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: @box-width;
+  height: 60px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: yellow;
+}
+
+.control-box div {
+  display: flex;
+  width: 200px;
+  height: 80%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: red;
+}
+
+.control-box label input {
+  width: 30px;
+  height: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: red;
+}
+
+.input-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: @box-width;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: red;
+}
+
+.input-box input {
+  width: 80%;
+  height: 80%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: white;
+}
+
+.animation-box {
+  width: @box-width;
+  height: 250px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: skyblue;
+}
+
+.animation-box.run {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  width: @box-width;
+  height: 250px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: skyblue;
+}
+
+.animation-box.run div {
+  width: 50px;
+  height: 100px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: gray;
+  transition: 1s;
 }
