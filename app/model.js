@@ -1,31 +1,35 @@
 // Load application styles
 import '../assets/styles/index.less';
-import { createBlock, swapElement } from './view.js';
-import { checkValue, bubbleSort } from './controller.js';
+import View from './view.js';
+import Controller from './controller.js';
 
 // ================================
 // START YOUR APP HERE
 // ================================
-const inputBox = document.getElementById('inputBox');
+
+const view = new View();
+const controller = new Controller();
+
+const $inputBox = document.getElementById('inputBox');
 let sortingList;
 
-inputBox.addEventListener('keydown', function(event) {
+$inputBox.addEventListener('keydown', function(event) {
   if (event.keyCode === 13) {
-    const inputValue = inputBox.value;
+    const inputValue = $inputBox.value;
 
-    sortingList = checkValue(inputValue);
-    createBlock(sortingList);
+    sortingList = controller._checkValue(inputValue);
+    view._createBlock(sortingList);
   }
 });
 
 function swap(smallValue, largeValue) {
-  swapElement(smallValue, largeValue);
+  view._swapElement(smallValue, largeValue);
 }
 
-const sortBox = document.getElementById('sortBox');
+const $submitButton = document.getElementById('submitButton');
 
-sortBox.addEventListener('click', function(event) {
-  bubbleSort(sortingList);
+$submitButton.addEventListener('click', function(event) {
+  controller._bubbleSort(sortingList);
 });
 
 export { swap };

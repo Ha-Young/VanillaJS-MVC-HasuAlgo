@@ -23,31 +23,53 @@ header {
 }
 
 .input-box {
-  background: none;
   display: inline-box;
-  margin: 20px auto;
-  text-align: center;
-  border: 2px solid #fff;
-  padding: 14px 10px;
   width: 300px;
-  outline: none;
+  background: none;
+  margin: 20px auto;
+  padding: 14px 10px;
+  text-align: center;
   color: white;
+  border: 2px solid #fff;
+  outline: none;
   border-radius: 24px;
 }
 
+.submit-button {
+  display: inline-box;
+  width: 70px;
+  background: none;
+  margin: 20px auto;
+  padding: 14px 10px;
+  text-align: center;
+  color: white;
+  border: 2px solid #fff;
+  border-radius: 24px;
+  outline: none;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background: cornflowerblue;
+  border: none;
+  box-shadow: 3px 3px 3px rgba(100, 150, 250, 0.4);
+}
+
 .sort-box {
-  background-color: #fff;
-  width: 50%;
-  height: 600px;
-  margin: 30px auto;
   display: flex;
   align-items: flex-end;
+  justify-content: center;
+  background-color: #fff;
+  max-width: 50%;
+  height: 600px;
+  margin: 30px auto;
 }
 
 .block {
-  width: 30px;
+  width: 35px;
   background-color: #e67e22;
-  margin: 5px;
+  margin: 15px;
+  margin-bottom: 0;
 }
 
 .label {
@@ -55,4 +77,14 @@ header {
   width: 30px;
   bottom: 0;
   margin: 5px;
+}
+
+.selected {
+  transition: 0.5s;
+  background-color: #2ecc71;
+}
+
+.finish {
+  transition: 1s;
+  background-color: #9b59b6;
 }

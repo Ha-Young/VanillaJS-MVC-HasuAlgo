@@ -1,16 +1,19 @@
 import { swap } from './model.js';
 
-async function bubbleSort(array) {
-  const sortBox = document.getElementById('sortBox');
-  let sortChildren = sortBox.children;
-  let sortElements = document.querySelectorAll('.block');
-  let sortingList = array;
-  let swapValue;
+export default function Controller() {
+  this.sortBox = document.getElementById('sortBox');
+  this.sortChildren = this.sortBox.children;
+  this.sortingList = [];
+}
 
-  for (let i = 0; i < sortingList.length - 1; i++) {
+Controller.prototype._bubbleSort = async function (array) {
+  let swapValue;
+  const sortingList = array;
+
+  for (let i = 0; i < sortingList.length; i++) {
     for (let j = 0; j < sortingList.length - 1 - i; j++) {
-      sortChildren[j].style.backgroudColor = '#2ecc71';
-      sortChildren[j + 1].style.backgroudColor = '#2ecc71';
+      this.sortChildren[j].classList.toggle('selected');
+      this.sortChildren[j + 1].classList.toggle('selected');
 
       await new Promise(resolve => {
         setTimeout(() => {
@@ -19,31 +22,29 @@ async function bubbleSort(array) {
       });
 
       if (sortingList[j] > sortingList[j + 1]) {
-        swap(sortChildren[j + 1], sortChildren[j]);
+        swap(this.sortChildren[j + 1], this.sortChildren[j]);
 
         swapValue = sortingList[j];
         sortingList[j] = sortingList[j + 1];
-        sortingList[j + 1] = swapValue;
+        this.sortingList[j + 1] = swapValue;
 
-        sortBox.insertBefore(sortChildren[j + 1], sortChildren[j]);
+        this.sortBox.insertBefore(this.sortChildren[j + 1], this.sortChildren[j]);
       }
 
-      sortChildren[j].style.backgroudColor = '#e67e22';
-      sortChildren[j + 1].style.backgroudColor = '#e67e22';
-
+      this.sortChildren[j].classList.toggle('selected');
+      this.sortChildren[j + 1].classList.toggle('selected');
     }
+
     if (!swapValue) {
       break;
     }
 
-
-    sortElements[sortingList.length - i - 1].style.backgroudColor = '#9b59b6';
+    this.sortChildren[this.sortChildren.length - i - 1].classList.add('finish');
   }
 }
 
-function checkValue(string) {
+Controller.prototype._checkValue = function (string) {
   const stringList = string.split(',');
-  const sortingList = [];
 
   if (!string.length) {
     alert('value를 넣어주세요');
@@ -56,10 +57,9 @@ function checkValue(string) {
       return;
     }
 
-    sortingList.push(Number(stringList[i]));
+    this.sortingList.push(Number(stringList[i]));
   }
 
-  return sortingList;
-}
+  return this.sortingList;
 
-export { checkValue, bubbleSort };
+}

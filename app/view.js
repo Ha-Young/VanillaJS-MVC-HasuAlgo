@@ -1,25 +1,23 @@
-function createBlock(sortList) {
-  const sortBox = document.getElementById('sortBox');
-  let LOCATION_X = -50;
+export default function View() {
+  this.$sortBox = document.getElementById('sortBox');
+}
 
+View.prototype._createBlock = function (sortList) {
   for (let i = 0; i < sortList.length; i++) {
-    const block = document.createElement('div');
-    const label = document.createElement('b');
+    const $block = document.createElement('div');
+    const $label = document.createElement('b');
 
-    LOCATION_X += 50;
-    block.classList.add('block');
-    block.style.height = `${sortList[i] * 5 + 10}px`;
-    block.style.transform = `translateX(${LOCATION_X}px)`;
-
-    label.textContent = `${sortList[i]}`;
-    label.style.height = `${sortList[i] * 5 + 10}px`
+    $block.classList.add('block');
+    $block.style.height = `${sortList[i] * 5 + 10}px`;
+    $label.textContent = `${sortList[i]}`;
+    $label.style.height = `${sortList[i] * 5 + 10}px`
     
-    block.appendChild(label);
-    sortBox.appendChild(block);
+    $block.appendChild($label);
+    this.$sortBox.appendChild($block);
   }
 }
 
-function swapElement(smallValue, largeValue) {
+View.prototype._swapElement = function (smallValue, largeValue) {
   const smallValueStyle = window.getComputedStyle(smallValue);
   const largeValueStyle = window.getComputedStyle(largeValue);
   
@@ -29,5 +27,3 @@ function swapElement(smallValue, largeValue) {
   smallValue.style.transform = largeValueLocation;
   largeValue.style.transform = smallValueLocation;
 }
-
-export { createBlock, swapElement };
