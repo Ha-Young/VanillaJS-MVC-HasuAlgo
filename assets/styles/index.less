@@ -18,14 +18,25 @@ img {
 }
 
 .visualization {
-  width: 700px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 600px;
   height: 300px;
   border: 1px solid gray;
 }
 
+.container {
+  position: absolute;
+  left: 50%;
+  margin-left: -300px;
+}
+
 .divBar {
-  width: 50px;
-  background-color: cornflowerblue;
-  margin: 20px;
-  float: left;
+  width: 30px;
+  margin: 10px;
+  padding: 5px;
+  display: inline-block;
+  background-color: #FCF6F5;
+  vertical-align: bottom;
 }

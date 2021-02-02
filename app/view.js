@@ -9,26 +9,25 @@ View.prototype.render = function () {
 }
 
 View.prototype.showResult = function (result, index) {
-  const container = document.querySelector(".visualization");
-  const frame = document.createElement("div");
-
-  container.innerHTML = " ";
+  const frame = document.querySelector(".visualization");
+  const container = document.createElement("div");
+  container.classList.add("container");
+  frame.innerHTML = " ";
 
   for (let i = 0; i < result.length; i++) {
-      const bar = document.createElement("div");
+    const bar = document.createElement("div");
 
-      bar.classList.add("divBar");
-      bar.style.height = ((result[i] * 10) + "px");
-      bar.innerText = result[i];
+    bar.classList.add("divBar");
+    bar.style.height = ((result[i] * 20) + "px");
+    bar.innerText = result[i];
 
-      if (i === index || i === index + 1) {
-        bar.style.backgroundColor = "#ffcc5c";
-      }
-
-    frame.appendChild(bar);   
+    if (i === index || i === index + 1) {
+      bar.style.backgroundColor = "#2BAE66";
+    }
+    container.appendChild(bar);   
   }  
 
-  container.appendChild(frame);
+  frame.appendChild(container);
 }
 
 export {View};
