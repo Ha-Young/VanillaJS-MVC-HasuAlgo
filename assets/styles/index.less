@@ -22,9 +22,9 @@ header {
   text-align: center;
 }
 
-.sorting-box {
+.input-box {
   background: none;
-  display: block;
+  display: inline-box;
   margin: 20px auto;
   text-align: center;
   border: 2px solid #fff;
@@ -33,10 +33,26 @@ header {
   outline: none;
   color: white;
   border-radius: 24px;
-}  
+}
 
 .sort-box {
-  background: #fff;
-  display: block;
+  background-color: #fff;
+  width: 50%;
   height: 600px;
+  margin: 30px auto;
+  display: flex;
+  align-items: flex-end;
+}
+
+.block {
+  width: 30px;
+  background-color: #e67e22;
+  margin: 5px;
+}
+
+.label {
+  position: absolute;
+  width: 30px;
+  bottom: 0;
+  margin: 5px;
 }
