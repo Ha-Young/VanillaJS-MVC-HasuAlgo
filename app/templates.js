@@ -1,6 +1,6 @@
 import { SortItemList } from './typeDef';
 
-export const Templates = {
+export default class Templates {
 
   /**
 	 * Format the contents of a sort list.
@@ -18,6 +18,6 @@ export const Templates = {
       ></rect>
       <text dy="${item.text.size}" x="${item.text.x}" y="${item.text.y}">${item.value}</text>
     </g>
-    `)
+    `, '');
   }
 }

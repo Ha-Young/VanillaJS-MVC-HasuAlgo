@@ -1,7 +1,6 @@
 import Model from './model';
 import View from './view';
 
-const RECT_HEIGHT_RATIO = 4.6;
 
 export default class Controller {
 	/**
@@ -19,7 +18,15 @@ export default class Controller {
 	}
 
 	startView(inputData) {
-		this.model.initDatas(inputData);
+		try {
+			this.model.initDatas(inputData);
+			const sortItemList = this.model.getSortItemList();
+
+			this.view.showSortItems(sortItemList);
+		} catch(error) {
+			window.alert(error);
+		}
+
 	}
 
 	setSortKinds(sortKinds) {
