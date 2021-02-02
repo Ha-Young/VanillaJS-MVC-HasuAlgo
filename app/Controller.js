@@ -10,52 +10,76 @@ function handleSubmit(event) {
 function handlePrintNumbers(event) {
   event.preventDefault();
 
-  View.printNumbers(Model.giveSortList());
+  View.printNumbers(Model.sortList);
 }
 
 function handlePrintDisplay() {
-  const sortList = Model.giveSortList();
-
-  if (sortList.length < 5) {
+  if (Model.sortList.length < 5) {
     throw new Error("min 5 number!!");
   }
 
-  View.printDisplay(Model.giveSortList());
+  View.printDisplay(Model.sortList);
   View.$sortForm.removeEventListener("submit", handleSubmit);
   View.$sortButton.removeEventListener("click", handlePrintDisplay);
   //sorting이 끝난 후 다시 addEvent해준다.
 }
 
 function handleStartSort() {
+  if (Model.sortList.length < 5) {
+    throw new Error("min 5 number!!");
+  }
+
   View.$sortButton.removeEventListener("click", handleStartSort);
 
   bubbleSort();
 }
 
-function bubbleSort(i = 0) {
+function compareTwoItem(i = 0) {
   const all = View.$sortLists.childNodes;
 
-  return new Promise(function (resolve, reject) {
+  return new Promise(function (resolve) {
     if (Number(all[i].textContent) > Number(all[i + 1].textContent)) {
       resolve(i);
     } else {
-      reject();
+      if (i === all.length - 2) {
+        return;
+      }
+
+      compareTwoItem(i + 1);
     }
-  }).then(function (i) {
+  })
+  .then(function (i) {
     return new Promise(function (resolve) {
       setTimeout(function () {
         View.chageDisplayPosition(all[i], all[i + 1]);
+
         resolve(i);
       }, 1000);
     });
-  }).then(function (i) {
-    setTimeout(function () {
-      View.removeMovingClass(all[i], all[i + 1]);
-      View.resetTranslate(all[i], all[i + 1]);
-      Model.changeListOrder(i, i + 1);
-      View.changeDomPosition(all[i], all[i + 1]);
-    }, 1000);
+  })
+  .then(function (i) {
+    return new Promise(function (resolve) {
+      setTimeout(function () {
+        Model.changeListOrder(i, i + 1);
+        View.removeMovingClass(all[i], all[i + 1]);
+        View.resetTranslate(all[i], all[i + 1]);
+        View.changeDomPosition(all[i], all[i + 1]);
+
+        resolve(i);
+      }, 1000);
+    });
+  })
+  .then(function (i) {
+    if (i === all.length - 2) {
+      return;
+    }
+
+    compareTwoItem(i + 1);
   });
+}
+
+function bubbleSort() {
+  compareTwoItem();
 }
 
 function Controller() {
