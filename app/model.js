@@ -1,17 +1,14 @@
 
 function Model() {
-    this._storage = [];
+  this._storage = [];
 }
 
 Model.prototype.setData = function (string) {
-  
-
-
   this._storage = string.split(",");
 }
 
 Model.prototype.bubbleSort = function (storage, callback) {
-  let time = 0;
+  let time = 1;
 
   callback(storage);
 
@@ -20,6 +17,7 @@ Model.prototype.bubbleSort = function (storage, callback) {
 
       if (parseInt(storage[j]) > parseInt(storage[j + 1])) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
+        //pass index
       }
     
       const currentStorage = JSON.parse(JSON.stringify(storage));
