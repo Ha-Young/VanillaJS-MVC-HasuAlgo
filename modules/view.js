@@ -21,6 +21,7 @@ export default class View {
     const $blockLabel = document.createElement("label");
     $blockLabel.classList.add("block-label");
     $blockLabel.innerText = number;
+    $block.appendChild($blockLabel);
     this.$parent.appendChild($block);
   }
 
@@ -41,16 +42,19 @@ export default class View {
     });
   }
 
-  changeColor(i) {
-    const $block = document.querySelectorAll(".number-block")[i];
-    ($block.classList.contains("picked")) ? $block.classList.remove("picked") : $block.classList.add("picked");
+  changeColor(i, n, blockState = "picked") {
+    const $block = document.querySelector(`#block${n}`);
+    $block.classList.add(blockState);
   }
 
-  cleanBlocks() {
-    for (const $block of this.$blocks) {
-      if ($block.classList.contains("picked")) {
-        $block.classList.remove("picked");
-      }
+  removeColor(i, n) {
+    const $block = document.querySelector(`#block${n}`);
+    $block.classList.remove("picked");
+  }
+
+  clearContent() {
+    while (this.$parent.lastElementChild) {
+      this.$parent.removeChild(this.$parent.lastElementChild);
     }
   }
 }

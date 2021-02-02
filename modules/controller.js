@@ -10,40 +10,15 @@ export default class Controller {
     this.view = View;
   }
 
-  // bubbleSort() {
-  //   const model = this.model;
-  //   this.view.render();
-
-  //   if (model.sortType === "Bubble Sort") {
-  //     for (let c = 0; c < model.numberArray.length; c++) {
-  //       for (let i = 0; i < model.numberArray.length - 1; i++) {
-  //         if (model.numberArray[i] > model.numberArray[i + 1]) {
-  //           const oldArray = [...model.numberArray];
-  //           const swapped = model.swap(i, i + 1);
-  //           console.log(swapped);
-
-  //           ((swapped,i,j) => {
-  //             setTimeout(this.view.update.bind(this.view, swapped[i], swapped[j]), c*1000);
-  //           })(swapped, i, i+1);
-
-  //         }
-  //         //return;
-  //       }
-  //     }
-
-  //     this.view.cleanBlocks();
-  //   }
-  // }
-
   initialize(sortType, maxHeight) {
+    this.view.clearContent();
+
     if (sortType === "Merge Sort") {
       return;
     }
 
     const model = this.model;
     const maxInData = model.findMaxNum();
-    // const $numberBlock = document.createElement("div");
-    // $numberBlock.classList.add("number-block");
     let standard = 1;
 
     if (maxInData > maxHeight) {
@@ -58,13 +33,11 @@ export default class Controller {
   }
 
   async bubbleSort() {
-    //debugger;
-    //const $numberBlocks = document.querySelectorAll(".number-block");
     const numberArray = this.model.numberArray;
     for (let i = 0; i < numberArray.length; i++) {
       for (let j = 0; j < numberArray.length - i - 1; j++) {
-        this.view.changeColor(j);
-        this.view.changeColor(j + 1);
+        this.view.changeColor(j, numberArray[j]);
+        this.view.changeColor(j + 1, numberArray[j + 1]);
 
         await new Promise((resolve, reject) => {
           setTimeout(() => {
@@ -72,18 +45,21 @@ export default class Controller {
           }, 1000);
         })
 
+        // console.log(numberArray);
+        // console.log(numberArray[j]);
+        // console.log(numberArray[j + 1]);
         if (numberArray[j] > numberArray[j + 1]) {
           this.model.swap(j, j + 1);
           await this.view.swapBlocks(numberArray[j], numberArray[j + 1]);
         }
 
-        this.view.changeColor(j);
-        this.view.changeColor(j + 1);
+        this.view.removeColor(j, numberArray[j]);
+        this.view.removeColor(j + 1, numberArray[j + 1]);
 
-        debugger;
+        //debugger;
       }
 
-      this.view.changeColor(numberArray.length - i - 1, "sorted");
+      this.view.changeColor(numberArray.length - i - 1, numberArray[numberArray.length - i - 1], "sorted");
     }
   }
 }
