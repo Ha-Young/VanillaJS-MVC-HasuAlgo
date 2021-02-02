@@ -68,20 +68,67 @@ export default class Controller {
 		}
 	}
 
+	doUIWork(uiWorkFunctions) {
+		return new Promise((resolve) => {
+			for (const uiWorkFunction of uiWorkFunctions) {
+				uiWorkFunction();
+			}
+
+			setTimeout(() => {
+				resolve();
+			}, this.delayTimeOnChange);
+		});
+	}
+
+	viewItemSortedColor(index) {
+		this.view.setItemSortedColor(index);
+	}
+
+	viewItemSelection(index) {
+		this.view.setItemSelection(index);
+	}
+
+	viewItemCheckColor(index) {
+		this.view.setItemCheckColor(index);
+	}
+
 	async insertionSort(sortList) {
-		let index;
-		for (let i = 0; i < sortList.length; i++) {
-			index = i;
-			while (sortList[index - 1] > sortList[index]) {
+		await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
+
+		for (let i = 1; i < sortList.length; i++) {
+			const selectionIndex = i;
+			await this.doUIWork([this.viewItemSelection.bind(this, selectionIndex)]);
+			let checkIndex = selectionIndex - 1;
+			while (checkIndex >= 0 && sortList[index - 1] > sortList[index]) {
+				await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
+
 				let temp = sortList[index - 1];
 				sortList[index - 1] = sortList[index];
 				sortList[index] = temp;
 				index--;
-				await this.setNumsView(sortList, 1000);
+				await this.setNumsView(sortList, this.delayTimeOnChange);
 			}
 		}
 
 		console.log(sortList);
     return sortList;
 	}
+
+	// async insertionSort(sortList) {
+	// 	let index;
+	// 	for (let i = 0; i < sortList.length; i++) {
+	// 		index = i;
+
+	// 		while (sortList[index - 1] > sortList[index]) {
+	// 			let temp = sortList[index - 1];
+	// 			sortList[index - 1] = sortList[index];
+	// 			sortList[index] = temp;
+	// 			index--;
+	// 			await this.setNumsView(sortList, this.delayTimeOnChange);
+	// 		}
+	// 	}
+
+	// 	console.log(sortList);
+  //   return sortList;
+	// }
 }
