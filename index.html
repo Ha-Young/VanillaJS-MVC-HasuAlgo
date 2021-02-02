@@ -3,13 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
-  <title>바닐라코딩</title>
+  <link rel="stylesheet" href="./assets/styles/reset.css">
+  <link rel="stylesheet" href="./assets/styles/index.less">
+  <title>Sorting Algorithms - VaCo</title>
 </head>
 <body>
-  <div class="content">
-    <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">Sorting Algorithms</h1>
+    </header>
+    <nav class="user-interface">
+      <input class="input-numbers" type="text" />
+      <select class="select-sort">
+        <option value="bubble">Bubble Sort</option>
+        <option value="insertion" disabled>Insertion Sort</option>
+        <option value="merge" disabled>Merge Sort</option>
+        <option value="quick" disabled>Quick Sort</option>
+      </select>
+      <button>Run</button>
+    </nav>
+    <main class="animation-container"></main>
   </div>
   <script src="./app/index.js"></script>
 </body>

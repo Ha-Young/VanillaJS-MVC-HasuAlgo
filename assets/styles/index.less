@@ -1,18 +1,26 @@
-html, body {
-  box-sizing: border-box;
+body {
+  display: flex;
+  justify-content: center;
 }
 
-*, *:before, *:after {
-  box-sizing: inherit;
+.container {
+  width: 70%;
+  height: 500px;
+  border: 2px solid green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 }
 
-.content {
-  max-width: 500px;
-  margin: 100px auto;
-  text-align: center;
+.user-interface {
+  display: flex;
+  flex-direction: column;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+.animation-container {
+  width: 400px;
+  height: 300px;
+  border: 1px solid orange;
 }
