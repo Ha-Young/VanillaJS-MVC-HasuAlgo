@@ -1,16 +1,17 @@
 import {$on, qs, $delegate} from './helpers';
+import { SortItemList } from './typeDef';
 
 export default class View {
-	constructor() {
+	constructor(template) {
 		console.log('View Constructor!');
 
+		this.template = template;
 		this.$container = qs('.container');
 		this.$themeSwitch = qs('#theme-switch');
 		this.$sortKindsBtns = qs('.sort-kinds-btns');
 		this.$inputNumbers = qs('.input-numbers');
 		this.$startBtn = qs('.start-btn');
-		this.$visualList = qs('.visual-list');
-
+		this.$vizCanvas = qs('#viz-canvas');
 
 	}
 
@@ -29,7 +30,6 @@ export default class View {
 
 	bindOnClickStartBtn(handler) {
 		$on(this.$startBtn, 'click', () => {
-			console.log('start btn clicked!');
 			handler(this.$inputNumbers.value);
 		});
 	}
@@ -42,5 +42,15 @@ export default class View {
 
 	setTheme(theme) {
 		this.$container.className = `container ${theme}`;
+	}
+
+	/**
+	 * Format the contents of a sort list.
+	 *
+	 * @param {SortItemList} items sort list items
+	 *
+	 */
+	showSortItems(sortItemList) {
+		this.$vizCanvas.innerHTML = this.template.sortItemList(sortItemList);
 	}
 }
