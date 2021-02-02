@@ -6,8 +6,8 @@ BubbleModel.prototype.get = function () {
   return this._storage;
 };
 
-BubbleModel.prototype.set = function (data) {
-  const dataSet = data.split(",");
+BubbleModel.prototype.set = function (dataSet) {
+  // const dataSet = data.split(",");
 
   // if (dataSet.length > 10 || ) {
   //   return false

@@ -8,13 +8,18 @@
 <body>
   <div class="content">
     <h1>Visualize Sorting Algorithms</h1>
-    <form class="input-container">
-      <input type="text" class="input-box" placeholder="입력"/>
-      <!-- <button class="input-button">데이터 삽입</button> -->
-    </form>
-    <button class="excute-button">정렬 실행</button>
-    <section class="bottom">
-      <div class="graph-container"></div>
+    <div class="input-container">
+      <select name="sorts">
+        <option value="Bubble Sort">Bubble Sort</option>
+      </select>
+      <form class="form">
+        <input type="text" class="input-box" placeholder="입력"/>
+      </form>
+      <button class="excute-button">정렬 실행</button>
+    </div>
+    <div class="message"></div>
+    <section class="graph-container">
+      <div class="graphs"></div>
     </section>
     <!-- <img src="./assets/images/chicken.jpg" /> -->
     <!-- <p>README.md를 읽어보고 과제를 시작하세요.</p> -->
