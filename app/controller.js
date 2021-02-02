@@ -1,6 +1,8 @@
 import Model from './model';
 import View from './view';
 
+const RECT_HEIGHT_RATIO = 4.6;
+
 export default class Controller {
 	/**
 	 * @param  {!Model} model A Model instance
