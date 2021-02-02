@@ -37,9 +37,19 @@ export default function BubbleController() {
   }
 }
 
+BubbleController.prototype.clear = function () {
+  const $inputCountainer = document.querySelector(".input-container");
+  const $excuteButton = document.querySelector(".excute-button");
+  const inputClone = $inputCountainer.cloneNode(true);
+  const buttonClone = $excuteButton.cloneNode(true);
+
+  $inputCountainer.parentNode.replaceChild(inputClone, $inputCountainer);
+  $excuteButton.parentNode.replaceChild(buttonClone, $excuteButton);
+};
+
 BubbleController.prototype.checkInput = function (inputValue) {
   const trimed = inputValue.replace(/(\s*)/g, "");
-  const splited = trimed.split(",");
+  const splited = trimed.split(",").map((item) => Number(item));
   const hasFiveToTenInputs = (5 <= splited.length && splited.length <= 10);
   const hasString = trimed.match(/[^0-9,]/g);
   const hasEmpty = splited.some((item) => item === "");

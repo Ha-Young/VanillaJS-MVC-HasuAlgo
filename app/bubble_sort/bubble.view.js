@@ -14,13 +14,19 @@ BubbleView.prototype.paintMessage = function (message, delay) {
 };
 
 BubbleView.prototype.paintGraphs = function (data, loopCount) {
+  const maxSize = data.reduce((acc, item) => {
+    return acc > item ? acc : item;
+  });
+
+  console.log(maxSize);
+
   this.$graphs.textContent = "";
 
   data.forEach((item, index) => {
     const newBlock = document.createElement("span");
 
     newBlock.dataset.index = index + 1;
-    newBlock.style.setProperty("height", item * 10 + "%");
+    newBlock.style.setProperty("height", (item / maxSize) * 90 + "%");
 
     if (index >= data.length - loopCount) {
       newBlock.classList.add("fixed");
@@ -44,9 +50,11 @@ BubbleView.prototype.holdInput = function (sholdHold) {
   if (sholdHold) {
     this.$inputBox.disabled = true;
     this.$excuteButton.disabled = true;
+    this.$excuteButton.classList.add("fixed");
   } else {
     this.$inputBox.disabled = false;
     this.$excuteButton.disabled = false;
+    this.$excuteButton.classList.remove("fixed");
   }
 };
 
