@@ -99,7 +99,6 @@ export default class Controller {
           setTimeout(function (innerIndex) {
             this.view.changeOrder(innerIndex, innerIndex+2);
           }.bind(this, innerIndex), 500)
-          
         }
 
         if (outerIndex === 1 && innerIndex === 0) {
@@ -114,7 +113,12 @@ export default class Controller {
           }
 
           this.sortCount = 0;
-          this.view.changeColorOfSortedItem([outerIndex]);
+          if (listToSort[outerIndex] === parseInt(this.view.$sortingWindow.childNodes[outerIndex].innerText)) {
+            this.view.changeColorOfSortedItem([outerIndex]);
+          } else {
+            this.view.changeColorOfSortedItem([outerIndex - 1]);
+          }
+
           return this.bubbleSortRecursion(--outerIndex, 0);
         }
 
