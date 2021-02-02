@@ -1,8 +1,6 @@
-export default Model
-export {modelInstance}
-
-const modelInstance = new Model();
 
 function Model() {
   this.storage = [];
 }
+
+export const model = new Model();

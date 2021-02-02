@@ -1,29 +1,34 @@
-import View, { viewInstance } from './view.js'
-import {modelInstance} from './model.js'
+import {view} from './view.js'
+import {model} from './model.js'
 
 function Controller (model, view) {
+  this.model = model;
+  this.view = view;
 }
 
 function addChildNode (value) {
-  viewInstance.$child = document.createElement('child');
-  if (viewInstance.$contentContainer.childNodes.length > 10) {
-    viewInstance.$errorMessage.innerHTML = "입력 갯수를 초과하셨습니다"
+  view.$child = document.createElement('child');
+
+  if (view.$contentContainer.childNodes.length > 10) {
+    view.$errorMessage.innerHTML = "입력 갯수를 초과하셨습니다"
     return;
   }
 
-  viewInstance.$child.innerHTML = value;
-  modelInstance.storage.push(value);
-  viewInstance.$child.classList.add("graphNode");
-  viewInstance.$child.style.height = value + 5 + 'px';
-  viewInstance.$contentContainer.appendChild(viewInstance.$child);
+  view.$child.innerHTML = value;
+  model.storage.push(value);
+  view.$child.classList.add("graphNode");
+  view.$child.style.height = value + 5 + 'px';
+  view.$contentContainer.appendChild(view.$child);
 } 
 
 function handleKeyUp(event) {
 
   event.stopImmediatePropagation();
 
+  if (view.$typed.value === '') return;
+
   if (event.key === 'Enter') { 
-    addChildNode(viewInstance.$typed.value);
+    addChildNode(view.$typed.value);
 
     this.value = null;
   }
@@ -31,30 +36,44 @@ function handleKeyUp(event) {
 
 function sortStorage(storeageArray) {
   for (let i = 0; i < storeageArray.length - 1; i++) {
-    for (let j= 1; j <storeageArray.length; j++) {
-
+    let swap;
+    for (let j= 0; j <storeageArray.length - 1 -i; j++) {
+      if (storeageArray[j] > storeageArray[j + 1]) {
+        swap = storeageArray[j];
+        storeageArray[j] = storeageArray[j + 1];
+        storeageArray[j + 1] = swap;
+      }
     }
+
+    if (!swap) break;
   }
+}
+
+function addNewChild(number) {
+  view.$contentContainer.innerHTML = '';
+  view.$newChild = document.createElement('child');
+  view.$newChild.innerHTML = number;
+  view.$newChild.classList.add("graphNode");
+  view.$newChild.style.height = number + 5 + 'px';
+  view.$contentContainer.appendChild(view.$newChild);
 }
 
 function handleClick(event) {
   event.stopImmediatePropagation();
 
-  const childNodesLength = viewInstance.$contentContainer.childNodes.length;
+  const childNodesLength = view.$contentContainer.childNodes.length;
 
-  if (childNodesLength < 6) {
-    viewInstance.$errorMessage.innerHTML = '입력 갯수가 너무 작습니다';
+  if (childNodesLength < 5) {
+    view.$errorMessage.innerHTML = '입력 갯수가 너무 작습니다';
     return;
   }
 
-  viewInstance.$errorMessage.innerHTML = '';
-
-  console.log('work');
+  view.$errorMessage.innerHTML = '';
   
-  const sortedResult = sortStorage(modelInstance.storage);
+  sortStorage(model.storage);
 }
 
-viewInstance.$typed.addEventListener('keypress', handleKeyUp);
-viewInstance.$bubbleSortButton.addEventListener('click', handleClick);
+view.$typed.addEventListener('keypress', handleKeyUp);
+view.$bubbleSortButton.addEventListener('click', handleClick);
 
-export default Controller
+export const controller = new Controller(model, view);

@@ -1,7 +1,3 @@
-export default View
-export {viewInstance}
-
-const viewInstance = new View();
 
 function View () {
   this.$typed = document.querySelector(".typed");
@@ -10,4 +6,4 @@ function View () {
   this.$errorMessage = document.querySelector(".errorMessage");
 }
 
-
+export const view = new View();
