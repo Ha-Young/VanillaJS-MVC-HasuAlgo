@@ -1,7 +1,10 @@
 export default Model
+export {modleInstance}
+
+const modleInstance = new Model();
 
 function Model(storage) {
-  this.storage = storage;
+  this.storage = [];
 }
 
 Model.prototype.create = function (title, callback) {}

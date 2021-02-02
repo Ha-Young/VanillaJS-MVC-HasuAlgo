@@ -1,5 +1,5 @@
 import View, { viewInstance } from './view.js'
-import {viewInstnace} from './view.js'
+import {modelInstance} from './model.js'
 
 function Controller (model, view) {
   const self = this;
@@ -8,13 +8,25 @@ function Controller (model, view) {
   self.view = view;
 }
 
-viewInstance.$typed.addEventListener('keyup', function (event) {
-  const key = event.key;
+function addChildNode (value) {
+  viewInstance.$child = document.createElement('child');
+  viewInstance.$child.innerHTML = value;
+  viewInstance.$child.classList.add("graphNode");
+  viewInstance.$child.style.height = value + 5 + 'px';
+  viewInstance.$contentContainer.appendChild(viewInstance.$child);
+} 
 
-  console.log(key);
-  if(event.key === 'Enter') {
+function handleKeyUp(event) {
+
+  event.stopImmediatePropagation();
+
+  if (event.key === 'Enter') { 
+    addChildNode(viewInstance.$typed.value);
+
     this.value = null;
   }
-});
+}
+
+viewInstance.$typed.addEventListener('keypress', handleKeyUp);
 
 export default Controller
