@@ -81,15 +81,15 @@ export default class Controller {
 	}
 
 	viewItemSortedColor(index) {
-		this.view.setItemSortedColor(index, this.delayTimeOnChange);
+		this.view.setSortItemStatusSorted(index, this.delayTimeOnChange);
 	}
 
 	viewItemSelection(index) {
-		this.view.setItemSelection(index, this.delayTimeOnChange);
+		this.view.setSortItemStatusSelected(index, this.delayTimeOnChange);
 	}
 
 	viewItemCheckColor(index) {
-		this.view.setItemCheckColor(index);
+		this.view.setSortItemStatusCheck(index);
 	}
 
 	async insertionSort(sortList) {
@@ -119,12 +119,11 @@ export default class Controller {
 						]);
 					break;
 				}
-				
+
 				//await this.setNumsView(sortList, this.delayTimeOnChange);
 			}
 		}
 
-		console.log(sortList);
     return sortList;
 	}
 
