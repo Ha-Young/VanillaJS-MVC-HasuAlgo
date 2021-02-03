@@ -8,7 +8,10 @@ const $delete = document.querySelector('.delete');
 const $reset = document.querySelector('.reset');
 const test = [];
 
-function addItem(b) {
+export const BubbleController = function() {
+}
+
+BubbleController.prototype.addItem = function(b) {
   let value = $userInput.value;
 
   if (b.key === 'Enter' && value !== '') {
@@ -19,7 +22,7 @@ function addItem(b) {
   }
 }
 
-function deleteItem() {
+BubbleController.prototype.deleteItem = function() {
   if (!test.length) {
     $userInput.value = '';
     return;
@@ -29,7 +32,7 @@ function deleteItem() {
   bubbleView.deleteItem();
 }
 
-function resetItem() {
+BubbleController.prototype.resetItem = function() {
   const leng = test.length;
   
   for (let i = 0; i < leng; i++) {
@@ -39,8 +42,7 @@ function resetItem() {
   $userInput.value = '';
   bubbleView.resetItem(leng);
 }
-
-function startSort() {
+BubbleController.prototype.startSort = function() {
   if (!test.length) {
     $userInput.value = '';
     return;
@@ -54,11 +56,13 @@ function startSort() {
   bubbleModel.execute();
 }
 
-function init() {
-  $userInput.addEventListener('keyup', addItem);
-  $delete.addEventListener('click', deleteItem);
-  $start.addEventListener('click', startSort);
-  $reset.addEventListener('click', resetItem);
+BubbleController.prototype.startMove = function(a, b) {
+  bubbleView.move(a, b);
 }
 
-init();
+BubbleController.prototype.init = function() {
+  $userInput.addEventListener('keyup', this.addItem);
+  $delete.addEventListener('click', this.deleteItem);
+  $start.addEventListener('click', this.startSort);
+  $reset.addEventListener('click', this.resetItem);
+}
