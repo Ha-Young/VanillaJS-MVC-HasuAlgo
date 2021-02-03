@@ -6,7 +6,7 @@ function Controller (model, view) {
   this.view = view;
 }
 
-function sortStorage(storeageArray) {
+async function sortStorage(storeageArray) {
   for (let i = 0; i < storeageArray.length; i++) {
     let swap;
     for (let j= 0; j <storeageArray.length - 1 -i; j++) {
@@ -14,11 +14,24 @@ function sortStorage(storeageArray) {
         swap = storeageArray[j];
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
+        let $childNodes = document.querySelectorAll('.graphNode');
+        await changeGraph($childNodes[j + 1], $childNodes[j]);
+        console.log(i ,j);
       }
     }
-        
+
     if (!swap) break;
   }
+}
+
+function changeGraph(lefetNode, rightNode) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      view.$contentContainer.insertBefore(lefetNode, rightNode);
+
+      resolve();
+    }, 1000);
+  });
 }
 
 function handleClick(event) {

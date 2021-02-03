@@ -11,7 +11,7 @@ function View () {
 }
 
 View.prototype.addChildNode = function (value) {
-  this.$child = document.createElement('child');
+  this.$child = document.createElement('div');
 
   if (this.$contentContainer.childNodes.length > 10) {
     this.$errorMessage.innerHTML = "입력 갯수를 초과하셨습니다"
