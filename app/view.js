@@ -13,11 +13,14 @@ export default class View {
 
   addItem = function (value, firstOrder, index, length) {
     const child = document.createElement('div');
+
     child.classList.add('flex-item');
     child.classList.add('sort-list');
     child.style.height = `${(400/length) * (index+1)}px`;
     child.id = `itemId-${value}`;
-    child.textContent = value;
+    child.appendChild(document.createElement('span'));
+    child.childNodes[0].textContent = value;
+
     this.$sortingWindow.appendChild(child);
   }
 
@@ -35,18 +38,22 @@ export default class View {
 
   changeOrder = function (firstOrder, secondOrder) {
     const nodeList = this.$sortingWindow.childNodes;
+
     nodeList[firstOrder].classList.remove('move-right');
     nodeList[secondOrder - 1].classList.remove('move-left');
+
     this.$sortingWindow.insertBefore(nodeList[firstOrder], nodeList[secondOrder]);
   }
 
   moveRight (index) {
     const nodeList = this.$sortingWindow.childNodes;
+
     nodeList[index].classList.add('move-right');
   }
 
   moveLeft (index) {
     const nodeList = this.$sortingWindow.childNodes;
+
     nodeList[index].classList.add('move-left');
   }
 
@@ -68,7 +75,7 @@ export default class View {
     const nodeList = this.$sortingWindow.childNodes;
 
     indexList.forEach((index) => {
-      nodeList[index].classList.add('sorted')
+      nodeList[index].classList.add('sorted');
     });
   }
 

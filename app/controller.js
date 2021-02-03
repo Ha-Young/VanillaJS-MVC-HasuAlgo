@@ -2,7 +2,7 @@ export default class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-    this.sortCount = 0;
+    this.bubbleSortCount = 0;
 
     view.bindAddArray(this.addArray.bind(this));
     view.bindsetAlgorithm(this.setAlgorithm.bind(this));
@@ -50,17 +50,16 @@ export default class Controller {
     this.model.setAlgorithm(selectedAlgorithm);
   }
 
-  controlError() {}
-
   executeSortingAldorithm() {
-    this.sortCount = 0;
+    this.bubbleSortCount = 0;
 
     if (this.model.getAlgorithm() === 'bubble') {
       this.bubbleSortRecursion(this.model.getStorage().length - 1, 0);
     }
 
     if (this.model.getAlgorithm() === 'quick') {
-      this.quickSort();
+      this.quickSort(this.model.getStorage());
+      console.log(this.model.getStorage())
     }
   }
 
@@ -82,7 +81,6 @@ export default class Controller {
   // }
 
   bubbleSortRecursion = function (outerIndex, innerIndex) {
-    debugger;
     setTimeout(function () {
       const listToSort = this.model.getStorage().slice();
       this.view.changeColorOfSelectedItem(innerIndex, innerIndex+1);
@@ -92,13 +90,14 @@ export default class Controller {
         this.view.removeColorOfUnselectedItem(innerIndex, innerIndex+1);
 
         if (listToSort[innerIndex] > listToSort[innerIndex + 1]) {
-          this.sortCount++;
           listToSort.splice(innerIndex+1, 0, listToSort.splice(innerIndex,1)[0]);
+          this.bubbleSortCount++;
           this.view.moveRight(innerIndex);
           this.view.moveLeft(innerIndex+1);
+
           setTimeout(function (innerIndex) {
             this.view.changeOrder(innerIndex, innerIndex+2);
-          }.bind(this, innerIndex), 500)
+          }.bind(this, innerIndex), 500);
         }
 
         if (outerIndex === 1 && innerIndex === 0) {
@@ -107,12 +106,13 @@ export default class Controller {
         }
 
         if (innerIndex === outerIndex - 1) {
-          if (this.sortCount === 0) {
+          if (this.bubbleSortCount === 0) {
             this.view.changeColorOfSortedItem(Array.from(Array(outerIndex + 1).keys()));
             return;
           }
 
-          this.sortCount = 0;
+          this.bubbleSortCount = 0;
+
           if (listToSort[outerIndex] === parseInt(this.view.$sortingWindow.childNodes[outerIndex].innerText)) {
             this.view.changeColorOfSortedItem([outerIndex]);
           } else {
@@ -123,11 +123,40 @@ export default class Controller {
         }
 
         return this.bubbleSortRecursion(outerIndex, ++innerIndex);
-      }.bind(this), 500)
+      }.bind(this), 500);
     }.bind(this), 500);
   }
 
-  quickSort = function () {
-    console.log('마! 퀵은 아직 구현 안했다');
+  quickSort = function (listToSort, left = 0, right = listToSort.length - 1) {
+    if (left >= right) {
+      return;
+    }
+
+    const borderIndex = this.partition.call(this,listToSort, left, right);
+    this.quickSort.call(this, listToSort, left, borderIndex - 1);
+    this.quickSort.call(this, listToSort, borderIndex, right);
+  }
+
+  swap = function (array, index1, index2) {
+    const temp = array[index1];
+    array[index1] = array[index2];
+    array[index2] = temp;
+  }
+
+  partition = function (array, left, right) {
+    const pivotValue = array[Math.floor((left + right) / 2)];
+
+    while (left <= right) {
+      while (array[left] < pivotValue) left++;
+      while (array[right] > pivotValue) right--;
+
+      if (left <= right) {
+        this.swap(array, left, right);
+        left++;
+        right--;
+      }
+    }
+
+    return left;
   }
 }
