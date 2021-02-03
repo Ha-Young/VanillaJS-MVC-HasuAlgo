@@ -7,7 +7,7 @@ Model.prototype.refineNums = function (nums) {
     .replace(/ /g, "")
     .split(",")
     .map((numString) => parseInt(numString, 10))
-    .filter((num) => num)
+    .filter((num) => num);
 
   if (inputtedNums.length < 5 || inputtedNums.length > 10) {
     return {
@@ -20,7 +20,7 @@ Model.prototype.refineNums = function (nums) {
     return {
       isComplete: false,
       message: "Please input numbers less than 1000",
-    }
+    };
   }
 
   const tempNums = Array.from(inputtedNums);
@@ -31,7 +31,7 @@ Model.prototype.refineNums = function (nums) {
       )
     )
   ].reduce((numsIndex, num, i) => {
-    numsIndex[num] = i
+    numsIndex[num] = i;
     return numsIndex;
   }, {});
 
@@ -64,7 +64,7 @@ Model.prototype.makeBubbleSortProcesses = function () {
     throw new Error("There is no inputted Numbers.");
   }
 
-  const sortProcesses = [];
+  const sortSteps = [];
 
   for (let i = 0; i < inputtedNums.length - 1; i++) {
     for (let j = 0; j < inputtedNums.length - i; j++) {
@@ -78,30 +78,35 @@ Model.prototype.makeBubbleSortProcesses = function () {
         [after[j], after[j + 1]] = [after[j + 1], after[j]];
         [inputtedNums[j], inputtedNums[j + 1]] = [inputtedNums[j + 1], inputtedNums[j]];
 
-        sortProcesses.push({
+        sortSteps.push({
+          shouldSwap: true,
           a: a,
           b: b,
           indexA: j,
           indexB: j + 1,
-          beforeSwap: before,
-          afterSwap: after,
+          beforeSwap: JSON.stringify(before),
+          afterSwap: JSON.stringify(after),
         });
-      }
+      } 
+      // else {
+      //   sortSteps.push({
+      //     shouldSwap: false,
+      //     a: a,
+      //     b: b,
+      //     indexA: j,
+      //     indexB: j + 1,
+      //   });
+      // }
     }
   }
 
-  return sortProcesses;
+  return sortSteps;
 };
 
-Model.prototype.set = function (key, value, callback) {
+Model.prototype.set = function (key, value) {
   if (typeof key !== "string") {
     throw new Error("The key argument must be a string");
   }
-
-  if (callback && typeof callback !== "function") {
-    throw new Error("The callback is not a function.");
-  }
-
 
   Object.assign(this._storage, { [key]: value });
 };

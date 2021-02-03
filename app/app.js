@@ -14,4 +14,4 @@ import Control from './control.js';
   }
 
   const app = new SortingVisualizer();
-})()
+})();

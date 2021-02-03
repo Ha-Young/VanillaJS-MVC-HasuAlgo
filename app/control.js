@@ -2,32 +2,35 @@ export default function Control(model, view) {
   this.model = model;
   this.view = view;
 
-  this.view.activateEvent("mainForm", "submit", (function (event) {
-    event.preventDefault();
-
-    const MAIN_INPUT_INDEX = 0;
-    const SORT_SELECT_INDEX = 1;
-    const inputtedNumsString = event.target[MAIN_INPUT_INDEX].value;
-    const sortType = event.target[SORT_SELECT_INDEX].value;
-
-    const refinedNums = this.model.refineNums(inputtedNumsString);
-    if (!refinedNums.isComplete) {
-      this.view.updateMessage(refinedNums.message);
-      return;
-    }
-
-    this.model.set("inputtedNums", refinedNums.value);
-    this.model.set("sortType", sortType);
-    this.drawGraph();
-    this.view.updateMessage("Sort Start!")
-  }).bind(this))
+  const $mainForm = this.view.getElem("mainForm");
+  this.view.activateEvent($mainForm, "submit", this.submitHandler.bind(this));
 }
+
+Control.prototype.submitHandler = function (event) {
+  event.preventDefault();
+
+  const MAIN_INPUT_INDEX = 0;
+  const SORT_SELECT_INDEX = 1;
+  const inputtedNumsString = event.target[MAIN_INPUT_INDEX].value;
+  const sortType = event.target[SORT_SELECT_INDEX].value;
+
+  const refinedNums = this.model.refineNums(inputtedNumsString);
+  if (!refinedNums.isComplete) {
+    this.view.updateMessage(refinedNums.message);
+    return;
+  }
+
+  this.model.set("inputtedNums", refinedNums.value);
+  this.model.set("sortType", sortType);
+  this.view.updateMessage("Sort Start!");
+  this.drawGraph();
+};
 
 Control.prototype.clearViewPort = function () {
   this.view.clearViewPort();
   this.model.set("barBoxes", []);
-  this.model.set("barPos", []);
-}
+  this.model.set("barPositions", []);
+};
 
 Control.prototype.drawGraph = function () {
   this.clearViewPort();
@@ -38,34 +41,25 @@ Control.prototype.drawGraph = function () {
   const $viewPort = this.view.getElem("viewPort");
   this.view.render($viewPort ,$bars);
 
-  const barPos = this.view.getElemPos($bars);
-  this.model.set("barPos", barPos);
+  const barPositions = this.view.getElemPos($bars);
+  this.model.set("barPositions", barPositions);
 
-  this.startSort();
-}
+  this.sortBars();
+};
 
-Control.prototype.startSort = function () {
+Control.prototype.sortBars = function () {
   const sortType = this.model.get("sortType");
 
-  if (sortType === "bubble") {
-    this.sortWithBubble();
-  }
-}
-
-Control.prototype.sortWithBubble = function () {
-  const sortProcesses = this.model.makeBubbleSortProcesses();
+  const sortSteps = (() => {
+    if (sortType === "bubble") {
+      return this.model.makeBubbleSortProcesses();
+    }
+  })();
   
-  this.view.startAnimation(sortProcesses);
-}
-
-Control.prototype.swapBars = function ($a, $b) {
+  this.model.set("sortSteps", sortSteps);
   const $barBoxes = this.model.get("barBoxes");
-  const $domRects = this.model.get("barPos");
-  // const first = $barBoxes[0];
-  // const second = $barBoxes[1];
-  // const firstDomRect = $domRects[0];
-  // const secondDomRect = $domRects[1];
+  const barPositions = this.model.get("barPositions");
 
-  this.view.swapElem(first, second, firstDomRect, secondDomRect);
+  this.view.progressBubbleSortAnimation(sortSteps, $barBoxes, barPositions);
+};
 
-}
