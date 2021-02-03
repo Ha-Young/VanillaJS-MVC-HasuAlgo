@@ -1,3 +1,6 @@
+@import (css) url('https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap');
+@import (css) url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+
 html, body {
   box-sizing: border-box;
 }
@@ -13,8 +16,6 @@ html, body {
   width: 900px;
   height: 600px;
   margin: 100px auto;
-  background-color: gray;
-  text-align: center;
 }
 
 .container {
@@ -27,7 +28,6 @@ html, body {
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: tomato;
 }
 
 @box-width: 90%;
@@ -37,88 +37,153 @@ html, body {
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: blue;
+  font: normal 400  50px / 60px 'Hanalei Fill', 'cursive';
+  color: rgb(90, 195, 103);
+  text-align: center;
+  letter-spacing: 10px;
 }
 
-.control-box {
+.user-input-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: @box-width;
-  height: 60px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background-color: yellow;
-}
-
-.control-box div {
-  display: flex;
-  width: 200px;
-  height: 80%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background-color: red;
-}
-
-.control-box label input {
-  width: 30px;
-  height: 10px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background-color: red;
-}
-
-.input-box {
-  display: flex;
-  justify-content: center;
   align-items: center;
   width: @box-width;
   height: 50px;
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: red;
 }
 
-.input-box input {
-  width: 80%;
-  height: 80%;
+.sort-select-box {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  width: 150px;
+  height: 100%;
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+.sort-select-box div {
+  display: flex;
+  flex-flow: row;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+}
+
+.sort-select-box div input {
+  margin: 0;
+  padding: 0;
+}
+
+.sort-select-box div label {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0 0 0 10px;
+  padding: 0;
+  border: 0;
+  font: normal 100 16px / 20px 'Hanalei Fill', 'cursive';
+  color: black;
+}
+
+.input-data-box {
+  width: 420px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 4px solid rgb(90, 195, 103);
   background-color: white;
+  font: normal 100 16px / 50px 'Hanalei Fill', 'cursive';
+  text-align: center;
+}
+
+.control-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 150px;
+  height: 60px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.play-button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.pause-button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.animation-container {
+  width: @box-width;
+  height: 300px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.status-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: rgb(#C8E6C9);
+  font: normal 400 16px / 50px 'Hanalei Fill', 'cursive';
+  letter-spacing: 5px;
 }
 
 .animation-box {
-  width: @box-width;
-  height: 250px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background-color: skyblue;
-}
-
-.animation-box.run {
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
-  width: @box-width;
+  width: 100%;
   height: 250px;
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: skyblue;
+  background-color: rgb(#E8F5E9);
 }
 
-.animation-box.run div {
+.animation-box div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 50px;
   height: 100px;
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: gray;
+  background-color:rgb(#FFE0B2);
+  font: normal 100 16px / 50px 'Hanalei Fill', 'cursive';
   transition: 1s;
+}
+
+.animation-box div.play {
+  background-color:rgb(#FFA726);
 }
