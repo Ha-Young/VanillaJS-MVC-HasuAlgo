@@ -8,23 +8,12 @@ export default function View() {
   this.$highlighterBox = document.querySelector(".highlighter-box");
   this.$messageBox = document.querySelector(".message-box");
 
-  this.elemNames = {
-    selectSortType: this.$selectSortType,
-    mainForm: this.$mainForm,
-    mainInput: this.$mainInput,
-    mainInputSubmitButton: this.$mainInputSubmitButton,
-    viewPortBox: this.$viewPortBox,
-    viewPort: this.$viewPort,
-    messageBox: this.$messageBox,
-    highlighterBox: this.$highlighterBox,
-  };
-
   this.VIEW_PORT_HEIGHT = 270;
 }
 
 View.prototype.getElem = function (elemName, selectAll = false) {
-  if (!selectAll && this.elemNames[elemName]) {
-    return this.elemNames[elemName];
+  if (!selectAll && this[elemName]) {
+    return this[elemName];
   }
 
   if (!selectAll) {
@@ -34,23 +23,19 @@ View.prototype.getElem = function (elemName, selectAll = false) {
   return document.querySelectorAll(elemName);
 };
 
-View.prototype.activateEvent = function ($eventTarget, event, handler) {
+View.prototype.activateEvent = function (eventTarget, event, handler) {
   if (!typeof handler === "function") {
     throw new Error("The handler argument is not a function.");
   }
 
-  if (Array.isArray($eventTarget)) {
-    for (const $eventTargetItem of $eventTarget) {
-      $eventTargetItem.addEventListener(event, handler);
-    }
-  
-    return;
-  }
+  const $eventTarget = this.getElem(eventTarget);
 
   $eventTarget.addEventListener(event, handler);
 };
 
-View.prototype.clearElem = function ($target) {
+View.prototype.clearElem = function (target) {
+  const $target = this.getElem(target);
+
   $target.innerHTML = "";
 };
 
@@ -66,8 +51,8 @@ View.prototype.createElement = function (template) {
 
 View.prototype.render = function ($parentNode, $target) {
   if (Array.isArray($target)) {
-    for (const $targetElem of $target) {
-      $parentNode.append($targetElem);
+    for (const $targetItem of $target) {
+      $parentNode.append($targetItem);
     }
 
     return;
@@ -85,27 +70,29 @@ View.prototype.render = function ($parentNode, $target) {
 // }
 
 View.prototype.createHighlighterElem = function (num) {
-  const result = [];
+  const $highlighters = [];
 
   for (let i = 0; i < num; i++) {
-    const template = 
+    const template =
       `<div class="highlighter" data-idx="${i}"></div>`;
 
-    result.push(this.createElement(template));
+    $highlighters.push(this.createElement(template));
   }
 
-  return result;
+  this.$highlighters = $highlighters;
+
+  this.render(this.$highlighterBox, $highlighters);
 }
 
-View.prototype.createBarElem = function (inputtedNums) {
-  return inputtedNums.map(
-    (num, i) => {
-      const template = 
+View.prototype.createBarElem = function (refinedNums) {
+  const $barBoxes = refinedNums.map(
+    (num) => {
+      const template =
         `<div class="bar-box" data-idx="${num.sortedIndex}">
             <div class="number">${num.num}</div>
             <div class="bar"></div>
           </div>`;
-      
+
       const $barBox = this.createElement(template);
 
       const barHeight = (() => {
@@ -123,9 +110,15 @@ View.prototype.createBarElem = function (inputtedNums) {
       return $barBox;
     }
   );
+
+  this.$barBoxes = $barBoxes;
+
+  this.render(this.$viewPort, $barBoxes)
 };
 
-View.prototype.getElemPos = function($target) {
+View.prototype.getElemDomRect = function(target) {
+  const $target = this.getElem(target);
+
   if (Array.isArray($target)) {
     return $target.map(
       (elem, i) => {
@@ -206,9 +199,9 @@ View.prototype.removeClassName = function ($target, className) {
   $target.classList.remove(className);
 }
 
-View.prototype.progressBubbleSortAnimation = async function (sortSteps, $barBoxes, $highlighters , barPositions) {
-  const $highlighterA = $highlighters[0];
-  const $highlighterB = $highlighters[1];
+View.prototype.progressBubbleSortAnimation = async function (sortSteps, barPositions) {
+  const $highlighterA = this.$highlighters[0];
+  const $highlighterB = this.$highlighters[1];
 
   for (const step of sortSteps) {
     const indexA = step.indexA;
@@ -227,10 +220,10 @@ View.prototype.progressBubbleSortAnimation = async function (sortSteps, $barBoxe
     await this.moveElem($highlighterB ,highlighterBDestination, 500, false, true);
 
     if (step.shouldSwap) {
-      const $barBoxA = $barBoxes[indexA];
-      const $barBoxB = $barBoxes[indexB];
+      const $barBoxA = this.$barBoxes[indexA];
+      const $barBoxB = this.$barBoxes[indexB];
 
-      [$barBoxes[indexA], $barBoxes[indexB]] = [$barBoxes[indexB], $barBoxes[indexA]];
+      [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
       await this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions);
     }
   }

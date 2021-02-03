@@ -2,8 +2,7 @@ export default function Control(model, view) {
   this.model = model;
   this.view = view;
 
-  const $mainForm = this.view.getElem("mainForm");
-  this.view.activateEvent($mainForm, "submit", this.submitHandler.bind(this));
+  this.view.activateEvent("$mainForm", "submit", this.submitHandler.bind(this));
 }
 
 Control.prototype.submitHandler = function (event) {
@@ -20,41 +19,27 @@ Control.prototype.submitHandler = function (event) {
     return;
   }
 
-  this.model.set("inputtedNums", refinedNums.value);
+  this.model.set("refinedNums", refinedNums.value);
   this.model.set("sortType", sortType);
   this.view.updateMessage("Sort Start!");
   this.drawGraph();
 };
 
-Control.prototype.clearViewPort = function () {
-  this.view.clearViewPort();
-  this.model.set("barBoxes", []);
-  this.model.set("barPositions", []);
-};
-
 Control.prototype.drawGraph = function () {
-  const $viewPort = this.view.getElem("viewPort");
-  const $highlighterBox = this.view.getElem("highlighterBox");
-
-  this.view.clearElem($viewPort);
-  this.view.clearElem($highlighterBox);
+  this.view.clearElem("$viewPort");
+  this.view.clearElem("$highlighterBox");
 
   const sortType = this.model.get("sortType");
 
   if (sortType === "bubble") {
-    const inputtedNums = this.model.get("inputtedNums");
+    const refinedNums = this.model.get("refinedNums");
 
-    const $barBoxes = this.view.createBarElem(inputtedNums);
-    this.model.set("barBoxes", $barBoxes);
-    this.view.render($viewPort ,$barBoxes);
+    this.view.createBarElem(refinedNums);
+    this.view.createHighlighterElem(2);
 
-    const $highlighters = this.view.createHighlighterElem(2);
-    this.model.set("highlighters", $highlighters);
-    this.view.render($highlighterBox, $highlighters);
-
-    const barPositions = this.view.getElemPos($barBoxes);
+    const barPositions = this.view.getElemDomRect("$barBoxes");
     this.model.set("barPositions", barPositions);
-  
+
     this.sortBars();
   }
 };
@@ -67,12 +52,10 @@ Control.prototype.sortBars = function () {
       return this.model.makeBubbleSortProcesses();
     }
   })();
-  
-  this.model.set("sortSteps", sortSteps);
-  const $barBoxes = this.model.get("barBoxes");
-  const barPositions = this.model.get("barPositions");
-  const $highlighters = this.model.get("highlighters");
 
-  this.view.progressBubbleSortAnimation(sortSteps, $barBoxes, $highlighters, barPositions);
+  this.model.set("sortSteps", sortSteps);
+  const barPositions = this.model.get("barPositions");
+
+  this.view.progressBubbleSortAnimation(sortSteps, barPositions);
 };
 

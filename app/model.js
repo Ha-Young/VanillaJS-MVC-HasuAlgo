@@ -59,24 +59,24 @@ Model.prototype.swapItems = function (arr, aIndex, bIndex) {
 };
 
 Model.prototype.makeBubbleSortProcesses = function () {
-  const inputtedNums = this.get("inputtedNums").map((num) => num.num);
-  if (!inputtedNums) {
+  const refinedNums = this.get("refinedNums").map((num) => num.num);
+  if (!refinedNums) {
     throw new Error("There is no inputted Numbers.");
   }
 
   const sortSteps = [];
 
-  for (let i = 0; i < inputtedNums.length - 1; i++) {
-    for (let j = 0; j < inputtedNums.length - 1 - i; j++) {
+  for (let i = 0; i < refinedNums.length - 1; i++) {
+    for (let j = 0; j < refinedNums.length - 1 - i; j++) {
 
-      const a = inputtedNums[j];
-      const b = inputtedNums[j + 1];
+      const a = refinedNums[j];
+      const b = refinedNums[j + 1];
 
       if (a > b) {
-        const before = Array.from(inputtedNums);
-        const after = Array.from(inputtedNums);
+        const before = Array.from(refinedNums);
+        const after = Array.from(refinedNums);
         [after[j], after[j + 1]] = [after[j + 1], after[j]];
-        [inputtedNums[j], inputtedNums[j + 1]] = [inputtedNums[j + 1], inputtedNums[j]];
+        [refinedNums[j], refinedNums[j + 1]] = [refinedNums[j + 1], refinedNums[j]];
 
         sortSteps.push({
           shouldSwap: true,
@@ -87,7 +87,7 @@ Model.prototype.makeBubbleSortProcesses = function () {
           beforeSwap: JSON.stringify(before),
           afterSwap: JSON.stringify(after),
         });
-      } 
+      }
       else {
         sortSteps.push({
           shouldSwap: false,
