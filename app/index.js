@@ -15,13 +15,12 @@ const $content = document.querySelector(".content");
 
 function init() {
   $form.addEventListener("submit", function (e) {
-    e.stopImmediatePropagation();
+    //e.stopImmediatePropagation();
     e.preventDefault();
 
     const sortType = $sortSelection.options[$sortSelection.selectedIndex].text;
     const numbers = $numbers.value;
     let numberArray = numbers.split(",");
-    //console.log(numberArray);
 
     if (numberArray.length < 5 || numberArray.length > 10) {
       window.alert("out of range");
@@ -40,11 +39,8 @@ function init() {
     const view = new View(template.generateNumberBlocks(numberArray, maxNum), $content);
     const controller = new Controller(model, view);
     let maxHeight = sortType === "Merge Sort" ? 20 : 800;
-
-    //should fix height
     controller.initialize(sortType, maxHeight);
     controller.bubbleSort();
-    //controller.bubbleSort();
   });
 }
 

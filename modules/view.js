@@ -10,45 +10,52 @@ export default class View {
     this.$blocks = null;
   }
 
+  wait(t) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, t);
+    })
+  }
+
   generateBlocks(height, number, index) {
     const $block = document.createElement("div");
     $block.classList.add("number-block");
     $block.classList.add("normal");
     $block.style.height = `${height}px`;
-    $block.id = `block${number}`;
+    //$block.id = `block${index}`;
     $block.style.transform = `translateX(${index * 40}px`;
 
-    const $blockLabel = document.createElement("label");
-    $blockLabel.classList.add("block-label");
-    $blockLabel.innerText = number;
-    $block.appendChild($blockLabel);
+    const $blockNumber = document.createElement("span");
+    $blockNumber.classList.add("block-span");
+    $blockNumber.innerText = number;
+    $block.appendChild($blockNumber);
     this.$parent.appendChild($block);
   }
 
   swapBlocks(i, j) {
     return new Promise((resolve, reject) => {
-      const $blockI = document.querySelector(`#block${i}`);
-      const $blockJ = document.querySelector(`#block${j}`);
+      const $blockI = document.querySelectorAll('.number-block')[i];//(`#block${i}`);
+      const $blockJ = document.querySelectorAll('.number-block')[j];//(`#block${j}`);
       const transformI = getComputedStyle($blockI).getPropertyValue("transform");
       const transformJ = getComputedStyle($blockJ).getPropertyValue("transform");
       $blockI.style.transform = transformJ;
       $blockJ.style.transform = transformI;
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          this.$parent.insertBefore($blockJ, $blockI);
-          resolve();
-        }, 1000);
-      });
+
+      setTimeout(() => {
+        this.$parent.insertBefore($blockJ, $blockI);
+        resolve();
+      }, 1000);
     });
   }
 
-  changeColor(i, n, blockState = "picked") {
-    const $block = document.querySelector(`#block${n}`);
+  changeColor(i, blockState = "picked") {
+    const $block = document.querySelectorAll('.number-block')[i];//(`#block${i}`);
     $block.classList.add(blockState);
   }
 
-  removeColor(i, n) {
-    const $block = document.querySelector(`#block${n}`);
+  removeColor(i) {
+    const $block = document.querySelectorAll('.number-block')[i];//(`#block${i}`);
     $block.classList.remove("picked");
   }
 

@@ -2,9 +2,9 @@ export default class Model {
   "use strict";
 
   /**
-	 * @param {!String} sortType type of sort
+   * @param {!String} sortType type of sort
    * @param {!Array} numberArray array contains numbers to sort
-	 */
+   */
   constructor(sortType, numberArray) {
     this.sortType = sortType;
     this.numberArray = numberArray;
@@ -19,7 +19,7 @@ export default class Model {
 
   findMaxNum() {
     let max = 0;
-    
+
     for (let i = 0; i < this.numberArray.length; i++) {
       if (this.numberArray[i] > max) {
         max = this.numberArray[i];
