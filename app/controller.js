@@ -1,4 +1,4 @@
-export const Controller = function (model, view) {
+const Controller = function (model, view) {
   const self = this;
   self.model = model;
   self.view = view;
@@ -31,7 +31,7 @@ export const Controller = function (model, view) {
 Controller.prototype.setView = function (locationHash) {
   const route = locationHash.split("/")[1];
   const page = route || "";
-  this.view.render("chooseSort", page);
+  this.view.render("changeSort", page);
 };
 
 Controller.prototype.addNumber = function (input) {
@@ -83,7 +83,6 @@ Controller.prototype.resetList = function () {
 };
 
 Controller.prototype.setRandom = function () {
-  console.log("Controller: randomNum");
   const self = this;
 
   self.model.setRandom((newList) => {
@@ -102,3 +101,5 @@ Controller.prototype.shuffleNum = function () {
 Controller.prototype.bubbleSort = function () {
   console.log("Controller: bubbleSort");
 };
+
+export default Controller;

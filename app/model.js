@@ -1,4 +1,4 @@
-export const Model = function () {
+const Model = function () {
   this.inputArray = [];
   this.sortedArray = [];
 };
@@ -68,3 +68,5 @@ Model.prototype.setRandom = function (callback) {
 };
 
 Model.prototype.removeAll = function () {};
+
+export default Model;

@@ -1,12 +1,9 @@
 import { Template } from "./template";
 
-export const View = function () {
+const View = function () {
   this.template = new Template();
 
-  this.ENTER_KEY = 13;
-  this.ESCAPE_KEY = 27;
-  this.randomCounter = 0;
-
+  this.$sortStyle = qs(".sort-style");
   this.$inputBox = qs(".input-box");
   this.$inputForm = qs(".input-form");
   this.$insertButton = qs(".insert-button");
@@ -16,19 +13,14 @@ export const View = function () {
   this.$resetButton = qs(".reset-button");
   this.$alertMessage = qs(".alert-message");
   this.$sortContainer = qs(".sort-list");
-  // this.$sortElementList = qsa(".sort-element");
 };
 
 View.prototype.render = function (viewCommand, parameter, ...args) {
   const self = this;
+
   const viewCommands = {
     paintNewList: function () {
       self.$resetButton.classList.remove("hide");
-      const elementCount = self.$sortContainer.childElementCount;
-
-      if (elementCount > 9) {
-        return;
-      }
 
       self.paintBar(parameter);
     },
@@ -89,9 +81,9 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
       console.log(parameter);
       console.log(args);
     },
-    bubbleSortPage: function () {},
-    insertionSortPage: function () {},
-    mergeSortPage: function () {},
+    changeSort: function () {
+      console.log(parameter);
+    },
   };
 
   viewCommands[viewCommand]();
@@ -133,37 +125,19 @@ View.prototype.connectHandler = function (event, handler) {
   }
 };
 
-View.prototype.getHeight = function (number) {
-  const HEIGHT = 400;
-  const wholeList = this.$sortContainer.childNodes;
-  let maxValue;
-  let elementtValue;
-
-  if (wholeList.length) {
-    for (const element of wholeList) {
-      elementtValue = parseInt(element.childNodes[3].innerHTML);
-      maxValue = Math.max(maxValue, elementtValue, number);
-    }
-  } else {
-    maxValue = Math.max(number, maxValue);
-  }
-
-  // return (number / maxValue) * HEIGHT;
-  return 300;
-};
-
 View.prototype.paintBar = function (list) {
   this.$sortContainer.innerHTML = "";
   const maxNumber = Math.max.apply(null, list);
 
   for (const number of list) {
     const li = document.createElement("li");
-    // const height = this.getHeight(number);
     li.classList.add("sort-element");
     li.innerHTML = `
-  			<div class="sort-bar" style="height:${(number / maxNumber) * 320}px"></div>
-  			<span class="sort-number">${number}</span>
-  			`;
+			<div class="sort-bar" style="height:${(number / maxNumber) * 320}px"></div>
+			<span class="sort-number">${number}</span>
+			`;
     this.$sortContainer.appendChild(li);
   }
 };
+
+export default View;
