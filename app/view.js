@@ -2,9 +2,9 @@ import {handleClick, handleKeyUp} from './controller.js'
 
 function View () {
   this.$typed = document.querySelector(".typed");
-  this.$contentContainer = document.querySelector(".contentContainer");
-  this.$bubbleSortButton = document.querySelector(".bubbleSortButton");
-  this.$errorMessage = document.querySelector(".errorMessage");
+  this.$contentContainer = document.querySelector('.contentContainer');
+  this.$bubbleSortButton = document.querySelector('.bubbleSortButton');
+  this.$errorMessage = document.querySelector('.errorMessage');
 
   this.$typed.addEventListener('keypress', handleKeyUp);
   this.$bubbleSortButton.addEventListener('click', handleClick);
@@ -22,6 +22,8 @@ View.prototype.addChildNode = function (value) {
   this.$child.classList.add('graphNode');
   this.$child.style.height = value + 5 + 'px';
   this.$contentContainer.appendChild(this.$child);
+  this.$graphNodes = document.getElementsByClassName('graphNode');
+  this.$graphNodes.innerHTML = value;
 }
 
 View.prototype.addSortedNode = function (number) {

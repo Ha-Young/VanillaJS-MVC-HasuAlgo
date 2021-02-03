@@ -7,28 +7,39 @@ function Controller (model, view) {
 }
 
 async function sortStorage(storeageArray) {
+
   for (let i = 0; i < storeageArray.length; i++) {
-    let swap;
-    for (let j= 0; j <storeageArray.length - 1 -i; j++) {
+    for (var j= 0; j <storeageArray.length - 1 -i; j++) {
       if (storeageArray[j] > storeageArray[j + 1]) {
-        swap = storeageArray[j];
+        let swap = storeageArray[j];
+
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
-        let $childNodes = document.querySelectorAll('.graphNode');
-        await changeGraph($childNodes[j + 1], $childNodes[j]);
-        console.log(i ,j);
+
+        await changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
       }
     }
 
-    if (!swap) break;
+    await changeColor(view.$graphNodes[storeageArray.length - i - 1]);
   }
 }
 
-function changeGraph(lefetNode, rightNode) {
+function changeGraph(leftNode, rightNode) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      view.$contentContainer.insertBefore(lefetNode, rightNode);
+      view.$contentContainer.insertBefore(rightNode, leftNode);
 
+      resolve();
+    }, 1000);
+  });
+}
+
+function changeColor(node) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+
+      node.style.background = 'green';
+      console.log('working')
       resolve();
     }, 1000);
   });
