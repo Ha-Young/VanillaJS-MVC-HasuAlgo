@@ -1,9 +1,10 @@
-import { swapNode, delay } from './utils/sortUtils';
+import { swapNode, onHighlightNode, offHighlightNode, onHighlightAllNodes, delay } from './utils/sortUtils';
 
 export class View {
   constructor() {
     this.form = document.querySelector('form');
     this.input = document.querySelector('input');
+    this.selector = document.querySelector('select');
     this.startButton = document.querySelector('.content-startButton');
     this.table = document.querySelector('.content-field');
     // sort 선택 버튼 추가, 그래서 startbutton에 같이 날리기
@@ -17,29 +18,20 @@ export class View {
     this.input.value = '';
   }
 
-  displayNodes(nodeLists) { // validation 어디서 해줘야 할 지 찾아보기..
-    // if (nodeLists.length === 0) {
-    //   console.log(24);
-    //   const warningMessage = document.createElement('p');
-    //   warningMessage.textContent = 'Put some numbers';
-    //   this.table.appendChild(warningMessage);
-
-    //   return;
-    // }
-
-    const DEFAULT_HEIGHTS = 2;
+  displayNodes(nodeLists) {
+    const DEFAULT_HEIGHTS = 4.5;
 
     for (let i = 0; i < nodeLists.length; i++) {
-      const nodeParent = document.createElement('div');
-      const nodeChild = document.createElement('div');
+      const nodeChild = document.createElement('div'); // 이제 차일드 아니어도 됨
+      const nodeValue = document.createElement('div');
 
-      nodeParent.classList.add('content-field-node-parent');
-      nodeParent.classList.add(`${i}`);
       nodeChild.classList.add('content-field-node');
+      nodeValue.classList.add('content-filed-node-value');
       nodeChild.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
+      nodeValue.textContent = `${nodeLists[i]}`
 
-      this.table.appendChild(nodeParent);
-      nodeParent.appendChild(nodeChild);
+      this.table.appendChild(nodeChild);
+      nodeChild.appendChild(nodeValue);
     }
   }
 
@@ -47,10 +39,33 @@ export class View {
     this.form.addEventListener('submit', event => {
       event.preventDefault();
 
-      if (this.nodeList) {
-        handler(this.nodeList);
-        this.resetInput();
+      if (!this.nodeList) {
+        // ui작업
+        throw new Error('Please enter numbers');
       }
+
+      const listArray = this.nodeList.split(',').map(item => Number(item));
+      const isNumbers = listArray.every(item => {
+        return typeof item === 'number' && !isNaN(item);
+      });
+      const isRanged = listArray.every(item => item > 0 && item < 100);
+      
+      if (listArray.length < 5 || listArray.length > 10) {
+        // ui 작업
+        throw new Error('please enter number 5 to 10');
+      }
+
+      if (!isNumbers) { // nan
+        throw new Error('please enter only number');
+      }
+
+      if (!isRanged) {
+        throw new Error('please enter number in 50 to 100');
+      }
+
+      // 수치값 밸리데이션.. else if로 묶어주는게 가독성이 나을지도 100 이상 입력 못하게
+      handler(listArray);
+      this.resetInput();
     });
   }
 
@@ -64,18 +79,24 @@ export class View {
   render(args) {
     const state = args.shift();
 
-    const viewCommands = {
-      startSorting: async function() {
-        await delay(250);
+    const viewCommands = { // 매개변수 이름, 받는 타입 다시 설정해주기
+      startSort: function() {
+        //onHighlightAllNodes();
       },
-      checkNodes: async function(args) {
-        await delay(250);
+      onLighthNode: function(args) { //  네이밍 다시..
+        onHighlightNode(args[0], args[1]);
       },
       swapNodes: function(args) {
         swapNode(args[0], args[1]);
       },
-      finishSorting: async function() {
-        await delay(500);
+      offLightNode: function(args) {
+        offHighlightNode(args[0], 'pink'); // 네이밍 다시
+      },
+      checkSortedNode: function(args) {
+        offHighlightNode(args[0], '#FCE2E6'); // 컬러 테마 다시 뽑아넣기
+      },
+      finishAllSort: function() {
+        onHighlightAllNodes();
       },
     };
 

@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
   <title>바닐라코딩</title>
 </head>
 <body>
+  <h1>Visualize Sorting Algorithms</h1>
   <div class="content">
-    <h1>Visualize Sorting Algorithms</h1>
     <div class="content-form">
+      <select class="content-form-select">
+        <option value="">SortType</option>
+        <option value="bubble-sort">BubbleSort</option>
+        <option value="quick-sort">QuickSort</option>
+      </select>
       <form>
         <input type="text" placeholder="type numbers">
         <input type="submit" value="Submit">
       </form>
-      <input class="content-startButton" type="submit" value="Start!" >
     </div>
+    <input class="content-startButton" type="submit" value="START!" >
     <div class="content-field">
-
     </div>
   </div>
   <script src="./app/index.js"></script>

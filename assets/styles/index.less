@@ -1,21 +1,53 @@
 html, body {
   box-sizing: border-box;
+  background-color: #FBEFEF;
+  font-family: 'Lobster', cursive;
+}
+
+h1 {
+  margin-top: 150px;
+  margin-bottom: 0px;
+  font-size: 50px;
+  text-align: center;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
+select, 
+input[type=submit], 
+input[type=text] {
+  box-sizing: border-box;
+  font-weight: 200;
+  font-family: 'Roboto Mono', monospace;
+  border-radius: 5px;
+  background-color: white;
+  border: 2px solid #DCDCDC; 
+  cursor: pointer;
+}
+
 .content {
-  max-width: 500px;
+  max-width: 600px;
   min-height: 400px;
-  margin: 100px auto;
+  margin: 50px auto;
+  padding: 25px;
+  box-shadow: 4px 4px 4px 4px #DCDCDC;
+  border-radius: 25px;
+  background-color: white;
   text-align: center;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+.content-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+}
+
+.content-form-select {
+  margin-right: 5px;
+  font-family: 'Roboto Mono', monospace;
 }
 
 .content-field {
@@ -23,21 +55,30 @@ img {
   min-height: 400px;
   flex-direction: row;
   justify-content: center;
-}
-
-.content-field-node-parent {
-  display: flex;
-  width: 40px;
-  min-height: 300px;
-  margin-left: 5px;
-  margin-right: 5px;
   align-items: flex-end;
-
+  font-family: 'Roboto Mono', monospace; //폰트 변수 설정해주기
 }
 
 .content-field-node {
+  display: flex;
   width: 40px;
   background-color: pink;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  align-items: flex-start;
+}
+
+.content-filed-node-value {
+  display: flex;
+  width: 40px;
+  justify-content: center;
+  color: white;
+}
+
+.content-startButton {
+  margin: 10px;
 }
 
 .transition-effect {

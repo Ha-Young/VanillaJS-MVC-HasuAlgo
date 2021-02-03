@@ -1,24 +1,31 @@
 export class Model {
   constructor() {
     this.lists = [];
-    this.sortState = [];
+    this.sortState = []; // array 아니어도..
+    this.sortType ='';
   }
 
   addNewNodes(lists) {
     // validation
-    this.onNodeListsDisplay(lists);
+    this.onDisplayNodeList(lists);
   }
 
   addNewState(state) {
     this.onUpdateState(state);
   }
 
-  addList(lists) {
-    // validation
-    const listArray = lists.split(',').map(item => Number(item));
+  addNewSortType(type) {
+    this.onUpdateSortType(type);
+  }
 
-    this.lists = listArray;
+  addList(lists) {
+    this.lists = lists;
     this.addNewNodes(this.lists);
+  }
+
+  addSortType(type) {
+    this.sortType = type;
+    this.addNewSortType(this.sortType);
   }
 
   addState(state) {
@@ -28,10 +35,14 @@ export class Model {
 
   bindNodeListDisplayed(callback) {
     // validation
-    this.onNodeListsDisplay = callback;
+    this.onDisplayNodeList = callback;
   }
 
   bindState(callback) {
     this.onUpdateState = callback;
+  }
+
+  bindSortType(callback) {
+    this.onUpdateSortType = callback;
   }
 }
