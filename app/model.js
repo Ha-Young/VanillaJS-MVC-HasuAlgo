@@ -9,7 +9,8 @@ Model.prototype.addNumber = function (array, callback) {
   }
 
   this.inputArray = this.inputArray.concat(array);
-  callback();
+  console.log(this.inputArray);
+  callback(this.inputArray);
 };
 
 Model.prototype.startSort = function (
@@ -59,11 +60,11 @@ Model.prototype.shuffleNum = function (callback) {
 };
 
 Model.prototype.setRandom = function (callback) {
-  const newRandom = Math.floor(Math.random() * 20) + 1;
+  const newRandom = Math.floor(Math.random() * 50) + 1;
 
   this.inputArray.push(newRandom);
 
-  callback(newRandom);
+  callback(this.inputArray);
 };
 
 Model.prototype.removeAll = function () {};

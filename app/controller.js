@@ -41,8 +41,8 @@ Controller.prototype.addNumber = function (input) {
     .map((num) => parseInt(num))
     .filter((num) => !isNaN(num));
 
-  self.model.addNumber(newNumber, function () {
-    self.view.render("paintNewNumber", newNumber);
+  self.model.addNumber(newNumber, function (newList) {
+    self.view.render("paintNewList", newList);
   });
 };
 
@@ -50,25 +50,25 @@ Controller.prototype.startSort = function () {
   const self = this;
 
   const startCompare = function (index, time) {
-    setTimeout(() => self.view.render("colorElement", index), time * 400);
+    setTimeout(() => self.view.render("colorElement", index), time * 350);
   };
 
   const swapElement = function (index, element1, element2, time) {
     setTimeout(
       () => self.view.render("swapElement", index, element1, element2),
-      time * 400
+      time * 350
     );
   };
 
   const finishCompare = function (index, lastIndex, time) {
     setTimeout(
       () => self.view.render("uncolorElement", index, lastIndex),
-      time * 400
+      time * 350
     );
   };
 
   const finishSort = function (time) {
-    setTimeout(() => self.view.render("finishSort"), time * 400 + 100);
+    setTimeout(() => self.view.render("finishSort"), time * 350 + 50);
   };
 
   self.model.startSort(startCompare, swapElement, finishCompare, finishSort);
@@ -86,8 +86,8 @@ Controller.prototype.setRandom = function () {
   console.log("Controller: randomNum");
   const self = this;
 
-  self.model.setRandom((number) => {
-    self.view.render("paintNewNumber", number);
+  self.model.setRandom((newList) => {
+    self.view.render("paintNewList", newList);
   });
 };
 
@@ -95,7 +95,7 @@ Controller.prototype.shuffleNum = function () {
   const self = this;
 
   self.model.shuffleNum((shuffledArray) => {
-    self.view.render("paintWholeList", shuffledArray);
+    self.view.render("paintNewList", shuffledArray);
   });
 };
 

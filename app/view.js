@@ -16,87 +16,61 @@ export const View = function () {
   this.$resetButton = qs(".reset-button");
   this.$alertMessage = qs(".alert-message");
   this.$sortContainer = qs(".sort-list");
-  this.$sortElementList = qsa(".sort-element");
+  // this.$sortElementList = qsa(".sort-element");
 };
 
 View.prototype.render = function (viewCommand, parameter, ...args) {
   const self = this;
   const viewCommands = {
-    paintWholeList: function () {
-      self.getHeight(20);
-      self.$sortContainer.innerHTML = "";
-      for (const number of parameter) {
-        const li = document.createElement("li");
-        li.classList.add("sort-element");
-        li.innerHTML = `
-				<div class="sort-bar" style="height: ${number * 15 + 20}px"></div>
-				<span class="sort-number">${number}</span>
-				`;
-        self.$sortContainer.appendChild(li);
-      }
-    },
-    paintNewNumber: function () {
-      self.getHeight();
+    paintNewList: function () {
+      self.$resetButton.classList.remove("hide");
       const elementCount = self.$sortContainer.childElementCount;
+
       if (elementCount > 9) {
         return;
       }
 
-      if (!Array.isArray(parameter)) {
-        self.paintBar(parameter);
-      } else {
-        for (const number of parameter) {
-          self.paintBar(number);
-        }
-      }
+      self.paintBar(parameter);
     },
     colorElement: function () {
       self.$shuffleButton.classList.add("hide");
       self.$randomButton.classList.add("hide");
       self.$startButton.classList.add("hide");
+      self.$resetButton.classList.add("hide");
       self.$sortElementList = qsa(".sort-element");
+
       const firstIndex = parameter;
       const secondIndex = firstIndex + 1;
       const firstElement = self.$sortElementList[firstIndex];
       const secondElement = self.$sortElementList[secondIndex];
-      if (firstElement) {
-        firstElement.childNodes[1].classList.add("compare");
-      }
-      if (secondElement) {
-        secondElement.childNodes[1].classList.add("compare");
-      }
+
+      firstElement.childNodes[1].classList.add("comparing");
+      secondElement.childNodes[1].classList.add("comparing");
     },
     swapElement: function () {
-      const firstIndex = parameter;
-      const secondIndex = firstIndex + 1;
+      const firstElement = self.$sortElementList[parameter];
+      const secondElement = self.$sortElementList[parameter + 1];
       const firstValue = args[0];
       const secondValue = args[1];
-      const firstElement = self.$sortElementList[firstIndex];
-      const secondElement = self.$sortElementList[secondIndex];
+      const firstHeight = firstElement.childNodes[1].style.height;
+      const secondHeight = secondElement.childNodes[1].style.height;
 
-      if (firstElement) {
-        firstElement.childNodes[3].innerHTML = firstValue;
-        firstElement.childNodes[1].style.height = `${firstValue * 15 + 20}px`;
-      }
-      if (secondElement) {
-        secondElement.childNodes[3].innerHTML = secondValue;
-        secondElement.childNodes[1].style.height = `${secondValue * 15 + 20}px`;
-      }
+      firstElement.childNodes[3].innerHTML = firstValue;
+      firstElement.childNodes[1].style.height = secondHeight;
+
+      secondElement.childNodes[3].innerHTML = secondValue;
+      secondElement.childNodes[1].style.height = firstHeight;
     },
     uncolorElement: function () {
-      const firstIndex = parameter;
-      const secondIndex = firstIndex + 1;
-      const firstElement = self.$sortElementList[firstIndex];
-      const secondElement = self.$sortElementList[secondIndex];
-      if (firstElement) {
-        firstElement.childNodes[1].classList.remove("compare");
-      }
+      const firstElement = self.$sortElementList[parameter];
+      const secondElement = self.$sortElementList[parameter + 1];
+      const lastIndex = args[0];
 
-      if (secondElement) {
-        if (secondIndex === args[0]) {
-          secondElement.childNodes[1].classList.add("done");
-        }
-        secondElement.childNodes[1].classList.remove("compare");
+      firstElement.childNodes[1].classList.remove("comparing");
+      secondElement.childNodes[1].classList.remove("comparing");
+
+      if (parameter === lastIndex - 1) {
+        secondElement.childNodes[1].classList.add("done");
       }
     },
     finishSort: function () {
@@ -134,10 +108,16 @@ View.prototype.connectHandler = function (event, handler) {
     });
   } else if (event === "startSort") {
     $on(self.$startButton, "click", function () {
+      if (!self.$sortContainer.childElementCount) {
+        return;
+      }
       handler();
     });
   } else if (event === "shuffleNum") {
     $on(self.$shuffleButton, "click", function () {
+      if (!self.$sortContainer.childElementCount) {
+        return;
+      }
       handler();
     });
   } else if (event === "resetList") {
@@ -146,37 +126,44 @@ View.prototype.connectHandler = function (event, handler) {
     });
   } else if (event === "setRandom") {
     $on(self.$randomButton, "click", function () {
-      if (self.randomCounter < 10) {
+      if (self.$sortContainer.childElementCount < 10) {
         handler();
-        self.randomCounter++;
       }
     });
   }
 };
 
-View.prototype.getHeight = function (value) {
+View.prototype.getHeight = function (number) {
   const HEIGHT = 400;
   const wholeList = this.$sortContainer.childNodes;
-  let maxValue = 0;
-  let currentValue;
+  let maxValue;
+  let elementtValue;
 
-  for (const element of wholeList) {
-    if (element) {
-      currentValue = parseInt(element.childNodes[3].innerHTML);
-      maxValue = Math.max(maxValue, currentValue);
+  if (wholeList.length) {
+    for (const element of wholeList) {
+      elementtValue = parseInt(element.childNodes[3].innerHTML);
+      maxValue = Math.max(maxValue, elementtValue, number);
     }
+  } else {
+    maxValue = Math.max(number, maxValue);
   }
 
-  return (currentValue / maxValue) * HEIGHT;
+  // return (number / maxValue) * HEIGHT;
+  return 300;
 };
 
-View.prototype.paintBar = function (number) {
-  const li = document.createElement("li");
+View.prototype.paintBar = function (list) {
+  this.$sortContainer.innerHTML = "";
+  const maxNumber = Math.max.apply(null, list);
 
-  li.classList.add("sort-element");
-  li.innerHTML = `
-				<div class="sort-bar" style="height: ${number * 15 + 20}px"></div>
-				<span class="sort-number">${number}</span>
-				`;
-  this.$sortContainer.appendChild(li);
+  for (const number of list) {
+    const li = document.createElement("li");
+    // const height = this.getHeight(number);
+    li.classList.add("sort-element");
+    li.innerHTML = `
+  			<div class="sort-bar" style="height:${(number / maxNumber) * 320}px"></div>
+  			<span class="sort-number">${number}</span>
+  			`;
+    this.$sortContainer.appendChild(li);
+  }
 };
