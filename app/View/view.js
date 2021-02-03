@@ -17,6 +17,7 @@ export function renderNumber (numRecords) {
   const index = numRecords.index;
   const cordinateX = numRecords.cordinateX;
   const cordinateY = numRecords.cordinateY;
+  const height = numRecords.height;
 
   const graphPannelDiv = document.querySelector("#graphPannel");
   const oneNumberDiv = document.createElement("div");
@@ -26,13 +27,10 @@ export function renderNumber (numRecords) {
   oneNumberInnerDiv.setAttribute('class', 'numberInner')
 
   oneNumberInnerDiv.innerHTML = value;
-  oneNumberInnerDiv.style.height = `${(30*value)}px`;
-  oneNumberInnerDiv.style.marginTop = `${300 - (30*value)}px`;
+  oneNumberInnerDiv.style.height = `${height}px`;
+  oneNumberInnerDiv.style.marginTop = `${300 - (15*value)}px`;
   
   oneNumberDiv.style.transform = `translate(${cordinateX}px, ${cordinateY}px)`;
-  oneNumberDiv.addEventListener('transitionend', function () {
-
-  });
   
   oneNumberDiv.appendChild(oneNumberInnerDiv);
   graphPannelDiv.appendChild(oneNumberDiv);
@@ -54,8 +52,15 @@ export function moveBar (targetObj, cordinateX, cordinateY) {
   return new Promise((resolve, reject) => {
     targetObj.cordinateY = cordinateY;
     const targetBar = document.querySelector(`#bar${targetObj.index}`);
+    const targetBarInnderDiv = targetBar.childNodes[0];
     targetBar.focus();
     targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
+    if (cordinateY > 0) {
+      targetBarInnderDiv.style.height = '30px';
+    } else {
+      console.log('is come????', targetObj.height);
+      targetBarInnderDiv.style.height = `${targetObj.height}px`;
+    }
     setTimeout(() => {
       resolve();
     }, 2000);

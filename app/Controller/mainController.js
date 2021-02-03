@@ -53,19 +53,17 @@ async function buttonClickEvent() {
   if (numbersArray === -1) {
     console.error('You only can input Number lower than 10');
   }
-
-  //console.log(numbersArray);
   
   const oneSectionPx = Number.parseInt(Math.round(950 / (numbersArray.length - 1)));
 
-  //console.log(oneSectionPx);
   bufferRender();
 
   // First rendering
   numbersArray.forEach((el, index) => {
     const cordinateX = oneSectionPx * index;
     const cordinateY = 0;
-    const newNumObj = new numModel(el, index, cordinateX, cordinateY);
+    const heightVal = (15*el);
+    const newNumObj = new numModel(el, index, cordinateX, cordinateY, heightVal);
     numbersObjArray.push(newNumObj);
     renderNumber(newNumObj.getNumRecords());
   });
@@ -101,7 +99,7 @@ function splitString (textBoxString, seperator) {
   for (let word of splitedArray) {
     word = word.replace(/[\s]/g, '').trim();
     word = Number.parseInt(word);
-    if(Number.isNaN(word) || word > 10) {
+    if(Number.isNaN(word) || word > 20) {
         
       return -1;
     }

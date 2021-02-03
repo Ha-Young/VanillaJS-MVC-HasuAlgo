@@ -1,7 +1,7 @@
 import {beforeSorting, moveBar, moveBarNoWait, exchange} from '../../View/view';
 
 const pivotMovingUp = 0;
-const pivotMovingYDistance = 350;
+const pivotMovingYDistance = 100;
 
 // insertionSort는 하나의 흐름만 담당 다시 올라가거나 내려가서 비교하고 교체할때 까지만
 export default async function insertionSort (numbersObjArray) {

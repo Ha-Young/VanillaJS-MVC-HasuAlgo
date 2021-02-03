@@ -6,10 +6,11 @@
 
 */
 
-export default function numModel (value, index, cordinateX, cordinateY) {
+export default function numModel (value, index, cordinateX, cordinateY, height) {
   this.value = value;
   this.index = index;
   this.order = index;
+  this.height = height;
   this.cordinateX = cordinateX;
   this.cordinateY = cordinateY;
 }
@@ -19,7 +20,8 @@ numModel.prototype.getNumRecords = function () {
     value : this.value,
     index : this.index,
     cordinateX : this.cordinateX,
-    cordinateY : this.cordinateY
+    cordinateY : this.cordinateY,
+    height : this.height
   };
 
   return returnObj;
