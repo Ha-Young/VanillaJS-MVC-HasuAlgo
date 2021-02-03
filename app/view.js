@@ -18,8 +18,8 @@ export default class View {
     child.classList.add('sort-list');
     child.style.height = `${(400/length) * (index+1)}px`;
     child.id = `itemId-${value}`;
-    child.appendChild(document.createElement('span'));
-    child.childNodes[0].textContent = value;
+    child.textContent = value;
+    child.dataset.test = value;
 
     this.$sortingWindow.appendChild(child);
   }
@@ -43,6 +43,14 @@ export default class View {
     nodeList[secondOrder - 1].classList.remove('move-left');
 
     this.$sortingWindow.insertBefore(nodeList[firstOrder], nodeList[secondOrder]);
+  }
+
+  changeOrderQuick = function (left, right) {
+    const nodeList = this.$sortingWindow.childNodes;
+    const rightClone = nodeList[right];
+
+    this.$sortingWindow.replaceChild(nodeList[left], nodeList[right]);
+    this.$sortingWindow.insertBefore(rightClone, nodeList[left]);
   }
 
   moveRight (index) {

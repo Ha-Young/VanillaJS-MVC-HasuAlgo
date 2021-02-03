@@ -4,8 +4,12 @@ export default class Model {
     this._selectedAlgorithm = '';
   }
 
-  setStorage = function (data) {
+  setStorage = function (data, callback) {
     this._storage = data;
+
+    if(callback) {
+      callback(this._storage);
+    }
   }
 
   setAlgorithm = function(algorithm) {

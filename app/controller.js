@@ -54,7 +54,8 @@ export default class Controller {
     this.bubbleSortCount = 0;
 
     if (this.model.getAlgorithm() === 'bubble') {
-      this.bubbleSortRecursion(this.model.getStorage().length - 1, 0);
+      // this.bubbleSortRecursion(this.model.getStorage().length - 1, 0);
+      this.bubbleSortAsync();
     }
 
     if (this.model.getAlgorithm() === 'quick') {
@@ -63,69 +64,105 @@ export default class Controller {
     }
   }
 
-  // bubbleSort = function () {
-  //   const listToSort = this.model.getStorage();
-  //   let count = 0;
-  //   debugger;
-  //   for (let i = listToSort.length - 1; i >= 1; i--) {
-  //     for (let j = 0; j < i; j++) {
-  //       if (listToSort[j] > listToSort[j + 1]) {
-  //         count++;
-  //         listToSort.splice(j+1, 0, listToSort.splice(j,1)[0]);
-  //         setTimeout(() => {
-  //           this.view.changeOrder(j, j+2);
-  //         }, 300 * count);
-  //       }
-  //     }
-  //   }
-  // }
+  bubbleSortAsync = async function () {
+    const listToSort = this.model.getStorage();
+    let count = 0;
 
-  bubbleSortRecursion = function (outerIndex, innerIndex) {
-    setTimeout(function () {
-      const listToSort = this.model.getStorage().slice();
-      this.view.changeColorOfSelectedItem(innerIndex, innerIndex+1);
+    for (let i = listToSort.length - 1; i >= 1; i--) {
+      for (let j = 0; j < i; j++) {
+        this.view.changeColorOfSelectedItem(j, j + 1);
+        await this.sleep(500);
 
-      setTimeout(function () {
-        this.model.setStorage(listToSort);
-        this.view.removeColorOfUnselectedItem(innerIndex, innerIndex+1);
+        if (listToSort[j] > listToSort[j + 1]) {
+          count++;
 
-        if (listToSort[innerIndex] > listToSort[innerIndex + 1]) {
-          listToSort.splice(innerIndex+1, 0, listToSort.splice(innerIndex,1)[0]);
-          this.bubbleSortCount++;
-          this.view.moveRight(innerIndex);
-          this.view.moveLeft(innerIndex+1);
+          listToSort.splice(j+1, 0, listToSort.splice(j,1)[0]);
 
-          setTimeout(function (innerIndex) {
-            this.view.changeOrder(innerIndex, innerIndex+2);
-          }.bind(this, innerIndex), 500);
+          this.view.moveRight(j);
+          this.view.moveLeft(j + 1);
+
+          await this.sleep(500);
+
+          this.view.changeOrder(j, j + 2);
         }
 
-        if (outerIndex === 1 && innerIndex === 0) {
-          this.view.changeColorOfSortedItem([outerIndex, innerIndex]);
+        this.view.removeColorOfUnselectedItem(j, j + 1);
+
+        if (i === 1 && j === 0) {
+          this.view.changeColorOfSortedItem([i, j]);
           return;
         }
 
-        if (innerIndex === outerIndex - 1) {
-          if (this.bubbleSortCount === 0) {
-            this.view.changeColorOfSortedItem(Array.from(Array(outerIndex + 1).keys()));
+        if (j === i - 1) {
+          if (count === 0) {
+            this.view.changeColorOfSortedItem(Array.from(Array(i + 1).keys()));
             return;
           }
 
-          this.bubbleSortCount = 0;
+          count = 0;
 
-          if (listToSort[outerIndex] === parseInt(this.view.$sortingWindow.childNodes[outerIndex].innerText)) {
-            this.view.changeColorOfSortedItem([outerIndex]);
+          if (listToSort[i] === parseInt(this.view.$sortingWindow.childNodes[i].innerText)) {
+            this.view.changeColorOfSortedItem([i]);
           } else {
-            this.view.changeColorOfSortedItem([outerIndex - 1]);
+            this.view.changeColorOfSortedItem([i - 1]);
           }
-
-          return this.bubbleSortRecursion(--outerIndex, 0);
         }
 
-        return this.bubbleSortRecursion(outerIndex, ++innerIndex);
-      }.bind(this), 500);
-    }.bind(this), 500);
+        await this.sleep(300);
+      }
+    }
   }
+
+  sleep = function (ms) {
+    return new Promise((resolve) => setTimeout(() => resolve(), ms));
+  }
+
+  // bubbleSortRecursion = function (outerIndex, innerIndex) {
+  //   setTimeout(function () {
+  //     const listToSort = this.model.getStorage().slice();
+  //     this.view.changeColorOfSelectedItem(innerIndex, innerIndex+1);
+
+  //     setTimeout(function () {
+  //       this.model.setStorage(listToSort);
+  //       this.view.removeColorOfUnselectedItem(innerIndex, innerIndex+1);
+
+  //       if (listToSort[innerIndex] > listToSort[innerIndex + 1]) {
+  //         listToSort.splice(innerIndex+1, 0, listToSort.splice(innerIndex,1)[0]);
+  //         this.bubbleSortCount++;
+  //         this.view.moveRight(innerIndex);
+  //         this.view.moveLeft(innerIndex+1);
+
+  //         setTimeout(function (innerIndex) {
+  //           this.view.changeOrder(innerIndex, innerIndex+2);
+  //         }.bind(this, innerIndex), 500);
+  //       }
+
+  //       if (outerIndex === 1 && innerIndex === 0) {
+  //         this.view.changeColorOfSortedItem([outerIndex, innerIndex]);
+  //         return;
+  //       }
+
+  //       if (innerIndex === outerIndex - 1) {
+  //         if (this.bubbleSortCount === 0) {
+  //           this.view.changeColorOfSortedItem(Array.from(Array(outerIndex + 1).keys()));
+  //           return;
+  //         }
+
+  //         this.bubbleSortCount = 0;
+
+  //         if (listToSort[outerIndex] === parseInt(this.view.$sortingWindow.childNodes[outerIndex].innerText)) {
+  //           this.view.changeColorOfSortedItem([outerIndex]);
+  //         } else {
+  //           this.view.changeColorOfSortedItem([outerIndex - 1]);
+  //         }
+
+  //         return this.bubbleSortRecursion(--outerIndex, 0);
+  //       }
+
+  //       return this.bubbleSortRecursion(outerIndex, ++innerIndex);
+  //     }.bind(this), 500);
+  //   }.bind(this), 500);
+  // }
 
   quickSort = function (listToSort, left = 0, right = listToSort.length - 1) {
     if (left >= right) {
@@ -133,6 +170,7 @@ export default class Controller {
     }
 
     const borderIndex = this.partition.call(this,listToSort, left, right);
+
     this.quickSort.call(this, listToSort, left, borderIndex - 1);
     this.quickSort.call(this, listToSort, borderIndex, right);
   }
@@ -152,6 +190,7 @@ export default class Controller {
 
       if (left <= right) {
         this.swap(array, left, right);
+        this.view.changeOrderQuick(left, right);
         left++;
         right--;
       }
