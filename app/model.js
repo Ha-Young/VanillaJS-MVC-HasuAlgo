@@ -4,6 +4,7 @@ class Model {
   constructor() {
     this.data = null;
     this.filteredData = null;
-    this.dataArray = null;
+    this.unsortedArray = null;
+    this.sortedArray = null;
   }
 }
