@@ -5,4 +5,16 @@
   min-height: 300px;
   margin: 0px auto;
   vertical-align: bottom;
+  transition: all 1s ease;
+}
+
+.backwardArrow img {
+  position: absolute;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  top: 7%;
+  left: 15%;
+  cursor: pointer;
+  transition: all 1s ease;
 }

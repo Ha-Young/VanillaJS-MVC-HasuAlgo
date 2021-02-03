@@ -4,9 +4,26 @@
 
 */
 
+import leftArrow from './../../assets/images/leftArrow.png';
+
+const contentDiv = document.querySelector('.content');
+const graphPannelDiv = document.querySelector("#graphPannel");
+
 export function bufferRender () {
-  const graphPannelDiv = document.querySelector("#graphPannel");
+  graphPannelDiv.innerHTML = '';
   const graphPannelBufferDiv = document.createElement("div");
+
+  const arrowDivTag = document.createElement("div");
+  arrowDivTag.setAttribute('class', 'backwardArrow');
+  arrowDivTag.style.display = 'none';
+  arrowDivTag.addEventListener('click', backToInputPage);
+  
+  const arrowImageTag = document.createElement("img");
+  arrowImageTag.setAttribute('class', 'leftArrow');
+  arrowImageTag.setAttribute('src', leftArrow);
+  arrowDivTag.appendChild(arrowImageTag);
+  graphPannelBufferDiv.appendChild(arrowDivTag);
+
   graphPannelBufferDiv.setAttribute('class', 'graphPannel--buffer');
   graphPannelBufferDiv.style.height = '30%';
   graphPannelDiv.appendChild(graphPannelBufferDiv);
@@ -24,11 +41,11 @@ export function renderNumber (numRecords) {
   oneNumberDiv.setAttribute('class', 'numberOuter');
   oneNumberDiv.setAttribute('id', `bar${index}`);
   const oneNumberInnerDiv = document.createElement("div");
-  oneNumberInnerDiv.setAttribute('class', 'numberInner')
+  oneNumberInnerDiv.setAttribute('class', 'numberInner');
 
   oneNumberInnerDiv.innerHTML = value;
   oneNumberInnerDiv.style.height = `${height}px`;
-  oneNumberInnerDiv.style.marginTop = `${300 - (15*value)}px`;
+  oneNumberInnerDiv.style.marginTop = `${300 - (20*value)}px`;
   
   oneNumberDiv.style.transform = `translate(${cordinateX}px, ${cordinateY}px)`;
   
@@ -36,15 +53,23 @@ export function renderNumber (numRecords) {
   graphPannelDiv.appendChild(oneNumberDiv);
 }
 
-export function beforeSorting (targetObj, cordinateX, cordinateY) {
+export function beforeSorting (targetObj, cordinateY, timing, whichJump) {
   return new Promise((resolve, reject) => {
     targetObj.cordinateY = cordinateY;
     const targetBar = document.querySelector(`#bar${targetObj.index}`);
+    const targetBarInnderDiv = targetBar.childNodes[0];
     targetBar.focus();
     targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
+    if (whichJump === 'last') {
+      targetBarInnderDiv.style.animation = "lastJump .8s";
+    } else {
+      targetBarInnderDiv.style.animation = "jump 1.5s";
+    }
+    
+    targetBarInnderDiv.style.backgroundColor = "#ac1717";
     setTimeout(() => {
       resolve();
-    }, 2000);
+    }, timing);
   });
 }
 
@@ -60,10 +85,11 @@ export function moveBar (targetObj, cordinateX, cordinateY) {
     } else {
       console.log('is come????', targetObj.height);
       targetBarInnderDiv.style.height = `${targetObj.height}px`;
+      targetBarInnderDiv.style.backgroundColor = '#1b58b2';
     }
     setTimeout(() => {
       resolve();
-    }, 2000);
+    }, 1000);
   });
 }
 
@@ -97,6 +123,17 @@ export function exchange (pivotObj, anotherObj) {
       targetBar1.setAttribute('id', `bar${pivotObj.index}`);
       targetBar2.setAttribute('id', `bar${anotherObj.index}`);
       resolve();
-    }, 2000);
+    }, 1000);
+  })
+}
+
+async function backToInputPage () {
+  await new Promise((resolve, reject) => {
+    graphPannelDiv.style.opacity = 0;
+      setTimeout(() => {
+        graphPannelDiv.style.display = 'none';
+        contentDiv.style.display = 'flex';
+        contentDiv.style.opacity = 1;
+      }, 1000);
   })
 }

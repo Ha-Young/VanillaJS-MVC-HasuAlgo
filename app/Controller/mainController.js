@@ -17,23 +17,34 @@ const submitButton = document.querySelector("#submitButton");
 const textBox = document.querySelector('#textBox');
 const contentDiv = document.querySelector('.content');
 const graphPannelDiv = document.querySelector('.graphPannel');
+const $errorMessageDiv = document.querySelector('.errorMessageDiv');
+const mainTitle = document.querySelector('.mainTitle--h1');
 let numbersObjArray = [];
 
 //submit 버튼에 이벤트 심기
 submitButton.addEventListener('click', buttonClickEvent);
 
-async function buttonClickEvent() {
+async function buttonClickEvent () {
   const blank = " ";
   const comma = ",";
   // init
   numbersObjArray = [];
   initGraphPannel();
+  $errorMessageDiv.style.display = 'block';
+
+  // err handling
+  if (mainTitle.innerText === 'Sorting' || !mainTitle.innerText) {
+    $errorMessageDiv.innerHTML = 'Please choose the sorting you want!';
+    return;
+  }
 
   // TODO : 다 끝나고 const로 바꿔주기
   let textBoxString = textBox.value.trim();
   // err handling
   if (!textBoxString) {
-    //console.error('No text!!');
+    console.error('No text!!');
+    $errorMessageDiv.innerHTML = 'Please input numbers~';
+    return;
     // test
     textBoxString = '5,3,4,1,2';
   }
@@ -50,8 +61,11 @@ async function buttonClickEvent() {
     numbersArray = splitString(textBoxString, '');
   }
 
+  // err hanling
   if (numbersArray === -1) {
-    console.error('You only can input Number lower than 10');
+    console.error('You only can input only the Number lower than 20');
+    $errorMessageDiv.innerHTML = 'Sorry! You only can input the Number lower than 20';
+    return;
   }
   
   const oneSectionPx = Number.parseInt(Math.round(950 / (numbersArray.length - 1)));
@@ -62,7 +76,7 @@ async function buttonClickEvent() {
   numbersArray.forEach((el, index) => {
     const cordinateX = oneSectionPx * index;
     const cordinateY = 0;
-    const heightVal = (15*el);
+    const heightVal = (20*el);
     const newNumObj = new numModel(el, index, cordinateX, cordinateY, heightVal);
     numbersObjArray.push(newNumObj);
     renderNumber(newNumObj.getNumRecords());
@@ -71,14 +85,19 @@ async function buttonClickEvent() {
   const shadowDiv = document.querySelector('.shadow');
 
   contentDiv.style.opacity = 0;
+  shadowDiv.style.innerText = '';
+  $errorMessageDiv.innerHTML = '';
+  $errorMessageDiv.style.display = 'none';
   await new Promise((resolve, reject) => {
     setTimeout(() => {
       contentDiv.style.display = 'none';
-      graphPannelDiv.style.display = 'inline-block'
+      graphPannelDiv.style.display = 'inline-block';
+      graphPannelDiv.style.opacity = 1;
       shadowDiv.style.display = 'flex';
       setTimeout(() => {
         shadowDiv.innerText = 'insert Sort!';
         setTimeout(() => {
+          shadowDiv.innerText = '';
           shadowDiv.style.display = 'none';
           resolve();
         }, 1000);
@@ -112,3 +131,27 @@ function splitString (textBoxString, seperator) {
   return returnArray;
 }
 
+mainTitle.addEventListener('mouseover', mainTitleHoverHandler);
+
+function mainTitleHoverHandler () {
+  this.style.transform = `translate(px, -30px)`;
+  this.style.textShadow = '1px 1px 2px #343a40';
+}
+
+mainTitle.addEventListener('mouseout', mainTitleMouseOutHandler);
+
+function mainTitleMouseOutHandler () {
+  this.style.transform = `translate(0px, 0px)`;
+  this.style.textShadow = '0px 0px 0px white';
+}
+
+
+mainTitle.addEventListener('click', mainTitleToggleHandler);
+
+function mainTitleToggleHandler () {
+  if (this.innerText !== 'Insertion Sort') {
+    this.innerText = 'Insertion Sort';
+  } else {
+    this.innerText = 'Quick Sort';
+  }
+}

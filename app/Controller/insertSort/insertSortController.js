@@ -8,11 +8,10 @@ export default async function insertionSort (numbersObjArray) {
   let testPromise = new Promise(async function (resolve, reject) {
 
     // 여기서 for문을 돌리고 끝내자
-    // TODO : inset algo 구현
     for (let i = 1; i < numbersObjArray.length; i++) {
       let pivotIndex = i;
       // 동작 : 이것이 피봇이다!! 라는 동작 설정
-      await beforeSorting(numbersObjArray[i], numbersObjArray[i].cordinateX, pivotMovingUp);
+      await beforeSorting(numbersObjArray[i], pivotMovingUp, 2000, 'beforeSorting');
       // 동작 : i번 피봇을 내림
       await moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, pivotMovingYDistance);
       // 바로 전에께 크면 시작 : 시작 조건
@@ -37,11 +36,21 @@ export default async function insertionSort (numbersObjArray) {
       await moveBar(numbersObjArray[pivotIndex], numbersObjArray[pivotIndex].cordinateX, pivotMovingUp);
     }
 
-    resolve();
+    resolve(numbersObjArray);
   });
 
   testPromise.then(async (result) => {
       // 동작 : 완료된 동작! 처음부터 차례대로 점프!
+      const backArrowSpan = document.querySelector('.backwardArrow');
+      await new Promise(async (resolve, reject) => {
+        for (let numberObj of result) {
+          await beforeSorting(numberObj, pivotMovingUp, 300, 'last');
+        }
+        backArrowSpan.style.display = 'inline-block';
+        setTimeout(() => {
+          resolve();
+        }, 2000);
+      })
     })
     .catch(function(result) {
       console.log('catched');
