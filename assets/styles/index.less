@@ -80,6 +80,7 @@ html, body {
 
 .view-port-box {
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   height: 400px;
@@ -96,6 +97,21 @@ html, body {
   height: 300px;
   overflow: hidden;
   perspective: 500px;
+}
+
+.highlighter-box {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.highlighter {
+  width: 20px;
+  height: 5px;
+  border-radius: 20px;
+  background-color: #4e4e4e;
+  transition: all ease 0.5s;
 }
 
 .bar-box {
@@ -119,34 +135,34 @@ html, body {
   transform-style: preserve-3d;
 }
 
-div[data-idx="0"] > .bar {
+.bar-box[data-idx="0"] > .bar {
   background-color:#1ffdff;
 }
-div[data-idx="1"] > .bar {
+.bar-box[data-idx="1"] > .bar {
   background-color:#1ce8f5;
 }
-div[data-idx="2"] > .bar {
+.bar-box[data-idx="2"] > .bar {
   background-color:#18d2ea;
 }
-div[data-idx="3"] > .bar {
+.bar-box[data-idx="3"] > .bar {
   background-color:#15bde0;
 }
-div[data-idx="4"] > .bar {
+.bar-box[data-idx="4"] > .bar {
   background-color:#11a8d5;
 }
-div[data-idx="5"] > .bar {
+.bar-box[data-idx="5"] > .bar {
   background-color:#0e93cb;
 }
-div[data-idx="6"] > .bar {
+.bar-box[data-idx="6"] > .bar {
   background-color:#0a7ec1;
 }
-div[data-idx="7"] > .bar {
+.bar-box[data-idx="7"] > .bar {
   background-color:#0769b7;
 }
-div[data-idx="8"] > .bar {
+.bar-box[data-idx="8"] > .bar {
   background-color:#0454ad;
 }
-div[data-idx="9"] > .bar {
+.bar-box[data-idx="9"] > .bar {
   background-color:#003fa3;
 }
 

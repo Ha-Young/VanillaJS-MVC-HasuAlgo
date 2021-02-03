@@ -5,6 +5,7 @@ export default function View() {
   this.$mainInputSubmitButton = document.querySelector(".main-input-submit");
   this.$viewPortBox = document.querySelector(".view-port-box");
   this.$viewPort = document.querySelector(".view-port");
+  this.$highlighterBox = document.querySelector(".highlighter-box");
   this.$messageBox = document.querySelector(".message-box");
 
   this.elemNames = {
@@ -15,6 +16,7 @@ export default function View() {
     viewPortBox: this.$viewPortBox,
     viewPort: this.$viewPort,
     messageBox: this.$messageBox,
+    highlighterBox: this.$highlighterBox,
   };
 
   this.VIEW_PORT_HEIGHT = 270;
@@ -48,8 +50,8 @@ View.prototype.activateEvent = function ($eventTarget, event, handler) {
   $eventTarget.addEventListener(event, handler);
 };
 
-View.prototype.clearViewPort = function () {
-  this.$viewPort.innerHTML = "";
+View.prototype.clearElem = function ($target) {
+  $target.innerHTML = "";
 };
 
 View.prototype.updateMessage = function (message) {
@@ -82,19 +84,30 @@ View.prototype.render = function ($parentNode, $target) {
 //   }
 // }
 
+View.prototype.createHighlighterElem = function (num) {
+  const result = [];
+
+  for (let i = 0; i < num; i++) {
+    const template = 
+      `<div class="highlighter" data-idx="${i}"></div>`;
+
+    result.push(this.createElement(template));
+  }
+
+  return result;
+}
+
 View.prototype.createBarElem = function (inputtedNums) {
   return inputtedNums.map(
     (num, i) => {
       const template = 
-        `
-          <div class="bar-box" data-idx="${num.sortedIndex}">
+        `<div class="bar-box" data-idx="${num.sortedIndex}">
             <div class="number">${num.num}</div>
             <div class="bar"></div>
-          </div>
-        `.trim();
+          </div>`;
       
       const $barBox = this.createElement(template);
-      
+
       const barHeight = (() => {
         const height =  Math.round(this.VIEW_PORT_HEIGHT * (num.percentage / 100));
         if (!height) {
@@ -127,17 +140,24 @@ View.prototype.getElemPos = function($target) {
   return $target.getBoundingClientRect();
 };
 
-View.prototype.moveElem = function ($target, destinationPostion) {
-  const targetMatrix = new WebKitCSSMatrix(getComputedStyle($target).transform)
-  const movedXValue = targetMatrix.m41;
-  const movedYValue = targetMatrix.m42;
+View.prototype.moveElem = function ($target, destinationPostion, waitingTime = 0, skipX = false, skipY = false) {
+  return new Promise((resolve) => {
+    const targetMatrix = new WebKitCSSMatrix(getComputedStyle($target).transform)
+    
+    const currentPosition = $target.getBoundingClientRect();
 
-  const currentPosition = $target.getBoundingClientRect();
+    const movedXValue = targetMatrix.m41;
+    const movedYValue = targetMatrix.m42;
 
-  const xMovingValue = movedXValue + destinationPostion.left - currentPosition.left;
-  const yMovingValue = movedYValue + destinationPostion.top - currentPosition.top;
+    const xMovingValue = skipX ? movedXValue : movedXValue + destinationPostion.left - currentPosition.left;
+    const yMovingValue = skipY ? movedYValue : movedYValue + destinationPostion.top - currentPosition.top;
+  
+    $target.style.transform = `translate(${xMovingValue}px, ${yMovingValue}px)`;
 
-  $target.style.transform = `translate(${xMovingValue}px, ${yMovingValue}px)`;
+    setTimeout(() => {
+      resolve(true);
+    }, waitingTime);
+  });
 }
 
 View.prototype.swapElem = function ($a, $b, indexA, indexB, elemPositions) {
@@ -154,21 +174,48 @@ View.prototype.swapElem = function ($a, $b, indexA, indexB, elemPositions) {
   });
 };
 
-View.prototype.progressBubbleSortAnimation = async function (sortSteps, $barBoxes, barPositions) {
-  console.log(sortSteps);
-  
-  for (const steps of sortSteps) {
-    const indexA = steps.indexA;
-    const indexB = steps.indexB;
+View.prototype.changeElemColor = function ($target, color) {
+  if (typeof color !== "string") {
+    throw new Error("The color argument is not a string");
+  }
 
-    const $barBoxA = $barBoxes[indexA];
-    const $barBoxB = $barBoxes[indexB];
+  if (Array.isArray($target)) {
+    for (const $targetItem of $target) {
+      $targetItem.style.backgroundColor = color;
+    }
 
-    // if (steps.shouldSwap) {
+    return;
+  }
 
-    // }
-    [$barBoxes[indexA], $barBoxes[indexB]] = [$barBoxes[indexB], $barBoxes[indexA]];
+  $target.style.backgroundColor = color;
+}
 
-    await this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions);
+View.prototype.progressBubbleSortAnimation = async function (sortSteps, $barBoxes, $highlighters , barPositions) {
+  const $highlighterA = $highlighters[0];
+  const $highlighterB = $highlighters[1];
+
+  for (const step of sortSteps) {
+    const indexA = step.indexA;
+    const indexB = step.indexB;
+
+    if (step.shouldSwap) {
+      this.changeElemColor([$highlighterA, $highlighterB], "#86c528");
+    } else {
+      this.changeElemColor([$highlighterA, $highlighterB], "#4e4e4e");
+    }
+
+    const highlighterADestination = barPositions[indexA];
+    const highlighterBDestination = barPositions[indexB];
+
+    this.moveElem($highlighterA ,highlighterADestination, 500, false, true);
+    await this.moveElem($highlighterB ,highlighterBDestination, 500, false, true);
+
+    if (step.shouldSwap) {
+      const $barBoxA = $barBoxes[indexA];
+      const $barBoxB = $barBoxes[indexB];
+
+      [$barBoxes[indexA], $barBoxes[indexB]] = [$barBoxes[indexB], $barBoxes[indexA]];
+      await this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions);
+    }
   }
 }

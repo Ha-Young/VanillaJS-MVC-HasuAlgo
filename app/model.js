@@ -67,7 +67,7 @@ Model.prototype.makeBubbleSortProcesses = function () {
   const sortSteps = [];
 
   for (let i = 0; i < inputtedNums.length - 1; i++) {
-    for (let j = 0; j < inputtedNums.length - i; j++) {
+    for (let j = 0; j < inputtedNums.length - 1 - i; j++) {
 
       const a = inputtedNums[j];
       const b = inputtedNums[j + 1];
@@ -88,15 +88,15 @@ Model.prototype.makeBubbleSortProcesses = function () {
           afterSwap: JSON.stringify(after),
         });
       } 
-      // else {
-      //   sortSteps.push({
-      //     shouldSwap: false,
-      //     a: a,
-      //     b: b,
-      //     indexA: j,
-      //     indexB: j + 1,
-      //   });
-      // }
+      else {
+        sortSteps.push({
+          shouldSwap: false,
+          a: a,
+          b: b,
+          indexA: j,
+          indexB: j + 1,
+        });
+      }
     }
   }
 
