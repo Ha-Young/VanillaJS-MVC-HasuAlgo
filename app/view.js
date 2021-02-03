@@ -174,20 +174,36 @@ View.prototype.swapElem = function ($a, $b, indexA, indexB, elemPositions) {
   });
 };
 
-View.prototype.changeElemColor = function ($target, color) {
-  if (typeof color !== "string") {
-    throw new Error("The color argument is not a string");
+View.prototype.addClassName = function ($target, className) {
+  if (typeof className !== "string") {
+    throw new Error("The className argument is not a string");
   }
 
   if (Array.isArray($target)) {
     for (const $targetItem of $target) {
-      $targetItem.style.backgroundColor = color;
+      $targetItem.classList.add(className);
     }
 
     return;
   }
 
-  $target.style.backgroundColor = color;
+  $target.classList.add(className);
+}
+
+View.prototype.removeClassName = function ($target, className) {
+  if (typeof className !== "string") {
+    throw new Error("The className argument is not a string");
+  }
+
+  if (Array.isArray($target)) {
+    for (const $targetItem of $target) {
+      $targetItem.classList.remove(className);
+    }
+
+    return;
+  }
+
+  $target.classList.remove(className);
 }
 
 View.prototype.progressBubbleSortAnimation = async function (sortSteps, $barBoxes, $highlighters , barPositions) {
@@ -199,9 +215,9 @@ View.prototype.progressBubbleSortAnimation = async function (sortSteps, $barBoxe
     const indexB = step.indexB;
 
     if (step.shouldSwap) {
-      this.changeElemColor([$highlighterA, $highlighterB], "#86c528");
+      this.addClassName([$highlighterA, $highlighterB], "should-swap");
     } else {
-      this.changeElemColor([$highlighterA, $highlighterB], "#4e4e4e");
+      this.removeClassName([$highlighterA, $highlighterB], "should-swap");
     }
 
     const highlighterADestination = barPositions[indexA];
