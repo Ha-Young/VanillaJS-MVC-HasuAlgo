@@ -25,6 +25,7 @@
 
   .type-area {
     .input-numbers {
+      color: white;
       border-bottom: 2px solid @dark-nomal-font-color !important;
     }
     .label-numbers {
@@ -62,10 +63,27 @@
   svg {
     g {
       rect {
-        fill: @dark-hilight-color;
+        fill: rgb(18, 6, 128);
       }
       text {
         fill: white;
+      }
+    }
+    .selected {
+      rect {
+        fill: rgb(150, 4, 4);
+      }
+    }
+
+    .sorted {
+      rect {
+        fill: rgb(184, 127, 22);
+      }
+    }
+
+    .check {
+      rect {
+        fill:  rgba(82, 151, 36);
       }
     }
   }
