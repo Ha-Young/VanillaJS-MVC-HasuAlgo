@@ -1,3 +1,4 @@
+import { remove } from "lodash";
 export { View };
 
 class View {
@@ -55,8 +56,8 @@ class View {
     }
   }
 
-  swapGraph(leftGraph, rightGraph, leftIndex, rightIndex) {
-    const graphStyle = window.getComputedStyle(leftGraph);
+  swapGraph(leftBar, rightBar, leftBarIndex, rightBarIndex) {
+    const graphStyle = window.getComputedStyle(leftBar);
     const width = Number(graphStyle.width.replace('px', ''));
     const margin = Number(graphStyle.marginLeft.replace('px', ''));
 
@@ -65,11 +66,11 @@ class View {
 
     return new Promise ((resolve) => {
       setTimeout(() => {
-        makeTransform(leftGraph, leftMove);
-        makeTransform(rightGraph, rightMove);
-        const oldGraph = leftGraph;
-        this.graphs[leftIndex] = rightGraph;
-        this.graphs[rightIndex] = oldGraph;
+        makeTransform(leftBar, leftMove);
+        makeTransform(rightBar, rightMove);
+        const oldGraph = leftBar;
+        this.graphs[leftBarIndex] = rightBar;
+        this.graphs[rightBarIndex] = oldGraph;
         resolve("swap done!");
       }, 500);
     });
@@ -87,30 +88,30 @@ class View {
     }
   }
 
-  selectGraph(leftGraph, rightGraph, classname) {
+  selectGraph(leftBar, rightBar, className) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        leftGraph.classList.add(classname);
-        rightGraph.classList.add(classname);
+        leftBar.classList.add(className);
+        rightBar.classList.add(className);
         resolve("select Done")
       }, 500);
     });
   }
 
-  deselectGraph(leftGraph, rightGraph, classname) {
+  deselectGraph(leftBar, rightBar, className) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        leftGraph.classList.remove(classname);
-        rightGraph.classList.remove(classname);
+        leftBar.classList.remove(className);
+        rightBar.classList.remove(className);
         resolve("deselect Done")
       }, 500);
     });
   }
 
-  confirmGraph(graph, classname) {
+  confirmGraph(graph, className) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        graph.classList.add(classname);
+        graph.classList.add(className);
         resolve("confirm Done")
       }, 500);
     });
