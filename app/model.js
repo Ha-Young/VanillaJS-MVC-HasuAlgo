@@ -11,6 +11,12 @@ const view = new View();
 const controller = new Controller();
 
 const $inputBox = document.getElementById('inputBox');
+const $submitButton = document.getElementById('submitButton');
+const $playButton = document.getElementById('playButton');
+const $stopButton = document.getElementById('stopButton');
+const $replayButton = document.getElementById('replayButton');
+const $fastButton = document.getElementById('fastButton');
+const $slowButton = document.getElementById('slowButton');
 let sortingList;
 
 $inputBox.addEventListener('keydown', function(event) {
@@ -22,14 +28,27 @@ $inputBox.addEventListener('keydown', function(event) {
   }
 });
 
+$submitButton.addEventListener('click', function () {
+  const inputValue = $inputBox.value;
+
+  sortingList = controller._checkValue(inputValue);
+  view._createBlock(sortingList);
+});
+
+$playButton.addEventListener('click', function () {
+  controller._bubbleSort(sortingList);
+});
+
+$fastButton.addEventListener('click', function () {
+  controller._setTime("down");
+});
+
+$slowButton.addEventListener('click', function () {
+  controller._setTime("up");
+})
+
 function swap(smallValue, largeValue) {
   view._swapElement(smallValue, largeValue);
 }
-
-const $submitButton = document.getElementById('submitButton');
-
-$submitButton.addEventListener('click', function(event) {
-  controller._bubbleSort(sortingList);
-});
 
 export { swap };

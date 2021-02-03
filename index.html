@@ -8,10 +8,23 @@
 <body>
   <header>Visualize Sorting Algorithms</header>
   <section class="content">
-    <input type="text" id="inputBox" class="input-box" placeholder="정렬할 숫자들을 입력하세요.">
-    <button id="submitButton" class="submit-button">버튼</button>
-    <div id="sortBox" class="sort-box">
+    <div id="toolBar" class="tool-bar">
+      <img id="playButton" src="./assets/images/play.png" alt="play">
+      <img id="stopButton" src="./assets/images/stop.png" alt="stop">
+      <img id="replayButton" src="./assets/images/replay.png" alt="replay">
+      <img id="fastButton" src="./assets/images/fast.png" alt="fast">
+      <img id="slowButton" src="./assets/images/slow.png" alt="slow">
+
+      <select class="select-box" name="sorting">
+        <option value="none">=== select ===</option>
+        <option value="bubble">bubble sort</option>
+        <option value="quick">quick sort</option>
+      </select>
     </div>
+    <input type="text" id="inputBox" class="input-box" placeholder="정렬할 숫자들을 입력하세요.">
+    <button id="submitButton" class="submit-button">요소 배치</button>
+    <div id="commentBox" class="comment-box"></div>
+    <div id="sortBox" class="sort-box"></div>
   </section>
   <script src="./app/model.js"></script>
 </body>
