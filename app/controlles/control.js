@@ -7,19 +7,49 @@ const $delete = document.querySelector('.delete');
 const $reset = document.querySelector('.reset');
 const bubbleView = new BubbleView();
 const test = [];
+const isFull = false;
 
 export const BubbleController = function() {
+  //this.$userInput = document.querySelector('.user-value');
 }
 
-BubbleController.prototype.addItem = function(b) {
-  let value = $userInput.value;
 
-  if (b.key === 'Enter' && value !== '') {
+BubbleController.prototype.addItem = function(e) {
+  let value = $userInput.value;
+  //console.log(this.$userInput, $userInput);
+  if (e.key === 'Enter' && value !== '') {
+    if (test.length > 9) {
+      alert("10개 이상의 수는 비교 할 수 없습니다..")
+      $userInput.value = '';
+
+      return;
+    }
+
+    if (!filterType(value)) {
+      alert('숫자만 입력 가능합니다!');
+      $userInput.value = '';
+
+      return;
+    }
+
     test.push(value);
     $userInput.value = '';
     
     bubbleView.addItem(value);
   }
+}
+
+function filterType(input) {
+  let filtering = [...input];
+  let isPass = true;
+  
+  filtering.forEach(n => {
+    if (isNaN(parseInt(n))) {
+      isPass = false;
+    }
+  });
+  
+  return isPass;
 }
 
 BubbleController.prototype.deleteItem = function() {
@@ -42,9 +72,17 @@ BubbleController.prototype.resetItem = function() {
   $userInput.value = '';
   bubbleView.resetItem(leng);
 }
+
 BubbleController.prototype.startSort = function() {
   if (!test.length) {
     $userInput.value = '';
+
+    return;
+  }
+
+  if (test.length < 5) {
+    alert("정렬할 수를 5개 이상 만들어주세요! (10개 넘으면 안되유..)");
+
     return;
   }
 
@@ -63,8 +101,6 @@ BubbleController.prototype.startSwap = async function(a, b) {
 BubbleController.prototype.paintBox = function(a, b, n) {
   bubbleView.paint(a, b, n);
 }
-
-
 
 BubbleController.prototype.init = function() {
   $userInput.addEventListener('keyup', this.addItem);

@@ -7,6 +7,11 @@ export function BubbleModel(input) {
 
 BubbleModel.prototype.execute = async function() {
   let sorting = this._sort;
+  const delay = new Promise(resolve => 
+    setTimeout(() => {
+      resolve();
+    }, 500)
+  );
 
   for (let i = 0; i < sorting.length -1; i++) {
     for (let j = 0; j < sorting.length -i -1; j++) {
@@ -18,31 +23,25 @@ BubbleModel.prototype.execute = async function() {
         await new Promise(resolve =>
           setTimeout(() => {
             resolve();
-          }, 2000)
+          }, 500)
         );
         
         await this._controller.startSwap(j, j + 1);
-        console.log(sorting);
         //this._controller.paintBox(j, j + 1, i);
       } else {
         
         await new Promise(resolve =>
           setTimeout(() => {
             resolve();
-          }, 1000)
+          }, 200)
         );
       }
-
     }
 
     await new Promise(resolve => {
       setTimeout(() => {
         resolve();
-      }, 1000);
+      }, 200);
     })
   }
 };
-
-
-// execute 실행결과를 바로 swap으로 보내지 말고, 결과값들을 모아서 control로 보냄
-// control이 받은 결과를 비동기로 view의 이동작업을 실행하여 하나씩 이동되게 만들어 보자.
