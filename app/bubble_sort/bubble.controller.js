@@ -61,7 +61,7 @@ BubbleController.prototype.checkInput = function (inputValue) {
 };
 
 BubbleController.prototype.startSort = async function () {
-  const DELAY = 100;
+  const DELAY = 700;
   const dataSet = this.BubbleModel.get();
   const status = {
     loopCount: 0,

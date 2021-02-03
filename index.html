@@ -8,12 +8,13 @@
 <body>
   <div class="content">
     <h1>Visualize Sorting Algorithms</h1>
-    <select name="sorts" class="select">
-      <option value="Bubble Sort">-- Bubble Sort --</option>
-      <option value="Quick Sort">-- Quick Sort --</option>
-      <option value="">---- Choice ----</option>
-    </select>
+    <input type="checkbox" id="menu-icon"/>
     <div class="input-container">
+      <label for="menu-icon" class="menu-button">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
       <form class="form">
         <input type="text" class="input-box" placeholder="입력"/>
       </form>
@@ -26,10 +27,18 @@
       </span> -->
     </div>
     <section class="graph-container">
+      <div class="menu-options">
+        <div>
+          <input type="radio" id="bubble" name="option" value="bubble" checked>
+          <label for="bubble">Bubble Sort</label>
+        </div>
+        <div>
+          <input type="radio" id="quick" name="option" value="quick">
+          <label for="quick">Quick Sort</label>
+        </div>
+      </div>
       <div class="graphs"></div>
     </section>
-    <!-- <img src="./assets/images/chicken.jpg" /> -->
-    <!-- <p>README.md를 읽어보고 과제를 시작하세요.</p> -->
   </div>
   <script src="./app/bubble_sort/bubble.model.js"></script>
   <script src="./app/bubble_sort/bubble.view.js"></script>

@@ -4,26 +4,18 @@ import BubbleController from './bubble_sort/bubble.controller.js';
 import QuickController from './quick_sort/quick.controller.js';
 
 window.addEventListener("DOMContentLoaded", function () {
-  const $select = document.querySelector("select");
-  let currentSort = {clear: function identity() {}};
-  currentSort = new BubbleController(); //zz
+  const $bubble = document.querySelector("#bubble");
+  const $quick = document.querySelector("#quick");
+  let currentSort = new BubbleController();
 
-  // $select.addEventListener("change", (event) => {
-  //   switch (event.target.value) {
-  //     case "Bubble Sort":
-  //       console.log(event.target.value);
-  //       currentSort.clear();
-  //       currentSort = new BubbleController();
-  //       break;
-  //     case "Quick Sort":
-  //       console.log(event.target.value);
-  //       currentSort.clear();
-  //       currentSort = new QuickController();
-  //       break;
-  //     default:
-  //       console.log(event.target.value);
-  //       currentSort.clear();
-  //       currentSort = {clear: function identity() {}};
-  //   }
-  // });
+  $bubble.addEventListener("change", (event) => {
+    currentSort.clear();
+    currentSort = new BubbleController();
+    console.log(event.target.value);
+  });
+  $quick.addEventListener("change", (event) => {
+    currentSort.clear();
+    currentSort = new QuickController();
+    console.log(event.target.value);
+  })
 });

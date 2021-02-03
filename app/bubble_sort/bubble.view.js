@@ -4,6 +4,10 @@ export default function BubbleView() {
   this.$message = document.querySelector(".message");
   this.$inputBox = document.querySelector(".input-box");
   this.$excuteButton = document.querySelector(".excute-button");
+  this.$menuOptions = document.querySelector(".menu-options");
+  this.$bubbleRadio = document.querySelector("#bubble");
+  this.$quickRadio = document.querySelector("#quick");
+  this.$graphContainer = document.querySelector(".graph-container");
 }
 
 BubbleView.prototype.paintMessage = function (message, delay) {
@@ -16,7 +20,7 @@ BubbleView.prototype.paintMessage = function (message, delay) {
 
 BubbleView.prototype.paintGraphs = function (data, loopCount) {
   const maxSize = data.reduce((acc, item) => {
-    return acc > item ? acc : item;
+  return acc > item ? acc : item
   });
 
   this.$graphs.textContent = "";
@@ -48,17 +52,19 @@ BubbleView.prototype.swap = function (left, right) {
 BubbleView.prototype.holdInput = function (sholdHold) {
   if (sholdHold) {
     this.$inputBox.disabled = true;
+    this.$bubbleRadio.disabled = true;
+    this.$quickRadio.disabled = true;
     this.$excuteButton.disabled = true;
     this.$excuteButton.classList.add("fixed");
+    this.$menuOptions.classList.add("fixed");
+    this.$graphContainer.classList.add("fixed");
   } else {
     this.$inputBox.disabled = false;
+    this.$bubbleRadio.disabled = false;
+    this.$quickRadio.disabled = false;
     this.$excuteButton.disabled = false;
     this.$excuteButton.classList.remove("fixed");
+    this.$menuOptions.classList.remove("fixed");
+    this.$graphContainer.classList.remove("fixed");
   }
 };
-
-// BubbleView.prototype.done = function () {
-//   setTimeout(() => {
-//     this.$graphs.classList.add("done");
-//   }, 3000);
-// };
