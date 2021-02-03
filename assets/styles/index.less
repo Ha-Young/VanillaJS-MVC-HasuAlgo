@@ -1,11 +1,14 @@
 @border: 1px solid rgb(150, 146, 146);
 @margin: 5px;
+@button-font: 20px;
+
+* {
+  font-family: "Italianno", cursive;
+}
 
 html,
 body {
   box-sizing: border-box;
-  font-family: "Courgette", cursive;
-  font-family: "Parisienne", cursive;
 }
 
 *,
@@ -31,6 +34,7 @@ h1 {
 .sorting__input {
   outline: none;
   margin: @margin;
+  font-size: @button-font;
 }
 
 .sorting__queue {
@@ -41,6 +45,7 @@ h1 {
   height: 50px;
   border: @border;
   margin: @margin;
+  font-size: 30px;
 }
 
 .sorting__select-sort {
@@ -49,10 +54,17 @@ h1 {
 
 .paint-button {
   margin: @margin;
+  font-size: @button-font;
 }
 
 .sort-button {
   margin: @margin;
+  font-size: @button-font;
+}
+
+.reset-button {
+  margin: @margin;
+  font-size: @button-font;
 }
 
 .display-container {
