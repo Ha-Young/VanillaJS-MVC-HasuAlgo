@@ -10,8 +10,14 @@ Controller.prototype.getData = function () {
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+    this.view.hideForm();
 
-    this.model.setData(input.value);
+    try {
+      this.model.setData(input.value);
+    } catch (err) {
+      alert(err);
+      this.view.showForm();
+    }
 
     this.model.handleSort(dropList.value, 
       (result) => {
@@ -22,14 +28,8 @@ Controller.prototype.getData = function () {
       },
       (index) => {
         this.view.paintSorted(index);
-      },
-      () => {
-        this.view.showForm();
-      },
-      () => {
-        this.view.hideForm();
       }
-      );
+    );
   });
 }
 

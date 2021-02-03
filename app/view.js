@@ -1,11 +1,11 @@
 
 function View (template) {
-  this._COLOR = "#2BAE66";
-  this._HEIGHT_ADJUST = 20;
   this._INPUT = document.querySelector(".numberInput");
   this._VISUALIZATION = document.querySelector(".visualization");
   this._CONTAINER = document.querySelector(".container");
   this._FORM = document.querySelector(".sortForm");
+  this._COLOR = "#2BAE66";
+  this._HEIGHT_ADJUST = 35;
 }
 
 View.prototype.showForm = function () {
@@ -19,7 +19,6 @@ View.prototype.hideForm = function () {
 View.prototype.showInitial = function (result) {
   this._CONTAINER.classList.add("container");
   this._VISUALIZATION.innerHTML = " ";
-
 
   for (let i = 0; i < result.length; i++) {
     const bar = document.createElement("div");
@@ -37,7 +36,6 @@ View.prototype.showInitial = function (result) {
 View.prototype.showSwap = function (index) {
   const greater = this._CONTAINER.childNodes[index + 1];
   const smaller = this._CONTAINER.childNodes[index + 2];
-
   const smallerValue = parseInt(smaller.innerText);
   const greaterValue = parseInt(greater.innerText);
 
@@ -45,25 +43,11 @@ View.prototype.showSwap = function (index) {
   greater.innerText = smallerValue;
   smaller.style.height = ((greaterValue * this._HEIGHT_ADJUST) + "px");
   smaller.innerText = greaterValue;
-
 }
 
 View.prototype.paintSorted = function (index) {
   const done = this._CONTAINER.childNodes[index + 1];
   done.style.backgroundColor = "#78e08f";
-}
-
-View.prototype.removeInvalidCharacter = function (result) {
-  if (result) {
-    const correctInput = this._INPUT.value.substr(0, this._INPUT.value.length - 1);
-    this._INPUT.value = correctInput;
-  }
-}
-
-View.prototype.addComma = function () {
-  console.log("space");
-  console.log(this._INPUT.value);
-  this._INPUT.value += ',';
 }
 
 export {View};

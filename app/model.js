@@ -4,38 +4,40 @@ function Model() {
 }
 
 Model.prototype.setData = function (string) {
-  this._storage = string.split(',');
+  const numberList = string.split(",").map(Number);
+
+  if (numberList.length < 5) {
+    throw "too few numbers";
+  } else if (numberList.length > 10) {
+    throw "too many numbers";
+  } else if (numberList.some((number) => number < 1 || number > 10)) {
+    throw "some of number(s) out of range";
+  } 
+
+  this._storage = numberList;
 }
 
 Model.prototype.handleSort = function (type, ...callback) {
   if (type === "bubbleSort") {
     this.bubbleSort(this._storage, ...callback);
+  } else if (type === "quickSort") {
   } 
-//   else if (type === "quickSort") {
-//   } 
 }
 
 Model.prototype.bubbleSort = async function (storage, ...callback) {
   let time = 1;
 
-  callback[3]();
   callback[0](storage);
 
   for (let i = 0; i < storage.length; i++) {
     for (let j = 0; j < storage.length - 1 - i; j++) {
 
-      if (parseInt(storage[j]) > parseInt(storage[j + 1])) {
+      if (storage[j] > storage[j + 1]) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
-        
+
         (function (index, time) {
           setTimeout(function () {callback[1](index)}, time * 1000);
         })(j, time);
-
-        // function createSetTimeout (index, time) {
-        //   setTimeout(callback[1](index), time * 1000);
-        // }
-
-        // await createSetTimeout(j, time);
       }
       time++;
     }
@@ -46,12 +48,11 @@ Model.prototype.bubbleSort = async function (storage, ...callback) {
     time++;
   }
  
-  callback[4]();
 }
 
-// Model.prototype.quickSort = function () {
+Model.prototype.quickSort = function (type, ...callback) {
     
-// }
+}
 
 export {Model};
 
