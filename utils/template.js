@@ -1,19 +1,44 @@
+import { template } from "lodash";
+
 export default class Template {
   /**
-   * Format the contents of a todo list.
+   * Sets up defaults for all the Template methods such as a default template
    *
-   * @param {ItemList} items Object containing keys you want to find in the template to replace.
-   * @returns {!string} Contents for a todo list
+   * @constructor
+   */
+  constructor() {
+    this.defaultTemplate
+      = `<div class="{{defaultClass}} {{colorState}}" style="height: {{height}}px; transform: {{transform}};">`
+      + `<span class="{{numberSpan}}">{{blockNumber}}</span>`
+      + `</div>`;
+  }
+
+  /**
+   * @param {Array} data The Array containing objects you want to find in the
+   *                      template to replace.
+   * @returns {string} HTML String of an <li> element
    *
    * @example
    * view.show({
-   *	id: 1,
-   *	title: "Hello World",
-   *	completed: false,
-   * })
+   *	defalutClass: "number-block",
+   *	colorState: "sorted",
+   *	height: 10,
+   * });
    */
-  generateNumberBlocks(numberArray, maxNum) {
-    return numberArray.reduce((a, number) => a +
-      `<div class="number-blocks" id="block${number}" style = "height: ${(100 / maxNum) * number}vh;">${number}</div>`, "");
+  show(data) {
+    let view = "";
+
+    data.forEach((element) => {
+      let template = this.defaultTemplate;
+      template = template.replace("{{defaultClass}}", element.defaultClass);
+      template = template.replace("{{colorState}}", element.colorState);
+      template = template.replace("{{height}}", element.height);
+      template = template.replace("{{transform}}", element.transform);
+      template = template.replace("{{numberSpan}}", element.numberSpan);
+      template = template.replace("{{blockNumber}}", element.blockNumber);
+      view += template;
+    });
+
+    return view;
   }
 }

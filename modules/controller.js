@@ -8,58 +8,33 @@ export default class Controller {
   constructor(Model, View) {
     this.model = Model;
     this.view = View;
+
+    this.view.bind("formSubmit", (selection, input) => {
+      this.setInitialState(selection, input);
+    });
   }
 
-  initialize(sortType, maxHeight) {
-    this.view.clearContent();
+  setInitialState(selection, input) {
+    //clearContent 동작안하는거 고쳐야함
+    //this.view.clearContent();
+    const sortType = this.model.create(selection, input, (data) => {
+      this.view.render("generateBlocks", data);
+    });
 
-    if (sortType === "Merge Sort") {
-      return;
-    }
-
-    const model = this.model;
-    const maxInData = model.findMaxNum();
-    let standard = 1;
-
-    if (maxInData > maxHeight) {
-      standard *= (maxHeight / maxInData);
-    } else if (maxInData < 100) {
-      standard = 5;
-    }
-
-    for (let i = 0; i < this.model.numberArray.length; i++) {
-      this.view.generateBlocks(standard * this.model.numberArray[i], this.model.numberArray[i], i);
-    }
-  }
-
-  async bubbleSort() {
-    const numberArray = this.model.numberArray;
-    for (let i = 0; i < numberArray.length; i++) {
-      for (let j = 0; j < numberArray.length - i - 1; j++) {
-        this.view.changeColor(j, numberArray[j]);
-        this.view.changeColor(j + 1, numberArray[j + 1]);
-
-        await new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve();
-          }, 1000);
-        })
-
-        // console.log(numberArray);
-        // console.log(numberArray[j]);
-        // console.log(numberArray[j + 1]);
-        if (numberArray[j] > numberArray[j + 1]) {
-          this.model.swap(j, j + 1);
-          await this.view.swapBlocks(numberArray[j], numberArray[j + 1]);
-        }
-
-        this.view.removeColor(j, numberArray[j]);
-        this.view.removeColor(j + 1, numberArray[j + 1]);
-
-        //debugger;
-      }
-
-      this.view.changeColor(numberArray.length - i - 1, numberArray[numberArray.length - i - 1], "sorted");
+    switch (sortType) {
+      case "Bubble Sort":
+        this.model.bubbleSort(this.view.pickBlocks, this.view.swapBlocks.bind(this.view),
+          this.view.releaseBlocks.bind(this.view),
+          this.view.releaseBlocksAsync.bind(this.view), this.view.decideSorted);
+        break;
+      case "Insertion Sort":
+        break;
+      case "Quick Sort":
+        break;
+      case "Merge Sort":
+        break;
+      default:
+        console.log("------");
     }
   }
 }
