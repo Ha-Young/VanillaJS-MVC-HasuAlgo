@@ -3,6 +3,7 @@ export default class Controller {
     this.model = model;
     this.view = view;
     this.bubbleSortCount = 0;
+    this.test = 0;
 
     view.bindAddArray(this.addArray.bind(this));
     view.bindsetAlgorithm(this.setAlgorithm.bind(this));
@@ -89,22 +90,22 @@ export default class Controller {
         this.view.removeColorOfUnselectedItem(j, j + 1);
 
         if (i === 1 && j === 0) {
-          this.view.changeColorOfSortedItem([i, j]);
+          this.view.changeColorOfSortedItem(i, j);
           return;
         }
 
         if (j === i - 1) {
           if (count === 0) {
-            this.view.changeColorOfSortedItem(Array.from(Array(i + 1).keys()));
+            this.view.changeColorOfSortedItem(...Array.from(Array(i + 1).keys()));
             return;
           }
 
           count = 0;
 
           if (listToSort[i] === parseInt(this.view.$sortingWindow.childNodes[i].innerText)) {
-            this.view.changeColorOfSortedItem([i]);
+            this.view.changeColorOfSortedItem(i);
           } else {
-            this.view.changeColorOfSortedItem([i - 1]);
+            this.view.changeColorOfSortedItem(i - 1);
           }
         }
 
@@ -164,15 +165,50 @@ export default class Controller {
   //   }.bind(this), 500);
   // }
 
-  quickSort = function (listToSort, left = 0, right = listToSort.length - 1) {
+  // quickSort = function (listToSort, left = 0, right = listToSort.length - 1) {
+  //   if (left >= right) {
+  //     return;
+  //   }
+
+  //   const borderIndex = this.partition.call(this,listToSort, left, right);
+
+  //   this.quickSort.call(this, listToSort, left, borderIndex - 1);
+  //   this.quickSort.call(this, listToSort, borderIndex, right);
+  // }
+
+  // swap = function (array, index1, index2) {
+  //   const temp = array[index1];
+  //   array[index1] = array[index2];
+  //   array[index2] = temp;
+  // }
+
+  // partition = function (array, left, right) {
+  //   const pivotValue = array[Math.floor((left + right) / 2)];
+
+  //   while (left <= right) {
+  //     while (array[left] < pivotValue) left++;
+  //     while (array[right] > pivotValue) right--;
+
+  //     if (left <= right) {
+  //       this.swap(array, left, right);
+  //       this.view.changeOrderQuick(left, right);
+  //       left++;
+  //       right--;
+  //     }
+  //   }
+
+  //   return left;
+  // }
+
+  quickSort = async function (listToSort, left = 0, right = listToSort.length - 1) {
     if (left >= right) {
       return;
     }
 
-    const borderIndex = this.partition.call(this,listToSort, left, right);
+    await this.partition.call(this,listToSort, left, right);
 
-    this.quickSort.call(this, listToSort, left, borderIndex - 1);
-    this.quickSort.call(this, listToSort, borderIndex, right);
+    this.quickSort.call(this, listToSort, left, this.test - 1);
+    this.quickSort.call(this, listToSort, this.test, right);
   }
 
   swap = function (array, index1, index2) {
@@ -181,21 +217,46 @@ export default class Controller {
     array[index2] = temp;
   }
 
-  partition = function (array, left, right) {
+  partition = async function (array, left, right) {
     const pivotValue = array[Math.floor((left + right) / 2)];
 
     while (left <= right) {
-      while (array[left] < pivotValue) left++;
-      while (array[right] > pivotValue) right--;
+      this.view.changeColorOfSelectedItem(left, right);
+      await this.sleep(500);
+      while (array[left] < pivotValue) {
+        this.view.removeColorOfUnselectedItem(left);
+        await this.sleep(500);
+        left++;
+        this.view.changeColorOfSelectedItem(left);
+        await this.sleep(500);
+      }
+      while (array[right] > pivotValue) {
+        this.view.removeColorOfUnselectedItem(right);
+        await this.sleep(500);
+        right--;
+        this.view.changeColorOfSelectedItem(right);
+        await this.sleep(500);
+      }
+
+      this.view.removeColorOfUnselectedItem(left, right);
 
       if (left <= right) {
+        this.view.changeColorOfSelectedItem(left, right);
+        await this.sleep(500);
+        console.log(left,right)
         this.swap(array, left, right);
+        this.view.moveRightQuick(left, right);
+        this.view.moveLeftQuick(right, left);
+        await this.sleep(600);
         this.view.changeOrderQuick(left, right);
+        await this.sleep(500);
+        this.view.removeColorOfUnselectedItem(left, right);
+        await this.sleep(500);
         left++;
         right--;
       }
     }
 
-    return left;
+    this.test = left;
   }
 }

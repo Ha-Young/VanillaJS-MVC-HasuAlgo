@@ -49,6 +49,11 @@ export default class View {
     const nodeList = this.$sortingWindow.childNodes;
     const rightClone = nodeList[right];
 
+    nodeList[left].classList.remove('move-quick');
+    nodeList[left].style.removeProperty('transform');
+    nodeList[right].classList.remove('move-quick');
+    nodeList[right].style.removeProperty('transform');
+
     this.$sortingWindow.replaceChild(nodeList[left], nodeList[right]);
     this.$sortingWindow.insertBefore(rightClone, nodeList[left]);
   }
@@ -65,21 +70,39 @@ export default class View {
     nodeList[index].classList.add('move-left');
   }
 
-  changeColorOfSelectedItem = function (index1, index2) {
+  moveRightQuick (index, whereToGoNanADiRo) {
     const nodeList = this.$sortingWindow.childNodes;
+    const distance = (whereToGoNanADiRo - index) * 70;
 
-    nodeList[index1].classList.add('selected');
-    nodeList[index2].classList.add('selected');
+    nodeList[index].classList.add('move-quick');
+    nodeList[index].style.transform = `translateX(${distance}px)`
   }
 
-  removeColorOfUnselectedItem = function (index1, index2) {
+  moveLeftQuick (index, whereToGoNanADiRo) {
     const nodeList = this.$sortingWindow.childNodes;
+    const distance = (whereToGoNanADiRo - index) * 70;
 
-    nodeList[index1].classList.remove('selected');
-    nodeList[index2].classList.remove('selected');
+    nodeList[index].classList.add('move-quick');
+    nodeList[index].style.transform = `translateX(${distance}px)`
   }
 
-  changeColorOfSortedItem = function (indexList) {
+  changeColorOfSelectedItem = function (...indexList) {
+    const nodeList = this.$sortingWindow.childNodes;
+
+    indexList.forEach((index) => {
+      nodeList[index].classList.add('selected');
+    });
+  }
+
+  removeColorOfUnselectedItem = function (...indexList) {
+    const nodeList = this.$sortingWindow.childNodes;
+
+    indexList.forEach((index) => {
+      nodeList[index].classList.remove('selected');
+    });
+  }
+
+  changeColorOfSortedItem = function (...indexList) {
     const nodeList = this.$sortingWindow.childNodes;
 
     indexList.forEach((index) => {
