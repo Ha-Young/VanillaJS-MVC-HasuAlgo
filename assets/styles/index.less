@@ -17,25 +17,30 @@ button {
   text-align: center;
 }
 
-.visual-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.visul-frame {
   width: 500px;
   height: 300px;
-  border: 1px solid black;
 }
 
 .visual {
+  position: relative;
   display: flex;
+  flex-direction: center;
   justify-content: center;
-  align-items: row-reverse;
+  width: 500px;
+  height: 300px;
+  border: 1px solid #283655;
+  background-color: #d0e1f9;
+  transition: 1s all ease;
 }
 
 .sort-box {
   position: absolute;
   width: 20px;
-  height: 50px;
-  border: 1px solid black;
+  background-color: #4d648d;
+  color: azure;
+  border: 1px solid #283655;
   transition: 1s all ease;
+  left: 0%;
+  bottom: 0px;
 }

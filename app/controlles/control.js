@@ -56,8 +56,8 @@ BubbleController.prototype.startSort = function() {
   bubbleModel.execute();
 }
 
-BubbleController.prototype.startSwap = function(a, b) {
-  bubbleView.swap(a, b);
+BubbleController.prototype.startSwap = async function(a, b) {
+  await bubbleView.swap(a, b);
 }
 
 BubbleController.prototype.paintBox = function(a, b, n) {

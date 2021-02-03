@@ -41,7 +41,7 @@ BubbleModel.prototype.execute = async function() {
       }, 1000);
     })
   }
-}
+};
 
 
 // execute 실행결과를 바로 swap으로 보내지 말고, 결과값들을 모아서 control로 보냄

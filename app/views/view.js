@@ -1,6 +1,6 @@
 export const BubbleView = function(template) {
   this._template = template;
-  this._$visualBox = document.querySelector('.visual-box');
+  this._$visualFrame = document.querySelector('.visual-frame');
   this._$visual = document.querySelector('.visual');
   this._$form = document.querySelector('form');
   this._$userValue = document.querySelector('.user-value');
@@ -21,6 +21,12 @@ BubbleView.prototype.addItem = function(input) {
   $box.style.transform = `translateX(${this._$boxNum * 25}px)`;
 
   this._$visual.appendChild($box);
+
+  const $boxs = document.querySelectorAll('.sort-box');
+  
+  for (let i = 0; i < $boxs.length; i++) {
+    $boxs[i].style.left = `${50 - $boxs.length * 5}%`;
+  }
 }
 
 BubbleView.prototype.deleteItem = function() {
