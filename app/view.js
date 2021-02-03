@@ -48,6 +48,8 @@ class View {
   }
 
   renderGraph(array) {
+    this.clearGraph();
+
     if (this.graphs.length) {
       for (let i = 0; i < this.graphs.length; i++) {
         this.graphs[i].remove();
