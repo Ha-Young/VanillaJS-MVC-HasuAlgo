@@ -1,4 +1,4 @@
-export const View = function() {
+export const BubbleView = function(template) {
   this.$visualFrame = document.querySelector('.visual-frame');
   this.$visual = document.querySelector('.visual');
   this.$form = document.querySelector('form');
@@ -6,40 +6,36 @@ export const View = function() {
   this.$deleteBtn = document.querySelector('.delete');
   this.$startBtn = document.querySelector('.start');
   this.$resetBtn = document.querySelector('.reset');
+  this.boxNum = 0;
 }
 
-View.prototype.create = function(v, n) {
+BubbleView.prototype.addItem = function(input) {
+  this.boxNum++;
+  console.log(this.boxNum);
   const $box = document.createElement('div');
-  
   $box.className = 'sort-box';
-  $box.innerText = v;
-  $box.style.height = `${v * 15}px`;
-  $box.style.transform = `translateX(${(n -1) * 25}px)`;
-  
+  $box.innerText = input;
+  $box.style.height = `${input * 15}px`;
+  $box.style.transform = `translateX(${this.boxNum * 25}px)`;
+
   this.$visual.appendChild($box);
-};
 
-View.prototype.delete = function() {
+}
+
+BubbleView.prototype.deleteItem = function() {
+  this.boxNum--;
   this.$visual.removeChild(this.$visual.lastChild);
-};
+}
 
-View.prototype.clear = function(n) {
+BubbleView.prototype.resetItem = function(n) {
+  this.boxNum = 0;
+
   for (let i = 0; i < n; i++) {
     this.$visual.removeChild(this.$visual.lastChild);
   }
-};
+}
 
-View.prototype.set = function(n, array) {
-  for (let i = 0; i < n; i++) {
-    this.$visual.removeChild(this.$visual.lastChild);
-  }
-  
-  for (let i = 0; i < n; i++) {
-    this.create(array[i], i + 1);
-  }
-};
-// bubble sort 전용 methods..
-View.prototype.swap = function(a, b) {
+BubbleView.prototype.swap = function(a, b) {
   const $target = document.querySelector('.visual');
   const $boxs = document.querySelectorAll('.sort-box');
 
@@ -60,12 +56,15 @@ View.prototype.swap = function(a, b) {
       }, 500);
     });
   });
-};
+  
+}
 
-View.prototype.paint = function(a, b, n) {
+/*
+BubbleView.prototype.paint = function(a, b, n) {
   const $boxs = document.querySelector('.sort-box');
 
   $boxs[a].style.backgroundColor = "#58B7FF";
-  $boxs[b].style.backgroundColor = "#58B7FF"; // 비교중 색칠
-  $boxs[$boxs.length -n -1].style.backgroundColor = "#13CE66"; // 완료됨 색칠
-};
+  $boxs[b].style.backgroundColor = "#58B7FF";
+  $boxs[$boxs.length -n -1].style.backgroundColor = "#13CE66";
+}
+*/

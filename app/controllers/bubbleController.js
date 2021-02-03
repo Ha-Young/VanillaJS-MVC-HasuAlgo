@@ -1,8 +1,8 @@
-import { BubbleModel } from '../models/model';
-import { BubbleView } from '../views/view';
+import { BubbleModel } from '../models/bubbleModel';
+import { BubbleView } from '../views/bubbleView';
 
 export const BubbleController = function() {
-  this.$userInput = document.querySelector('.user-value');
+  this.$userInput = document.querySelector('.user-input');
   this.$start = document.querySelector('.start');
   this.$delete = document.querySelector('.delete');
   this.$reset = document.querySelector('.reset');
