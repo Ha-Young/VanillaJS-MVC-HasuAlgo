@@ -1,5 +1,5 @@
 @border: 1px solid rgb(150, 146, 146);
-@margin : 5px;
+@margin: 5px;
 
 html,
 body {
@@ -12,13 +12,17 @@ body {
   box-sizing: inherit;
 }
 
+h1 {
+  margin: @margin;
+}
+
 .sorting-algorithms {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 500px;
-  margin: 100px auto;
+  max-width: 1000px;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -54,36 +58,38 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 500px;
+  width: 1000px;
   height: 500px;
   border: @border;
   margin: @margin;
 }
 
-.sorting__items {
+.sorting__item-list {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   padding: 0;
-}
-
-.bubble {
-  width: 500px;
+  width: 1000px;
   height: 450px;
 }
 
-.merge {
-  width: 100px;
-  height: 100px;
+.sorting__item {
+  background-color: rgb(241, 239, 235);
+  list-style: none;
+  margin: 5px;
 }
 
-.sorting__item {
+.bubble {
   width: 40px;
   max-height: 450px;
-  background-color: skyblue;
-  list-style: none;
-  margin:5px;
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px,
+    rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+}
+
+.merge {
+  width: 50px;
+  height: 50px;
 }
 
 .moving {

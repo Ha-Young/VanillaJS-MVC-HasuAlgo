@@ -1,3 +1,4 @@
+import { initialTemplate } from './templates/initialTemplate';
 import {model as Model} from './Model';
 import {view as View} from './View.js';
 
@@ -20,6 +21,7 @@ function handlePaintSortItems() {
   }
 
   View.paintSortItems(Model.sortList);
+  View.makeSelectorDisable();
 
   View.$sortButton.addEventListener("click", handleStartSort);
 
@@ -68,8 +70,11 @@ async function bubbleSort() {
 
 function mergeSort() {}
 
-function resetSort() {
+function resetSort(event) {
   View.$resetButton.removeEventListener("click",resetSort);
+
+  View.changeTemplate(View.viewBox, initialTemplate());
+  Controller();
 }
 
 function Controller() {
