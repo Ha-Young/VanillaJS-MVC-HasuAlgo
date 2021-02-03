@@ -49,6 +49,14 @@ export default class Controller {
 		this.view.setTheme(theme);
 	}
 
+	swapOnRealList(sortList, aIndex, bIndex) {
+		const sortedList = [...sortList];
+		const temp = sortedList[aIndex];
+		sortedList[aIndex] = sortedList[bIndex];
+		sortedList[bIndex] = temp;
+		return sortedList;
+	}
+
 	startSort() {
 		if (this.isReadySort) {
       this.sortFunction(this.model.currentSortKinds);
@@ -88,34 +96,63 @@ export default class Controller {
 		this.view.setSortItemStatusSelected(index, this.delayTimeOnChange);
 	}
 
+	viewItemResetStatus(index) {
+		this.view.clearSortItemColor(index);
+	}
+
 	viewItemCheckColor(index) {
 		this.view.setSortItemStatusCheck(index);
+	}
+
+	viewItemChange(fromIndex, toIndex) {
+		this.view.changeSortItem(fromIndex, toIndex, this.delayTimeOnChange);
 	}
 
 	async insertionSort(sortList) {
 		await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
 
 		for (let i = 1; i < sortList.length; i++) {
-			let selectionIndex = i;
-			await this.doUIWork([this.viewItemSelection.bind(this, selectionIndex)]);
+			let keyIndex = i;
+			await this.doUIWork([this.viewItemSelection.bind(this, keyIndex)]);
 
-			let checkIndex = selectionIndex - 1;
+			let checkIndex = keyIndex - 1;
+
+			await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
 
 			while (checkIndex >= 0) {
-				await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
 
-				if (sortList[checkIndex] > sortList[selectionIndex]) {
-					// change
-					let temp = sortList[checkIndex];
-					sortList[checkIndex] = sortList[selectionIndex];
-					sortList[selectionIndex] = temp;
+				if (sortList[checkIndex] > sortList[keyIndex]) {
+					sortList = this.swapOnRealList(sortList, checkIndex, keyIndex);
+
+					await this.doUIWork([this.viewItemChange.bind(this, checkIndex, keyIndex)]);
+					// debugger;
+					this.view.swapOnDomList(checkIndex, keyIndex);
+
 					checkIndex--;
-					selectionIndex--;
+					keyIndex--;
+
+					if (checkIndex < 0) {
+						await this.doUIWork(
+							[
+								this.viewItemSortedColor.bind(this, keyIndex + 1),
+								this.viewItemSortedColor.bind(this, keyIndex),
+							]
+						);
+						continue;
+					}
+
+					await this.doUIWork(
+						[
+							this.viewItemSortedColor.bind(this, keyIndex + 1),
+							this.viewItemCheckColor.bind(this, checkIndex),
+						]
+					);
+
 				} else {
 					await this.doUIWork(
 						[
 							this.viewItemSortedColor.bind(this, checkIndex),
-							this.viewItemSortedColor.bind(this, selectionIndex),
+							this.viewItemSortedColor.bind(this, keyIndex),
 						]);
 					break;
 				}

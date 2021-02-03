@@ -1,4 +1,4 @@
-import { $on, qs, $delegate, qsAll } from './helpers';
+import { $on, qs, $delegate, qsAll, changeDOMOrder } from './helpers';
 import { SortItemList } from './typeDef';
 import { fromToTranslatePosition, positionFactory } from './animate';
 import { ITEM } from './constant';
@@ -78,6 +78,11 @@ export default class View {
 		return [svgTransFormMatrix.e, svgTransFormMatrix.f];
 	}
 
+	swapOnDomList(aIndex, bIndex) {
+		// const sortItemList = this.getSortItemListsOnView();
+		changeDOMOrder(this.$vizCanvas, aIndex, bIndex);
+	}
+
 	setSortItemColorFromStatus(sortItemElement, status) {
 		this.clearSortItemColor(sortItemElement);
 		switch (status) {
@@ -105,6 +110,7 @@ export default class View {
 
 	// sort 비동기 관련
 	setSortItemStatusSorted(index, duration) {
+		if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
 		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
 		this.setSortItemColorFromStatus(sortItemElement, 'sorted');
@@ -129,8 +135,27 @@ export default class View {
 	}
 
 	setSortItemStatusCheck(index) {
+		if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
-		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
 		this.setSortItemColorFromStatus(sortItemElement, 'check');
+	}
+
+	setSortItemStatusClear
+
+	changeSortItem(aIndex, bIndex, duration) {
+		const aSortItemElement = this.getSortItemElement(aIndex);
+		const bSortItemElement = this.getSortItemElement(bIndex);
+
+		const [aXPos, aYPos] = this.getSortItemPosition(aSortItemElement);
+		const [bXPos, bYPos] = this.getSortItemPosition(bSortItemElement);
+
+		const aFromPosition = positionFactory(aXPos, aYPos);
+		const aToPosition = positionFactory(bXPos, aYPos);
+
+		const bFromPosition = positionFactory(bXPos, bYPos);
+		const bToPosition = positionFactory(aXPos, bYPos);
+
+		fromToTranslatePosition(aSortItemElement, aFromPosition, aToPosition, duration);
+		fromToTranslatePosition(bSortItemElement, bFromPosition, bToPosition, duration);
 	}
 }

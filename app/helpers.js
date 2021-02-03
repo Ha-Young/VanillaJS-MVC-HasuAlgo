@@ -66,3 +66,28 @@ export function $delegate(target, selector, type, handler, capture) {
  * @returns {string} String with unsafe characters escaped with entity codes
  */
 export const escapeForHTML = s => s.replace(/[&<]/g, c => c === '&' ? '&amp;' : '&lt;');
+
+/**
+ * Change DOM Order two childNode on same parent
+ *
+ * @param {string} parentNode ParentNode
+ * @param {number} leftIndex child node left index
+ * @param {number} rightIndex child node right index
+ */
+export function changeDOMOrder(parentNode, leftIndex, rightIndex) {
+	const childNodes = parentNode.children;
+	const childNum = childNodes.length;
+	const leftElement = childNodes[leftIndex];
+	const rightElement = childNodes[rightIndex];
+	if (childNum < 2) {
+		return;
+	} else if (childNum === 2) {
+		parentNode.insertBefore(rightElement, leftElement);
+		return;
+	}
+
+	if (rightIndex - leftIndex > 1) {
+		parentNode.insertBefore(leftElement, rightElement);
+	}
+	parentNode.insertBefore(rightElement, childNodes[leftIndex]);
+}
