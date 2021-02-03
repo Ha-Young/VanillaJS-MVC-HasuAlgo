@@ -7,11 +7,11 @@
 
 */
 
-import {renderNumber} from '../View/view';
+import {bufferRender, renderNumber} from '../View/view';
 import initGraphPannel from '../View/initGraphPannel';
 import numModel from '../Model/model';
 
-import insertSort from './insertSort/insertSortController';
+import insertionSort from './insertSort/insertSortController';
 
 const submitButton = document.querySelector("#submitButton");
 const textBox = document.querySelector('#textBox');
@@ -35,7 +35,7 @@ async function buttonClickEvent() {
   if (!textBoxString) {
     //console.error('No text!!');
     // test
-    textBoxString = '1,3,2,4,5';
+    textBoxString = '5,3,4,1,2';
   }
 
   let numbersArray;
@@ -59,6 +59,7 @@ async function buttonClickEvent() {
   const oneSectionPx = Number.parseInt(Math.round(950 / (numbersArray.length - 1)));
 
   //console.log(oneSectionPx);
+  bufferRender();
 
   // First rendering
   numbersArray.forEach((el, index) => {
@@ -72,31 +73,25 @@ async function buttonClickEvent() {
   const shadowDiv = document.querySelector('.shadow');
 
   contentDiv.style.opacity = 0;
-  setTimeout(() => {
-    contentDiv.style.display = 'none';
-    graphPannelDiv.style.display = 'inline-block'
-    /* 나중에 살림!!
-    shadowDiv.style.display = 'flex';
+  await new Promise((resolve, reject) => {
     setTimeout(() => {
-      shadowDiv.innerText = 'insert Sort!';
+      contentDiv.style.display = 'none';
+      graphPannelDiv.style.display = 'inline-block'
+      shadowDiv.style.display = 'flex';
       setTimeout(() => {
-        shadowDiv.style.display = 'none';
+        shadowDiv.innerText = 'insert Sort!';
+        setTimeout(() => {
+          shadowDiv.style.display = 'none';
+          resolve();
+        }, 1000);
       }, 1000);
     }, 1000);
-    */
-  }, 1000);
+  });
 
   // TODO : insert와 Quick을 구분해 시작하기
   // 우선 insert부터
 
-  for (let i = 1; i < numbersObjArray.length; i++) {
-    await insertSort(numbersObjArray, numbersObjArray[i], numbersObjArray[i-1])
-      .then(result => {
-        if (result) {
-          i--;
-        }
-      });
-  }
+  await insertionSort(numbersObjArray);
 
 }
 

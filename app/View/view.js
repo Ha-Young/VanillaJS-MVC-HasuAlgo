@@ -4,6 +4,14 @@
 
 */
 
+export function bufferRender () {
+  const graphPannelDiv = document.querySelector("#graphPannel");
+  const graphPannelBufferDiv = document.createElement("div");
+  graphPannelBufferDiv.setAttribute('class', 'graphPannel--buffer');
+  graphPannelBufferDiv.style.height = '30%';
+  graphPannelDiv.appendChild(graphPannelBufferDiv);
+}
+
 export function renderNumber (numRecords) {
   const value = numRecords.value;
   const index = numRecords.index;
@@ -69,8 +77,6 @@ export function exchange (pivotObj, anotherObj) {
     const temp = pivotObj.cordinateX;
     pivotObj.cordinateX = anotherObj.cordinateX;
     anotherObj.cordinateX = temp;
-
-    console.log("Y = ",pivotObj.cordinateY)
 
     moveBarNoWait(pivotObj.index, pivotObj.cordinateX, pivotObj.cordinateY);
     moveBarNoWait(anotherObj.index, anotherObj.cordinateX, anotherObj.cordinateY);
