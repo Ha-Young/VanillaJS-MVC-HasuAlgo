@@ -59,7 +59,7 @@ BubbleController.prototype.checkInput = function (inputValue) {
     : {isNumber: true, dataSet: splited};
 };
 
-BubbleController.prototype.startSort = function () {
+BubbleController.prototype.startSort = async function () {
   const DELAY = 1000;
   const dataSet = this.BubbleModel.get();
   const done = dataSet.length;

@@ -17,11 +17,11 @@ html, body {
   margin: 10px auto;
 }
 
-form {
+.input-container form {
   display: inline;
 }
 
-.input-box {
+.input-container form > .input-box {
   width: 300px;
   height: 50px;
   border: none;
@@ -33,7 +33,7 @@ form {
   outline: none;
 }
 
-button {
+.input-container button {
   width: 100px;
   height: 50px;
   border: 2px solid #4A6FC3;
@@ -44,12 +44,12 @@ button {
   transition-duration: 0.4s;
 }
 
-button:hover {
+.input-container button:hover {
   background-color: #4A6FC3;
   color: white;
 }
 
-.message {
+.message-container {
   display: flex;
   height: 50px;
   justify-content: center;
@@ -65,7 +65,7 @@ button:hover {
   border-radius: 10px;
 }
 
-.graphs {
+.graph-container .graphs {
   position: relative;
   display: flex;
   width: 100%;
@@ -73,7 +73,7 @@ button:hover {
   justify-content: center;
 }
 
-.graphs span {
+.graph-container .graphs span {
   display: inline-block;
   width: 20px;
   margin: 5px;
@@ -83,16 +83,20 @@ button:hover {
   transition: all 0.5s;
 }
 
-.target {
+.graph-container .graphs .target {
   background-color: #5b76b6;
 }
 
+@keyframes moveToRight {
+
+}
+
 .moveToRight {
-  transform: translateX(30px) rotate(1turn);
+  transform: translateX(30px) rotate(0.5turn);
 }
 
 .moveToLeft {
-  transform: translateX(-30px) rotate(1turn);
+  transform: translateX(-30px) rotate(0.5turn);
 }
 
 .fixed {

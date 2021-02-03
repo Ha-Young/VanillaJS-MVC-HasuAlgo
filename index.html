@@ -8,18 +8,23 @@
 <body>
   <div class="content">
     <h1>Visualize Sorting Algorithms</h1>
+    <select name="sorts" class="select">
+      <option value="Bubble Sort">-- Bubble Sort --</option>
+      <option value="Quick Sort">-- Quick Sort --</option>
+      <option value="">---- Choice ----</option>
+    </select>
     <div class="input-container">
-      <select name="sorts" class="select">
-        <option value="">---- Choice ----</option>
-        <option value="Bubble Sort">-- Bubble Sort --</option>
-        <option value="Quick Sort">-- Quick Sort --</option>
-      </select>
       <form class="form">
         <input type="text" class="input-box" placeholder="입력"/>
       </form>
       <button class="excute-button">정렬 실행</button>
     </div>
-    <div class="message"></div>
+    <div class="message-container">
+      <span class="message"></span>
+      <!-- <span class="motion-container">
+        <span class="motion">motion</span>
+      </span> -->
+    </div>
     <section class="graph-container">
       <div class="graphs"></div>
     </section>

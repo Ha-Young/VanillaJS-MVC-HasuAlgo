@@ -1,5 +1,6 @@
 export default function BubbleView() {
   this.$graphs = document.querySelector(".graphs");
+  this.$messageContainer = document.querySelector(".message-container");
   this.$message = document.querySelector(".message");
   this.$inputBox = document.querySelector(".input-box");
   this.$excuteButton = document.querySelector(".excute-button");
@@ -17,8 +18,6 @@ BubbleView.prototype.paintGraphs = function (data, loopCount) {
   const maxSize = data.reduce((acc, item) => {
     return acc > item ? acc : item;
   });
-
-  console.log(maxSize);
 
   this.$graphs.textContent = "";
 
