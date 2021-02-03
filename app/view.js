@@ -1,5 +1,7 @@
-import {$on, qs, $delegate} from './helpers';
+import { $on, qs, $delegate } from './helpers';
 import { SortItemList } from './typeDef';
+import { fromToTranslatePosition, positionFactory } from './animate';
+import { ITEM } from './constant';
 
 export default class View {
 	constructor(template) {
@@ -64,35 +66,32 @@ export default class View {
 		this.$vizCanvas.innerHTML = this.template.sortItemList(sortItemList);
 	}
 
-	setItemSortedColor(index) {
+	setItemSortedColor(index, duration) {
 		const sortItemElement = this.getItemListsOnView()[index];
+		const rectElement = sortItemElement.querySelector('rect');
+		const itemRectHeight = + rectElement.getAttribute('height');
 		sortItemElement.removeAttribute('class');
 		sortItemElement.classList.add('sorted');
+
+		const [currentXPos, currentYPos] = this.getItemPosition(sortItemElement);
+		const fromPosition = positionFactory(currentXPos, currentYPos);
+		const toPosition = positionFactory(currentXPos, ITEM.MAX_HEIGHT - itemRectHeight);
+
+		fromToTranslatePosition(sortItemElement, fromPosition, toPosition, duration);
 	}
 
-	setItemSelection(index) {
+	setItemSelection(index, duration) {
 		const sortItemElement = this.getItemListsOnView()[index];
+		const rectElement = sortItemElement.querySelector('rect');
+		const itemRectHeight = + rectElement.getAttribute('height');
 		sortItemElement.removeAttribute('class');
 		sortItemElement.classList.add('selected');
 
-		// Getting
-		var xforms = sortItemElement.transform.baseVal.getItem(0); // An SVGTransformList
-		
-		var firstX = xforms.matrix.e, firstY = xforms.matrix.f;
-		
-		var from     = firstY;  // x="10"
-		var to       = firstY + 200;  // x="70"
-		var duration = 1000; // 500ms
-	
-		var start = new Date().getTime();
-	 
-		var timer = setInterval(function() {
-			var time = new Date().getTime() - start;
-			var x = easeInOutQuart(time, from, to - from, duration);
-			sortItemElement.setAttribute('x', x);
-			sortItemElement.setAttribute('transform', `translate(${firstX}, ${x})`);
-			if (time >= duration) clearInterval(timer);
-		}, 1000 / 60);
+		const [currentXPos, currentYPos] = this.getItemPosition(sortItemElement);
+		const fromPosition = positionFactory(currentXPos, currentYPos);
+		const toPosition = positionFactory(currentXPos, currentYPos + itemRectHeight);
+
+		fromToTranslatePosition(sortItemElement, fromPosition, toPosition, duration);
 	}
 
 	setItemCheckColor(index) {
@@ -100,16 +99,9 @@ export default class View {
 		sortItemElement.removeAttribute('class');
 		sortItemElement.classList.add('check');
 	}
-}
 
-//
-// http://easings.net/#easeInOutQuart
-//  t: current time
-//  b: beginning value
-//  c: change in value
-//  d: duration
-//
-function easeInOutQuart(t, b, c, d) {
-  if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
-  return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
+	getItemPosition(itemElement) {
+		const itemMatrix = itemElement.transform.baseVal.getItem(0).matrix; // An SVGTransformList
+		return [itemMatrix.e, itemMatrix.f];
+	}
 }
