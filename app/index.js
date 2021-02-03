@@ -11,11 +11,9 @@ window.addEventListener("DOMContentLoaded", function () {
   $bubble.addEventListener("change", (event) => {
     currentSort.clear();
     currentSort = new BubbleController();
-    console.log(event.target.value);
   });
   $quick.addEventListener("change", (event) => {
     currentSort.clear();
     currentSort = new QuickController();
-    console.log(event.target.value);
   })
 });

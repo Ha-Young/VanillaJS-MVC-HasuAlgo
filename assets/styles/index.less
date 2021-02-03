@@ -111,6 +111,24 @@ input[id="menu-icon"]:checked ~ .input-container .menu-button span:nth-child(3) 
   align-items: center;
 }
 
+.message-container .motion-container {
+  overflow: hidden;
+  position: relative;
+  width: 20px;
+  height: 100%;
+  text-align: initial;
+}
+
+.message-container .motion-container .motion {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-35%);
+  white-space: nowrap;
+}
+
 .graph-container {
   overflow: hidden;
   position: relative;
@@ -160,11 +178,7 @@ input[id="menu-icon"]:checked ~ .graph-container .menu-options {
 }
 
 .graph-container .graphs .target {
-  background-color: #5b76b6;
-}
-
-@keyframes moveToRight {
-
+  background-color: #4e6baf;
 }
 
 .moveToRight {
@@ -180,14 +194,6 @@ input[id="menu-icon"]:checked ~ .graph-container .menu-options {
   opacity: 0.8;
   pointer-events: none;
 }
-
-// @keyframes heos {
-
-// }
-
-// .done {
-//   animation: ;
-// }
 
 .hidden {
   display: none;

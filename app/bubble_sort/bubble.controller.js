@@ -17,7 +17,7 @@ export default function BubbleController() {
     const checked = this.checkInput(inputValue);
 
     if(!checked.isNumber) {
-      this.BubbleView.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요.", 3000);
+      this.BubbleView.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요."," 😓 ", 3000);
       return;
     }
 
@@ -27,11 +27,11 @@ export default function BubbleController() {
 
   function handleClick() {
     if (!this.BubbleModel.get()) {
-      this.BubbleView.paintMessage("데이터를 입력하세요.", 3000);
+      this.BubbleView.paintMessage("데이터를 입력하세요.", " 🤲 ", 3000);
       return;
     }
 
-    this.BubbleView.paintMessage("정렬 중 🏃");
+    this.BubbleView.paintMessage("정렬 중", " 🏃 🏃 🏃 ");
     this.BubbleView.holdInput(true);
     this.startSort();
   }
@@ -118,7 +118,7 @@ BubbleController.prototype.startSort = async function () {
         await paintGraphs(dataSet, dataSet.length);
 
         this.BubbleView.holdInput(false);
-        this.BubbleView.paintMessage("정렬 끄읕 🤸‍♀️", 3000);
+        this.BubbleView.paintMessage("정렬 끄읕", " 🤸‍♀️ ", 3000);
         return;
       }
 
