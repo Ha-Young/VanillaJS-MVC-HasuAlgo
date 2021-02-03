@@ -1,6 +1,4 @@
 export { Controller };
-import { View } from './view';
-import { GraphData } from './model';
 
 class Controller {
   constructor(model, view) {
@@ -56,28 +54,29 @@ class Controller {
   }
 
   doBubbleSort(dataArray) {
+    const graphs = this.view.graphs = Array.prototype.slice.call(document.querySelectorAll(".graph-list li"));
     (async () => {
-      const graphs = Array.prototype.slice.call(document.querySelectorAll(".graph-list li"));
-      this.view.graphs = graphs;
-      debugger;
       for (let i = 0; i < dataArray.length; i++) {
         for (let j = 0; j < dataArray.length - i - 1; j++) {
           if (dataArray[j] > dataArray[j+1]) {
-            const big = dataArray[j];
+            const bigNumber = dataArray[j];
+
             dataArray[j] = dataArray[j+1];
-            dataArray[j+1] = big;
-            await this.view.selectGraph(this.view.graphs[j], this.view.graphs[j+1], "selected");
-            await this.view.swapGraph(this.view.graphs[j], this.view.graphs[j+1], j, j+1);
-            await this.view.deselectGraph(this.view.graphs[j], this.view.graphs[j+1], "selected");
+            dataArray[j+1] = bigNumber;
+
+            await this.view.selectGraph(graphs[j], graphs[j+1], "selected");
+            await this.view.swapGraph(graphs[j], graphs[j+1], j, j+1);
+            await this.view.deselectGraph(graphs[j], graphs[j+1], "selected");
+
             if ((j + 1) === dataArray.length - i - 1) {
-              await this.view.confirmGraph(this.view.graphs[j+1], "confirmed");
+              await this.view.confirmGraph(graphs[j+1], "confirmed");
             }
           } else {
-            await this.view.selectGraph(this.view.graphs[j], this.view.graphs[j+1], "stopped");
-            await this.view.deselectGraph(this.view.graphs[j], this.view.graphs[j+1], "stopped");
+            await this.view.selectGraph(graphs[j], graphs[j+1], "stopped");
+            await this.view.deselectGraph(graphs[j], graphs[j+1], "stopped");
           }
         }
-        await this.view.confirmGraph(this.view.graphs[dataArray.length - i - 1], "confirmed");
+        await this.view.confirmGraph(graphs[dataArray.length - i - 1], "confirmed");
       }
     })();
   }
