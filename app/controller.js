@@ -11,7 +11,8 @@ function Controller() {
       const sortType = document.querySelector('select').value;
 
       $inputNumbers.value = '';
-      // model.checkValidation(inputList);
+
+      // this.model.checkValidation(inputList);
       this.model.saveModel(sortType, inputList);
       this.view.render(inputList);
 
