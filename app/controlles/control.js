@@ -41,15 +41,15 @@ BubbleController.prototype.addItem = function(e) {
 
 function filterType(input) {
   let filtering = [...input];
-  let isPass = true;
+  let isNumber = true;
   
   filtering.forEach(n => {
     if (isNaN(parseInt(n))) {
-      isPass = false;
+      isNumber = false;
     }
   });
   
-  return isPass;
+  return isNumber;
 }
 
 BubbleController.prototype.deleteItem = function() {
