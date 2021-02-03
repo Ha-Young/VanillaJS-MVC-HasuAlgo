@@ -123,6 +123,7 @@ export default class View {
 	}
 
 	setSortItemStatusSelected(index, duration) {
+		if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
 		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
 		this.setSortItemColorFromStatus(sortItemElement, 'selected');
@@ -139,8 +140,6 @@ export default class View {
 		const sortItemElement = this.getSortItemElement(index);
 		this.setSortItemColorFromStatus(sortItemElement, 'check');
 	}
-
-	setSortItemStatusClear
 
 	changeSortItem(aIndex, bIndex, duration) {
 		const aSortItemElement = this.getSortItemElement(aIndex);
