@@ -1,6 +1,3 @@
-// 데이터의 모양, 제약, 저장
-
-// observing them about their current state
 function Model() {
 	const storage = {};
 

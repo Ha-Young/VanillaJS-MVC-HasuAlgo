@@ -1,5 +1,5 @@
 function View() {
-
+  const ITEM_CLASS_NAME = '.sortItems';
   this.makeTemplate = function (list) {
     const $section = document.createElement('section');
 
@@ -20,35 +20,32 @@ function View() {
     $resultView.appendChild($section);
   }
 
-  this.getCurrentDom = function() {
-    const $items = document.querySelectorAll('.sortItems');
+  this.getCurrentDom = function(ITEM_CLASS_NAME) {
+    const $items = document.querySelectorAll(ITEM_CLASS_NAME);
     return Array.prototype.slice.call($items);
   }
 
-  this.changePosition = function (big, small) {
-    // debugger;
-    // big.style.transform = 'translateX(70px)';
-    // small.style.transform = 'translateX(-70px)';
+  this.bubbleChange = function ([big, small]) {
+    big.style.transform = 'translateX(70px)';
+    small.style.transform = 'translateX(-70px)';
+    return true;
+    // return new Promise(resolve => {
+    //   big.style.transform = 'translateX(70px)';
+    //   small.style.transform = 'translateX(-70px)';
+    //   resolve(true);
+    // });
   }
 
-  this.changeDom = function (big, small) {
-    console.log(big.textContent, small.textContent);
-    const $section = document.querySelector('section');
-
-    $section.insertBefore(small, big);
-    // 5,4,3,2,1
-    // 4,3,2,1,5
-    // 3,2,1,4,5
-    // 2,1,3,4,5
-    // 1,2,3,4,5
+  this.changeDom = function (bigIndex, smallIndex) {
+    return new Promise((resolve, reject) => {
+      const $section = document.querySelector('section');
+      const $itemsList = this.getCurrentDom(ITEM_CLASS_NAME);
+      setTimeout(function () {
+        $section.insertBefore($itemsList[smallIndex], $itemsList[bigIndex]);
+        resolve([$itemsList[bigIndex], $itemsList[smallIndex]]);
+      }, 1000);
+    });
   }
 }
-
-// function after1second() {
-//   return new Promise(resolve => {
-//     setTimeout(() => resolve(), 1000);
-//   });
-// }
-
 
 export default View;
