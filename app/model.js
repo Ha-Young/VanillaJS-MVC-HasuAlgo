@@ -3,26 +3,39 @@ function Model() {
   this._storage = [];
 }
 
-Model.prototype.setData = function (string) {
-  this._storage = string.split(",");
+Model.prototype.validateCode = function (code, ...callback) {
+  if (code === " ") {
+    callback[0]();
+    return;
+  } 
+  const result =  !(code >= "0" && code <= "9");
+  callback[1](result);
 }
 
-Model.prototype.bubbleSort = function (storage, ...callback) {
+Model.prototype.setData = function (string) {
+  this._storage = string.split(',');
+}
+
+Model.prototype.bubbleSort = async function (storage, ...callback) {
   let time = 1;
 
   callback[0](storage);
-  // 1. 초기 배열 값 
-  
 
   for (let i = 0; i < storage.length; i++) {
     for (let j = 0; j < storage.length - 1 - i; j++) {
 
       if (parseInt(storage[j]) > parseInt(storage[j + 1])) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
-        // 2. 바뀌는 요소의 index 만 pass 
+        
         (function (index, time) {
           setTimeout(function () {callback[1](index)}, time * 1000);
         })(j, time);
+
+        // function createSetTimeout (index, time) {
+        //   setTimeout(callback[1](index), time * 1000);
+        // }
+
+        // await createSetTimeout(j, time);
       }
       time++;
     }
@@ -32,7 +45,6 @@ Model.prototype.bubbleSort = function (storage, ...callback) {
     })(storage.length - 1 - i, time);
     time++;
   }
-  // 3. 정렬된 요소 paint
   
 }
 
