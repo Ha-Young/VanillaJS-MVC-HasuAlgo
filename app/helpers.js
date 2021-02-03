@@ -9,6 +9,16 @@ export function qs(selector, scope) {
 }
 
 /**
+ * querySelectorAll wrapper
+ *
+ * @param {string} selector Selector to query
+ * @param {Element} [scope] Optional scope element for the selector
+ */
+export function qsAll(selector, scope) {
+	return (scope || document).querySelectorAll(selector);
+}
+
+/**
  * addEventListener wrapper
  *
  * @param {Element|Window} target Target Element
