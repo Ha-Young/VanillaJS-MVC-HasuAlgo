@@ -11,14 +11,14 @@ async function sortStorage(storeageArray) {
   for (let i = 0; i < storeageArray.length; i++) {
     for (var j= 0; j <storeageArray.length - 1 -i; j++) {
       if (storeageArray[j] > storeageArray[j + 1]) {
-        const moveValue = ((1200 - (50 * storeageArray.length)) / storeageArray.length) + 50;
+        const moveValue = ((1200 - (50 * (storeageArray.length + 1))) / storeageArray.length) + 50;
         let swap = storeageArray[j];
 
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
  
         await moveGraph(view.$graphNodes[j], view.$graphNodes[j + 1], moveValue);
-        changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
+        await changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
       }
     }
 
