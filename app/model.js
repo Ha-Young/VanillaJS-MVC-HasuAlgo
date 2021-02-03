@@ -22,6 +22,7 @@ Model.prototype.startSort = function (
   let time = 0;
   for (let i = 0; i < sortingArr.length; i++) {
     for (let j = 0; j < sortingArr.length - i - 1; j++) {
+      const lastIndex = sortingArr.length - i - 1;
       startCompare(j, ++time);
 
       if (sortingArr[j] > sortingArr[j + 1]) {
@@ -32,7 +33,7 @@ Model.prototype.startSort = function (
         swapElement(j, sortingArr[j], sortingArr[j + 1], ++time);
       }
 
-      finishCompare(j, ++time);
+      finishCompare(j, lastIndex, ++time);
     }
   }
   finishSort(time);
@@ -58,13 +59,11 @@ Model.prototype.shuffleNum = function (callback) {
 };
 
 Model.prototype.setRandom = function (callback) {
-  const newRandom = Math.floor(Math.random() * 20);
+  const newRandom = Math.floor(Math.random() * 20) + 1;
 
   this.inputArray.push(newRandom);
 
   callback(newRandom);
 };
-
-Model.prototype.move = function (index1, index2) {};
 
 Model.prototype.removeAll = function () {};

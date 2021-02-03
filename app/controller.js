@@ -60,8 +60,11 @@ Controller.prototype.startSort = function () {
     );
   };
 
-  const finishCompare = function (index, time) {
-    setTimeout(() => self.view.render("uncolorElement", index), time * 400);
+  const finishCompare = function (index, lastIndex, time) {
+    setTimeout(
+      () => self.view.render("uncolorElement", index, lastIndex),
+      time * 400
+    );
   };
 
   const finishSort = function (time) {

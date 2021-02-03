@@ -5,6 +5,7 @@ export const View = function () {
 
   this.ENTER_KEY = 13;
   this.ESCAPE_KEY = 27;
+  this.randomCounter = 0;
 
   this.$inputBox = qs(".input-box");
   this.$inputForm = qs(".input-form");
@@ -22,6 +23,7 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
   const self = this;
   const viewCommands = {
     paintWholeList: function () {
+      self.getHeight(20);
       self.$sortContainer.innerHTML = "";
       for (const number of parameter) {
         const li = document.createElement("li");
@@ -34,6 +36,7 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
       }
     },
     paintNewNumber: function () {
+      self.getHeight();
       const elementCount = self.$sortContainer.childElementCount;
       if (elementCount > 9) {
         return;
@@ -88,11 +91,16 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
       if (firstElement) {
         firstElement.childNodes[1].classList.remove("compare");
       }
+
       if (secondElement) {
+        if (secondIndex === args[0]) {
+          secondElement.childNodes[1].classList.add("done");
+        }
         secondElement.childNodes[1].classList.remove("compare");
       }
     },
     finishSort: function () {
+      self.$sortElementList[0].childNodes[1].classList.add("done");
       self.$resetButton.classList.remove("hide");
     },
     paintReset: function () {
@@ -101,6 +109,7 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
       self.$shuffleButton.classList.remove("hide");
       self.$randomButton.classList.remove("hide");
       self.$resetButton.classList.add("hide");
+      self.randomCounter = 0;
     },
     console: function () {
       console.log(parameter);
@@ -137,15 +146,33 @@ View.prototype.connectHandler = function (event, handler) {
     });
   } else if (event === "setRandom") {
     $on(self.$randomButton, "click", function () {
-      handler();
+      if (self.randomCounter < 10) {
+        handler();
+        self.randomCounter++;
+      }
     });
   }
 };
 
-View.prototype.getHeight = function (value) {};
+View.prototype.getHeight = function (value) {
+  const HEIGHT = 400;
+  const wholeList = this.$sortContainer.childNodes;
+  let maxValue = 0;
+  let currentValue;
+
+  for (const element of wholeList) {
+    if (element) {
+      currentValue = parseInt(element.childNodes[3].innerHTML);
+      maxValue = Math.max(maxValue, currentValue);
+    }
+  }
+
+  return (currentValue / maxValue) * HEIGHT;
+};
 
 View.prototype.paintBar = function (number) {
   const li = document.createElement("li");
+
   li.classList.add("sort-element");
   li.innerHTML = `
 				<div class="sort-bar" style="height: ${number * 15 + 20}px"></div>
