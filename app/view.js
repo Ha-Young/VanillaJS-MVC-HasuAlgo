@@ -1,4 +1,4 @@
-import { $on, qs, $delegate } from './helpers';
+import { $on, qs, $delegate, qsAll } from './helpers';
 import { SortItemList } from './typeDef';
 import { fromToTranslatePosition, positionFactory } from './animate';
 import { ITEM } from './constant';
@@ -52,8 +52,45 @@ export default class View {
 		this.$container.className = `container ${theme}`;
 	}
 
-	getItemListsOnView() {
-		return this.$vizCanvas.querySelectorAll('g');
+
+
+	// SortItem 관련 (SVG)
+
+	getSortItemListsOnView() {
+		return qsAll('g', this.$vizCanvas);
+	}
+
+	getSortItemElement(nth) {
+		return this.getSortItemListsOnView()[nth];
+	}
+
+	getSortItemRectHeight(sortItemElement) {
+		const rectElement = sortItemElement.querySelector('rect');
+		return (+ rectElement.getAttribute('height'));
+	}
+
+	clearSortItemColor(sortItemElement) {
+		sortItemElement.removeAttribute('class');
+	}
+
+	getSortItemPosition(sortItemElement) {
+		const svgTransFormMatrix = sortItemElement.transform.baseVal.getItem(0).matrix; // An SVGTransformList
+		return [svgTransFormMatrix.e, svgTransFormMatrix.f];
+	}
+
+	setSortItemColorFromStatus(sortItemElement, status) {
+		this.clearSortItemColor(sortItemElement);
+		switch (status) {
+			case 'sorted':
+				sortItemElement.classList.add('sorted');
+				break;
+			case 'selected':
+				sortItemElement.classList.add('selected');
+				break;
+			case 'check':
+				sortItemElement.classList.add('check');
+				break;
+		}
 	}
 
 	/**
@@ -66,42 +103,34 @@ export default class View {
 		this.$vizCanvas.innerHTML = this.template.sortItemList(sortItemList);
 	}
 
-	setItemSortedColor(index, duration) {
-		const sortItemElement = this.getItemListsOnView()[index];
-		const rectElement = sortItemElement.querySelector('rect');
-		const itemRectHeight = + rectElement.getAttribute('height');
-		sortItemElement.removeAttribute('class');
-		sortItemElement.classList.add('sorted');
+	// sort 비동기 관련
+	setSortItemStatusSorted(index, duration) {
+		const sortItemElement = this.getSortItemElement(index);
+		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
+		this.setSortItemColorFromStatus(sortItemElement, 'sorted');
 
-		const [currentXPos, currentYPos] = this.getItemPosition(sortItemElement);
+		const [currentXPos, currentYPos] = this.getSortItemPosition(sortItemElement);
 		const fromPosition = positionFactory(currentXPos, currentYPos);
-		const toPosition = positionFactory(currentXPos, ITEM.MAX_HEIGHT - itemRectHeight);
+		const toPosition = positionFactory(currentXPos, ITEM.MAX_HEIGHT - sortItemRectHeight);
 
 		fromToTranslatePosition(sortItemElement, fromPosition, toPosition, duration);
 	}
 
-	setItemSelection(index, duration) {
-		const sortItemElement = this.getItemListsOnView()[index];
-		const rectElement = sortItemElement.querySelector('rect');
-		const itemRectHeight = + rectElement.getAttribute('height');
-		sortItemElement.removeAttribute('class');
-		sortItemElement.classList.add('selected');
+	setSortItemStatusSelected(index, duration) {
+		const sortItemElement = this.getSortItemElement(index);
+		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
+		this.setSortItemColorFromStatus(sortItemElement, 'selected');
 
-		const [currentXPos, currentYPos] = this.getItemPosition(sortItemElement);
+		const [currentXPos, currentYPos] = this.getSortItemPosition(sortItemElement);
 		const fromPosition = positionFactory(currentXPos, currentYPos);
-		const toPosition = positionFactory(currentXPos, currentYPos + itemRectHeight);
+		const toPosition = positionFactory(currentXPos, currentYPos + sortItemRectHeight);
 
 		fromToTranslatePosition(sortItemElement, fromPosition, toPosition, duration);
 	}
 
-	setItemCheckColor(index) {
-		const sortItemElement = this.getItemListsOnView()[index];
-		sortItemElement.removeAttribute('class');
-		sortItemElement.classList.add('check');
-	}
-
-	getItemPosition(itemElement) {
-		const itemMatrix = itemElement.transform.baseVal.getItem(0).matrix; // An SVGTransformList
-		return [itemMatrix.e, itemMatrix.f];
+	setSortItemStatusCheck(index) {
+		const sortItemElement = this.getSortItemElement(index);
+		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
+		this.setSortItemColorFromStatus(sortItemElement, 'check');
 	}
 }
