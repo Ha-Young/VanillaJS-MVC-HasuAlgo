@@ -81,11 +81,11 @@ export default class Controller {
 	}
 
 	viewItemSortedColor(index) {
-		this.view.setItemSortedColor(index);
+		this.view.setItemSortedColor(index, this.delayTimeOnChange);
 	}
 
 	viewItemSelection(index) {
-		this.view.setItemSelection(index);
+		this.view.setItemSelection(index, this.delayTimeOnChange);
 	}
 
 	viewItemCheckColor(index) {
@@ -96,7 +96,6 @@ export default class Controller {
 		await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
 
 		for (let i = 1; i < sortList.length; i++) {
-			debugger;
 			let selectionIndex = i;
 			await this.doUIWork([this.viewItemSelection.bind(this, selectionIndex)]);
 
