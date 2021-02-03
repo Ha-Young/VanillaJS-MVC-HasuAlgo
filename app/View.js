@@ -6,6 +6,9 @@ function View() {
 
   this.$sortDisplay = document.querySelector(".display-container");
   this.$sortLists = document.querySelector(".sorting__lists");
+  this.$allItem = this.$sortLists.childNodes;
+
+  this.TranslateDelayTime = 500;
 }
 
 View.prototype.printNumbers = function (sortList) {
@@ -27,41 +30,48 @@ View.prototype.setNumbersHeigth = function (targetNumber, height) {
   targetNumber.style.height = `${height}px`;
 };
 
-View.prototype.printDisplay = function (sortList) {
+View.prototype.paintSortList = function (sortList) {
   for (let i = 0; i < sortList.length; i++) {
     const item = this.createNumbers(sortList[i]);
     this.$sortLists.appendChild(item);
   }
 };
 
-View.prototype.chageDisplayPosition = function (left, right) {
-  const temp1 = left.getBoundingClientRect().x;
-  const temp2 = right.getBoundingClientRect().x;
+View.prototype.chageSortItemPosition = function (left, right) {
+  return new Promise(function (resolve) {
+    const temp1 = left.getBoundingClientRect().x;
+    const temp2 = right.getBoundingClientRect().x;
 
-  this.addMovingClass(left, right);
+    view.addMovingClass(left, right);
 
-  left.style.transform = `translateX(${temp2 - temp1}px)`;
-  right.style.transform = `translateX(${temp1 - temp2}px)`;
+    left.style.transform = `translateX(${temp2 - temp1}px)`;
+    right.style.transform = `translateX(${temp1 - temp2}px)`;
+
+    setTimeout(function () {
+      resolve();
+    }, view.TranslateDelayTime);
+  })
 };
 
-View.prototype.resetTranslate = function (left, right) {
-  left.style.transform = null
-  right.style.transform = null;
-}
-
-View.prototype.addMovingClass = function (...arg) {
-  arg.forEach(function (item) {
+View.prototype.addMovingClass = function (...items) {
+  items.forEach(function (item) {
     item.classList.add("moving");
   });
 };
 
-View.prototype.removeMovingClass = function (...arg) {
-  arg.forEach(function (item) {
+View.prototype.removeMovingClass = function (...items) {
+  items.forEach(function (item) {
     item.classList.remove("moving");
   });
 };
 
-View.prototype.changeDomPosition = function (left, right, index) {
+View.prototype.resetTranslate = function (...items) {
+  items.forEach(function (item) {
+    item.style.transform = null;
+  });
+}
+
+View.prototype.changeDomPosition = function (left, right) {
   this.$sortLists.insertBefore(right, left);
 };
 

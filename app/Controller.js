@@ -1,3 +1,4 @@
+import { reject } from 'lodash';
 import {model as Model} from './Model';
 import {view as View} from './View.js';
 
@@ -13,14 +14,14 @@ function handlePrintNumbers(event) {
   View.printNumbers(Model.sortList);
 }
 
-function handlePrintDisplay() {
+function handlePaintSortList() {
   if (Model.sortList.length < 5) {
     throw new Error("min 5 number!!");
   }
 
-  View.printDisplay(Model.sortList);
+  View.paintSortList(Model.sortList);
   View.$sortForm.removeEventListener("submit", handleSubmit);
-  View.$sortButton.removeEventListener("click", handlePrintDisplay);
+  View.$sortButton.removeEventListener("click", handlePaintSortList);
   //sorting이 끝난 후 다시 addEvent해준다.
 }
 
@@ -34,48 +35,21 @@ function handleStartSort() {
   bubbleSort();
 }
 
-function compareTwoItem(i = 0) {
-  const all = View.$sortLists.childNodes;
+async function compareTwoItem() {
+  const item = View.$allItem;
 
-  return new Promise(function (resolve) {
-    if (Number(all[i].textContent) > Number(all[i + 1].textContent)) {
-      resolve(i);
-    } else {
-      if (i === all.length - 2) {
-        return;
+  for (let i = 0; i < item.length - 1; i++) {
+    for (let j = 0; j < item.length - 1; j++) {
+      if (Number(item[j].textContent) > Number(item[j + 1].textContent)) {
+        await View.chageSortItemPosition(item[j], item[j + 1]);
+
+        Model.changeListOrder(j, j + 1);
+        View.removeMovingClass(item[j], item[j + 1]);
+        View.resetTranslate(item[j], item[j + 1]);
+        View.changeDomPosition(item[j], item[j + 1]);
       }
-
-      compareTwoItem(i + 1);
     }
-  })
-  .then(function (i) {
-    return new Promise(function (resolve) {
-      setTimeout(function () {
-        View.chageDisplayPosition(all[i], all[i + 1]);
-
-        resolve(i);
-      }, 1000);
-    });
-  })
-  .then(function (i) {
-    return new Promise(function (resolve) {
-      setTimeout(function () {
-        Model.changeListOrder(i, i + 1);
-        View.removeMovingClass(all[i], all[i + 1]);
-        View.resetTranslate(all[i], all[i + 1]);
-        View.changeDomPosition(all[i], all[i + 1]);
-
-        resolve(i);
-      }, 1000);
-    });
-  })
-  .then(function (i) {
-    if (i === all.length - 2) {
-      return;
-    }
-
-    compareTwoItem(i + 1);
-  });
+  }
 }
 
 function bubbleSort() {
@@ -85,7 +59,7 @@ function bubbleSort() {
 function Controller() {
   View.$sortForm.addEventListener("submit", handleSubmit);
   View.$sortForm.addEventListener("submit", handlePrintNumbers);
-  View.$sortButton.addEventListener("click", handlePrintDisplay);
+  View.$sortButton.addEventListener("click", handlePaintSortList);
   View.$sortButton.addEventListener("click", handleStartSort);
 }
 
