@@ -1,12 +1,10 @@
 import { transform } from "lodash";
+import MYAPP from './myapp';
 
 export default class View {
-  constructor() {
-    this.graphTable = document.querySelector('.article');
-  }
-
-  render(userInputData) {
-    this.graphTable.innerHTML = null;
+  renderGraphs(userInputData) {
+    const graphTable = MYAPP.table.graph;
+    graphTable.innerHTML = null;
 
     for (let i = 0; i < userInputData.length; i++) {
       const graphPercent = userInputData[i];
@@ -15,11 +13,8 @@ export default class View {
       $graph.style.width = '10%';
       $graph.style.height = `${graphPercent}%`;
       $graph.dataset.id = userInputData[i];
-      this.graphTable.appendChild($graph);
+      graphTable.appendChild($graph);
     }
-  }
-
-  update() {
   }
 
   clearAllColor(graphs) {
@@ -38,46 +33,33 @@ export default class View {
     });
   }
 
-  /*
-  setZeroTranstion(left, right) {
+  renderSortedGraphColor(last) {
     return new Promise(resolve => {
+      last.classList.add('sorted-graph');
       setTimeout(() => {
-        const changedLeft = left.getBoundingClientRect();
-        console.log('changedLeft', changedLeft);
-        console.log('tozeroTranasition');
-
-        left.style.transform = `translate(${0}px`;
-        right.style.transform = `translate(${0}px`;
         resolve();
       }, 2000);
     });
   }
-  */
 
-  async swap(left, right) {
+  renderSwapAnimation(left, right) {
     const finalLeftStyle = left.getBoundingClientRect().left - right.getBoundingClientRect().left;
     const finalRightStyle = right.getBoundingClientRect().left - left.getBoundingClientRect().left;
 
     left.animate(
       { transform: `translate(${finalRightStyle}px)` },
-      { duration: 1000, fill: 'forwards' }
+      { duration: 800, fill: 'forwards' }
     );
 
     right.animate(
       { transform: `translate(${finalLeftStyle}px)` },
-      { duration: 1000, fill: 'forwards' }
+      { duration: 800, fill: 'forwards' }
     );
-
-    /*
-    left.style.transform = `translate(${finalRightStyle}px`;
-    right.style.transform = `translate(${finalLeftStyle}px`;
-    */
-
 
     return new Promise(resolve => {
       setTimeout(() => {
         resolve();
-      }, 2000);
+      }, 1000);
     });
   }
 }

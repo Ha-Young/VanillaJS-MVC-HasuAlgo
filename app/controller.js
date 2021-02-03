@@ -1,16 +1,16 @@
+import MYAPP from './myapp';
+
 export default class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-    this.startBtn = document.querySelector('.user-input-btn');
-    this.inputTable = document.querySelector('.user-input-table');
-    this.graphTable = document.querySelector('.article');
+    this.storage = this.model.get();
   }
 
   run() {
     let isClicked = false;
-    this.startBtn.addEventListener(('click'), () => {
-      if (!isClicked && this.inputTable.value) {
+    MYAPP.button.start.addEventListener(('click'), () => {
+      if (!isClicked && MYAPP.table.input.value) {
         this.init();
         this.sort();
         isClicked = true;
@@ -19,52 +19,48 @@ export default class Controller {
   }
 
   init() {
-    const userValue = this.model.set(this.inputTable.value);
-    this.view.render(userValue);
-    console.log(this.graphTable.children);
+    const userInputValue = MYAPP.table.input.value;
+    this.model.set(userInputValue);
+    this.view.renderGraphs(this.storage);
   }
 
   async sort() {
-    for (let i = 0; i < this.graphTable.children.length; i++) {
-      let swap;
-      for (let j = 0; j < this.graphTable.children.length - 1 - i; j++) {
-        const left = this.graphTable.children[j];
-        const right = this.graphTable.children[j + 1];
+    const numberGraphs = MYAPP.table.graph.children.length;
+    const graph = MYAPP.table.graph.children;
+    const graphTable = MYAPP.table.graph;
 
-        this.view.clearAllColor(this.graphTable);
+    for (let i = 0; i < numberGraphs; i++) {
+      let swapped;
+      for (let j = 0; j < numberGraphs - 1 - i; j++) {
+        const left = graph[j];
+        const right = graph[j + 1];
+        const leftValue = Number(left.dataset.id);
+        const rightValue = Number(right.dataset.id);
+
+        this.view.clearAllColor(graphTable);
         await this.view.renderDefaultColor(left, right);
 
-        if (Number(left.dataset.id) > Number(right.dataset.id)) {
-          console.log(`${left.dataset.id} is bigger then ${right.dataset.id}`);
-          // 스왑을 먼저 하고
-
-          await this.view.swap(left, right);
-
-          await this.model.swapIndex(j, j + 1);
-          await this.view.render(this.model.userInputData);
-
-
-          //await this.model.swap(left, right);
-
-
-          this.view.clearAllColor(this.graphTable);
-          swap = true;
+        if (leftValue > rightValue) {
+          await this.view.renderSwapAnimation(left, right);
+          this.model.swapIndex(j, j + 1);
+          if (i !== 0) {
+            this.storage.pop();
+          }
+          await this.view.renderGraphs(this.storage);
+          swapped = true;
         }
       }
-      console.log(`${i}회전 : ${this.graphTable}`);
-      if (!swap) {
-        this.view.clearAllColor(this.graphTable);
+
+      const sortedGraph = graph[numberGraphs - i - 1];
+      console.log(sortedGraph);
+      await this.view.renderSortedGraphColor(sortedGraph);
+
+      console.log(`${i}회전한 결과는 ${this.graphTable}---------------------------`);
+
+      if (!swapped) {
+        //this.view.clearAllColor(graphTable);
         return;
       }
     }
   }
-
-  giveTimelag() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, 1000);
-    });
-  }
 }
-
