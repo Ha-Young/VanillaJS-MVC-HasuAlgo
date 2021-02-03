@@ -1,8 +1,8 @@
 // Load application styles
 import "../assets/styles/index.less";
-import Controller from "./controller";
-import Model from "./model";
-import View from "./view";
+import Controller from "./controllers/controller";
+import Model from "./models/model";
+import View from "./views/view";
 
 const Sort = function () {
   this.view = new View();

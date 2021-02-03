@@ -1,25 +1,23 @@
-const Model = function () {
-  this.inputArray = [];
-  this.sortedArray = [];
+const BubbleModel = function () {
+  this._inputArray = [];
 };
 
-Model.prototype.addNumber = function (array, callback) {
-  if (this.inputArray.length > 9) {
+BubbleModel.prototype.addNumber = function (array, callback) {
+  if (this._inputArray.length > 9) {
     return;
   }
 
-  this.inputArray = this.inputArray.concat(array);
-  console.log(this.inputArray);
-  callback(this.inputArray);
+  this._inputArray = this._inputArray.concat(array);
+  callback(this._inputArray);
 };
 
-Model.prototype.startSort = function (
+BubbleModel.prototype.startSort = function (
   startCompare,
   swapElement,
   finishCompare,
   finishSort
 ) {
-  const sortingArr = [...this.inputArray];
+  const sortingArr = [...this._inputArray];
   let time = 0;
   for (let i = 0; i < sortingArr.length; i++) {
     for (let j = 0; j < sortingArr.length - i - 1; j++) {
@@ -40,13 +38,13 @@ Model.prototype.startSort = function (
   finishSort(time);
 };
 
-Model.prototype.resetList = function (callback) {
-  this.inputArray = [];
+BubbleModel.prototype.resetList = function (callback) {
+  this._inputArray = [];
   callback();
 };
 
-Model.prototype.shuffleNum = function (callback) {
-  const shuffledArray = [...this.inputArray];
+BubbleModel.prototype.shuffleNum = function (callback) {
+  const shuffledArray = [...this._inputArray];
 
   for (let i = shuffledArray.length; i; i--) {
     const j = Math.floor(Math.random() * i);
@@ -55,18 +53,16 @@ Model.prototype.shuffleNum = function (callback) {
     shuffledArray[j] = temp;
   }
 
-  this.inputArray = [...shuffledArray];
+  this._inputArray = [...shuffledArray];
   callback(shuffledArray);
 };
 
-Model.prototype.setRandom = function (callback) {
+BubbleModel.prototype.setRandom = function (callback) {
   const newRandom = Math.floor(Math.random() * 50) + 1;
 
-  this.inputArray.push(newRandom);
+  this._inputArray.push(newRandom);
 
-  callback(this.inputArray);
+  callback(this._inputArray);
 };
 
-Model.prototype.removeAll = function () {};
-
-export default Model;
+export default BubbleModel;

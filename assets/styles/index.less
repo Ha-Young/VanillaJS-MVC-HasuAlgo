@@ -2,6 +2,7 @@
 @subColor: #f5d042;
 @subColor-white: #f5f6fa;
 @subColor-gray: #dcdde1;
+@main-font: "Press Start 2P", cursive;
 @import (inline) "./font.css";
 
 html,
@@ -36,7 +37,7 @@ img {
 .main-title {
   margin-top: 80px;
   margin-bottom: 70px;
-  font-family: "Press Start 2P", cursive;
+  font-family: @main-font;
   font-size: 60px;
   color: @subColor;
 }
@@ -95,6 +96,28 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.main-message {
+  text-align: center;
+  font-size: 40px;
+  font-family: @main-font;
+  height: inherit;
+  line-height: 45vh;
+}
+
+.main-alert {
+  text-align: center;
+  font-size: 60px;
+  font-weight: 900;
+  margin-top: 180px;
+  margin-bottom: 0px;
+}
+
+.sub-alert {
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 250px;
 }
 
 .sort-buttons {
@@ -174,8 +197,4 @@ img {
 
 .hide {
   display: none;
-}
-
-.show {
-  display: block;
 }

@@ -1,4 +1,4 @@
-const Controller = function (model, view) {
+const BubbleController = function (model, view) {
   const self = this;
   self.model = model;
   self.view = view;
@@ -22,31 +22,25 @@ const Controller = function (model, view) {
   self.view.connectHandler("setRandom", function () {
     self.setRandom();
   });
-
-  self.view.connectHandler("bubbleSort", function (array) {
-    self.bubbleSort(array);
-  });
 };
 
-Controller.prototype.setView = function (locationHash) {
-  const route = locationHash.split("/")[1];
-  const page = route || "";
-  this.view.render("changeSort", page);
-};
-
-Controller.prototype.addNumber = function (input) {
+BubbleController.prototype.addNumber = function (input) {
   const self = this;
   const newNumber = input
     .split(",")
     .map((num) => parseInt(num))
     .filter((num) => !isNaN(num));
 
+  if (!newNumber.length) {
+    return;
+  }
+
   self.model.addNumber(newNumber, function (newList) {
     self.view.render("paintNewList", newList);
   });
 };
 
-Controller.prototype.startSort = function () {
+BubbleController.prototype.startSort = function () {
   const self = this;
 
   const startCompare = function (index, time) {
@@ -74,7 +68,7 @@ Controller.prototype.startSort = function () {
   self.model.startSort(startCompare, swapElement, finishCompare, finishSort);
 };
 
-Controller.prototype.resetList = function () {
+BubbleController.prototype.resetList = function () {
   const self = this;
 
   self.model.resetList(() => {
@@ -82,7 +76,7 @@ Controller.prototype.resetList = function () {
   });
 };
 
-Controller.prototype.setRandom = function () {
+BubbleController.prototype.setRandom = function () {
   const self = this;
 
   self.model.setRandom((newList) => {
@@ -90,7 +84,7 @@ Controller.prototype.setRandom = function () {
   });
 };
 
-Controller.prototype.shuffleNum = function () {
+BubbleController.prototype.shuffleNum = function () {
   const self = this;
 
   self.model.shuffleNum((shuffledArray) => {
@@ -98,8 +92,4 @@ Controller.prototype.shuffleNum = function () {
   });
 };
 
-Controller.prototype.bubbleSort = function () {
-  console.log("Controller: bubbleSort");
-};
-
-export default Controller;
+export default BubbleController;

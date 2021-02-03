@@ -1,8 +1,4 @@
-import { Template } from "./template";
-
-const View = function () {
-  this.template = new Template();
-
+const BubbleView = function () {
   this.$sortStyle = qs(".sort-style");
   this.$inputBox = qs(".input-box");
   this.$inputForm = qs(".input-form");
@@ -15,7 +11,7 @@ const View = function () {
   this.$sortContainer = qs(".sort-list");
 };
 
-View.prototype.render = function (viewCommand, parameter, ...args) {
+BubbleView.prototype.render = function (viewCommand, parameter, ...args) {
   const self = this;
 
   const viewCommands = {
@@ -75,21 +71,13 @@ View.prototype.render = function (viewCommand, parameter, ...args) {
       self.$shuffleButton.classList.remove("hide");
       self.$randomButton.classList.remove("hide");
       self.$resetButton.classList.add("hide");
-      self.randomCounter = 0;
-    },
-    console: function () {
-      console.log(parameter);
-      console.log(args);
-    },
-    changeSort: function () {
-      console.log(parameter);
     },
   };
 
   viewCommands[viewCommand]();
 };
 
-View.prototype.connectHandler = function (event, handler) {
+BubbleView.prototype.connectHandler = function (event, handler) {
   const self = this;
 
   if (event === "addNumber") {
@@ -125,7 +113,7 @@ View.prototype.connectHandler = function (event, handler) {
   }
 };
 
-View.prototype.paintBar = function (list) {
+BubbleView.prototype.paintBar = function (list) {
   this.$sortContainer.innerHTML = "";
   const maxNumber = Math.max.apply(null, list);
 
@@ -140,4 +128,4 @@ View.prototype.paintBar = function (list) {
   }
 };
 
-export default View;
+export default BubbleView;
