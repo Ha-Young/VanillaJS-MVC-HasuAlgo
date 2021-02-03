@@ -1,4 +1,3 @@
-import { reject } from 'lodash';
 import {model as Model} from './Model';
 import {view as View} from './View.js';
 
@@ -12,6 +11,7 @@ function handlePrintNumbers(event) {
   event.preventDefault();
 
   View.printNumbers(Model.sortList);
+  View.$resetButton.addEventListener("click", resetSort);
 }
 
 function handlePaintSortItems() {
@@ -20,8 +20,11 @@ function handlePaintSortItems() {
   }
 
   View.paintSortItems(Model.sortList);
+
+  View.$sortButton.addEventListener("click", handleStartSort);
+
   View.$sortForm.removeEventListener("submit", handleSubmit);
-  View.$sortButton.removeEventListener("click", handlePaintSortItems);
+  View.$paintButton.removeEventListener("click", handlePaintSortItems);
   //sorting이 끝난 후 다시 addEvent해준다.
 }
 
@@ -32,7 +35,11 @@ function handleStartSort() {
 
   View.$sortButton.removeEventListener("click", handleStartSort);
 
-  bubbleSort();
+  if (View.$sortOptionSelector.value === View.sortOptions.bubble) {
+    bubbleSort();
+  } else {
+    mergeSort();
+  }
 }
 
 async function ascendingSortTwoItem(left, right, index) {
@@ -41,9 +48,9 @@ async function ascendingSortTwoItem(left, right, index) {
 
     Model.changeListOrder(index, index + 1);
 
-    View.removeMovingClass(left, right);
+    View.removeClass(View.classList.moving, left, right);
     View.resetTranslate(left, right);
-    View.changeDomPosition(left, right);
+    View.swapDomPosition(left, right);
   }
 
   return Promise.resolve();
@@ -57,15 +64,18 @@ async function bubbleSort() {
       await ascendingSortTwoItem(item[j], item[j + 1], j);
     }
   }
+}
 
-  return Promise.resolve("bubble complete!");
+function mergeSort() {}
+
+function resetSort() {
+  View.$resetButton.removeEventListener("click",resetSort);
 }
 
 function Controller() {
   View.$sortForm.addEventListener("submit", handleSubmit);
   View.$sortForm.addEventListener("submit", handlePrintNumbers);
-  View.$sortButton.addEventListener("click", handlePaintSortItems);
-  View.$sortButton.addEventListener("click", handleStartSort);
+  View.$paintButton.addEventListener("click", handlePaintSortItems);
 }
 
 export default Controller;

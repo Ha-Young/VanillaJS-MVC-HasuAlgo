@@ -2,7 +2,6 @@ function View() {
   this.$sortForm = document.querySelector(".sorting__form");
   this.$sortInput = document.querySelector(".sorting__input");
   this.$sortQueue = document.querySelector(".sorting__queue");
-  this.$sortButton = document.querySelector(".sort-Button");
 
   this.$sortDisplay = document.querySelector(".display-container");
   this.$sortItems = document.querySelector(".sorting__items");
@@ -10,11 +9,21 @@ function View() {
 
   this.$sortOptionSelector = document.querySelector(".sorting__select-sort");
   this.sortOptions = {
-    bubble: "Bubble Sort",
-    merge: "Merge Sort",
-  }
+    bubble: document.querySelector("#Bubble").textContent,
+    merge: document.querySelector("#Merge").textContent,
+  };
 
-  this.TranslateDelayTime = 200;
+  this.classList = {
+    moving: "moving",
+    bubble: "bubble",
+    merge: "merge",
+  };
+
+  this.$paintButton = document.querySelector(".paint-button");
+  this.$sortButton = document.querySelector(".sort-button");
+  this.$resetButton = document.querySelector(".reset-button");
+
+  this.TranslateDelayTime = 500;
 }
 
 View.prototype.printNumbers = function (sortList) {
@@ -44,12 +53,11 @@ View.prototype.paintSortItems = function (sortList) {
 };
 
 View.prototype.chageSortItemPosition = function (left, right) {
-  console.log(this.$sortOptionSelector.value)
   return new Promise(function (resolve) {
     const temp1 = left.getBoundingClientRect().x;
     const temp2 = right.getBoundingClientRect().x;
 
-    view.addMovingClass(left, right);
+    view.addClass(view.classList.moving, left, right);
 
     left.style.transform = `translateX(${temp2 - temp1}px)`;
     right.style.transform = `translateX(${temp1 - temp2}px)`;
@@ -60,15 +68,15 @@ View.prototype.chageSortItemPosition = function (left, right) {
   })
 };
 
-View.prototype.addMovingClass = function (...items) {
+View.prototype.addClass = function (className, ...items) {
   items.forEach(function (item) {
-    item.classList.add("moving");
+    item.classList.add(className);
   });
 };
 
-View.prototype.removeMovingClass = function (...items) {
+View.prototype.removeClass = function (className, ...items) {
   items.forEach(function (item) {
-    item.classList.remove("moving");
+    item.classList.remove(className);
   });
 };
 
@@ -78,7 +86,7 @@ View.prototype.resetTranslate = function (...items) {
   });
 };
 
-View.prototype.changeDomPosition = function (left, right) {
+View.prototype.swapDomPosition = function (left, right) {
   this.$sortItems.insertBefore(right, left);
 };
 

@@ -41,7 +41,11 @@ body {
   margin: @margin;
 }
 
-.sort-Button {
+.paint-button {
+  margin: @margin;
+}
+
+.sort-button {
   margin: @margin;
 }
 
@@ -61,19 +65,27 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  padding: 0;
+}
+
+.bubble {
   width: 500px;
   height: 450px;
-  padding: 0;
-  margin: @margin;
+}
+
+.merge {
+  width: 100px;
+  height: 100px;
 }
 
 .sorting__item {
-  width: 50px;
+  width: 40px;
   max-height: 450px;
   background-color: skyblue;
   list-style: none;
+  margin:5px;
 }
 
 .moving {
-  transition: all linear 0.2s;
+  transition: transform linear 0.4s;
 }

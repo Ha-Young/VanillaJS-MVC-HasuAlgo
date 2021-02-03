@@ -1,3 +1,4 @@
+import { initial } from '../templates';
 import Controller from './Controller';
 
 function App() {
