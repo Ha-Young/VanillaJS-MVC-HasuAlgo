@@ -8,17 +8,6 @@ Controller.prototype.getData = function () {
   const input = form.querySelector("input");
   const dropList = form.querySelector(".sortType");
 
-  input.addEventListener("keyup", (event) => {
-    console.log(event.key);
-    this.model.validateCode(event.key,
-      () => {
-        this.view.addComma();
-      },
-      (result) => {
-        this.view.removeInvalidCharacter(result);
-      });
-  })
-
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -33,7 +22,14 @@ Controller.prototype.getData = function () {
       },
       (index) => {
         this.view.paintSorted(index);
-      });
+      },
+      () => {
+        this.view.showForm();
+      },
+      () => {
+        this.view.hideForm();
+      }
+      );
   });
 }
 

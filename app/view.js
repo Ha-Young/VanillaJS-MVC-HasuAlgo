@@ -5,11 +5,21 @@ function View (template) {
   this._INPUT = document.querySelector(".numberInput");
   this._VISUALIZATION = document.querySelector(".visualization");
   this._CONTAINER = document.querySelector(".container");
+  this._FORM = document.querySelector(".sortForm");
+}
+
+View.prototype.showForm = function () {
+  this._FORM.classList.remove("hide");
+}
+
+View.prototype.hideForm = function () {
+  this._FORM.classList.add("hide");
 }
 
 View.prototype.showInitial = function (result) {
   this._CONTAINER.classList.add("container");
   this._VISUALIZATION.innerHTML = " ";
+
 
   for (let i = 0; i < result.length; i++) {
     const bar = document.createElement("div");
@@ -40,11 +50,10 @@ View.prototype.showSwap = function (index) {
 
 View.prototype.paintSorted = function (index) {
   const done = this._CONTAINER.childNodes[index + 1];
-  done.style.backgroundColor = "gray";
+  done.style.backgroundColor = "#78e08f";
 }
 
 View.prototype.removeInvalidCharacter = function (result) {
-  console.log(result);
   if (result) {
     const correctInput = this._INPUT.value.substr(0, this._INPUT.value.length - 1);
     this._INPUT.value = correctInput;

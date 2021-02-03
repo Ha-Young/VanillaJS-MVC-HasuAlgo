@@ -3,22 +3,22 @@ function Model() {
   this._storage = [];
 }
 
-Model.prototype.validateCode = function (code, ...callback) {
-  if (code === " ") {
-    callback[0]();
-    return;
-  } 
-  const result =  !(code >= "0" && code <= "9");
-  callback[1](result);
-}
-
 Model.prototype.setData = function (string) {
   this._storage = string.split(',');
+}
+
+Model.prototype.handleSort = function (type, ...callback) {
+  if (type === "bubbleSort") {
+    this.bubbleSort(this._storage, ...callback);
+  } 
+//   else if (type === "quickSort") {
+//   } 
 }
 
 Model.prototype.bubbleSort = async function (storage, ...callback) {
   let time = 1;
 
+  callback[3]();
   callback[0](storage);
 
   for (let i = 0; i < storage.length; i++) {
@@ -45,20 +45,13 @@ Model.prototype.bubbleSort = async function (storage, ...callback) {
     })(storage.length - 1 - i, time);
     time++;
   }
-  
+ 
+  callback[4]();
 }
 
 // Model.prototype.quickSort = function () {
     
 // }
-
-Model.prototype.handleSort = function (type, ...callback) {
-  if (type === "bubbleSort") {
-    this.bubbleSort(this._storage, ...callback);
-  } 
-//   else if (type === "quickSort") {
-//   } 
-}
 
 export {Model};
 
