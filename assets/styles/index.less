@@ -1,3 +1,5 @@
+@import (inline) "./font.css";
+
 html, body {
   box-sizing: border-box;
   background-color: black;
@@ -23,6 +25,7 @@ html, body {
 .title {
   font-size: 30px;
   font-weight: bolder;
+  font-family: 'Schoolbell', cursive;
   color: white;
 }
 
@@ -43,10 +46,24 @@ html, body {
   width: 100px;
   height: 50px;
   background-color: aqua;
-  border-radius: 10px;
+  border-radius: 5px;
   font-size: 15px;
   font-weight: 800;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: solid;
+}
+
+.restartButton {
+  width: 100px;
+  height: 50px;
+  background-color: white;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 10px;
+  margin-left: 10px;
+  border: solid;
 }
 
 .contentContainer {
@@ -54,7 +71,6 @@ html, body {
   width: 1200px;
   height: 450px;
   margin-top: 40px;
-  border-radius: 10px;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-end;
@@ -75,5 +91,7 @@ html, body {
 }
 
 .graphNode {
+  font-size: medium;
   max-height: 400px;
+  min-height: 40px;
 }

@@ -27,6 +27,7 @@ async function sortStorage(storeageArray) {
 function changeGraph(leftNode, rightNode) {
   return new Promise((resolve) => {
     setTimeout(() => {
+
       view.$contentContainer.insertBefore(rightNode, leftNode);
 
       resolve();
@@ -39,25 +40,9 @@ function changeColor(node) {
     setTimeout(() => {
 
       node.style.background = 'green';
-      console.log('working')
       resolve();
     }, 1000);
   });
-}
-
-function handleClick(event) {
-  event.stopImmediatePropagation();
-
-  const childNodesLength = view.$contentContainer.childNodes.length;
-
-  if (childNodesLength < 5) {
-    view.$errorMessage.innerHTML = '입력 갯수가 너무 작습니다';
-    return;
-  }
-
-  view.$errorMessage.innerHTML = '';
-  
-  sortStorage(model.storage);
 }
 
 function handleKeyUp(event) {
@@ -73,5 +58,30 @@ function handleKeyUp(event) {
   }
 }
 
+function handleBubbleClick(event) {
+  event.stopImmediatePropagation();
+
+  const childNodesLength = view.$contentContainer.childNodes.length;
+
+  if (childNodesLength < 5) {
+    view.$errorMessage.innerHTML = '입력 갯수가 너무 작습니다';
+    return;
+  }
+
+  view.$errorMessage.innerHTML = '';
+  
+  sortStorage(model.storage);
+}
+
+function handleRestartClick(event) {
+  event.stopImmediatePropagation();
+
+  model.storage = [];
+  
+  while (view.$contentContainer.hasChildNodes()) {
+    view.$contentContainer.removeChild(view.$contentContainer.firstChild);
+  }
+}
+
 export const controller = new Controller(model, view);
-export {handleClick, handleKeyUp}
+export {handleBubbleClick, handleKeyUp, handleRestartClick}

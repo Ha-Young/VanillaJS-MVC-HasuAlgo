@@ -1,13 +1,15 @@
-import {handleClick, handleKeyUp} from './controller.js'
+import {handleBubbleClick, handleKeyUp, handleRestartClick} from './controller.js'
 
 function View () {
   this.$typed = document.querySelector(".typed");
   this.$contentContainer = document.querySelector('.contentContainer');
   this.$bubbleSortButton = document.querySelector('.bubbleSortButton');
+  this.$restartButton = document.querySelector('.restartButton');
   this.$errorMessage = document.querySelector('.errorMessage');
 
   this.$typed.addEventListener('keypress', handleKeyUp);
-  this.$bubbleSortButton.addEventListener('click', handleClick);
+  this.$bubbleSortButton.addEventListener('click', handleBubbleClick);
+  this.$restartButton.addEventListener('click', handleRestartClick);
 }
 
 View.prototype.addChildNode = function (value) {
