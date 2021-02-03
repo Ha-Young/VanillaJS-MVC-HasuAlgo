@@ -65,15 +65,22 @@ export default class Controller {
 
 	sortFunction(sortKinds) {
 		const sortList = [...this.model.sortList];
+		let sortedListPromise;
+
 		switch (sortKinds) {
 			case SORT_KINDS.Insertion:
-				this.insertionSort(sortList);
+				sortedListPromise = this.insertionSort(sortList);
 				break;
 
 			case SORT_KINDS.Quick:
-
+				sortedListPromise = this.quickSort(sortList);
 				break;
 		}
+
+		sortedListPromise.then((sortedList) => {
+			console.log('sort 완료!');
+			console.log(sortedList);
+		})
 	}
 
 	doUIWork(uiWorkFunctions) {
@@ -125,8 +132,8 @@ export default class Controller {
 					sortList = this.swapOnRealList(sortList, checkIndex, keyIndex);
 
 					await this.doUIWork([this.viewItemChange.bind(this, checkIndex, keyIndex)]);
-					// debugger;
-					this.view.swapOnDomList(checkIndex, keyIndex);
+
+          this.view.swapOnDomList(checkIndex, keyIndex);
 
 					checkIndex--;
 					keyIndex--;
@@ -156,29 +163,50 @@ export default class Controller {
 						]);
 					break;
 				}
-
-				//await this.setNumsView(sortList, this.delayTimeOnChange);
 			}
 		}
 
     return sortList;
 	}
 
-	// async insertionSort(sortList) {
-	// 	let index;
-	// 	for (let i = 0; i < sortList.length; i++) {
-	// 		index = i;
+	async quickSort(sortList) {
+		return await (async function _quickSort (array, left = 0, right = array.length - 1) {
+      console.log('_quickSort this', this);
+			if (left >= right) {
+				return;
+      }
 
-	// 		while (sortList[index - 1] > sortList[index]) {
-	// 			let temp = sortList[index - 1];
-	// 			sortList[index - 1] = sortList[index];
-	// 			sortList[index] = temp;
-	// 			index--;
-	// 			await this.setNumsView(sortList, this.delayTimeOnChange);
-	// 		}
-	// 	}
+			const mid = Math.floor((left + right) / 2);
+			const pivot = array[mid];
+			const partition = await divide.call(this, array, left, right, pivot);
+			_quickSort.call(this, array, left, partition - 1);
+			_quickSort.call(this, array, partition, right);
+      console.log('array in quick sort', array);
 
-	// 	console.log(sortList);
-  //   return sortList;
-	// }
+			async function divide (array, left, right, pivot) {
+        console.log(`array: ${array}, left: ${array[left]}, pivot: ${pivot}, right: ${array[right]}`);
+        console.log('divide this', this);
+				while (left <= right) {
+					while (array[left] < pivot) {
+						left++;
+					}
+					while (array[right] > pivot) {
+						right--;
+					}
+					if (left <= right) {
+						let swap = array[left];
+						array[left] = array[right];
+						array[right] = swap;
+						left++;
+            right--;
+            console.log('array in divide', array);
+            await this.setNumsView(array, this.delayTimeOnChange + 3000);
+					}
+				}
+				return left;
+      }
+
+			return array;
+		}).bind(this)(sortList);
+	}
 }
