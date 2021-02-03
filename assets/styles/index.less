@@ -1,4 +1,5 @@
-@border: 1px solid black;
+@border: 1px solid rgb(150, 146, 146);
+@margin : 5px;
 
 html,
 body {
@@ -23,16 +24,25 @@ body {
 
 .sorting__input {
   outline: none;
+  margin: @margin;
 }
 
-.sorting__numbers {
+.sorting__queue {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 350px;
   height: 50px;
-  margin: 20px;
   border: @border;
+  margin: @margin;
+}
+
+.sorting__select-sort {
+  margin: @margin;
+}
+
+.sort-Button {
+  margin: @margin;
 }
 
 .display-container {
@@ -42,11 +52,11 @@ body {
   align-items: center;
   width: 500px;
   height: 500px;
-  margin: 20px;
   border: @border;
+  margin: @margin;
 }
 
-.sorting__lists {
+.sorting__items {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -54,16 +64,16 @@ body {
   width: 500px;
   height: 450px;
   padding: 0;
+  margin: @margin;
 }
 
 .sorting__item {
   width: 50px;
   max-height: 450px;
-  margin: 0 10px;
   background-color: skyblue;
   list-style: none;
 }
 
 .moving {
-  transition: all linear 0.5s;
+  transition: all linear 0.2s;
 }

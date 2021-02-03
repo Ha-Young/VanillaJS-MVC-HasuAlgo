@@ -11,11 +11,16 @@
     <form action="submit" class="sorting__form">
       <input type="number" class="sorting__input">
     </form>
-    <div class="sorting__numbers"></div>
-    <button class="sortButton">Sort</button>
+    <div class="sorting__queue"></div>
+    <select required class="sorting__select-sort">
+      <option id="Bubble">Bubble Sort</option>
+      <option id="Merge">Merge Sort</option>
+    </select>
+    <button class="sort-Button">Sort</button>
     <div class="display-container">
-      <ul class="sorting__lists"></ul>
+      <ul class="sorting__items"></ul>
     </div>
+    <button class="reset-Button">Reset</button>
   </div>
   <script src="./app/index.js"></script>
 </body>
