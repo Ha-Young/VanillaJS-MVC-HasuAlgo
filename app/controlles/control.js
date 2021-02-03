@@ -1,11 +1,11 @@
 import { BubbleModel } from '../models/model';
 import { BubbleView } from '../views/view';
 
-const bubbleView = new BubbleView();
 const $userInput = document.querySelector('.user-value');
 const $start = document.querySelector('.start');
 const $delete = document.querySelector('.delete');
 const $reset = document.querySelector('.reset');
+const bubbleView = new BubbleView();
 const test = [];
 
 export const BubbleController = function() {
@@ -56,9 +56,15 @@ BubbleController.prototype.startSort = function() {
   bubbleModel.execute();
 }
 
-BubbleController.prototype.startMove = function(a, b) {
-  bubbleView.move(a, b);
+BubbleController.prototype.startSwap = function(a, b) {
+  bubbleView.swap(a, b);
 }
+
+BubbleController.prototype.paintBox = function(a, b, n) {
+  bubbleView.paint(a, b, n);
+}
+
+
 
 BubbleController.prototype.init = function() {
   $userInput.addEventListener('keyup', this.addItem);

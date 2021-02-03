@@ -5,7 +5,7 @@ export function BubbleModel(input) {
   this._controller = new BubbleController();
 }
 
-BubbleModel.prototype.execute = function() {
+BubbleModel.prototype.execute = async function() {
   let sorting = this._sort;
 
   for (let i = 0; i < sorting.length -1; i++) {
@@ -14,12 +14,32 @@ BubbleModel.prototype.execute = function() {
         let temp = sorting[j];
         sorting[j] = sorting[j + 1];
         sorting[j + 1] = temp;
+        
+        await new Promise(resolve =>
+          setTimeout(() => {
+            resolve();
+          }, 2000)
+        );
+        
+        await this._controller.startSwap(j, j + 1);
         console.log(sorting);
-        this._controller.startMove(j, j + 1);
+        //this._controller.paintBox(j, j + 1, i);
+      } else {
+        
+        await new Promise(resolve =>
+          setTimeout(() => {
+            resolve();
+          }, 1000)
+        );
       }
+
     }
 
-    
+    await new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    })
   }
 }
 
