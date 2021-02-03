@@ -15,6 +15,8 @@ class View {
     this.inputButton = document.querySelector(".input-button");
     this.input= document.querySelector(".input-value");
     this.sortButton = document.querySelector(".sort-start-button");
+    this.sortRestartButton = document.querySelector(".sort-restart-button");
+    this.sortClearButton = document.querySelector(".sort-clear-button");
 
     this.validationText = {
       isNaN: "Only Number",
@@ -30,6 +32,14 @@ class View {
     if (className) element.classList.add(className)
 
     return element;
+  }
+
+  addClass(target, className) {
+    target.classList.add(className);
+  }
+
+  removeClass(target, className) {
+    target.classList.remove(className);
   }
 
   changeValidation(text) {
@@ -50,9 +60,16 @@ class View {
       const max = Math.max(...array);
 
       graph.style.height = 250 * (array[i] / max) + "px";
+      graph.removeAttribute("data-position");
       number.textContent = array[i];
       graph.appendChild(number);
       this.graphList.appendChild(graph);
+    }
+  }
+
+  clearGraph() {
+    while(this.graphList.hasChildNodes()) {
+      this.graphList.removeChild(this.graphList.firstChild);
     }
   }
 
@@ -64,16 +81,11 @@ class View {
     let leftMove = width + (margin * 2);
     let rightMove = -(width + (margin * 2));
 
-    return new Promise ((resolve) => {
-      setTimeout(() => {
-        makeTransform(leftBar, leftMove);
-        makeTransform(rightBar, rightMove);
-        const oldGraph = leftBar;
-        this.graphs[leftBarIndex] = rightBar;
-        this.graphs[rightBarIndex] = oldGraph;
-        resolve("swap done!");
-      }, 500);
-    });
+    makeTransform(leftBar, leftMove);
+    makeTransform(rightBar, rightMove);
+    const oldGraph = leftBar;
+    this.graphs[leftBarIndex] = rightBar;
+    this.graphs[rightBarIndex] = oldGraph;
 
     function makeTransform(node, value) {
       const position = Number(node.getAttribute("data-position"));
