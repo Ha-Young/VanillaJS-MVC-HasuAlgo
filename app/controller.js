@@ -49,9 +49,8 @@ class Controller {
       this.view.changeValidation(this.view.validationText["sort"]);
       return false;
     }
-    if (this.view.options[1].selected) {
-      return true;
-    }
+    if (this.view.options[1].selected) return 1;
+    if (this.view.options[2].selected) return 2;
   }
 
   async doBubbleSort(dataArray) {
