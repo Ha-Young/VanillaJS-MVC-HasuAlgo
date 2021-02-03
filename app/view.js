@@ -28,7 +28,4 @@ View.prototype.addChildNode = function (value) {
   this.$graphNodes.innerHTML = value;
 }
 
-View.prototype.addSortedNode = function (number) {
-}
-
 export const view = new View();

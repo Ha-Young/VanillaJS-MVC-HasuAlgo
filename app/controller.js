@@ -11,17 +11,31 @@ async function sortStorage(storeageArray) {
   for (let i = 0; i < storeageArray.length; i++) {
     for (var j= 0; j <storeageArray.length - 1 -i; j++) {
       if (storeageArray[j] > storeageArray[j + 1]) {
+        const moveValue = ((1200 - (50 * storeageArray.length)) / storeageArray.length) + 50;
         let swap = storeageArray[j];
 
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
-
-        await changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
+ 
+        await moveGraph(view.$graphNodes[j], view.$graphNodes[j + 1], moveValue);
+        changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
       }
     }
 
     await changeColor(view.$graphNodes[storeageArray.length - i - 1]);
   }
+}
+
+function moveGraph(leftnode, rightNode, moveValue) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+
+      leftnode.style.transform = `translateX(${moveValue}px)`;
+      rightNode.style.transform = `translateX(${-moveValue}px)`;
+
+      resolve();
+    }, 1000);
+  });
 }
 
 function changeGraph(leftNode, rightNode) {
@@ -77,7 +91,7 @@ function handleRestartClick(event) {
   event.stopImmediatePropagation();
 
   model.storage = [];
-  
+
   while (view.$contentContainer.hasChildNodes()) {
     view.$contentContainer.removeChild(view.$contentContainer.firstChild);
   }
