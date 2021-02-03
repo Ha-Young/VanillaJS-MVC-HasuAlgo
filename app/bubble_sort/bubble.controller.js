@@ -25,7 +25,7 @@ export default function BubbleController() {
     this.BubbleView.paintGraphs(this.BubbleModel.get());
   }
 
-  function handleClick(event) {
+  function handleClick() {
     if (!this.BubbleModel.get()) {
       this.BubbleView.paintMessage("데이터를 입력하세요.", 3000);
       return;
@@ -49,76 +49,83 @@ BubbleController.prototype.clear = function () {
 
 BubbleController.prototype.checkInput = function (inputValue) {
   const trimed = inputValue.replace(/(\s*)/g, "");
-  const splited = trimed.split(",").map((item) => Number(item));
-  const hasFiveToTenInputs = (5 <= splited.length && splited.length <= 10);
-  const hasString = trimed.match(/[^0-9,]/g);
+  const splited = trimed.split(",");
+  const hasFiveToTenLength = (5 <= splited.length && splited.length <= 10);
+  const hasNumberOnly = !trimed.match(/[^0-9,]/g);
   const hasEmpty = splited.some((item) => item === "");
+  const result = splited.map((item) => Number(item));
 
-  return (hasString || hasEmpty || !hasFiveToTenInputs)
+  return (hasEmpty || !hasNumberOnly || !hasFiveToTenLength)
     ? {isNumber: false, dataSet: null}
-    : {isNumber: true, dataSet: splited};
+    : {isNumber: true, dataSet: result};
 };
 
 BubbleController.prototype.startSort = async function () {
-  const DELAY = 1000;
+  const DELAY = 100;
   const dataSet = this.BubbleModel.get();
-  const done = dataSet.length;
   const status = {
-    index: 0,
     loopCount: 0,
     isSwaped: false
   };
 
-  setTimeout(showTarget.bind(this), DELAY);
+  const showTarget = (index) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.BubbleView.showTarget(index, index + 1);
+        resolve();
+      }, DELAY);
+    });
+  };
 
-  function showTarget() {
-    const isEndOfIndex = status.index >= dataSet.length - status.loopCount - 1;
+  const viewSwap = (index) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.BubbleView.swap(index, index + 1);
+        resolve();
+      }, DELAY);
+    })
+  };
 
-    if (isEndOfIndex) {
-      viewSwap.call(this);
-      return;
-    }
-
-    this.BubbleView.showTarget(status.index, status.index + 1);
-    setTimeout(viewSwap.bind(this), DELAY);
+  const paintGraphs = (dataSet, loopCount) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.BubbleView.paintGraphs(dataSet, loopCount);
+        resolve();
+      }, DELAY);
+    });
   }
 
-  function viewSwap() {
-    const isEndOfIndex = status.index >= dataSet.length - status.loopCount - 1;
-    const shouldSwap = dataSet[status.index] > dataSet[status.index + 1];
+  for (let index = 0; index < dataSet.length - status.loopCount; index++){
+    const isEndOfLoop = index === (dataSet.length - status.loopCount - 2);
 
-    if (isEndOfIndex || !shouldSwap) {
-      modelSwap.call(this);
-      return;
-    }
+    await showTarget(index);
 
-    this.BubbleView.swap(status.index, status.index + 1);
-    setTimeout(modelSwap.bind(this), DELAY);
-  }
+    if (dataSet[index] > dataSet[index + 1]) {
+      await viewSwap(index);
 
-  function modelSwap() {
-    if (dataSet[status.index] > dataSet[status.index + 1]) {
-      this.BubbleModel.swap(status.index, status.index + 1);
-
+      this.BubbleModel.swap(index, index + 1);
       status.isSwaped = true;
     }
-    status.index++;
 
-    if (status.index === dataSet.length - status.loopCount) {
-      if (!status.isSwaped) {
-        this.BubbleView.paintGraphs(dataSet, done);
+    await paintGraphs(dataSet, status.loopCount);
+
+    if (isEndOfLoop) {
+      status.loopCount++;
+
+      const isSortedAll = (dataSet.length - status.loopCount) === 1;
+
+      if (!status.isSwaped || isSortedAll) {
+        await paintGraphs(dataSet, dataSet.length);
+
         this.BubbleView.holdInput(false);
         this.BubbleView.paintMessage("정렬 끄읕 🤸‍♀️", 3000);
-        // this.BubbleView.done(); // zz
         return;
       }
 
-      status.index = 0;
-      status.loopCount++;
+      await paintGraphs(dataSet, status.loopCount);
+
+      index = -1;
       status.isSwaped = false;
     }
-
-    this.BubbleView.paintGraphs(dataSet, status.loopCount);
-    setTimeout(showTarget.bind(this), DELAY);
   }
 };
