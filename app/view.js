@@ -6,6 +6,8 @@ export default class View {
   }
 
   render(userInputData) {
+    this.graphTable.innerHTML = null;
+
     for (let i = 0; i < userInputData.length; i++) {
       const graphPercent = userInputData[i];
       const $graph = document.createElement('div');
@@ -36,20 +38,41 @@ export default class View {
     });
   }
 
-  swap(left, right) {
-    left.removeAttribute('translate');
-    right.removeAttribute('translate');
+  /*
+  setZeroTranstion(left, right) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const changedLeft = left.getBoundingClientRect();
+        console.log('changedLeft', changedLeft);
+        console.log('tozeroTranasition');
 
-    console.log('imin');
-    console.log('left coord', left.getBoundingClientRect().left);
-    console.log('right coord', right.getBoundingClientRect().left);
+        left.style.transform = `translate(${0}px`;
+        right.style.transform = `translate(${0}px`;
+        resolve();
+      }, 2000);
+    });
+  }
+  */
 
+  async swap(left, right) {
     const finalLeftStyle = left.getBoundingClientRect().left - right.getBoundingClientRect().left;
     const finalRightStyle = right.getBoundingClientRect().left - left.getBoundingClientRect().left;
-    console.log('this is finalStyle', finalLeftStyle, finalRightStyle);
 
+    left.animate(
+      { transform: `translate(${finalRightStyle}px)` },
+      { duration: 1000, fill: 'forwards' }
+    );
+
+    right.animate(
+      { transform: `translate(${finalLeftStyle}px)` },
+      { duration: 1000, fill: 'forwards' }
+    );
+
+    /*
     left.style.transform = `translate(${finalRightStyle}px`;
     right.style.transform = `translate(${finalLeftStyle}px`;
+    */
+
 
     return new Promise(resolve => {
       setTimeout(() => {

@@ -23,6 +23,15 @@ export default class Model {
   }
 
   swap(left, right) {
+    console.log('going to swappp--------------------------------------------------------');
     this.graphTable.insertBefore(right, left);
+  }
+
+  swapIndex(leftValue, RightValue) {
+    console.log(leftValue, RightValue);
+    console.log(this.userInputData);
+    let temps = this.userInputData[leftValue];
+    this.userInputData[leftValue] = this.userInputData[RightValue];
+    this.userInputData[RightValue] = temps;
   }
 }

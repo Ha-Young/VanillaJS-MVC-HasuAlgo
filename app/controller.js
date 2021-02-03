@@ -34,14 +34,18 @@ export default class Controller {
         this.view.clearAllColor(this.graphTable);
         await this.view.renderDefaultColor(left, right);
 
-        console.log('left', left);
-        console.log('right', right);
-
         if (Number(left.dataset.id) > Number(right.dataset.id)) {
           console.log(`${left.dataset.id} is bigger then ${right.dataset.id}`);
           // 스왑을 먼저 하고
+
           await this.view.swap(left, right);
-          this.model.swap(left, right);
+
+          await this.model.swapIndex(j, j + 1);
+          await this.view.render(this.model.userInputData);
+
+
+          //await this.model.swap(left, right);
+
 
           this.view.clearAllColor(this.graphTable);
           swap = true;
