@@ -13,6 +13,8 @@ function View () {
 }
 
 View.prototype.addChildNode = function (value, count) {
+  const moveValue = count * 100;
+  console.log(moveValue);
   this.$child = document.createElement('div');
 
   if (this.$contentContainer.childNodes.length > 10) {
@@ -22,9 +24,8 @@ View.prototype.addChildNode = function (value, count) {
 
   this.$child.innerHTML = value;
   this.$child.classList.add('graphNode');
-  console.log(count);
   this.$child.style.height = value + 5 + 'px';
-  this.$child.style.left = 100 * count +'px';
+  this.$child.style.transform = `translateX(${moveValue}px)`;
   this.$contentContainer.appendChild(this.$child);
   this.$graphNodes = document.getElementsByClassName('graphNode');
   this.$graphNodes.innerHTML = value;

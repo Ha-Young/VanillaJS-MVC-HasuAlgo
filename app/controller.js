@@ -11,27 +11,28 @@ async function sortStorage(storeageArray) {
     for (var j= 0; j <storeageArray.length - 1 -i; j++) {
       if (storeageArray[j] > storeageArray[j + 1]) {
         let swap = storeageArray[j];
-        model.changeCount++;
 
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
 
+        model.changeCount++;
+        console.log(model.changeCount);
         await moveGraph(view.$graphNodes[j], view.$graphNodes[j + 1], model.changeCount * 100);
         await changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
       }
     }
-    model.changeCount = 0;
-
     await changeColor(view.$graphNodes[storeageArray.length - i - 1]);
+
+    model.changeCount = 0;
   }
 }
 
 function moveGraph(leftnode, rightNode, moveValue) {
   return new Promise((resolve) => {
     setTimeout(() => {
-
-      leftnode.style.transform = `translateX(${moveValue}px)`;
-      rightNode.style.transform = 'translateX(-100px)';
+      console.log(moveValue);
+      leftnode.style.transform = `translateX(${moveValue + 100}px)`;
+      rightNode.style.transform = `translateX(${moveValue}px)`;
 
       resolve();
     }, 1000);
@@ -93,6 +94,7 @@ function handleRestartClick(event) {
 
   model.storage = [];
   model.count = 0;
+  model.changeCount = 0;
 
   while (view.$contentContainer.hasChildNodes()) {
     view.$contentContainer.removeChild(view.$contentContainer.firstChild);
