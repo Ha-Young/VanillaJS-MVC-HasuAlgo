@@ -11,7 +11,7 @@ export default class View {
     this.$errorMsg = document.querySelector('#errorMsg');
   }
 
-  addItem = function (value, firstOrder, index, length) {
+  addItem = function (value, index, length) {
     const child = document.createElement('div');
 
     child.classList.add('flex-item');
@@ -56,6 +56,26 @@ export default class View {
 
     this.$sortingWindow.replaceChild(nodeList[left], nodeList[right]);
     this.$sortingWindow.insertBefore(rightClone, nodeList[left]);
+  }
+
+  shutDownButtons = function () {
+    this.$inputBtn.classList.add('shut-down');
+    this.$executeBtn.classList.add('shut-down');
+    this.$inputBtn.textContent = '정렬중'
+    this.$executeBtn.textContent = '정렬중'
+    this.$inputBtn.outerHTML = this.$inputBtn.outerHTML;
+    this.$executeBtn.outerHTML = this.$executeBtn.outerHTML;
+  }
+
+  reopenButtons = function () {
+    this.$inputBtn = document.querySelector("#input-btn")
+    this.$executeBtn = document.querySelector('#execute-btn')
+    this.$inputBtn.classList.remove('shut-down');
+    this.$executeBtn.classList.remove('shut-down');
+    const loader = document.createElement('img');
+    loader.src = 
+    this.$inputBtn.textContent = '입력'
+    this.$executeBtn.textContent = '정렬'
   }
 
   moveRight (index) {
