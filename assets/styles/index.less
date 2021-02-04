@@ -3,25 +3,40 @@ html, body {
   background-color: #5D8AA8;
 }
 
+input {
+  border-style: none;
+}
+
 h1 {
+  margin: 0px;
   font-family: 'Carter One', cursive;
   font-size: 70px;
   color: #F5FFFA;
 }
 
 input {
-  width: 160px;
+  width: 120px;
   height: 30px;
-  margin-bottom: 30px;
+  margin: 20px 0px 10px 0px; 
+  background: #D1E6F4;
+  border-radius: 5px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 20px;
+  transition: all 0.3s ease;
 }
 
 button {
-  background-color: #91B6CE;
-  border: none;
   width: 70px;
   height: 40px;
-  font-family: 'Exo 2', sans-serif;
+  padding: 0px;
+  background-color: #91B6CE;
+  border: none;
   border-radius: 5%;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 17px;
+  color: #3B444B;
 }
 
 *, *:before, *:after {
@@ -29,8 +44,8 @@ button {
 }
 
 .content {
-  max-width: 500px;
-  margin: 100px auto;
+  max-width: 700px;
+  margin: 50px auto;
   text-align: center;
 }
 
@@ -44,29 +59,31 @@ button {
   display: flex;
   flex-direction: center;
   justify-content: center;
-  width: 500px;
-  height: 300px;
-  border: 10px solid #D1E6F4;
-  background-color: #91B6CE;
-  transition: 1.5s all ease;
+  width: 700px;
+  height: 450px;
   margin-top: 30px;
+  background-color: #91B6CE;
+  border: 15px solid #D1E6F4;
   border-radius: 2%;
+  transition: 1.5s all ease;
 }
 
 .sort-box {
   position: absolute;
-  width: 20px;
+  width: 40px;
+  padding-top: 0px;
+  left: 235px;
+  bottom: 0px;
   background-color: #D1E6F4;
   border: 1px solid #5D8AA8;
+  font-size: 20px;
+  color: #3B444B;
   transition: 1s all ease;
-  left: 37%;
-  bottom: 0px;
-  padding-top: 0px;
 }
 
 .wave {
-  animation: animation 1000ms linear both;
   top: -10px;
+  animation: animation 1000ms linear both;
 }
 
 @keyframes animation { 

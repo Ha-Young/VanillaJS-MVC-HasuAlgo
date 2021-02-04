@@ -8,7 +8,6 @@ BubbleView.prototype.swap = async function(a, b, isEqual) {
   
   if (isEqual) {
     this.paintDoing($boxs[a], $boxs[b]);
-    console.log(1)
 
     await new Promise(resolve =>
       setTimeout(() => {

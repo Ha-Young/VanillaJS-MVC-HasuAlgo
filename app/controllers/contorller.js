@@ -29,7 +29,7 @@ Controller.prototype.create = function(e) {
     }
 
     const refineValue = Number(value);
-
+    
     this.model.create(refineValue);
     this.view.create(refineValue, this.model.size());
     this.$userInput.value = '';
@@ -57,7 +57,7 @@ Controller.prototype.delete = function() {
   }
 
   this.model.delete();
-  this.view.delete();
+  this.view.delete(this.model.size());
 };
 
 Controller.prototype.clear = function() {
@@ -87,7 +87,7 @@ Controller.prototype.random = function() {
   const randomRange = makeRandomNumber(5, 11);
 
   for (let i = 0; i < randomRange; i++) {
-    const randomNumber = makeRandomNumber(1, 16);
+    const randomNumber = makeRandomNumber(1, 21);
 
     this.model.create(randomNumber);
     this.view.create(randomNumber, this.model.size());
