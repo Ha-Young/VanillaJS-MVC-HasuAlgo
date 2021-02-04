@@ -37,6 +37,22 @@ class Controller {
     });
   }
 
+  handleSwapGraph(leftBar, rightBar, leftBarIndex, rightBarIndex) {
+    this.view.swapGraph(leftBar, rightBar, leftBarIndex, rightBarIndex);
+  }
+
+  handleSelectGraph(leftBar, rightBar, className) {
+    this.view.selectGraph(leftBar, rightBar, className)
+  }
+
+  animationDelayTime(time) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, time)
+    })
+  }
+
   checkData() {
     this.handleAddData(this.view.inputValue);
 
@@ -95,7 +111,7 @@ class Controller {
   }
 
   async doBubbleSort(dataArray) {
-    const graphs = this.view.graphs;
+    const graphs = this.view.graphBars;
 
     for (let i = 0; i < dataArray.length; i++) {
       for (let j = 0; j < dataArray.length - i - 1; j++) {
@@ -105,40 +121,51 @@ class Controller {
           dataArray[j] = dataArray[j+1];
           dataArray[j+1] = bigNumber;
 
-          await this.view.selectGraph(graphs[j], graphs[j+1], "selected");
-          await this.view.swapGraph(graphs[j], graphs[j+1], j, j+1);
-          await this.view.deselectGraph(graphs[j], graphs[j+1], "selected");
+          this.view.selectGraph(graphs[j], graphs[j + 1], "selected");
+          await this.animationDelayTime(500);
+          this.view.swapGraph(graphs[j], graphs[j + 1], j, j + 1);
+          await this.animationDelayTime(500);
+          this.view.deselectGraph(graphs[j], graphs[j + 1], "selected");
+          await this.animationDelayTime(500);
 
           if ((j + 1) === dataArray.length - i - 1) {
-            await this.view.paintGraph(graphs[j+1], "confirmed");
+            this.handleAddClass(graphs[j+1], "confirmed");
+            await this.animationDelayTime(500);
           }
         } else {
-          await this.view.selectGraph(graphs[j], graphs[j+1], "stopped");
-          await this.view.deselectGraph(graphs[j], graphs[j+1], "stopped");
+          this.view.selectGraph(graphs[j], graphs[j + 1], "stopped");
+          await this.animationDelayTime(500);
+          this.view.deselectGraph(graphs[j], graphs[j + 1], "stopped");
+          await this.animationDelayTime(500);
         }
       }
-      await this.view.paintGraph(graphs[dataArray.length - i - 1], "confirmed");
+      this.handleAddClass(graphs[dataArray.length - i - 1], "confirmed");
+      await this.animationDelayTime(500);
     }
     this.model.sortedArray = this.model.unsortedArray.slice();
   }
 
   async doQuickSort(dataArray, start, end) {
     const self = this;
-    const graphs = this.view.graphs;
+    const graphs = this.view.graphBars;
 
     if (start >= end) return;
 
     const pivotIndex = await divide(dataArray, start, end);
+
     await this.doQuickSort(dataArray, start, pivotIndex - 1);
     await this.doQuickSort(dataArray, pivotIndex + 1, end);
 
     async function divide(dataArray, start, end) {
-      let pivotIndex = start;
       const pivotValue = dataArray[end];
+      let pivotIndex = start;
+
       await self.view.paintGraph(graphs[end], "pivot");
+
       for (let i = start; i < end; i++) {
         if (dataArray[i] <= pivotValue) {
           swapElement(dataArray, pivotIndex, i);
+
           if (pivotIndex !== i) {
             await self.view.selectGraph(graphs[pivotIndex], graphs[i], "selected");
             await self.view.swapGraph(graphs[pivotIndex], graphs[i], pivotIndex, i);
@@ -147,6 +174,7 @@ class Controller {
             await self.view.paintGraph(graphs[i], "stopped");
             await self.view.unpaintGraph(graphs[i], "stopped");
           }
+
           pivotIndex++;
         } else {
           await self.view.paintGraph(graphs[i], "stopped");

@@ -10,7 +10,7 @@ class View {
     this.options = this.selectbox.getElementsByTagName("option");
 
     this.graphList = document.querySelector(".graph-list");
-    this.graphs = Array.prototype.slice.call(this.graphList.getElementsByTagName("li"));
+    this.graphBars = Array.prototype.slice.call(this.graphList.getElementsByTagName("li"));
 
     this.inputButton = document.querySelector(".input-button");
     this.input = document.querySelector(".input-value");
@@ -44,27 +44,16 @@ class View {
     this.validation.textContent = text;
   }
 
-  renderGraph(array) {
-    this.clearGraph();
+  setGraphStyle() {
+    const tempBar = document.createElement("li");
+    this.graphList.appendChild(tempBar);
+    this.graphBarStyle = window.getComputedStyle(this.graphList.querySelector("li"));
 
-    if (this.graphs.length) {
-      for (let i = 0; i < this.graphs.length; i++) {
-        this.graphs[i].remove();
-      }
-    }
+    this.graphBarStyleWidth = Number(this.graphBarStyle.width.replace('px', ''));
+    this.graphBarStyleHeight = Number(this.graphBarStyle.height.replace('px', ''));
+    this.graphBarStyleMargin = Number(this.graphBarStyle.marginLeft.replace('px', ''));
 
-    for (let i = 0; i < array.length; i++) {
-      const graph = document.createElement("li");
-      const number = document.createElement("span");
-      const max = Math.max(...array);
-
-      graph.style.height = 250 * (array[i] / max) + "px";
-      graph.removeAttribute("data-position");
-      number.textContent = array[i];
-      graph.appendChild(number);
-      this.graphList.appendChild(graph);
-    }
-    this.graphs = Array.prototype.slice.call(this.graphList.getElementsByTagName("li"));
+    this.graphList.querySelector("li").remove();
   }
 
   clearGraph() {
@@ -73,74 +62,61 @@ class View {
     }
   }
 
+  renderGraph(array) {
+    this.clearGraph();
+    this.setGraphStyle();
+
+    for (let i = 0; i < array.length; i++) {
+      const graph = document.createElement("li");
+      const number = document.createElement("span");
+      const max = Math.max(...array);
+
+      graph.style.height = this.graphBarStyleHeight * (array[i] / max) + "px";
+      graph.removeAttribute("data-translate");
+      number.textContent = array[i];
+      graph.appendChild(number);
+      this.graphList.appendChild(graph);
+    }
+
+    this.graphBars = Array.prototype.slice.call(this.graphList.getElementsByTagName("li"));
+  }
+
   swapGraph(leftBar, rightBar, leftBarIndex, rightBarIndex) {
-    const graphStyle = window.getComputedStyle(leftBar);
-    const width = Number(graphStyle.width.replace('px', ''));
-    const margin = Number(graphStyle.marginLeft.replace('px', ''));
+    const width = this.graphBarStyleWidth;
+    const margin = this.graphBarStyleMargin;
     const gap = Math.abs(rightBarIndex - leftBarIndex);
+    const oldGraph = leftBar;
 
     let leftMove = (width + (margin * 2)) * gap;
     let rightMove = -(width + (margin * 2)) * gap;
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        makeTransform(leftBar, leftMove);
-        makeTransform(rightBar, rightMove);
-        const oldGraph = leftBar;
-        this.graphs[leftBarIndex] = rightBar;
-        this.graphs[rightBarIndex] = oldGraph;
-        resolve("swap done!");
-      }, 1000);
-    });
+    makeTransform(leftBar, leftMove);
+    makeTransform(rightBar, rightMove);
+    this.graphBars[leftBarIndex] = rightBar;
+    this.graphBars[rightBarIndex] = oldGraph;
 
     function makeTransform(node, value) {
-      const position = Number(node.getAttribute("data-position"));
+      const position = Number(node.getAttribute("data-translate"));
+
       if (position) {
-        const newPos = position + value;
-        node.style.transform = `translateX(${newPos}px)`;
-        node.setAttribute("data-position", newPos);
+        const newTranslate = position + value;
+        node.style.transform = `translateX(${newTranslate}px)`;
+        node.setAttribute("data-translate", newTranslate);
         return;
       }
+
       node.style.transform = `translateX(${value}px)`;
-      node.setAttribute("data-position", value);
+      node.setAttribute("data-translate", value);
     }
   }
 
   selectGraph(leftBar, rightBar, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        leftBar.classList.add(className);
-        rightBar.classList.add(className);
-        resolve("select Done");
-      }, 500)
-    });
+    leftBar.classList.add(className);
+    rightBar.classList.add(className);
   }
 
   deselectGraph(leftBar, rightBar, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        leftBar.classList.remove(className);
-        rightBar.classList.remove(className);
-        resolve("deselect Done")
-      }, 500);
-    });
-  }
-
-  paintGraph(graph, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        graph.classList.add(className);
-        resolve("paint Done")
-      }, 500);
-    });
-  }
-
-  unpaintGraph(graph, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        graph.classList.remove(className);
-        resolve("unpaint Done")
-      }, 500);
-    });
+    leftBar.classList.remove(className);
+    rightBar.classList.remove(className);
   }
 }

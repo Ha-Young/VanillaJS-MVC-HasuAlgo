@@ -9,6 +9,7 @@ import '../assets/styles/normalize.less';
 import { View } from './view';
 import { Model } from './model.js';
 import { Controller } from './controller';
+import { initial } from 'lodash';
 
 function Graph() {
   this.model = new Model();
@@ -18,7 +19,7 @@ function Graph() {
 
 const graph = new Graph();
 
-graph.controller.clickEvent(graph.view.inputButton, function() {
+/*graph.controller.clickEvent(graph.view.inputButton, function() {
   const resultCheckData = graph.controller.checkData();
   const resultCheckSort = graph.controller.checkSort();
 
@@ -53,4 +54,5 @@ graph.controller.clickEvent(graph.view.sortRestartButton, function() {
 graph.controller.clickEvent(graph.view.sortClearButton, function() {
   graph.view.clearGraph();
   graph.view.addClass(graph.view.sortClearButton, "invisible");
-})
+})*/
+graph.controller.handleRenderGraph();
