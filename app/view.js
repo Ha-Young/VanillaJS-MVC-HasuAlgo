@@ -1,6 +1,5 @@
 export default function View() {
   this.$sortBox = document.getElementById('sortBox');
-  this.LOCATION_X = 0.15;
 }
 
 View.prototype._createBlock = function (sortList) {
@@ -12,11 +11,8 @@ View.prototype._createBlock = function (sortList) {
     const $block = document.createElement('div');
     const $label = document.createElement('b');
 
-    this.LOCATION_X += 0.15;
-
     $block.classList.add('block');
     $block.style.height = `${sortList[i] * 5 + 10}px`;
-    $block.style.transform = `translateX(${this.LOCATION_X}rem)`;
     $label.textContent = `${sortList[i]}`;
     $label.style.height = `${sortList[i] * 5 + 10}px`
 
@@ -25,13 +21,26 @@ View.prototype._createBlock = function (sortList) {
   }
 }
 
-View.prototype._swapElement = function (smallValue, largeValue) {
-  const smallValueStyle = window.getComputedStyle(smallValue);
-  const largeValueStyle = window.getComputedStyle(largeValue);
+View.prototype._swapElements = function (smallValue, largeValue) {
+  return new Promise(resolve => {
+    const loa = smallValue.getBoundingClientRect().x;
+    const lob = largeValue.getBoundingClientRect().x;
 
-  const smallValueLocation = smallValueStyle.getPropertyValue('transform');
-  const largeValueLocation = largeValueStyle.getPropertyValue('transform');
+    smallValue.classList.add('transition');
+    largeValue.classList.add('transition');
 
-  smallValue.style.transform = largeValueLocation;
-  largeValue.style.transform = smallValueLocation;
+    smallValue.style.transform = `translateX(${lob - loa}px)`;
+    largeValue.style.transform = `translateX(${loa - lob}px)`;
+
+    setTimeout(() => {
+      smallValue.classList.remove('transition');
+      largeValue.classList.remove('transition');    
+
+      smallValue.style.transform = 'none';
+      largeValue.style.transform = 'none';
+
+      this.$sortBox.insertBefore(smallValue, largeValue);
+      resolve();
+    }, 1000);
+  });
 }

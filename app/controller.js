@@ -1,87 +1,59 @@
-import { swap } from './model.js';
+// Load application styles
+import '../assets/styles/index.less';
+import View from './view.js';
+import Model from './model.js';
 
-export default function Controller() {
-  this.$sortBox = document.getElementById('sortBox');
-  this.$commentBox = document.getElementById('commentBox');
-  this.sortChildren = this.$sortBox.children;
-  this.sortingList = [];
-  this.time = 1000;
+// ================================
+// START YOUR APP HERE
+// ================================
+
+const view = new View();
+const model = new Model();
+
+const $inputBox = document.getElementById('inputBox');
+const $submitButton = document.getElementById('submitButton');
+const $playButton = document.getElementById('playButton');
+const $pauseButton = document.getElementById('pauseButton');
+const $replayButton = document.getElementById('replayButton');
+const $fastButton = document.getElementById('fastButton');
+const $slowButton = document.getElementById('slowButton');
+let sortingList;
+
+$submitButton.addEventListener('click', function () {
+  const inputValue = $inputBox.value;
+
+  sortingList = model._checkValue(inputValue);
+
+  if (sortingList) {
+    $submitButton.disabled = true;
+    view._createBlock(sortingList);
+  }
+});
+
+$playButton.addEventListener('click', function () {
+  if (sortingList) {
+    $playButton.disabled = true;
+    model._bubbleSort(sortingList);
+  }
+});
+
+$fastButton.addEventListener('click', function () {
+  model._setTime("fast");
+});
+
+$slowButton.addEventListener('click', function () {
+  model._setTime("slow");
+})
+
+$replayButton.addEventListener('click', function () {
+  $submitButton.disabled = false;
+  $playButton.disabled = false;
+
+  model._resetBoard();
+})
+
+async function swap(smallValue, largeValue) {
+  await view._swapElements(smallValue, largeValue);
 }
 
-Controller.prototype._bubbleSort = async function (array) {
-  const sortingList = array;
-  let swapValue;
-
-  for (let i = 0; i < sortingList.length; i++) {
-    for (let j = 0; j < sortingList.length - 1 - i; j++) {
-      this.sortChildren[j].classList.toggle('selected');
-      this.sortChildren[j + 1].classList.toggle('selected');
-
-      await new Promise(resolve => {
-        console.log(this.time);
-        setTimeout(() => {
-          resolve();
-        }, this.time);
-      });
-
-      if (sortingList[j] > sortingList[j + 1]) {
-        swap(this.sortChildren[j + 1], this.sortChildren[j]);
-
-        swapValue = sortingList[j];
-        sortingList[j] = sortingList[j + 1];
-        this.sortingList[j + 1] = swapValue;
-
-        await new Promise(resolve => {
-          setTimeout(() => {
-            this.$sortBox.insertBefore(this.sortChildren[j + 1], this.sortChildren[j]);
-            resolve();
-          }, this.time);
-        });
-      }
-
-      this.sortChildren[j].classList.toggle('selected');
-      this.sortChildren[j + 1].classList.toggle('selected');
-    }
-
-    if (!swapValue) {
-      break;
-    }
-
-    this.sortChildren[this.sortChildren.length - i - 1].classList.add('finish');
-  }
-}
-
-Controller.prototype._checkValue = function (string) {
-  const stringList = string.split(',');
-
-  if (stringList < 5 || stringList > 10) {
-    this.$commentBox.textContent = "5개 이상 10개 이하의 값을 입력하세요";
-    return;
-  }
-
-  for (let i = 0; i < stringList.length; i++) {
-    if (isNaN(Number(stringList[i])) || Number(stringList[i]) <= 0) {
-      this.$commentBox.textContent = "정렬은 숫자로만 합시다..";
-      return;
-    }
-
-    this.sortingList.push(Number(stringList[i]));
-  }
-
-  return this.sortingList;
-}
-
-Controller.prototype._setTime = function (standard) {
-  const LIMIT_HIGH_TIME = 2000;
-  const LIMIT_LOW_TIME = 100;
-  const TIME_INTERVAL = 200;
-
-  if (standard === "slow") {
-    this.time += TIME_INTERVAL;
-    this.time > LIMIT_HIGH_TIME  ? LIMIT_HIGH_TIME : this.time;
-    return;
-  }
-
-  this.time -= TIME_INTERVAL;
-  this.time < LIMIT_LOW_TIME ? LIMIT_LOW_TIME : this.time;
-}
+export { swap };

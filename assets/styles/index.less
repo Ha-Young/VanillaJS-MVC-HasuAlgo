@@ -34,8 +34,20 @@ header {
   outline: none;
 }
 
-.tool-bar img {
+.tool-bar button {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  outline: none;
   cursor: pointer;
+}
+
+.tool-bar button img {
+  width: 30px;
+  height: 30px;
 }
 
 .select-box {
@@ -102,11 +114,13 @@ header {
 }
 
 .block {
-  width: 35px;
+  width: 30px;
   background-color: #e67e22;
   margin: 15px;
   margin-bottom: 0;
-  transition: 1s all linear;
+  // transition: 3s all linear;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .label {
@@ -123,5 +137,9 @@ header {
 
 .finish {
   transition: 1s;
-  background-color: #9b59b6;
+  background-color: #c0392b;
+}
+
+.transition {
+  transition: 0.5s all linear;
 }
