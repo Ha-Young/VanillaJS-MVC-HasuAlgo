@@ -136,7 +136,7 @@ export default class Controller {
     this.view.quickGroupRemove(left, right);
 
     await this.quickSort.call(this, listToSort, left, this.borderIndex - 1, 1);
-    await this.quickSort.call(this, listToSort, this.borderIndex, right, 1);
+    await this.quickSort.call(this, listToSort, this.borderIndex + 1, right, 1);
 
     if (!cool) {
       this.view.changeColorOfSortedItem(...Array.from(Array(listToSort.length).keys()));
@@ -209,7 +209,7 @@ export default class Controller {
     }
 
     this.view.removeColorOfSortedItem(pivotIndex);
-    this.borderIndex = left;
+    this.borderIndex = pivotIndex;
     await this.sleep(100);
 
     return;
