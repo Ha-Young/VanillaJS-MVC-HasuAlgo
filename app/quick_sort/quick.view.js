@@ -1,4 +1,4 @@
-import BubbleView from "../bubble_sort/bubble.view.js";
+import View from "../view.js";
 
 export default function QuickView() {
   this.$graphs = document.querySelector(".graphs");
@@ -13,7 +13,7 @@ export default function QuickView() {
   this.$graphContainer = document.querySelector(".graph-container");
 }
 
-QuickView.prototype = Object.create(BubbleView.prototype);
+QuickView.prototype = Object.create(View.prototype);
 QuickView.prototype.constructor = QuickView;
 
 QuickView.prototype.showPivot = function (index) {

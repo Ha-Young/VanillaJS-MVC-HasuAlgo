@@ -1,3 +1,4 @@
+import Controller from '../controller.js';
 import BubbleModel from './bubble.model.js';
 import BubbleView from './bubble.view.js';
 
@@ -17,7 +18,7 @@ export default function BubbleController() {
     const checked = this.checkInput(inputValue);
 
     if(!checked.isNumber) {
-      this.BubbleView.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요."," 😓 ", 3000);
+      this.BubbleView.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요.","", 3000);
       return;
     }
 
@@ -27,7 +28,7 @@ export default function BubbleController() {
 
   function handleClick() {
     if (!this.BubbleModel.getData()) {
-      this.BubbleView.paintMessage("데이터를 입력하세요.", " 🤲 ", 3000);
+      this.BubbleView.paintMessage("데이터를 입력하세요.", "", 3000);
       return;
     }
 
@@ -37,31 +38,11 @@ export default function BubbleController() {
   }
 }
 
-BubbleController.prototype.clear = function () {
-  const $inputCountainer = document.querySelector(".input-container");
-  const $excuteButton = document.querySelector(".excute-button");
-  const inputClone = $inputCountainer.cloneNode(true);
-  const buttonClone = $excuteButton.cloneNode(true);
-
-  $inputCountainer.parentNode.replaceChild(inputClone, $inputCountainer);
-  $excuteButton.parentNode.replaceChild(buttonClone, $excuteButton);
-};
-
-BubbleController.prototype.checkInput = function (inputValue) {
-  const trimed = inputValue.replace(/(\s*)/g, "");
-  const splited = trimed.split(",");
-  const hasFiveToTenLength = (5 <= splited.length && splited.length <= 10);
-  const hasNumberOnly = !trimed.match(/[^0-9,]/g);
-  const hasEmpty = splited.some((item) => item === "");
-  const result = splited.map((item) => Number(item));
-
-  return (hasEmpty || !hasNumberOnly || !hasFiveToTenLength)
-    ? {isNumber: false, dataSet: null}
-    : {isNumber: true, dataSet: result};
-};
+BubbleController.prototype = Object.create(Controller.prototype);
+BubbleController.prototype.constructor = BubbleController;
 
 BubbleController.prototype.startSort = async function (dataSet) {
-  const DELAY = 500;
+  const DELAY = 100;
   const status = { index: 0, isSwaped: false , fixedIndices: [] };
 
   const showTarget = (index) => {

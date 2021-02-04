@@ -1,10 +1,10 @@
-import BubbleModel from "../bubble_sort/bubble.model.js";
+import Model from "../model.js";
 
 export default function QuickModel() {
   this._storage = null;
 }
 
-QuickModel.prototype = Object.create(BubbleModel.prototype);
+QuickModel.prototype = Object.create(Model.prototype);
 QuickModel.prototype.constructor = QuickModel;
 
 // QuickModel.prototype.get = function () {

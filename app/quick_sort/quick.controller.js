@@ -1,4 +1,4 @@
-import BubbleController from '../bubble_sort/bubble.controller.js';
+import Controller from '../controller.js';
 import QuickModel from './quick.model.js';
 import QuickView from './quick.view.js';
 
@@ -18,7 +18,7 @@ export default function QuickController() {
     const checked = this.checkInput(inputValue);
 
     if(!checked.isNumber) {
-      this.QuickView.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요."," 😓 ", 3000);
+      this.QuickView.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요.","", 3000);
       return;
     }
 
@@ -31,7 +31,7 @@ export default function QuickController() {
     const fixedIndices = [];
 
     if (!dataSet) {
-      this.QuickView.paintMessage("데이터를 입력하세요.", " 🤲 ", 3000);
+      this.QuickView.paintMessage("데이터를 입력하세요.", "", 3000);
       return;
     }
 
@@ -41,11 +41,14 @@ export default function QuickController() {
   }
 }
 
-QuickController.prototype = Object.create(BubbleController.prototype);
+QuickController.prototype = Object.create(Controller.prototype);
 QuickController.prototype.construcor = QuickController;
 
 QuickController.prototype.startSort = async function (dataSet, from, to, fixedIndices) {
   const DELAY = 500;
+  const pivotIndex = from;
+  let leftIndex = from + 1;
+  let rightIndex = to;
 
   const showPivot = (index) => {
     return new Promise((resolve, reject) => {
@@ -82,10 +85,6 @@ QuickController.prototype.startSort = async function (dataSet, from, to, fixedIn
       }, DELAY);
     });
   }
-
-  const pivotIndex = from;
-  let leftIndex = from + 1;
-  let rightIndex = to;
 
   if (pivotIndex >= rightIndex) {
     fixedIndices.push(from);
