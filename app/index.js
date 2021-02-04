@@ -9,7 +9,6 @@ import '../assets/styles/normalize.less';
 import { View } from './view';
 import { Model } from './model.js';
 import { Controller } from './controller';
-import { initial } from 'lodash';
 
 function Graph() {
   this.model = new Model();
@@ -19,40 +18,4 @@ function Graph() {
 
 const graph = new Graph();
 
-/*graph.controller.clickEvent(graph.view.inputButton, function() {
-  const resultCheckData = graph.controller.checkData();
-  const resultCheckSort = graph.controller.checkSort();
-
-  if (resultCheckData && resultCheckSort) {
-    graph.view.renderGraph(graph.model.unsortedArray);
-    graph.view.removeClass(graph.view.sortButton, "invisible");
-  }
-});
-
-graph.controller.clickEvent(graph.view.sortButton, function() {
-  if (graph.controller.checkSort() === 1) {
-    graph.controller.doBubbleSort(graph.model.sortedArray);
-  } else {
-    graph.controller.doQuickSort(graph.model.sortedArray, 0, graph.model.sortedArray.length - 1);
-  }
-
-  graph.view.addClass(graph.view.sortButton, "invisible");
-  graph.view.removeClass(graph.view.sortClearButton, "invisible");
-});
-
-graph.controller.clickEvent(graph.view.sortRestartButton, function() {
-  if (graph.controller.checkSort() === 1) {
-    graph.controller.doBubbleSort(graph.model.sortedArray);
-  } else {
-    graph.controller.doQuickSort(graph.model.sortedArray, 0, graph.model.sortedArray.length - 1);
-  }
-
-  graph.view.renderGraph(graph.model.unsortedArray);
-  graph.controller.doBubbleSort(graph.model.sortedArray);
-});
-
-graph.controller.clickEvent(graph.view.sortClearButton, function() {
-  graph.view.clearGraph();
-  graph.view.addClass(graph.view.sortClearButton, "invisible");
-})*/
 graph.controller.handleRenderGraph();

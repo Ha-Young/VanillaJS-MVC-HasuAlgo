@@ -90,33 +90,48 @@ class View {
     let leftMove = (width + (margin * 2)) * gap;
     let rightMove = -(width + (margin * 2)) * gap;
 
-    makeTransform(leftBar, leftMove);
-    makeTransform(rightBar, rightMove);
-    this.graphBars[leftBarIndex] = rightBar;
-    this.graphBars[rightBarIndex] = oldGraph;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this._makeTransform(leftBar, leftMove);
+        this._makeTransform(rightBar, rightMove);
+        this.graphBars[leftBarIndex] = rightBar;
+        this.graphBars[rightBarIndex] = oldGraph;
+        resolve("done");
+      }, 500)
+    });
+  }
 
-    function makeTransform(node, value) {
-      const position = Number(node.getAttribute("data-translate"));
+  _makeTransform(node, value) {
+    const position = Number(node.getAttribute("data-translate"));
 
-      if (position) {
-        const newTranslate = position + value;
-        node.style.transform = `translateX(${newTranslate}px)`;
-        node.setAttribute("data-translate", newTranslate);
-        return;
-      }
-
-      node.style.transform = `translateX(${value}px)`;
-      node.setAttribute("data-translate", value);
+    if (position) {
+      const newTranslate = position + value;
+      node.style.transform = `translateX(${newTranslate}px)`;
+      node.setAttribute("data-translate", newTranslate);
+      return;
     }
+
+    node.style.transform = `translateX(${value}px)`;
+    node.setAttribute("data-translate", value);
   }
 
   selectGraph(leftBar, rightBar, className) {
-    leftBar.classList.add(className);
-    rightBar.classList.add(className);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        leftBar.classList.add(className);
+        rightBar.classList.add(className);
+        resolve("done");
+      }, 500);
+    });
   }
 
   deselectGraph(leftBar, rightBar, className) {
-    leftBar.classList.remove(className);
-    rightBar.classList.remove(className);
-  }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        leftBar.classList.remove(className);
+        rightBar.classList.remove(className);
+        resolve("done");
+      }, 500);
+    });
+  } 
 }
