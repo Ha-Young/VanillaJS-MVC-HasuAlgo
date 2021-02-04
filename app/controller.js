@@ -10,7 +10,6 @@ Controller.prototype.getData = function () {
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    this.view.hideForm();
 
     try {
       this.model.setData(input.value);
@@ -20,6 +19,15 @@ Controller.prototype.getData = function () {
     }
 
     this.model.handleSort(dropList.value, 
+      () => {
+        this.view.initializeContainer();
+      },
+      () => {
+        this.view.showForm();
+      },
+      () => {
+        this.view.hideForm();
+      },
       (result) => {
         this.view.showInitial(result);
       },
@@ -28,7 +36,7 @@ Controller.prototype.getData = function () {
       },
       (index) => {
         this.view.paintSorted(index);
-      }
+      },
     );
   });
 }

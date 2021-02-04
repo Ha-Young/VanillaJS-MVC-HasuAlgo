@@ -17,17 +17,27 @@ Model.prototype.setData = function (string) {
   this._storage = numberList;
 }
 
-Model.prototype.handleSort = function (type, ...callback) {
+Model.prototype.handleSort = function (type, ...callback) 
+  {
   if (type === "bubbleSort") {
     this.bubbleSort(this._storage, ...callback);
   } else if (type === "quickSort") {
   } 
 }
 
-Model.prototype.bubbleSort = async function (storage, ...callback) {
+Model.prototype.bubbleSort = async function (storage, 
+  initializeContainer,
+  showForm,
+  hideForm,
+  showInitial,
+  showSwap,
+  paintSorted,
+  ) {
   let time = 1;
 
-  callback[0](storage);
+  initializeContainer();
+  showInitial(storage);
+  hideForm();
 
   for (let i = 0; i < storage.length; i++) {
     for (let j = 0; j < storage.length - 1 - i; j++) {
@@ -36,18 +46,20 @@ Model.prototype.bubbleSort = async function (storage, ...callback) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
 
         (function (index, time) {
-          setTimeout(function () {callback[1](index)}, time * 1000);
+          setTimeout(function () {showSwap(index)}, time * 500);
         })(j, time);
       }
       time++;
     }
 
     (function (index, time) {
-      setTimeout(function () {callback[2](index)}, time * 1000);
+      setTimeout(function () {paintSorted(index)}, time * 500);
     })(storage.length - 1 - i, time);
     time++;
   }
  
+  setTimeout(showForm, time * 500);
+
 }
 
 Model.prototype.quickSort = function (type, ...callback) {

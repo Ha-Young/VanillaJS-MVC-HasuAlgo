@@ -16,10 +16,11 @@ View.prototype.hideForm = function () {
   this._FORM.classList.add("hide");
 }
 
-View.prototype.showInitial = function (result) {
-  this._CONTAINER.classList.add("container");
-  this._VISUALIZATION.innerHTML = " ";
+View.prototype.initializeContainer = function () {
+  this._CONTAINER.innerHTML = " ";
+}
 
+View.prototype.showInitial = function (result) {
   for (let i = 0; i < result.length; i++) {
     const bar = document.createElement("div");
 
