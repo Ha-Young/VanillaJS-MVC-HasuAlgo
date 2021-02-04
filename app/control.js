@@ -19,6 +19,7 @@ export default function Control(model, view) {
     const refinedNums = this.model.refineNums(inputtedNumsString);
     if (!refinedNums.isComplete) {
       this.view.updateMessage(refinedNums.message);
+      this.model.set("state", { isPlaying: false });
       return;
     }
 
@@ -42,16 +43,18 @@ export default function Control(model, view) {
   Control.prototype.drawGraph = function () {
     this.view.clearElem("$viewPort");
     this.view.clearElem("$highlighterBox");
-    
+    this.view.clearElem("$pivotHighlighterBox");
+
     const refinedNums = this.model.get("refinedNums");
     this.view.createBarElem(refinedNums);
-    
+
     const sortType = this.model.get("sortType");
     if (sortType === "bubble") {
       this.view.createHighlighterElem(2);
     } else if (sortType === "quick") {
-      this.view.createHighlighterElem(3);
+      this.view.createHighlighterElem(2);
       this.view.createPivotHighlighterElem();
+      this.view.createRangeHighlighterElem();
     }
 
     const barPositions = this.view.getElemDomRect("$barBoxes");

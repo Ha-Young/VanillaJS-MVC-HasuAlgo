@@ -8,6 +8,16 @@ html, body {
   box-sizing: inherit;
 }
 
+// @keyframes flutter {
+//   from {
+//     transform: translate(0px, 0px);
+//   }
+
+//   to {
+//     transform: translate(0px, 15px);
+//   }
+// }
+
 .container {
   display: flex;
   flex-flow: column nowrap;
@@ -88,6 +98,30 @@ html, body {
   border: 0.5px solid #aaa;
 }
 
+.pivot-highlighter-box {
+  width: 100%;
+  height: 40px;
+}
+
+.pivot-highlighter {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 30px;
+  width: 40px;
+  border-radius: 10px;
+  // animation: flutter 0.6s infinite alternate
+  transition: all ease 0.5s;
+}
+
+.arrow-down {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+  transform: rotate(45deg);
+}
+
 .view-port {
   display: flex;
   flex-flow: row nowrap;
@@ -100,6 +134,7 @@ html, body {
 }
 
 .highlighter-box {
+  position: relative;
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -118,9 +153,28 @@ html, body {
   background-color: #86c528;
 }
 
-.pivot-highlighter {
-  font-size: 0.9rem;
-  font-weight: bold;
+.quick-should-swap {
+  background-color: #d42020;
+}
+
+.range-highlighter {
+  position: absolute;
+  top: -35px;
+  background-color: rgba(114,255,74,0.26);
+  width: 10px;
+  height: 30px;
+  border-radius: 30px;
+  transition: all 0.5s;
+}
+
+.quick-index-highlighter {
+  position: absolute;
+  top: -2px;
+}
+
+.quick-next-pivot-index-highlighter {
+  position: absolute;
+  top: 5px;
 }
 
 .bar-box {
@@ -141,11 +195,11 @@ html, body {
   width: 20px;
   height: 100px;
   box-shadow: 0px 0px 9px -5px #000000;
-  transform-style: preserve-3d;
 }
 
 .number {
   font-weight: bold;
+  z-index: 1;
 }
 
 .bar-box[data-idx="0"] > .bar {

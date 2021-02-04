@@ -7,6 +7,7 @@ export default function View() {
   this.$viewPort = document.querySelector(".view-port");
   this.$highlighterBox = document.querySelector(".highlighter-box");
   this.$messageBox = document.querySelector(".message-box");
+  this.$pivotHighlighterBox = document.querySelector(".pivot-highlighter-box");
 
   this.VIEW_PORT_HEIGHT = 270;
 
@@ -83,8 +84,17 @@ export default function View() {
     }
 
     this.$highlighters = $highlighters;
-
     this.render(this.$highlighterBox, $highlighters);
+  };
+
+  View.prototype.createRangeHighlighterElem = function () {
+    const template =
+      `<div class="range-highlighter"></div>`;
+
+    this.$rangeHighlighter = this.createElement(template);
+    this.addClassName(this.$rangeHighlighter, "range-highlighter");
+
+    this.render(this.$highlighterBox, this.$rangeHighlighter);
   };
 
   View.prototype.createBarElem = function (refinedNums) {
@@ -107,7 +117,7 @@ export default function View() {
           return height;
         })();
 
-        $barBox.children[1].style.height = 
+        $barBox.children[1].style.height =
           `${barHeight}px`;
 
         return $barBox;
@@ -174,6 +184,16 @@ export default function View() {
     });
   };
 
+  View.prototype.setElemStyle = function ($elem, property, value, waitingTime = 0) {
+    return new Promise((resolve) => {
+      $elem.style[property] = value;
+
+      setTimeout(() => {
+        resolve(true);
+      }, waitingTime);
+    })
+  }
+
   View.prototype.addClassName = function ($target, className) {
     if (typeof className !== "string") {
       throw new Error("The className argument is not a string");
@@ -209,34 +229,47 @@ export default function View() {
   View.prototype.createPivotHighlighterElem = function () {
 
     const template =
-      `<div class="pivot-highlighter">pvt</div>`;
+      `<div class="pivot-highlighter">
+        <i class="arrow-down"></i>
+      </div>`;
 
     const $pivotHighlighter = this.createElement(template);
     this.$pivotHighlighter = $pivotHighlighter;
 
-    this.render(this.$highlighterBox, $pivotHighlighter);
+    this.render(this.$pivotHighlighterBox, $pivotHighlighter);
   };
-
-  View.prototype.expandElemWidth = function ($elem, extensionLength) {
-    const elemWidth = getComputedStyle($elem).width;
-    $elem.style.width = `${elemWidth + extensionLength}px`;
-  }
 
   View.prototype.moveAndLengthenHighlighter = function ($highlighter, start, end, barPositions, waitingTime = 0) {
     //$target, destinationPostion, waitingTime = 0, skipX = false, skipY = false, offsetX, offsetY;
     return new Promise((resolve) => {
       const startPosition = barPositions[start];
       const endPosition = barPositions[end];
-  
-      this.moveElem($highlighter, startPosition, 0, false, true, 0);
+      const PADDING = 10;
 
-      
-      this.expandElemWidth($highlighter)
+      const barWidth =
+        parseInt(
+          getComputedStyle(
+            this.$barBoxes[0].children[1])
+          .width.replace("px",""),
+        10);
+
+      const distance = endPosition.x - startPosition.x
+      this.moveElem($highlighter, startPosition, 0, false, true, PADDING * -1);
+
+      $highlighter.style.width = `${distance + barWidth + PADDING*2}px`
 
       setTimeout(() => {
         resolve(true);
       }, waitingTime);
     });
+  }
+
+  View.prototype.waitTime = function (waitingTime) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, waitingTime);
+    })
   }
 
   View.prototype.progressBubbleSortAnimation = async function (sortSteps, barPositions) {
@@ -275,17 +308,58 @@ export default function View() {
 
   View.prototype.progressQuickSortAnimation = async function (sortSteps, barPositions) {
     console.log(sortSteps);
+    //$target, destinationPostion, waitingTime = 0, skipX = false, skipY = false, offsetX, offsetY;
 
     const $currentIndexHighlighter = this.$highlighters[0];
     const $nextPivotIndexHighlighter = this.$highlighters[1];
-    const $rangeHighlighter = this.$highlighters[2];
+    const $rangeHighlighter = this.$rangeHighlighter;
     const $pivotHighlighter = this.$pivotHighlighter;
+
+    this.addClassName($currentIndexHighlighter, "quick-index-highlighter");
+    this.addClassName($nextPivotIndexHighlighter, "quick-next-pivot-index-highlighter");
+    this.moveElem($currentIndexHighlighter, barPositions[0], 0, false, true);
+    this.moveElem($nextPivotIndexHighlighter, barPositions[0], 0, false, true);
+    this.moveElem($pivotHighlighter, barPositions[0], 0, false, true, -10, 0);
+    await this.moveAndLengthenHighlighter($rangeHighlighter, 0, barPositions.length - 1, barPositions, 500);
 
     for (const step of sortSteps) {
       console.log(step);
 
+      const pivotIndex = step.pivotIndex;
+      const currentIndex = step.currentIndex;
+      const nextPivotIndex = step.nextPivotIndex;
+      const shouldSwap = step.shouldSwap;
+      const isEnd = step.isEnd;
+
+      this.moveElem($pivotHighlighter, barPositions[pivotIndex], 0, false, true, -10, 0);
+      this.moveElem($currentIndexHighlighter, barPositions[currentIndex], 0, false, true);
       await this.moveAndLengthenHighlighter($rangeHighlighter, step.start, step.end, barPositions, 500);
-      
+
+      if (shouldSwap) {
+        this.addClassName($currentIndexHighlighter, "quick-should-swap");
+        this.addClassName($nextPivotIndexHighlighter, "quick-should-swap");
+        await this.waitTime(500);
+
+        const [indexA, indexB] = (() => {
+          if (isEnd) {
+            return [step.pivotIndex, step.nextPivotIndex];
+          } else {
+            return [step.currentIndex, step.nextPivotIndex];
+          }
+        })();
+
+        const $barBoxA = this.$barBoxes[indexA];
+        const $barBoxB = this.$barBoxes[indexB];
+        [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
+        //$a, $b, indexA, indexB, elemPositions, skipX = false, skipY = false, waitingTime = 0
+        await this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true, 500);
+      } else {
+        this.removeClassName($currentIndexHighlighter, "quick-should-swap");
+        this.removeClassName($nextPivotIndexHighlighter, "quick-should-swap");
+        await this.waitTime(500);
+      }
+
+      this.moveElem($nextPivotIndexHighlighter, barPositions[nextPivotIndex], 0, false, true);
     }
   }
 }
