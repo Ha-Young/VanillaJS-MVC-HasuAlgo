@@ -204,11 +204,11 @@ export default class Controller {
     if (left >= right) {
       return;
     }
-
+    this.view.quickGroup(left, right);
     await this.partition.call(this,listToSort, left, right);
-
-    this.quickSort.call(this, listToSort, left, this.test - 1);
-    this.quickSort.call(this, listToSort, this.test, right);
+    this.view.quickGroupRemove(left, right);
+    await this.quickSort.call(this, listToSort, left, this.test - 1);
+    await this.quickSort.call(this, listToSort, this.test, right);
   }
 
   swap = function (array, index1, index2) {
@@ -218,7 +218,10 @@ export default class Controller {
   }
 
   partition = async function (array, left, right) {
-    const pivotValue = array[Math.floor((left + right) / 2)];
+    let pivotIndex = Math.floor((left + right) / 2);
+    const pivotValue = array[pivotIndex];
+    debugger;
+    this.view.changeColorOfSortedItem(pivotIndex);
 
     while (left <= right) {
       this.view.changeColorOfSelectedItem(left, right);
@@ -243,7 +246,11 @@ export default class Controller {
       if (left <= right) {
         this.view.changeColorOfSelectedItem(left, right);
         await this.sleep(500);
-        console.log(left,right)
+        if (left === pivotIndex) {
+          pivotIndex = right;
+        } else if (right === pivotIndex) {
+          pivotIndex = left;
+        }
         this.swap(array, left, right);
         this.view.moveRightQuick(left, right);
         this.view.moveLeftQuick(right, left);
@@ -257,6 +264,9 @@ export default class Controller {
       }
     }
 
+    this.view.removeColorOfSortedItem(pivotIndex);
     this.test = left;
+    await this.sleep(500);
+    return;
   }
 }

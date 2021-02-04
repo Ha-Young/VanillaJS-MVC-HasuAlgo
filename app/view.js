@@ -110,6 +110,30 @@ export default class View {
     });
   }
 
+  removeColorOfSortedItem = function (...indexList) {
+    const nodeList = this.$sortingWindow.childNodes;
+
+    indexList.forEach((index) => {
+      nodeList[index].classList.remove('sorted');
+    });
+  }
+
+  quickGroup = function (left, right) {
+    const nodeList = this.$sortingWindow.childNodes;
+
+    for (let i = left; i <= right; i++) {
+      nodeList[i].classList.add('quick-group');
+    }
+  }
+
+  quickGroupRemove = function (left, right) {
+    const nodeList = this.$sortingWindow.childNodes;
+
+    for (let i = left; i <= right; i++) {
+      nodeList[i].classList.remove('quick-group');
+    }
+  }
+
   bindAddArray = function (handler) {
     this.$inputBtn.addEventListener('click', handler);
   }
