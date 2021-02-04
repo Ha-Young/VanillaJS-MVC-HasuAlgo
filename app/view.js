@@ -56,7 +56,7 @@ class View {
     this.graphList.querySelector("li").remove();
   }
 
-  clearGraph() {
+  clearGraph = () => {
     while(this.graphList.hasChildNodes()) {
       this.graphList.removeChild(this.graphList.firstChild);
     }
@@ -133,5 +133,29 @@ class View {
         resolve("done");
       }, 500);
     });
-  } 
+  }
+
+  paintGraph(bar, className) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.addClass(bar, className);
+        resolve("done");
+      }, 500);
+    })
+  }
+
+  unpaintGraph(bar, className) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.removeClass(bar, className);
+        resolve("done");
+      }, 500);
+    })
+  }
+
+  confirmGraph() {
+    for (let i = 0; i < this.graphBars.length; i++) {
+      this.paintGraph(this.graphBars[i], "confirmed");
+    }
+  }
 }

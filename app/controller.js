@@ -6,10 +6,12 @@ class Controller {
     this.model = model;
     this.view = view;
 
+    this.handleEventListener(view);
   }
 
   handleAddData(data) {
     this.model.addData(data);
+    console.log(this.model);
   }
 
   handleAddClass(target, className) {
@@ -25,36 +27,44 @@ class Controller {
     this.view.changeValidation(text[name]);
   }
 
-  handleRenderGraph() {
-    this.view.inputButton.addEventListener("click", () => {
-      if (this.checkData() && this.checkSort()) {
-        this.view.clearGraph();
-        this.view.renderGraph(this.model.unsortedArray);
-        this.handleAddClass(this.view.validation, "hidden");
-        this.handleRemoveClass(this.view.sortButton, "invisible");
-        this.startSort();
-      }
+  handleEventListener(view) {
+    const inputButton = view.inputButton;
+    const sortButton = view.sortButton;
+    const restartButton = view.sortRestartButton;
+    const clearButton = view.sortClearButton;
+
+    inputButton.addEventListener("click", this.handleRenderGraph);
+    sortButton.addEventListener("click", this.startSort);
+    restartButton.addEventListener("click", () => {
+      this.handleRenderGraph();
+      this.startSort();
+      this.controlRestartClearButtons();
+    });
+    clearButton.addEventListener("click", () => {
+      view.clearGraph();
+      this.controlRestartClearButtons();
     });
   }
 
-  animationDelayTime(time) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, time)
-    })
-  }
+  handleRenderGraph = () => {
+    const sortButton = this.view.sortButton;
 
-  showRestartClearButtons() {
-    this.handleRemoveClass(this.view.sortRestartButton, "invisible");
-    this.handleRemoveClass(this.view.sortClearButton, "invisible");
-
-    this.view.sortRestartButton.addEventListener("click", () => {
-      this.handleAddData(this.view.inputValue);
+    if (this.checkData() && this.checkSort()) {
       this.view.clearGraph();
       this.view.renderGraph(this.model.unsortedArray);
-      this.startSort();
-    });
+      this.handleAddClass(this.view.validation, "hidden");
+      this.handleRemoveClass(sortButton, "invisible");
+    }
+  }
+
+  controlRestartClearButtons() {
+    if (this.view.sortRestartButton.classList.contains("invisible")) {
+      this.handleRemoveClass(this.view.sortRestartButton, "invisible");
+      this.handleRemoveClass(this.view.sortClearButton, "invisible");
+      return;
+    }
+    this.handleAddClass(this.view.sortRestartButton, "invisible");
+    this.handleAddClass(this.view.sortClearButton, "invisible");
   }
 
   checkData() {
@@ -85,7 +95,7 @@ class Controller {
     return true;
   }
 
-  checkSort() {
+  checkSort = () => {
     const select = this.view.selectbox;
     const sortName = select.options[select.selectedIndex].value;
 
@@ -100,18 +110,19 @@ class Controller {
     }
   }
 
-  startSort() {
-    this.view.sortButton.addEventListener("click", () => {
-      const sortName = this.checkSort();
-
-      if (sortName === "Bubble") {
-        this.doBubbleSort(this.model.unsortedArray);
-      }
-      if (sortName === "Quick") {
-        this.doQuickSort(this.model.unsortedArray, 0, this.model.unsortedArray.length - 1);
-      }
-      this.handleAddClass(this.view.sortButton, "invisible");
-    });
+  startSort = () => {
+    const sortName = this.checkSort();
+    if (sortName === "Bubble") {
+      this.doBubbleSort(this.model.unsortedArray);
+    }
+    if (sortName === "Quick") {
+      (async () => {
+        await this.doQuickSort(this.model.unsortedArray, 0, this.model.unsortedArray.length - 1);
+        this.view.confirmGraph();
+        this.controlRestartClearButtons()
+      })();
+    }
+    this.handleAddClass(this.view.sortButton, "invisible");
   }
 
   async doBubbleSort(dataArray) {
@@ -130,8 +141,7 @@ class Controller {
           await this.view.deselectGraph(graphs[j], graphs[j + 1], "selected");
 
           if ((j + 1) === dataArray.length - i - 1) {
-            this.handleAddClass(graphs[j+1], "confirmed");
-            await this.animationDelayTime(500);
+            await this.view.paintGraph(graphs[j +1 ], "confirmed");
           }
 
         } else {
@@ -139,10 +149,9 @@ class Controller {
           await this.view.deselectGraph(graphs[j], graphs[j + 1], "stopped");
         }
       }
-      this.handleAddClass(graphs[dataArray.length - i - 1], "confirmed");
-      await this.animationDelayTime(500);
+      await this.view.paintGraph(graphs[dataArray.length - i - 1], "confirmed");
     }
-    this.showRestartClearButtons();
+    this.controlRestartClearButtons();
   }
 
   async doQuickSort(dataArray, start, end) {
@@ -152,8 +161,6 @@ class Controller {
 
     await this.doQuickSort(dataArray, start, pivotIndex - 1);
     await this.doQuickSort(dataArray, pivotIndex + 1, end);
-
-    this.showRestartClearButtons();
   }
 
   async _divide(dataArray, start, end) {
@@ -161,8 +168,7 @@ class Controller {
     const pivotValue = dataArray[end];
     let pivotIndex = start;
 
-    this.handleAddClass(graphs[end], "pivot");
-    await this.animationDelayTime(500);
+    await this.view.paintGraph(graphs[end], "pivot");
 
     for (let i = start; i < end; i++) {
       if (dataArray[i] <= pivotValue) {
@@ -173,18 +179,14 @@ class Controller {
           await this.view.swapGraph(graphs[pivotIndex], graphs[i], pivotIndex, i);
           await this.view.deselectGraph(graphs[pivotIndex], graphs[i], "selected");
         } else {
-          this.handleAddClass(graphs[i], "stopped");
-          await this.animationDelayTime(500);
-          this.handleRemoveClass(graphs[i], "stopped");
-          await this.animationDelayTime(500);
+          await this.view.paintGraph(graphs[i], "stopped");
+          await this.view.unpaintGraph(graphs[i], "stopped");
         }
 
         pivotIndex++;
       } else {
-        this.handleAddClass(graphs[i], "stopped");
-        await this.animationDelayTime(500);
-        this.handleRemoveClass(graphs[i], "stopped");
-        await this.animationDelayTime(500);
+        await this.view.paintGraph(graphs[i], "stopped");
+        await this.view.unpaintGraph(graphs[i], "stopped");
       }
     }
 
@@ -193,15 +195,14 @@ class Controller {
     await this.view.selectGraph(graphs[pivotIndex], graphs[end], "selected");
     await this.view.swapGraph(graphs[pivotIndex], graphs[end], pivotIndex, end);
     await this.view.deselectGraph(graphs[pivotIndex], graphs[end], "selected");
-    this.handleRemoveClass(graphs[pivotIndex], "pivot");
-    await this.animationDelayTime(500);
-    this.handleAddClass(graphs[pivotIndex], "confirmed");
-    await this.animationDelayTime(500);
+
+    await this.view.unpaintGraph(graphs[pivotIndex], "pivot");
+    await this.view.paintGraph(graphs[pivotIndex], "confirmed");
 
     return pivotIndex;
   }
 
-  _swapElement(array, start, end) {
+  _swapElement = (array, start, end) => {
     const temp = array[start];
     array[start] = array[end];
     array[end] = temp;

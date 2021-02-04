@@ -17,5 +17,3 @@ function Graph() {
 }
 
 const graph = new Graph();
-
-graph.controller.handleRenderGraph();
