@@ -19,14 +19,17 @@ BubbleController.prototype.sort = async function() {
           }, 200)
         );
         
-        await this.view.swap(j, j + 1);
+        await this.view.swap(j, j + 1, false);
         
       } else {
+        await this.view.swap(j, j + 1, true);
+        
         await new Promise(resolve =>
           setTimeout(() => {
             resolve();
-          }, 800)
+          }, 200)
         );
+        
       }
     }
     this.view.paintDone(i);

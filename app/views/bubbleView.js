@@ -1,11 +1,29 @@
 export const BubbleView = function() {
 }
 
-BubbleView.prototype.swap = async function(a, b) {
+BubbleView.prototype.swap = async function(a, b, isEqual) {
   const $target = document.querySelector('.visual');
   const $boxs = document.querySelectorAll('.sort-box');
   const removePaint = this.removePaint;
   
+  if (isEqual) {
+    this.paintDoing($boxs[a], $boxs[b]);
+    console.log(1)
+
+    await new Promise(resolve =>
+      setTimeout(() => {
+        resolve();
+      }, 800)
+    );
+
+    return new Promise(resolve => {
+      setTimeout(() => {
+        removePaint($boxs[a], $boxs[b]);
+        resolve();
+      });
+    }, 800)
+  }
+
   $target.classList.remove('wave');
   this.swapUp(a, b);
   this.paintDoing($boxs[a], $boxs[b]);
@@ -68,13 +86,13 @@ BubbleView.prototype.paintDoing = function(a, b) {
 };
 
 BubbleView.prototype.removePaint = function(a, b) {
-  a.style.backgroundColor = '#E5F1FF';
-  b.style.backgroundColor = '#E5F1FF';
+  a.style.backgroundColor = '#D1E6F4';
+  b.style.backgroundColor = '#D1E6F4';
 }
 
 BubbleView.prototype.paintDone = function(n) {
   const $boxs = document.querySelectorAll('.sort-box');
-  console.log(n);
+  
   $boxs[$boxs.length -n -1].style.backgroundColor = '#3F468C';
   $boxs[$boxs.length -n -1].style.color = '#E5F1FF';
 };
