@@ -8,9 +8,20 @@
 <body>
   <div class="content">
     <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
+    <div class="user-thing">
+      <select>
+        <option value="0">Bubble Sort</option>
+        <option value="1">Merge Sort</option>
+      </select>
+      <input type="text" class="user-input">
+      <button class="start-button">START</button>
+    </div>
+    <div class="message-box"><p class="message"></p></div>
+    <div class="main"></div>
   </div>
   <script src="./app/index.js"></script>
+  <script type="module" src="./app/model.js"></script>
+  <script type="module" src="./app/controller.js"></script>
+  <script type="module" src="./app/view.js"></script>
 </body>
 </html>
