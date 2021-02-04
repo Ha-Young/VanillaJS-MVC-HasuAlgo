@@ -7,19 +7,13 @@ import { BubbleView } from './views/bubbleView';
 import { BubbleController } from './controllers/bubbleController';
 
 const BubbleSort = function() {
-  /* 
   this.model = new Model();
   this.bubbleView = new BubbleView();
   this.bubbleController = new BubbleController();
   this.view = new View(this.bubbleView);
   this.controller = new Controller(this.model, this.view, this.bubbleController); 
-  */
-
-  this.model = new Model();
-  this.view = new View();
-  this.controller = new Controller(this.model, this.view);
 }
 
-const App = new BubbleSort();
+const bubbleApp = new BubbleSort();
 
-App.controller.events();
+bubbleApp.controller.events();
