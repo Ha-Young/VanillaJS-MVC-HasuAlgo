@@ -27,6 +27,7 @@ export class View {
 
       nodeChild.classList.add('content-field-node');
       nodeValue.classList.add('content-filed-node-value');
+      nodeChild.classList.add(nodeLists[i]);
       nodeChild.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
       nodeValue.textContent = `${nodeLists[i]}`
 
@@ -63,7 +64,7 @@ export class View {
         throw new Error('please enter number in 50 to 100');
       }
 
-      // 수치값 밸리데이션.. else if로 묶어주는게 가독성이 나을지도 100 이상 입력 못하게
+      // else if로 묶어주는게 가독성이 나을지도..
       handler(listArray);
       this.resetInput();
     });
@@ -84,7 +85,7 @@ export class View {
         //onHighlightAllNodes();
       },
       onLighthNode: function(args) { //  네이밍 다시..
-        onHighlightNode(args[0], args[1]);
+        onHighlightNode(args[0]);
       },
       swapNodes: function(args) {
         swapNode(args[0], args[1]);

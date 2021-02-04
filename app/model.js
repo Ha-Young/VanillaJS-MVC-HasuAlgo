@@ -6,7 +6,6 @@ export class Model {
   }
 
   addNewNodes(lists) {
-    // validation
     this.onDisplayNodeList(lists);
   }
 
@@ -29,12 +28,10 @@ export class Model {
   }
 
   addState(state) {
-    this.sortState = state;
-    this.addNewState(this.sortState);
+    this.sortState.push(state);// 수정해줌 => =이었음
   }
 
   bindNodeListDisplayed(callback) {
-    // validation
     this.onDisplayNodeList = callback;
   }
 
