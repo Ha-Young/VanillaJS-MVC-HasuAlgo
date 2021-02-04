@@ -103,8 +103,8 @@ export default class View {
     this.$vizCanvas.innerHTML += this.template.arrowDef();
   }
 
-  makeArrowDOM(arrowKinds, xPos, yPos) {
-    this.$vizCanvas.innerHTML += this.template.arrow(arrowKinds, xPos, yPos);
+  makeArrowDOM(target, arrowKinds, xPos, yPos) {
+    target.innerHTML += this.template.arrow(arrowKinds, xPos, yPos);
   }
 
 	setSortItemColorFromStatus(sortItemElement, status) {
@@ -233,15 +233,24 @@ export default class View {
 		this.setSortItemColorFromStatus(sortItemElement, 'large');
   }
 
-  setArrow(index, arrowKinds) {
+  addArrow(index, arrowKinds) {
     if (index < 0) return;
+
     const sortItemElement = this.getSortItemElement(index);
 		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
     const [sortItemXPos, sortItemYPos] = this.getSVGItemPosition(sortItemElement);
+
+    if (arrowKinds === 'pivot') {
+      const arrowXPos = ARROW.DISTANCE_XPOS;
+      const arrowYPos = sortItemRectHeight + ARROW.DISTANCE_YPOS;
+      this.makeArrowDOM(sortItemElement, arrowKinds, arrowXPos, arrowYPos);
+      return;
+    }
+
     const arrowXPos = sortItemXPos + ARROW.DISTANCE_XPOS;
     const arrowYPos = sortItemYPos + sortItemRectHeight + ARROW.DISTANCE_YPOS;
 
-    this.makeArrowDOM(arrowKinds, arrowXPos, arrowYPos);
+    this.makeArrowDOM(this.$vizCanvas, arrowKinds, arrowXPos, arrowYPos);
   }
 
   removeArrow(arrowKinds) {

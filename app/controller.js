@@ -144,8 +144,8 @@ export default class Controller {
     this.view.setSortItemStatusLarge(index);
   }
 
-  viewArrow(index, arrowKinds) {
-    this.view.setArrow(index, arrowKinds);
+  viewAddArrow(index, arrowKinds) {
+    this.view.addArrow(index, arrowKinds);
   }
 
   viewRemoveArrow(arrowKinds) {
@@ -168,7 +168,6 @@ export default class Controller {
 			await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
 
 			while (checkIndex >= 0) {
-
 				if (sortList[checkIndex] > sortList[keyIndex]) {
 					this.swapOnRealList(sortList, checkIndex, keyIndex);
 
@@ -224,7 +223,11 @@ export default class Controller {
 			const pivotIndex = this.getPivotIndex(leftIndex, rightIndex, 'mid');
       // const pivot = sortList[midIndex];
 
-      await this.doUIWork([this.viewItemPivotColor.bind(this, pivotIndex)]);
+      await this.doUIWork(
+        [
+          this.viewItemPivotColor.bind(this, pivotIndex),
+          // this.viewAddArrow.bind(this, pivotIndex, 'pivot'),
+        ]);
 
       const [partitionIndex, changePivotIndex] = await divide.call(this, sortList, leftIndex, rightIndex, pivotIndex);
 
@@ -247,8 +250,8 @@ export default class Controller {
 
         await this.doUIWork(
           [
-            this.viewArrow.bind(this, leftIndex, 'left'),
-            this.viewArrow.bind(this, rightIndex, 'right'),
+            this.viewAddArrow.bind(this, leftIndex, 'left'),
+            this.viewAddArrow.bind(this, rightIndex, 'right'),
           ]);
 
 				while (leftIndex <= rightIndex) {
