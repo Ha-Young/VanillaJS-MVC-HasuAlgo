@@ -1,11 +1,9 @@
-export const View = function() {
+export const View = function(view) {
   this.$visualFrame = document.querySelector('.visual-frame');
   this.$visual = document.querySelector('.visual');
-  this.$form = document.querySelector('form');
-  this.$userValue = document.querySelector('.user-value');
-  this.$deleteBtn = document.querySelector('.delete');
-  this.$startBtn = document.querySelector('.start');
-  this.$resetBtn = document.querySelector('.reset');
+
+  //this.swap = view.swap;
+  //this.paint = view.paint;
 }
 
 View.prototype.create = function(v, n) {
@@ -29,11 +27,23 @@ View.prototype.clear = function(n) {
   }
 };
 
-View.prototype.set = function(n, array) {
-  for (let i = 0; i < n; i++) {
-    this.$visual.removeChild(this.$visual.lastChild);
-  }
-  
+View.prototype.set = async function(n, array) {
+  await this.setRemove(n);
+  this.setCreate(n, array);
+};
+
+View.prototype.setRemove = function(n) {
+  return new Promise(resolve => {
+    for (let i = 0; i < n; i++) {
+      this.$visual.removeChild(this.$visual.lastChild);
+    }
+    setTimeout(() => {
+      resolve();
+    }, 200)
+  });
+};
+
+View.prototype.setCreate = function(n, array) {
   for (let i = 0; i < n; i++) {
     this.create(array[i], i + 1);
   }
@@ -57,7 +67,7 @@ View.prototype.swap = function(a, b) {
       setTimeout(() => {
         $target.insertBefore($boxs[b], $boxs[a]);
         resolve();
-      }, 500);
+      }, 1000);
     });
   });
 };

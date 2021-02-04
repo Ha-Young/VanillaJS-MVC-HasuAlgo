@@ -1,6 +1,6 @@
 export const Model = function() {
   this.storage = [];
-  this.saveStorage = [];
+  this._saveStorage = [];
   this.stepStorage = {};
 }
 
@@ -36,11 +36,11 @@ Model.prototype.getStep = function(i) {
 };
 
 Model.prototype.save = function() {
-  this.saveStorage = this.storage;
+  this._saveStorage = this.storage;
 };
 
 Model.prototype.getSave = function() {
-  return this.saveStorage;
+  return this._saveStorage;
 };
 
 Model.prototype.set = function(array) {

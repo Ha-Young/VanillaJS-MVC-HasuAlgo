@@ -1,12 +1,13 @@
-export const Controller = function(model, view) {
+export const Controller = function(model, view, controller) {
   this.$userInput = document.querySelector('.user-input');
   this.$start = document.querySelector('.start');
   this.$delete = document.querySelector('.delete');
-  this.$clear = document.quertSelector('.clear');
-  this.$reset = document.querySelector('.reset');
+  this.$clear = document.querySelector('.clear');
+  this.$stop = document.querySelector('.stop');
 
   this.model = model;
   this.view = view;
+  //this.sort = controller.sort.bind(this);
 }
 
 Controller.prototype.create = function(e) {
@@ -51,17 +52,17 @@ Controller.prototype.filterType = function(input) {
 Controller.prototype.delete = function() {
   if (!this.model.size()) {
     this.$userInput.value = '';
-
+    
     return;
   }
-  
+
   this.model.delete();
   this.view.delete();
 };
 
 Controller.prototype.clear = function() {
-  this.model.clear();
   this.view.clear(this.model.size());
+  this.model.clear();
   this.$userInput.value = '';
 };
 
@@ -72,43 +73,50 @@ Controller.prototype.start = function() {
     return;
   }
   
-  this.sort();
+  this.model.save();
+  this.sort(); // prototype 아래로 내려갈수 있나?
 };
 
-Controller.prototype.restart = function() {
+Controller.prototype.stop = async function() {
   this.model.set(this.model.getSave());
-  this.view.set(this.model.size(), this.model.get()); // view에 this.model.get()으로 받은 배열대로 div생성하는 set메서드 추가
-
-  this.sort();
+  await this.view.set(this.model.size(), this.model.getSave());
 };
 // start를 하면 new로 생성한 controller에 prototype으로 bubbleSort 메서드를 아래와 같이 추가해주면 실행 가능한가?
 Controller.prototype.sort = async function() {
-  this.model.save();
 
   const sorting = this.model.get();
-  const delay = new Promise(resolve =>
-    setTimeout(() => {
-      resolve();
-    }, 500)
-  );
-
+    
   for (let i = 0; i < this.model.size() -1; i++) {
     for (let j = 0; j < this.model.size() -i -1; j++) {
       if (sorting[j] > sorting[j + 1]) {
         let temp = sorting[j];
         sorting[j] = sorting[j + 1];
         sorting[j + 1] = temp;
+        
+        this.model.update(i + j, sorting);
 
-        await delay;
+        await new Promise(resolve =>
+          setTimeout(() => {
+            resolve();
+          }, 200)
+        );
+        
         await this.view.swap(j, j + 1);
-
-        return;
+        
+      } else {
+        await new Promise(resolve =>
+          setTimeout(() => {
+            resolve();
+          }, 800)
+        );
       }
+    } 
 
-      await delay;
-    }
-
-    await delay;
+    await new Promise(resolve =>
+      setTimeout(() => {
+        resolve();
+      }, 1000)
+    );
   }
 };
 
@@ -116,6 +124,6 @@ Controller.prototype.events = function() {
   this.$userInput.addEventListener('keyup', this.create.bind(this));
   this.$delete.addEventListener('click', this.delete.bind(this));
   this.$start.addEventListener('click', this.start.bind(this));
-  this.$reset.addEventListener('click', this.reset.bind(this));
+  this.$stop.addEventListener('click', this.stop.bind(this));
   this.$clear.addEventListener('click', this.clear.bind(this));
 };
