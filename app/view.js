@@ -1,5 +1,3 @@
-import {$on} from './helper';
-
 export default class View {
   constructor() {
     this.$inputNumbers = document.querySelector('#input-form'),
@@ -8,7 +6,7 @@ export default class View {
     this.$quickBtn = document.querySelector('#quick'),
     this.$executeBtn = document.querySelector('#execute-btn'),
     this.$sortingWindow = document.querySelector('.execute-window');
-    this.$errorMsg = document.querySelector('#errorMsg');
+    this.$errorMsg = document.querySelector('#input-form');
   }
 
   addItem = function (value, index, length) {
@@ -33,7 +31,8 @@ export default class View {
   }
 
   displayErrorMessage = function(message) {
-    this.$errorMsg.textContent = message;
+    this.$errorMsg.placeholder = message;
+    this.$errorMsg.classList.add('dummy');
   }
 
   changeOrder = function (firstOrder, secondOrder) {
@@ -59,10 +58,10 @@ export default class View {
   }
 
   shutDownButtons = function () {
-    this.$inputBtn.classList.add('shut-down');
-    this.$executeBtn.classList.add('shut-down');
-    this.$inputBtn.textContent = '정렬중'
-    this.$executeBtn.textContent = '정렬중'
+    document.querySelector('#input-text').classList.add('none')
+    document.querySelector('#loader1').classList.remove('none')
+    document.querySelector('#execute-text').classList.add('none')
+    document.querySelector('#loader2').classList.remove('none')
     this.$inputBtn.outerHTML = this.$inputBtn.outerHTML;
     this.$executeBtn.outerHTML = this.$executeBtn.outerHTML;
   }
@@ -70,12 +69,10 @@ export default class View {
   reopenButtons = function () {
     this.$inputBtn = document.querySelector("#input-btn")
     this.$executeBtn = document.querySelector('#execute-btn')
-    this.$inputBtn.classList.remove('shut-down');
-    this.$executeBtn.classList.remove('shut-down');
-    const loader = document.createElement('img');
-    loader.src = 
-    this.$inputBtn.textContent = '입력'
-    this.$executeBtn.textContent = '정렬'
+    document.querySelector('#input-text').classList.remove('none')
+    document.querySelector('#loader1').classList.add('none')
+    document.querySelector('#execute-text').classList.remove('none')
+    document.querySelector('#loader2').classList.add('none')
   }
 
   moveRight (index) {

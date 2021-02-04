@@ -16,6 +16,10 @@ export default class Controller {
       return Number.isInteger(item);
     });
 
+    this.view.$errorMsg.value = '';
+    this.view.$errorMsg.placeholder = '5~10개의 숫자를 콤마로 구분하여 입력';
+    this.view.$errorMsg.classList.remove('dummy');
+
     this.view.clearItems();
     this.view.displayErrorMessage('');
 
@@ -27,7 +31,7 @@ export default class Controller {
 
   inputValidation = function (inputArray, isEveryArrayItemNumber) {
     if (!(isEveryArrayItemNumber && (inputArray.length >= 5 && inputArray.length <= 10))) {
-      this.view.displayErrorMessage('5~10개의 숫자 입력해라');
+      this.view.displayErrorMessage('5~10개의 숫자 입력');
       return false;
     }
 
@@ -52,8 +56,6 @@ export default class Controller {
 
   executeSortingAldorithm = async function() {
     this.bubbleSortCount = 0;
-
-    // 여기서 입력창, 정렬창 막아버리기.
     this.view.shutDownButtons();
 
     if (this.model.getAlgorithm() === 'bubble') {
@@ -65,11 +67,10 @@ export default class Controller {
       await this.quickSort(this.model.getStorage());
     }
 
-    debugger;
+
     this.view.reopenButtons();
     this.view.bindAddArray(this.addArray.bind(this));
     this.view.bindExecuteSortingAldorithm(this.executeSortingAldorithm.bind(this));
-    // 끝나면 열어주기.
   }
 
   bubbleSortAsync = async function () {
@@ -173,15 +174,19 @@ export default class Controller {
   //   }.bind(this), 500);
   // }
 
-  quickSort = async function (listToSort, left = 0, right = listToSort.length - 1) {
+  quickSort = async function (listToSort, left = 0, right = listToSort.length - 1, cool) {
     if (left >= right) {
       return;
     }
     this.view.quickGroup(left, right);
     await this.partition.call(this,listToSort, left, right);
     this.view.quickGroupRemove(left, right);
-    await this.quickSort.call(this, listToSort, left, this.test - 1);
-    await this.quickSort.call(this, listToSort, this.test, right);
+    await this.quickSort.call(this, listToSort, left, this.test - 1, 1);
+    await this.quickSort.call(this, listToSort, this.test, right, 1);
+
+    if (!cool) {
+      this.view.changeColorOfSortedItem(...Array.from(Array(listToSort.length).keys()));
+    }
   }
 
   swap = function (array, index1, index2) {
@@ -193,45 +198,47 @@ export default class Controller {
   partition = async function (array, left, right) {
     let pivotIndex = Math.floor((left + right) / 2);
     const pivotValue = array[pivotIndex];
-    debugger;
+
     this.view.changeColorOfSortedItem(pivotIndex);
 
     while (left <= right) {
       this.view.changeColorOfSelectedItem(left, right);
-      await this.sleep(500);
+      await this.sleep(300);
       while (array[left] < pivotValue) {
         this.view.removeColorOfUnselectedItem(left);
-        await this.sleep(500);
+        await this.sleep(300);
         left++;
         this.view.changeColorOfSelectedItem(left);
-        await this.sleep(500);
+        await this.sleep(300);
       }
       while (array[right] > pivotValue) {
         this.view.removeColorOfUnselectedItem(right);
-        await this.sleep(500);
+        await this.sleep(300);
         right--;
         this.view.changeColorOfSelectedItem(right);
-        await this.sleep(500);
+        await this.sleep(300);
       }
 
       this.view.removeColorOfUnselectedItem(left, right);
 
       if (left <= right) {
         this.view.changeColorOfSelectedItem(left, right);
-        await this.sleep(500);
+        await this.sleep(300);
         if (left === pivotIndex) {
           pivotIndex = right;
         } else if (right === pivotIndex) {
           pivotIndex = left;
         }
-        this.swap(array, left, right);
-        this.view.moveRightQuick(left, right);
-        this.view.moveLeftQuick(right, left);
-        await this.sleep(600);
-        this.view.changeOrderQuick(left, right);
-        await this.sleep(500);
+        if (left !== right) {
+          this.swap(array, left, right);
+          this.view.moveRightQuick(left, right);
+          this.view.moveLeftQuick(right, left);
+          await this.sleep(600);
+          this.view.changeOrderQuick(left, right);
+          await this.sleep(300);
+        }
         this.view.removeColorOfUnselectedItem(left, right);
-        await this.sleep(500);
+        await this.sleep(300);
         left++;
         right--;
       }
@@ -239,7 +246,7 @@ export default class Controller {
 
     this.view.removeColorOfSortedItem(pivotIndex);
     this.test = left;
-    await this.sleep(500);
+    await this.sleep(100);
     return;
   }
 }
