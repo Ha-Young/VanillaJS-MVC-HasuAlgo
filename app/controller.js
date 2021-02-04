@@ -54,8 +54,8 @@ class Controller {
   }
 
   async doBubbleSort(dataArray) {
-    const graphs = this.view.graphs = Array.prototype.slice.call(document.querySelectorAll(".graph-list li"));
-    console.log(dataArray);
+    const graphs = this.view.graphs;
+
     for (let i = 0; i < dataArray.length; i++) {
       for (let j = 0; j < dataArray.length - i - 1; j++) {
         if (dataArray[j] > dataArray[j+1]) {
@@ -69,15 +69,65 @@ class Controller {
           await this.view.deselectGraph(graphs[j], graphs[j+1], "selected");
 
           if ((j + 1) === dataArray.length - i - 1) {
-            await this.view.confirmGraph(graphs[j+1], "confirmed");
+            await this.view.paintGraph(graphs[j+1], "confirmed");
           }
         } else {
           await this.view.selectGraph(graphs[j], graphs[j+1], "stopped");
           await this.view.deselectGraph(graphs[j], graphs[j+1], "stopped");
         }
       }
-      await this.view.confirmGraph(graphs[dataArray.length - i - 1], "confirmed");
+      await this.view.paintGraph(graphs[dataArray.length - i - 1], "confirmed");
     }
     this.model.sortedArray = this.model.unsortedArray.slice();
+  }
+
+  async doQuickSort(dataArray, start, end) {
+    const self = this;
+    const graphs = this.view.graphs;
+
+    if (start >= end) return;
+
+    const pivotIndex = await divide(dataArray, start, end);
+    await this.doQuickSort(dataArray, start, pivotIndex - 1);
+    await this.doQuickSort(dataArray, pivotIndex + 1, end);
+
+    async function divide(dataArray, start, end) {
+      let pivotIndex = start;
+      const pivotValue = dataArray[end];
+      await self.view.paintGraph(graphs[end], "pivot");
+      for (let i = start; i < end; i++) {
+        if (dataArray[i] <= pivotValue) {
+          swapElement(dataArray, pivotIndex, i);
+          if (pivotIndex !== i) {
+            await self.view.selectGraph(graphs[pivotIndex], graphs[i], "selected");
+            await self.view.swapGraph(graphs[pivotIndex], graphs[i], pivotIndex, i);
+            await self.view.deselectGraph(graphs[pivotIndex], graphs[i], "selected");
+          } else {
+            await self.view.paintGraph(graphs[i], "stopped");
+            await self.view.unpaintGraph(graphs[i], "stopped");
+          }
+          pivotIndex++;
+        } else {
+          await self.view.paintGraph(graphs[i], "stopped");
+          await self.view.unpaintGraph(graphs[i], "stopped");
+        }
+      }
+
+      swapElement(dataArray, pivotIndex, end);
+
+      await self.view.selectGraph(graphs[pivotIndex], graphs[end], "selected");
+      await self.view.swapGraph(graphs[pivotIndex], graphs[end], pivotIndex, end);
+      await self.view.deselectGraph(graphs[pivotIndex], graphs[end], "selected");
+      await self.view.unpaintGraph(graphs[pivotIndex], "pivot");
+      await self.view.paintGraph(graphs[pivotIndex], "confirmed");
+
+      return pivotIndex;
+    }
+
+    function swapElement(array, start, end) {
+      const temp = array[start];
+      array[start] = array[end];
+      array[end] = temp;
+    }
   }
 }

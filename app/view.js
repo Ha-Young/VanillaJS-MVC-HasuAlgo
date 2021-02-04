@@ -10,10 +10,10 @@ class View {
     this.options = this.selectbox.getElementsByTagName("option");
 
     this.graphList = document.querySelector(".graph-list");
-    this.graphs = [...this.graphList.childNodes];
+    this.graphs = Array.prototype.slice.call(this.graphList.getElementsByTagName("li"));
 
     this.inputButton = document.querySelector(".input-button");
-    this.input= document.querySelector(".input-value");
+    this.input = document.querySelector(".input-value");
     this.sortButton = document.querySelector(".sort-start-button");
     this.sortRestartButton = document.querySelector(".sort-restart-button");
     this.sortClearButton = document.querySelector(".sort-clear-button");
@@ -41,7 +41,7 @@ class View {
   removeClass(target, className) {
     target.classList.remove(className);
   }
-
+  
   changeValidation(text) {
     this.validation.classList.remove("hidden");
     this.validation.textContent = text;
@@ -67,6 +67,7 @@ class View {
       graph.appendChild(number);
       this.graphList.appendChild(graph);
     }
+    this.graphs = Array.prototype.slice.call(this.graphList.getElementsByTagName("li"));
   }
 
   clearGraph() {
@@ -79,15 +80,21 @@ class View {
     const graphStyle = window.getComputedStyle(leftBar);
     const width = Number(graphStyle.width.replace('px', ''));
     const margin = Number(graphStyle.marginLeft.replace('px', ''));
+    const gap = Math.abs(rightBarIndex - leftBarIndex);
 
-    let leftMove = width + (margin * 2);
-    let rightMove = -(width + (margin * 2));
+    let leftMove = (width + (margin * 2)) * gap;
+    let rightMove = -(width + (margin * 2)) * gap;
 
-    makeTransform(leftBar, leftMove);
-    makeTransform(rightBar, rightMove);
-    const oldGraph = leftBar;
-    this.graphs[leftBarIndex] = rightBar;
-    this.graphs[rightBarIndex] = oldGraph;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        makeTransform(leftBar, leftMove);
+        makeTransform(rightBar, rightMove);
+        const oldGraph = leftBar;
+        this.graphs[leftBarIndex] = rightBar;
+        this.graphs[rightBarIndex] = oldGraph;
+        resolve("swap done!");
+      }, 1000);
+    });
 
     function makeTransform(node, value) {
       const position = Number(node.getAttribute("data-position"));
@@ -107,8 +114,8 @@ class View {
       setTimeout(() => {
         leftBar.classList.add(className);
         rightBar.classList.add(className);
-        resolve("select Done")
-      }, 500);
+        resolve("select Done");
+      }, 500)
     });
   }
 
@@ -122,11 +129,20 @@ class View {
     });
   }
 
-  confirmGraph(graph, className) {
+  paintGraph(graph, className) {
     return new Promise((resolve) => {
       setTimeout(() => {
         graph.classList.add(className);
-        resolve("confirm Done")
+        resolve("paint Done")
+      }, 500);
+    });
+  }
+
+  unpaintGraph(graph, className) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        graph.classList.remove(className);
+        resolve("unpaint Done")
       }, 500);
     });
   }

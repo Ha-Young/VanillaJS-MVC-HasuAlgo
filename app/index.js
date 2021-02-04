@@ -32,7 +32,7 @@ graph.controller.clickEvent(graph.view.sortButton, function() {
   if (graph.controller.checkSort() === 1) {
     graph.controller.doBubbleSort(graph.model.sortedArray);
   } else {
-    graph.controller.doQuickSort(graph.model.sortedArray);
+    graph.controller.doQuickSort(graph.model.sortedArray, 0, graph.model.sortedArray.length - 1);
   }
 
   graph.view.addClass(graph.view.sortButton, "invisible");
@@ -43,7 +43,7 @@ graph.controller.clickEvent(graph.view.sortRestartButton, function() {
   if (graph.controller.checkSort() === 1) {
     graph.controller.doBubbleSort(graph.model.sortedArray);
   } else {
-    graph.controller.doQuickSort(graph.model.sortedArray);
+    graph.controller.doQuickSort(graph.model.sortedArray, 0, graph.model.sortedArray.length - 1);
   }
 
   graph.view.renderGraph(graph.model.unsortedArray);
