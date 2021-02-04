@@ -27,27 +27,6 @@ View.prototype.clear = function(n) {
   }
 };
 
-View.prototype.set = async function(n, array) {
-  await this.setRemove(n);
-  this.setCreate(n, array);
-};
-
-View.prototype.setRemove = function(n) {
-  return new Promise(resolve => {
-    for (let i = 0; i < n; i++) {
-      this.$visual.removeChild(this.$visual.lastChild);
-    }
-    setTimeout(() => {
-      resolve();
-    }, 200)
-  });
-};
-
-View.prototype.setCreate = function(n, array) {
-  for (let i = 0; i < n; i++) {
-    this.create(array[i], i + 1);
-  }
-};
 // bubble sort 전용 methods..
 View.prototype.swap = function(a, b) {
   const $target = document.querySelector('.visual');

@@ -1,9 +1,9 @@
 export const Controller = function(model, view, controller) {
   this.$userInput = document.querySelector('.user-input');
   this.$start = document.querySelector('.start');
+  this.$random = document.querySelector('.random');
   this.$delete = document.querySelector('.delete');
   this.$clear = document.querySelector('.clear');
-  this.$stop = document.querySelector('.stop');
 
   this.model = model;
   this.view = view;
@@ -77,13 +77,25 @@ Controller.prototype.start = function() {
   this.sort(); // prototype 아래로 내려갈수 있나?
 };
 
-Controller.prototype.stop = async function() {
-  this.model.set(this.model.getSave());
-  await this.view.set(this.model.size(), this.model.getSave());
+Controller.prototype.random = function() {
+  this.clear();
+
+  function makeRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  const randomRange = makeRandomNumber(5, 11);
+
+  for (let i = 0; i < randomRange; i++) {
+    const randomNumber = makeRandomNumber(1, 11);
+    this.model.create(randomNumber);
+    this.view.create(randomNumber, this.model.size());
+  }
+  console.log(this.model.get())
 };
+
 // start를 하면 new로 생성한 controller에 prototype으로 bubbleSort 메서드를 아래와 같이 추가해주면 실행 가능한가?
 Controller.prototype.sort = async function() {
-
   const sorting = this.model.get();
     
   for (let i = 0; i < this.model.size() -1; i++) {
@@ -122,8 +134,8 @@ Controller.prototype.sort = async function() {
 
 Controller.prototype.events = function() {
   this.$userInput.addEventListener('keyup', this.create.bind(this));
+  this.$random.addEventListener('click', this.random.bind(this));
   this.$delete.addEventListener('click', this.delete.bind(this));
   this.$start.addEventListener('click', this.start.bind(this));
-  this.$stop.addEventListener('click', this.stop.bind(this));
   this.$clear.addEventListener('click', this.clear.bind(this));
 };
