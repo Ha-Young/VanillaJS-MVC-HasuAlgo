@@ -1,15 +1,22 @@
 function createModel() {
+  const storage = [];
+  const sortedStorage = [];
 
   return {
-    storage: [],
-    sortedStorage: [],
-
     addList: function (list) {
-      model.storage.push(list);
+      storage.push(list);
     },
 
     removeList: function () {
-      model.sortedStorage.pop();
+      sortedStorage.pop();
+    },
+
+    sendStorage: function () {
+      return storage;
+    },
+
+    sendSortedStorage: function () {
+      return sortedStorage;
     }
   }
 }
