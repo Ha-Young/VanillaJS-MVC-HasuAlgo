@@ -12,7 +12,7 @@ export default class Controller {
 		this.model = model;
 		this.view = view;
 		this.isReadySort = false;
-		this.delayTimeOnChange = 500;
+		this.delayTimeOnChange = 1000;
 
 		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
 		view.bindOnClickSetBtn(this.setInitNumsView.bind(this));
@@ -140,12 +140,12 @@ export default class Controller {
     this.view.setSortItemStatusLarge(index);
   }
 
-  viewLeftArrow(index) {
-    this.view.setArrow(index, 'left');
+  viewArrow(index, arrowKinds) {
+    this.view.setArrow(index, arrowKinds);
   }
 
-  viewRightArrow(index) {
-    this.view.setArrow(index, 'right');
+  viewRemoveArrow(arrowKinds) {
+    this.view.removeArrow(arrowKinds);
   }
 
 	async insertionSort(sortList) {
@@ -216,7 +216,12 @@ export default class Controller {
 
       const [partitionIndex, changePivotIndex] = await divide.call(this, sortList, leftIndex, rightIndex, pivotIndex);
 
-      await this.doUIWork([this.viewItemSortedColor.bind(this, changePivotIndex)]);
+      await this.doUIWork(
+        [
+          this.viewItemSortedColor.bind(this, changePivotIndex),
+          this.viewRemoveArrow.bind(this, 'left'),
+          this.viewRemoveArrow.bind(this, 'right'),
+        ]);
 
 			await _quickSort.call(this, sortList, leftIndex, partitionIndex - 1);
 			await _quickSort.call(this, sortList, partitionIndex, rightIndex);
@@ -226,8 +231,11 @@ export default class Controller {
 
         const pivot = sortList[pivotIndex];
 
-        // this.doUIWork([this.viewLeftArrow.bind(this, leftIndex)]);
-        // this.doUIWork([this.viewRightArrow.bind(this, rightIndex)]);
+        this.doUIWork(
+          [
+            this.viewArrow.bind(this, leftIndex, 'left'),
+            this.viewArrow.bind(this, rightIndex, 'right'),
+          ]);
 
 				while (leftIndex <= rightIndex) {
 
