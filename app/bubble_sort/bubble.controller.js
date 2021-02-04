@@ -61,7 +61,7 @@ BubbleController.prototype.checkInput = function (inputValue) {
 };
 
 BubbleController.prototype.startSort = async function (dataSet) {
-  const DELAY = 100;
+  const DELAY = 500;
   const status = { index: 0, isSwaped: false , fixedIndices: [] };
 
   const showTarget = (index) => {
@@ -105,7 +105,7 @@ BubbleController.prototype.startSort = async function (dataSet) {
 
     status.index++;
 
-    const isEndOfLoop = status.index === (dataSet.length - status.fixedIndices.length - 2);
+    const isEndOfLoop = status.index === (dataSet.length - status.fixedIndices.length - 1);
 
     if (isEndOfLoop) {
       status.fixedIndices.push(status.index);

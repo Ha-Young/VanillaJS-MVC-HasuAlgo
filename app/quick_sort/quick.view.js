@@ -1,4 +1,4 @@
-import BubbleView from '../bubble_sort/bubble.view.js';
+import BubbleView from "../bubble_sort/bubble.view.js";
 
 export default function QuickView() {
   this.$graphs = document.querySelector(".graphs");
@@ -16,32 +16,13 @@ export default function QuickView() {
 QuickView.prototype = Object.create(BubbleView.prototype);
 QuickView.prototype.constructor = QuickView;
 
-QuickView.prototype.paintGraphs = function (data, loopCount, fixedIndices) {
-  const maxSize = Math.max(...data);
-
-  this.$graphs.textContent = "";
-
-  data.forEach((item, index) => {
-    const newBlock = document.createElement("span");
-
-    newBlock.dataset.index = index + 1;
-    newBlock.style.setProperty("height", (item / maxSize) * 90 + "%");
-
-    if (fixedIndices.includes(index)) {
-      newBlock.classList.add("fixed");
-    }
-    // if (index >= data.length - loopCount) {
-    //   newBlock.classList.add("fixed");
-    // }
-
-    this.$graphs.appendChild(newBlock);
-  });
+QuickView.prototype.showPivot = function (index) {
+  this.$graphs.children[index].classList.add("pivot");
 };
 
-// QuickView.prototype.paintMessage = function (message, delay) {
-//   this.$message.textContent = message;
+QuickView.prototype.swap = function (left, right) {
+  const distance = right - left;
 
-//   if (delay !== undefined) {
-//     setTimeout(() => this.$message.textContent = "", delay);
-//   }
-// };
+  this.$graphs.children[left].style.transform = `translateX(${distance * 30}px) rotate(0.5turn)`;
+  this.$graphs.children[right].style.transform = `translateX(-${distance * 30}px) rotate(-0.5turn)`;
+};

@@ -21,7 +21,7 @@ BubbleView.prototype.paintMessage = function (message, motion, delay) {
   }
 };
 
-BubbleView.prototype.paintGraphs = function (data, fixedIndices = []) {
+BubbleView.prototype.paintGraphs = function (data, fixedIndices = [], pivotIndex) {
   const maxSize = Math.max(...data);
 
   this.$graphs.textContent = "";
@@ -31,6 +31,10 @@ BubbleView.prototype.paintGraphs = function (data, fixedIndices = []) {
 
     newBlock.dataset.index = index + 1;
     newBlock.style.setProperty("height", (item / maxSize) * 90 + "%");
+
+    if (pivotIndex === index) {
+      newBlock.classList.add("pivot");
+    }
 
     if (fixedIndices.includes(index) || fixedIndices === "done") {
       newBlock.classList.add("fixed");
@@ -46,8 +50,10 @@ BubbleView.prototype.showTarget = function (left, right) {
 };
 
 BubbleView.prototype.swap = function (left, right) {
-  this.$graphs.children[left].classList.add("moveToRight");
-  this.$graphs.children[right].classList.add("moveToLeft");
+  const distance = right - left;
+
+  this.$graphs.children[left].style.transform = `translateX(${distance * 30}px) rotate(0.5turn)`;
+  this.$graphs.children[right].style.transform = `translateX(-${distance * 30}px) rotate(0.5turn)`;
 };
 
 BubbleView.prototype.holdInput = function (sholdHold) {

@@ -169,30 +169,45 @@ input[id="menu-icon"]:checked ~ .graph-container .menu-options {
 
 .graph-container .graphs span {
   display: inline-block;
+  position: relative;
   width: 20px;
   margin: 5px;
   border: 2px solid #4A6FC3;
   border-radius: 10px;
+  background-color: white;
   align-self: flex-end;
   transition: all 0.5s;
 }
 
 .graph-container .graphs .target {
-  background-color: #4e6baf;
+  z-index: 1;
+  background-color: #4A6FC3;
 }
 
-.moveToRight {
-  transform: translateX(30px) rotate(0.5turn);
-}
+// .moveToRight {
+//   transform: translateX(30px) rotate(0.5turn);
+// }
 
-.moveToLeft {
-  transform: translateX(-30px) rotate(0.5turn);
-}
+// .moveToLeft {
+//   transform: translateX(-30px) rotate(0.5turn);
+// }
 
 .fixed {
   border-width: 4px !important;
+  background-color: white;
   opacity: 0.8;
   pointer-events: none;
+}
+
+.pivot:before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  margin: -5px;
+  border-radius: inherit;
+  background: linear-gradient(to top, #00c3ff 0%, #ffff1c 100%);
+  opacity: 0.8;
 }
 
 .hidden {
