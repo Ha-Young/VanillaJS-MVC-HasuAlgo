@@ -15,9 +15,7 @@ async function sortStorage(storeageArray) {
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
 
-        model.changeCount++;
-        console.log(model.changeCount);
-        await moveGraph(view.$graphNodes[j], view.$graphNodes[j + 1], model.changeCount * 100);
+        await moveGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
         await changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
       }
     }
@@ -27,12 +25,17 @@ async function sortStorage(storeageArray) {
   }
 }
 
-function moveGraph(leftnode, rightNode, moveValue) {
+function moveGraph(leftNode, rightNode) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log(moveValue);
-      leftnode.style.transform = `translateX(${moveValue + 100}px)`;
-      rightNode.style.transform = `translateX(${moveValue}px)`;
+      const leftPositionValue = Number(leftNode.getAttribute('position')) + 100;
+      const rightPositionValue = Number(rightNode.getAttribute('position')) - 100;
+
+      leftNode.style.transform = `translateX(${leftPositionValue}px)`;
+      rightNode.style.transform = `translateX(${rightPositionValue}px)`;
+
+      leftNode.setAttribute('position', leftPositionValue);
+      rightNode.setAttribute('position', rightPositionValue);
 
       resolve();
     }, 1000);
