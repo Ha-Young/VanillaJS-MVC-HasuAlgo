@@ -17,7 +17,7 @@ const text = {
 export const ITEM = {
   RECT: rect,
   TEXT: text,
-  DISTANCE_POS: rect.WIDTH + distance,
+  DISTANCE_X_POS: rect.WIDTH + distance,
   FIRST_X_POS: 475,
   MAX_HEIGHT: 230,
 }

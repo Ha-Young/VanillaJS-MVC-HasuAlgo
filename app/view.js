@@ -72,7 +72,7 @@ export default class View {
 		return (+ rectElement.getAttribute('height'));
 	}
 
-	clearSortItemColor(sortItemElement, exceptClassList = ['sort-item']) {
+	clearSortItemStatus(sortItemElement, exceptClassList = ['sort-item']) {
     const _classList = Array.from(sortItemElement.classList);
 
     for (const className of _classList) {
@@ -108,7 +108,7 @@ export default class View {
   }
 
 	setSortItemColorFromStatus(sortItemElement, status) {
-		this.clearSortItemColor(sortItemElement);
+		this.clearSortItemStatus(sortItemElement);
 		switch (status) {
 			case 'sorted':
 				sortItemElement.classList.add('sorted');
@@ -181,8 +181,22 @@ export default class View {
   setSortItemStatusClear(index) {
 		if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
-		this.clearSortItemColor(sortItemElement);
-	}
+		this.clearSortItemStatus(sortItemElement);
+  }
+
+  setSortItemStatusClaerAll(ignoreIndexs) {
+    const sortItemElements = this.getSortItemListsOnView();
+
+    if (!sortItemElements || sortItemElements.length === 0) return;
+
+    for (let i = 0; i < sortItemElements.length; i++) {
+      if (ignoreIndexs.includes(i)) continue;
+
+      const sortItemElement = sortItemElements[i];
+
+      this.clearSortItemStatus(sortItemElement);
+    }
+  }
 
 	changeSortItem(aIndex, bIndex, duration) {
 		const aSortItemElement = this.getSortItemElement(aIndex);
@@ -233,5 +247,19 @@ export default class View {
   removeArrow(arrowKinds) {
     const arrowElement = qs(`.${arrowKinds}-arrow`);
     arrowElement.parentNode.removeChild(arrowElement);
+  }
+
+  moveArrowNext(arrowKinds, duration) {
+    console.log('moveArrowNext', arrowKinds, duration);
+
+    const arrowElement = qs(`.${arrowKinds}-arrow`);
+    const [arrowItemXPos, arrowItemYPos] = this.getSVGItemPosition(arrowElement);
+
+    const mX = arrowKinds === 'left' ? ITEM.DISTANCE_X_POS : ITEM.DISTANCE_X_POS * -1;
+
+    const fromPosition = positionFactory(arrowItemXPos, arrowItemYPos);
+    const toPosition = positionFactory(arrowItemXPos + mX, arrowItemYPos);
+
+    fromToTranslatePosition(arrowElement, fromPosition, toPosition, duration);
   }
 }
