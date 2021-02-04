@@ -1,38 +1,4 @@
-/*
-function quickSort (array) {
-  if (array.length <= 1) {
-    return array;
-  }
-  
-  let pivotIndex;
-  let leftArray = [];
-  let rightArray = [];
-  do {
-    pivotIndex = Number.parseInt((Math.random() * (array.length)));
-  } while (pivotIndex === 0)
-  
-  const pivot = array[pivotIndex];  
-  for (let i = 0; i < array.length; i++) {
-    if (pivotIndex === i) continue;
-    
-    if (array[i] >= pivot) {
-      //right
-      rightArray.push(array[i]);
-    } else {
-      //left
-      leftArray.push(array[i]);
-    }
-  }
-  
-  leftArray = quickSort(leftArray);
-  rightArray = quickSort(rightArray);
-  leftArray.push(pivot);
-  return leftArray.concat(rightArray);
-}
-*/
-
-import {beforeSorting, moveBar, exchange} from '../../View/view';
-import NumModel from './../../Model/model';
+import {beforeSorting, moveBar, exchange, wait} from '../../View/view';
 
 const pivotMovingUp = 0;
 const othersMovingYDistance = -80;
@@ -57,16 +23,12 @@ export default async function quickSort (numbersObjArray) {
   console.log('pivot is ', pivot.value);
 
   // 동작 : 피봇은 튀고 나머지는 위로 올라간다
-  await new Promise((resolve, reject) => {
-    beforeSorting(pivot, pivotMovingUp, 2000, 'beforeSorting');
-    for (let i = 0; i < numbersObjArray.length; i++) {
-      if (pivotIndex === i) continue;
-      moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, othersMovingYDistance);
-    }
-    setTimeout(() => {
-      resolve();
-    }, 4000);
-  });
+  beforeSorting(pivot, pivotMovingUp, 2000, 'beforeSorting');
+  for (let i = 0; i < numbersObjArray.length; i++) {
+    if (pivotIndex === i) continue;
+    moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, othersMovingYDistance);
+  }
+  await wait(1500);
 
   for (let i = 0; i < numbersObjArray.length; i++) {
     if (pivotIndex === i) continue;
@@ -97,14 +59,10 @@ export default async function quickSort (numbersObjArray) {
   }
 
   // 동작 : 타겟이 되어 올라갔던 애들이 모두 내려온다
-  await new Promise((resolve, reject) => {
-    for (let i = 0; i < numbersObjArray.length; i++) {
-      moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, pivotMovingUp);
-    }
-    setTimeout(() => {
-      resolve();
-    }, 4000);
-  });
+  for (let i = 0; i < numbersObjArray.length; i++) {
+    moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, pivotMovingUp);
+  }
+  await wait(1000);
   
   leftArray = await quickSort(leftArray);
   rightArray = await quickSort(rightArray);

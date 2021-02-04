@@ -1,4 +1,4 @@
-import {beforeSorting, moveBar, exchange} from '../../View/view';
+import {beforeSorting, moveBar, exchange, wait, finishMove} from '../../View/view';
 
 const pivotMovingUp = 0;
 const pivotMovingYDistance = 100;
@@ -41,16 +41,8 @@ export default async function insertionSort (numbersObjArray) {
 
   testPromise.then(async (result) => {
       // 동작 : 완료된 동작! 처음부터 차례대로 점프!
-      const backArrowSpan = document.querySelector('.backwardArrow');
-      await new Promise(async (resolve, reject) => {
-        for (let numberObj of result) {
-          await beforeSorting(numberObj, pivotMovingUp, 300, 'last');
-        }
-        backArrowSpan.style.display = 'inline-block';
-        setTimeout(() => {
-          resolve();
-        }, 2000);
-      })
+      finishMove(result, 0, 300, 'last');
+      await wait(2000);
     })
     .catch(function(result) {
       console.log('catched');

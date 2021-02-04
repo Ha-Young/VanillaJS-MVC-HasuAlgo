@@ -1,13 +1,4 @@
-/*
-
-  Contoller의 역할
-
-  html에서 받은 입력을 이곳에서 받아 Model에 저장,
-  출력시엔 이곳에서 계산한 결과를 View에 뿌려준다.
-
-*/
-
-import {bufferRender, renderNumber, beforeSorting} from '../View/view';
+import {bufferRender, renderNumber, beforeSorting, wait, finishMove} from '../View/view';
 import initGraphPannel from '../View/initGraphPannel';
 import numModel from '../Model/model';
 
@@ -30,7 +21,6 @@ submitButton.addEventListener('click', buttonClickEvent);
 async function buttonClickEvent () {
   const blank = " ";
   const comma = ",";
-  // init
   numbersObjArray = [];
   initGraphPannel();
   $errorMessageDiv.style.display = 'block';
@@ -41,41 +31,32 @@ async function buttonClickEvent () {
     return;
   }
 
-  // TODO : 다 끝나고 const로 바꿔주기
-  let textBoxString = textBox.value.trim();
+  const textBoxString = textBox.value.trim();
   // err handling
   if (!textBoxString) {
     console.error('No text!!');
     $errorMessageDiv.innerHTML = 'Please input numbers~';
     return;
-    // test
-    textBoxString = '5,3,4,1,2';
   }
 
   let numbersArray;
   if (textBoxString.includes(comma)) {
-    //console.log('comma has!');
     numbersArray = splitString(textBoxString, comma);
   } else if (textBoxString.includes(blank)) {
-    //console.log('blank has!');
     numbersArray = splitString(textBoxString, blank);
   } else {
-    //console.log('none has!');
     numbersArray = splitString(textBoxString, '');
   }
 
   // err hanling
   if (numbersArray === -1) {
-    console.error('You only can input only the Number lower than 20');
     $errorMessageDiv.innerHTML = 'Sorry! You only can input the Number lower than 20';
     return;
   }
   
   const oneSectionPx = Number.parseInt(Math.round(950 / (numbersArray.length - 1)));
-
   bufferRender();
 
-  // First rendering
   numbersArray.forEach((el, index) => {
     const cordinateX = oneSectionPx * index;
     const cordinateY = 0;
@@ -84,44 +65,28 @@ async function buttonClickEvent () {
     numbersObjArray.push(newNumObj);
     renderNumber(newNumObj.getNumRecords());
   });
-
   
+  $errorMessageDiv.innerHTML = '';
+  $errorMessageDiv.style.display = 'none';
 
   contentDiv.style.opacity = 0;
   shadowTitleSpan.style.innerText = '';
-  $errorMessageDiv.innerHTML = '';
-  $errorMessageDiv.style.display = 'none';
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      contentDiv.style.display = 'none';
-      graphPannelDiv.style.display = 'inline-block';
-      graphPannelDiv.style.opacity = 1;
-      shadowDiv.style.display = 'flex';
-      setTimeout(() => {
-        shadowTitleSpan.innerText = mainTitle.innerText;
-        setTimeout(() => {
-          shadowTitleSpan.innerText = '';
-          shadowDiv.style.display = 'none';
-          resolve();
-        }, 3000);
-      }, 1000);
-    }, 1000);
-  });
+  await wait(1000);
+  contentDiv.style.display = 'none';
+  graphPannelDiv.style.display = 'inline-block';
+  graphPannelDiv.style.opacity = 1;
+  shadowDiv.style.display = 'flex';
+  await wait(1000);
+  shadowTitleSpan.innerText = mainTitle.innerText;
+  await wait(3000);
+  shadowTitleSpan.innerText = '';
+  shadowDiv.style.display = 'none';
 
   if (mainTitle.innerText === 'Insertion Sort') {
     await insertionSort(numbersObjArray);
   } else {
     const quickResult = await quickSort(numbersObjArray);
-    const backArrowSpan = document.querySelector('.backwardArrow');
-      await new Promise(async (resolve, reject) => {
-        for (let numberObj of quickResult) {
-          await beforeSorting(numberObj, 0, 300, 'last');
-        }
-        backArrowSpan.style.display = 'inline-block';
-        setTimeout(() => {
-          resolve();
-        }, 2000);
-      });
+    finishMove(quickResult);
   }
   console.log('process done');
 }

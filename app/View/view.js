@@ -1,9 +1,3 @@
-/*
-
-  View는 오로지 html Rendering에만 집중한다.
-
-*/
-
 import leftArrow from './../../assets/images/leftArrow.png';
 
 const contentDiv = document.querySelector('.content');
@@ -53,41 +47,33 @@ export function renderNumber (numRecords) {
   graphPannelDiv.appendChild(oneNumberDiv);
 }
 
-export function beforeSorting (targetObj, cordinateY, timing, whichJump) {
-  return new Promise((resolve, reject) => {
-    targetObj.cordinateY = cordinateY;
-    const targetBar = document.querySelector(`#bar${targetObj.index}`);
-    const targetBarInnderDiv = targetBar.childNodes[0];
-    targetBar.focus();
-    targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
-    if (whichJump === 'last') {
-      targetBarInnderDiv.style.animation = "lastJump .8s";
-    } else {
-      targetBarInnderDiv.style.animation = "jump 1.5s";
-    }
-    
-    targetBarInnderDiv.style.backgroundColor = "#ac1717";
-    setTimeout(() => {
-      resolve();
-    }, timing);
-  });
+export async function beforeSorting (targetObj, cordinateY, timing, whichJump) {
+  targetObj.cordinateY = cordinateY;
+  const targetBar = document.querySelector(`#bar${targetObj.index}`);
+  const targetBarInnderDiv = targetBar.childNodes[0];
+  targetBar.focus();
+  targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
+  if (whichJump === 'last') {
+    targetBarInnderDiv.style.animation = "lastJump .8s";
+  } else {
+    targetBarInnderDiv.style.animation = "jump 1.5s";
+  }
+  
+  targetBarInnderDiv.style.backgroundColor = "#ac1717";
+  await wait(timing);
 }
 
-export function moveBar (targetObj, cordinateX, cordinateY, isShrink = true) {
-  return new Promise((resolve, reject) => {
-    targetObj.cordinateY = cordinateY;
-    const targetBar = document.querySelector(`#bar${targetObj.index}`);
-    const targetBarInnderDiv = targetBar.childNodes[0];
-    targetBar.focus();
-    targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
-    if (isShrink) {
-      shirinkBar(targetObj, targetBarInnderDiv, cordinateY);
-    }
-    targetBarInnderDiv.style.backgroundColor = '#1b58b2';
-    setTimeout(() => {
-      resolve();
-    }, 1000);
-  });
+export async function moveBar (targetObj, cordinateX, cordinateY, isShrink = true) {
+  targetObj.cordinateY = cordinateY;
+  const targetBar = document.querySelector(`#bar${targetObj.index}`);
+  const targetBarInnderDiv = targetBar.childNodes[0];
+  targetBar.focus();
+  targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
+  if (isShrink) {
+    shirinkBar(targetObj, targetBarInnderDiv, cordinateY);
+  }
+  targetBarInnderDiv.style.backgroundColor = '#1b58b2';
+  await wait(1000);
 }
 
 function shirinkBar (targetObj, targetBarInnderDiv, cordinateY) {
@@ -108,46 +94,50 @@ export function moveBarNoWait (targetId, cordinateX, cordinateY) {
   });
 }
 
-export function exchange (pivotObj, anotherObj) {
-  return new Promise((resolve, reject) => {
-    console.log("exchanging");
-    const temp = pivotObj.cordinateX;
-    pivotObj.cordinateX = anotherObj.cordinateX;
-    anotherObj.cordinateX = temp;
+export async function exchange (pivotObj, anotherObj) {
+  console.log("exchanging");
+  const tempX = pivotObj.cordinateX;
+  pivotObj.cordinateX = anotherObj.cordinateX;
+  anotherObj.cordinateX = tempX;
 
-    moveBarNoWait(pivotObj.index, pivotObj.cordinateX, pivotObj.cordinateY);
-    moveBarNoWait(anotherObj.index, anotherObj.cordinateX, anotherObj.cordinateY);
+  moveBarNoWait(pivotObj.index, pivotObj.cordinateX, pivotObj.cordinateY);
+  moveBarNoWait(anotherObj.index, anotherObj.cordinateX, anotherObj.cordinateY);
 
-    const targetBar1 = document.getElementById(`bar${pivotObj.index}`);
-    const targetBar2 = document.getElementById(`bar${anotherObj.index}`);
-    setTimeout(() => {
-      const temp = pivotObj.index;
-      pivotObj.index = anotherObj.index;
-      anotherObj.index = temp;
-      targetBar1.removeAttribute("id");
-      targetBar2.removeAttribute("id");
-      targetBar1.setAttribute('id', `bar${pivotObj.index}`);
-      targetBar2.setAttribute('id', `bar${anotherObj.index}`);
-      resolve();
-    }, 1000);
-  })
+  const targetBar1 = document.getElementById(`bar${pivotObj.index}`);
+  const targetBar2 = document.getElementById(`bar${anotherObj.index}`);
+
+  await wait(1000);
+
+  const tempIndex = pivotObj.index;
+  pivotObj.index = anotherObj.index;
+  anotherObj.index = tempIndex;
+  targetBar1.removeAttribute("id");
+  targetBar2.removeAttribute("id");
+  targetBar1.setAttribute('id', `bar${pivotObj.index}`);
+  targetBar2.setAttribute('id', `bar${anotherObj.index}`);
 }
 
 async function backToInputPage () {
-  await new Promise((resolve, reject) => {
-    graphPannelDiv.style.opacity = 0;
-      setTimeout(() => {
-        graphPannelDiv.style.display = 'none';
-        contentDiv.style.display = 'flex';
-        contentDiv.style.opacity = 1;
-      }, 1000);
-  })
+  graphPannelDiv.style.opacity = 0;
+  await wait(1000);
+  graphPannelDiv.style.display = 'none';
+  contentDiv.style.display = 'flex';
+  contentDiv.style.opacity = 1;
 }
 
 export function wait(second) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      
+      resolve();
     }, second);
   })
+}
+
+export async function finishMove(resultArray) {
+  const backArrowSpan = document.querySelector('.backwardArrow');
+  for (let numberObj of resultArray) {
+    await beforeSorting(numberObj, 0, 300, 'last');
+  }
+  backArrowSpan.style.display = 'inline-block';
+  await wait(2000);
 }
