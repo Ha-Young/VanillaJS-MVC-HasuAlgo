@@ -83,10 +83,57 @@ export default class Model {
     callback("finished", "bubble", this._storage.bubble.sortedLength);
   }
 
-  clearData(callback) {
-    delete this._storage.userInputs;
-    callback();
+  insertion(callback) {
+    const collection = this._storage.insertion.collection;
+
+    if (this._storage.insertion.changedIndex === undefined) {
+      this._storage.insertion.changedIndex = 0;
+      this._storage.insertion.sortedIndex = 0;
+      this._storage.insertion.isSorting = false;
+      callback("semifinished", "insertion", this._storage.insertion.sortedIndex);
+      return;
+    }
+
+    const isSorting = this._storage.insertion.isSorting;
+    let sortedIndex = this._storage.insertion.sortedIndex;
+    let j = 0;
+
+    if (isSorting) {
+      for (j; j < sortedIndex; j++) {
+        const front = collection[j].value;
+        const rear = collection[j + 1].value;
+
+        if (front > rear) {
+          this._storage.insertion.changedIndex = j;
+          [collection[j], collection[j + 1]] = [collection[j + 1], collection[j]];
+          callback("changed", "insertion", j);
+          return;
+        }
+      }
+    }
+
+    if (!isSorting) {
+      for (sortedIndex; sortedIndex < collection.length - 1; sortedIndex++) {
+        const front = collection[sortedIndex].value;
+        const rear = collection[sortedIndex + 1].value;
+
+        if (front > rear) {
+          this._storage.insertion.isSorting = true;
+          this._storage.insertion.sortedIndex = sortedIndex + 1;
+          this._storage.insertion.changedIndex = sortedIndex;
+          [collection[sortedIndex], collection[sortedIndex + 1]] = [collection[sortedIndex + 1], collection[sortedIndex]];
+          callback("changed", "insertion", sortedIndex);
+          return;
+        }
+      }
+    }
+
+    if (this._storage.insertion.sortedIndex === j) {
+      callback("semifinished", "insertion", this._storage.insertion.changedIndex);
+      this._storage.insertion.isSorting = false;
+      return;
+    }
+
+    callback("finished", "insertion", 0);
   }
-
-
 }

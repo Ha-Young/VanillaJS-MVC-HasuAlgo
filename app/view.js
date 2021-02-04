@@ -41,6 +41,7 @@ export default class View {
     const sticks = this._caches[sortType];
     if (act === "init") this["$article-" + sortType].style.opacity = "1";
     if (act === "changed") this._sortVisual(sortType, index);
+
     if (act === "semifinished") sticks[index].style.backgroundColor = "red";
     if (act === "finished") {
       for (let j = index - 1; 0 <= j; j--) {
@@ -50,9 +51,9 @@ export default class View {
   }
 
   _sortVisual(sortType, changedIndex) {
-    if (sortType === "bubble") {
-      const frontStick = this._caches.bubble[changedIndex];
-      const rearStick = this._caches.bubble[changedIndex + 1];
+    if (sortType === "bubble" || sortType === "insertion") {
+      const frontStick = this._caches[sortType][changedIndex];
+      const rearStick = this._caches[sortType][changedIndex + 1];
       const frontXCoordinate = frontStick.getBoundingClientRect().x;
       const rearXCoordinate = rearStick.getBoundingClientRect().x;
       const moveDistance = Math.abs(rearXCoordinate - frontXCoordinate);
@@ -62,7 +63,8 @@ export default class View {
       rearStick.setAttribute("data-move-distance", rearMoved - moveDistance);
       frontStick.style.transform = `translate(${frontMoved + moveDistance}px)`;
       rearStick.style.transform = `translate(${rearMoved - moveDistance}px)`;
-      [this._caches.bubble[changedIndex], this._caches.bubble[changedIndex + 1]] = [rearStick, frontStick];
+      [this._caches[sortType][changedIndex], this._caches[sortType][changedIndex + 1]] = [rearStick, frontStick];
+      return;
     }
   }
 }
