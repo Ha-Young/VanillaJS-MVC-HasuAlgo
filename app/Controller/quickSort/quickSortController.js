@@ -4,14 +4,10 @@ const pivotMovingUp = 0;
 const othersMovingYDistance = -80;
 
 export default async function quickSort (numbersObjArray) {
-  console.log('quick sort array start', numbersObjArray);
   if (numbersObjArray.length <= 1) {
-    console.log('base case here');
     return numbersObjArray;
   }
 
-  console.log('not returned!!!@@!@@!!@!@!');
-  
   let pivotIndex;
   let leftArray = [];
   let rightArray = [];
@@ -20,15 +16,13 @@ export default async function quickSort (numbersObjArray) {
   } while (pivotIndex === 0)
   
   const pivot = numbersObjArray[pivotIndex];
-  console.log('pivot is ', pivot.value);
 
-  // 동작 : 피봇은 튀고 나머지는 위로 올라간다
-  beforeSorting(pivot, pivotMovingUp, 2000, 'beforeSorting');
+  beforeSorting(pivot, pivotMovingUp, 1700, 'beforeSorting');
   for (let i = 0; i < numbersObjArray.length; i++) {
     if (pivotIndex === i) continue;
     moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, othersMovingYDistance);
   }
-  await wait(1500);
+  await wait(1700);
 
   for (let i = 0; i < numbersObjArray.length; i++) {
     if (pivotIndex === i) continue;
@@ -58,7 +52,6 @@ export default async function quickSort (numbersObjArray) {
     rightArray.push(numbersObjArray[i]);
   }
 
-  // 동작 : 타겟이 되어 올라갔던 애들이 모두 내려온다
   for (let i = 0; i < numbersObjArray.length; i++) {
     moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, pivotMovingUp);
   }

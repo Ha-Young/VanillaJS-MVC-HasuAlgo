@@ -83,7 +83,8 @@ async function buttonClickEvent () {
   shadowDiv.style.display = 'none';
 
   if (mainTitle.innerText === 'Insertion Sort') {
-    await insertionSort(numbersObjArray);
+    const insertionResult = await insertionSort(numbersObjArray);
+    finishMove(insertionResult);
   } else {
     const quickResult = await quickSort(numbersObjArray);
     finishMove(quickResult);
