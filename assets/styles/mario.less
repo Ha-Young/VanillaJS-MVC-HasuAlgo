@@ -1,0 +1,34 @@
+.mario{
+  position: absolute;
+  width: 71px;
+  height: 72px;
+  background: url('https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/mariowalking/result.png') left center;    
+  // top:-70px;
+  left:0px;
+  // -webkit-animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
+  // animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
+  -webkit-animation: play 0.8s steps(4) infinite, 7s both infinite linear;
+  animation: play 0.8s steps(4) infinite, 7s both infinite linear;
+}
+
+@-webkit-keyframes play{
+  100%{background-position: -284px;}
+}
+@keyframes play{
+  100%{background-position: -284px;}
+}
+
+@keyframes run {
+  from { left: -200px;}
+  to { left: 100%;}
+}
+
+
+.pipe {
+  background : url(../images/green-pipe.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 200px;
+  width: 50px;
+  margin-left: 100px;
+}
