@@ -32,12 +32,13 @@ View.prototype.swap = async function(a, b) {
   const $target = document.querySelector('.visual');
   const $boxs = document.querySelectorAll('.sort-box');
 
-  this.swapY(a, b);
+  $target.classList.remove('wave');
+  this.swapUp(a, b);
 
   await new Promise(resolve =>
     setTimeout(() => {
       resolve();
-    }, 1000)
+    }, 800)
   );
 
   return new Promise(resolve => {
@@ -59,13 +60,14 @@ View.prototype.swap = async function(a, b) {
     window.requestAnimationFrame(function() {
       setTimeout(() => {
         $target.insertBefore($boxs[b], $boxs[a]);
+        $target.classList.add('wave');
         resolve();
-      }, 1000);
+      }, 800);
     });
   });
 };
 
-View.prototype.swapY = function(a, b) {
+View.prototype.swapUp = function(a, b) {
   const $boxs = document.querySelectorAll('.sort-box');
 
     const styleA = window.getComputedStyle($boxs[a]);
