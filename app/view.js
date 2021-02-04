@@ -12,12 +12,9 @@ export default class View {
   addItem = function (value, index, length) {
     const child = document.createElement('div');
 
-    child.classList.add('flex-item');
-    child.classList.add('sort-list');
+    child.classList.add('flex-item', 'sort-list');
     child.style.height = `${(400/length) * (index+1)}px`;
-    child.id = `itemId-${value}`;
     child.textContent = value;
-    child.dataset.test = value;
 
     this.$sortingWindow.appendChild(child);
   }
@@ -32,7 +29,7 @@ export default class View {
 
   displayErrorMessage = function(message) {
     this.$errorMsg.placeholder = message;
-    this.$errorMsg.classList.add('dummy');
+    this.$errorMsg.classList.add('set-placeholder');
   }
 
   changeOrder = function (firstOrder, secondOrder) {
@@ -58,21 +55,23 @@ export default class View {
   }
 
   shutDownButtons = function () {
-    document.querySelector('#input-text').classList.add('none')
-    document.querySelector('#loader1').classList.remove('none')
-    document.querySelector('#execute-text').classList.add('none')
-    document.querySelector('#loader2').classList.remove('none')
+    document.querySelector('#input-text').classList.add('none');
+    document.querySelector('#loader1').classList.remove('none');
+    document.querySelector('#execute-text').classList.add('none');
+    document.querySelector('#loader2').classList.remove('none');
+
     this.$inputBtn.outerHTML = this.$inputBtn.outerHTML;
     this.$executeBtn.outerHTML = this.$executeBtn.outerHTML;
   }
 
   reopenButtons = function () {
-    this.$inputBtn = document.querySelector("#input-btn")
-    this.$executeBtn = document.querySelector('#execute-btn')
-    document.querySelector('#input-text').classList.remove('none')
-    document.querySelector('#loader1').classList.add('none')
-    document.querySelector('#execute-text').classList.remove('none')
-    document.querySelector('#loader2').classList.add('none')
+    document.querySelector('#input-text').classList.remove('none');
+    document.querySelector('#loader1').classList.add('none');
+    document.querySelector('#execute-text').classList.remove('none');
+    document.querySelector('#loader2').classList.add('none');
+
+    this.$inputBtn = document.querySelector("#input-btn");
+    this.$executeBtn = document.querySelector('#execute-btn');
   }
 
   moveRight (index) {
@@ -87,20 +86,12 @@ export default class View {
     nodeList[index].classList.add('move-left');
   }
 
-  moveRightQuick (index, whereToGoNanADiRo) {
+  moveQuick (index, whereToGoNanADiRo) {
     const nodeList = this.$sortingWindow.childNodes;
     const distance = (whereToGoNanADiRo - index) * 70;
 
     nodeList[index].classList.add('move-quick');
-    nodeList[index].style.transform = `translateX(${distance}px)`
-  }
-
-  moveLeftQuick (index, whereToGoNanADiRo) {
-    const nodeList = this.$sortingWindow.childNodes;
-    const distance = (whereToGoNanADiRo - index) * 70;
-
-    nodeList[index].classList.add('move-quick');
-    nodeList[index].style.transform = `translateX(${distance}px)`
+    nodeList[index].style.transform = `translateX(${distance}px)`;
   }
 
   changeColorOfSelectedItem = function (...indexList) {
