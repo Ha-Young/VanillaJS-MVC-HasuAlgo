@@ -12,24 +12,36 @@ export default class Controller {
     this.view.bind("formSubmit", (selection, input) => {
       this.setInitialState(selection, input);
     });
+
+    this.view.bind("startSort", () => {
+      this.startAnimation();
+    });
   }
 
-  setInitialState(selection, input) {
-    //clearContent 동작안하는거 고쳐야함
-    //this.view.clearContent();
-    const sortType = this.model.create(selection, input, (data) => {
+  setInitialState = (selection, input) => {
+    this.model.create(selection, input, (data) => {
+      this.view.render("clearBlocks");
       this.view.render("generateBlocks", data);
     });
+  }
+
+  startAnimation = () => {
+    if (this.view.checkBlocksSorted()) {
+      this.view.render("clearBlocks");
+      this.model.reset();
+      this.view.render("generateBlocks", this.model.getData());
+    }
+
+    const sortType = this.model.getSortType();
 
     switch (sortType) {
       case "Bubble Sort":
-        this.model.bubbleSort(this.view.pickBlocks, this.view.swapBlocks.bind(this.view),
-          this.view.releaseBlocks.bind(this.view),
-          this.view.releaseBlocksAsync.bind(this.view), this.view.decideSorted);
+        this.model.bubbleSort(this.view);
         break;
       case "Insertion Sort":
         break;
       case "Quick Sort":
+        this.model.quickSort(this.view);
         break;
       case "Merge Sort":
         break;

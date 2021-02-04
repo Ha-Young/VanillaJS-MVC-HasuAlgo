@@ -9,26 +9,33 @@
 
 <body>
   <header>
-    <p>visualizing algorithm</p>
+    <h1>visualizing algorithm</h1>
   </header>
-  <form class="selection-form">
-    <div class="sort-selection-container">
-      <label for="sort-selection">Plz pick a type of sort</label>
-      <select class="sort-selection" name="sort-selection">
-        <option value="bubble">Bubble Sort</option>
-        <option value="insertion">Insertion Sort</option>
-        <option value="quick">Quick Sort</option>
-        <option value="merge">Merge Sort</option>
-      </select>
-    </div>
 
-    <div class="numbers-container">
-      <label for="numbers">Numbers (5 to 10 numbers seprated by comma):</label>
-      <input type="text" class="numbers" name="numbers" minlength = 9 size="10" required>
-    </div>
+  <section class="inputs-container">
+    <form class="selection-form">
+      <div class="sort-selection-container">
+        <label for="sort-selection">Plz pick a type of sort</label>
+        <select class="sort-selection" name="sort-selection">
+          <option value="bubble">Bubble Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="quick">Quick Sort</option>
+          <option value="merge">Merge Sort</option>
+        </select>
+      </div>
 
-    <input type="submit" value="submit">
-  </form>
+      <div class="numbers-container">
+        <label for="numbers">Numbers (5 to 10 numbers seprated by comma):</label>
+        <input type="text" class="numbers" name="numbers" minlength=9 size="10" required>
+      </div>
+
+      <input class="submit" type="submit" value="submit">
+    </form>
+
+    <article class="control-buttons-container">
+      <button class="start">Start</button>
+    </article>
+  </section>
 
   <section class="content"></section>
   <script src="./app/index.js"></script>

@@ -1,5 +1,3 @@
-import { reject } from "q";
-
 export default class View {
   "use strict";
 
@@ -18,28 +16,44 @@ export default class View {
     this.$numbers = document.querySelector(".numbers");
     this.$sortSelection = document.querySelector(".sort-selection");
     this.$content = document.querySelector(".content");
+    this.$submitButton = document.querySelector(".submit");
+    this.$startButton = document.querySelector(".start");
   }
 
-  bind(event, handler) {
-    const self = this;
+  bind = (event, handler) => {
+    switch (event) {
+      case "formSubmit":
+        this.$form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const input = this.$numbers.value;
+          this.$numbers.value = "";
+          const selection = this.$sortSelection.options[this.$sortSelection.selectedIndex].text;
 
-    if (event === "formSubmit") {
-      self.$form.addEventListener("submit", function (event) {
-        event.preventDefault();
+          if (!this.isValid(input)) {
+            return;
+          }
 
-        const input = self.$numbers.value;
-        const selection = self.$sortSelection.options[self.$sortSelection.selectedIndex].text;
-
-        if (!self.isValid(input)) {
-          return;
-        }
-
-        handler(selection, input)
-      });
+          handler(selection, input);
+        });
+        break;
+      case "startSort":
+        this.$startButton.addEventListener("click", (event) => {
+          handler();
+        });
     }
   }
 
-  isValid(input) {
+  checkBlocksSorted = () => {
+    const $blocks = document.querySelectorAll(".number-block");
+
+    for (const $block of $blocks) {
+      if (!$block.classList.contains("sorted")) return false;
+    }
+
+    return true;
+  }
+
+  isValid = (input) => {
     let inputArray = input.split(",");
 
     if (inputArray.length < 5 || inputArray.length > 10) {
@@ -55,22 +69,34 @@ export default class View {
     return true;
   }
 
-  render(command, data) {
-    const self = this;
+  disableInputs = () => {
+    this.$submitButton.disabled = true;
+    this.$startButton.disabled = true;
+  }
+
+  enableInputs = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.$submitButton.disabled = false;
+        this.$startButton.disabled = false;
+      }, 1000);
+    });
+  }
+
+  render = (command, data) => {
     const commands = {
-      generateBlocks: function () {
-        //const $blocks = createNode(self.template.show(data));
-        //self.$content.appendChild($blocks);
-        self.$content.innerHTML = self.template.show(data);
+      generateBlocks: () => {
+        this.$content.innerHTML = this.template.show(data);
+      },
+      clearBlocks: () => {
+        this._clearContent();
       }
     }
 
     return commands[command](data);
   }
 
-  swapBlocks(i, j) {
-    //const self = this;
-
+  swapBlocks = (i, j) => {
     return new Promise((resolve, reject) => {
       const $blockI = document.querySelectorAll('.number-block')[i];
       const $blockJ = document.querySelectorAll('.number-block')[j];
@@ -86,7 +112,7 @@ export default class View {
     });
   }
 
-  pickBlocks(i, j) {
+  pickBlocks = (i, j) => {
 
     return new Promise((resolve, reject) => {
 
@@ -100,7 +126,7 @@ export default class View {
     });
   }
 
-  releaseBlocksAsync(i, j) {
+  releaseBlocks = (i, j) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
 
@@ -110,12 +136,18 @@ export default class View {
     });
   }
 
-  releaseBlocks(i, j) {
-    this.removeColor(i);
-    this.removeColor(j);
+  releaseBlocksAfterSwap = (i, j) => {
+    new Promise((res, rej) => {
+      setTimeout(() => {
+        this.removeColor(i);
+        res();
+      }, 1000);
+    }).then(res => {
+      this.removeColor(j);
+    });
   }
 
-  decideSorted(i) {
+  decideSorted = (i) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const $block = document.querySelectorAll('.number-block')[i];
@@ -126,21 +158,25 @@ export default class View {
 
   }
 
-  changeColor(i, blockState = "picked") {
-    const $block = document.querySelectorAll('.number-block')[i];
-    $block.classList.add(blockState);
+  pickPivot = (i, blockState = "pivot") => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const $block = document.querySelectorAll('.number-block')[i];
+        const $blocks = document.querySelectorAll('.number-block');
+        console.log($blocks);
+        $block.classList.add(blockState);
+        resolve();
+      }, 1000);
+    });
   }
 
-  removeColor(i) {
+  removeColor = (i) => {
     const $block = document.querySelectorAll('.number-block')[i];
     $block.classList.remove("picked");
   }
 
-
-
-  clearContent() {
+  _clearContent = () => {
     while (this.$content.lastElementChild) {
-      console.log(this.$content.lastElementChild);
       this.$content.removeChild(this.$content.lastElementChild);
     }
   }
