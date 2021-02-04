@@ -121,7 +121,8 @@ Controller.prototype.sort = async function() {
           }, 800)
         );
       }
-    } 
+    }
+    this.view.paintDone(i);
 
     await new Promise(resolve =>
       setTimeout(() => {
