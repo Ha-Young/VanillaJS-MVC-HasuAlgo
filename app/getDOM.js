@@ -7,9 +7,9 @@
     return (scope || document).querySelectorAll(selector);
   };
 
-  window.$on = function (target, type, callback, useCapture) {
+  window.$on = function (target, type, callback) {
     if (target) {
-      target.addEventListener(type, callback, !!useCapture);
+      target.addEventListener(type, callback);
     }
   };
 })(window);

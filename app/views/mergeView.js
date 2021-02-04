@@ -11,121 +11,79 @@ const MergeView = function () {
   this.$sortContainer = qs(".sort-list");
 };
 
-// MergeView.prototype.render = function (viewCommand, parameter, ...args) {
-//   const self = this;
+MergeView.prototype.render = function (viewCommand, parameter, ...args) {
+  const self = this;
 
-//   const viewCommands = {
-//     paintNewList: function () {
-//       self.$resetButton.classList.remove("hide");
+  const viewCommands = {
+    paintNewNumber: function () {
+      self.$resetButton.classList.remove("hide");
 
-//       self.paintBar(parameter);
-//     },
-//     colorElement: function () {
-//       self.$shuffleButton.classList.add("hide");
-//       self.$randomButton.classList.add("hide");
-//       self.$startButton.classList.add("hide");
-//       self.$resetButton.classList.add("hide");
-//       self.$sortElementList = qsa(".sort-element");
+      self.fillNumber(parameter, args[0]);
+    },
+    paintReset: function () {
+      for (let i = 1; i < self.$sortContainer.childNodes.length; i = i + 2) {
+        self.$sortContainer.childNodes[i].innerHTML = "";
+      }
+      self.$startButton.classList.remove("hide");
+      self.$shuffleButton.classList.remove("hide");
+      self.$randomButton.classList.remove("hide");
+      self.$resetButton.classList.add("hide");
+    },
+  };
 
-//       const firstIndex = parameter;
-//       const secondIndex = firstIndex + 1;
-//       const firstElement = self.$sortElementList[firstIndex];
-//       const secondElement = self.$sortElementList[secondIndex];
+  viewCommands[viewCommand]();
+};
 
-//       firstElement.childNodes[1].classList.add("comparing");
-//       secondElement.childNodes[1].classList.add("comparing");
-//     },
-//     swapElement: function () {
-//       const firstElement = self.$sortElementList[parameter];
-//       const secondElement = self.$sortElementList[parameter + 1];
-//       const firstValue = args[0];
-//       const secondValue = args[1];
-//       const firstHeight = firstElement.childNodes[1].style.height;
-//       const secondHeight = secondElement.childNodes[1].style.height;
+MergeView.prototype.connectHandler = function (event, handler) {
+  const self = this;
 
-//       firstElement.childNodes[3].innerHTML = firstValue;
-//       firstElement.childNodes[1].style.height = secondHeight;
+  switch (event) {
+    case "addNumber":
+      $on(self.$inputForm, "submit", function (event) {
+        event.preventDefault();
+        handler(self.$inputBox.value);
+        self.$inputBox.value = "";
+      });
+      break;
 
-//       secondElement.childNodes[3].innerHTML = secondValue;
-//       secondElement.childNodes[1].style.height = firstHeight;
-//     },
-//     uncolorElement: function () {
-//       const firstElement = self.$sortElementList[parameter];
-//       const secondElement = self.$sortElementList[parameter + 1];
-//       const lastIndex = args[0];
+    case "startSort":
+      $on(self.$startButton, "click", function () {
+        if (!self.$sortContainer.childElementCount) {
+          return;
+        }
+        handler();
+      });
+      break;
 
-//       firstElement.childNodes[1].classList.remove("comparing");
-//       secondElement.childNodes[1].classList.remove("comparing");
+    case "resetList":
+      $on(self.$resetButton, "click", function () {
+        handler();
+      });
+      break;
 
-//       if (parameter === lastIndex - 1) {
-//         secondElement.childNodes[1].classList.add("done");
-//       }
-//     },
-//     finishSort: function () {
-//       self.$sortElementList[0].childNodes[1].classList.add("done");
-//       self.$resetButton.classList.remove("hide");
-//     },
-//     paintReset: function () {
-//       self.$sortContainer.innerHTML = "";
-//       self.$startButton.classList.remove("hide");
-//       self.$shuffleButton.classList.remove("hide");
-//       self.$randomButton.classList.remove("hide");
-//       self.$resetButton.classList.add("hide");
-//     },
-//   };
+    case "setRandom":
+      $on(self.$randomButton, "click", function () {
+        if (self.$sortContainer.childElementCount < 10) {
+          handler();
+        }
+      });
+      break;
 
-//   viewCommands[viewCommand]();
-// };
+    case "shuffleNum":
+      $on(self.$shuffleButton, "click", function () {
+        handler();
+      });
+      break;
 
-// MergeView.prototype.connectHandler = function (event, handler) {
-//   const self = this;
+    default:
+      break;
+  }
+};
 
-//   if (event === "addNumber") {
-//     $on(self.$inputForm, "submit", function (event) {
-//       event.preventDefault();
-//       handler(self.$inputBox.value);
-//       self.$inputBox.value = "";
-//     });
-//   } else if (event === "startSort") {
-//     $on(self.$startButton, "click", function () {
-//       if (!self.$sortContainer.childElementCount) {
-//         return;
-//       }
-//       handler();
-//     });
-//   } else if (event === "shuffleNum") {
-//     $on(self.$shuffleButton, "click", function () {
-//       if (!self.$sortContainer.childElementCount) {
-//         return;
-//       }
-//       handler();
-//     });
-//   } else if (event === "resetList") {
-//     $on(self.$resetButton, "click", function () {
-//       handler();
-//     });
-//   } else if (event === "setRandom") {
-//     $on(self.$randomButton, "click", function () {
-//       if (self.$sortContainer.childElementCount < 10) {
-//         handler();
-//       }
-//     });
-//   }
-// };
-
-// MergeView.prototype.paintBar = function (list) {
-//   this.$sortContainer.innerHTML = "";
-//   const maxNumber = Math.max.apply(null, list);
-
-//   for (const number of list) {
-//     const li = document.createElement("li");
-//     li.classList.add("sort-element");
-//     li.innerHTML = `
-// 			<div class="sort-bar" style="height:${(number / maxNumber) * 320}px"></div>
-// 			<span class="sort-number">${number}</span>
-// 			`;
-//     this.$sortContainer.appendChild(li);
-//   }
-// };
+MergeView.prototype.fillNumber = function (number, index) {
+  const position = this.$sortContainer.childNodes[index * 2 + 1];
+  position.innerHTML = `<div class="sort-merge"></div>
+  <span class="sort-number-merge">${number}</span>`;
+};
 
 export default MergeView;

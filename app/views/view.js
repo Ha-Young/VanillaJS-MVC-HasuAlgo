@@ -1,4 +1,4 @@
-import { Template } from "../template";
+import { Template } from "./template";
 import BubbleView from "./bubbleView";
 import MergeView from "./mergeView";
 

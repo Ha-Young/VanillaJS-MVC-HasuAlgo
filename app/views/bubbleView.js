@@ -80,36 +80,49 @@ BubbleView.prototype.render = function (viewCommand, parameter, ...args) {
 BubbleView.prototype.connectHandler = function (event, handler) {
   const self = this;
 
-  if (event === "addNumber") {
-    $on(self.$inputForm, "submit", function (event) {
-      event.preventDefault();
-      handler(self.$inputBox.value);
-      self.$inputBox.value = "";
-    });
-  } else if (event === "startSort") {
-    $on(self.$startButton, "click", function () {
-      if (!self.$sortContainer.childElementCount) {
-        return;
-      }
-      handler();
-    });
-  } else if (event === "shuffleNum") {
-    $on(self.$shuffleButton, "click", function () {
-      if (!self.$sortContainer.childElementCount) {
-        return;
-      }
-      handler();
-    });
-  } else if (event === "resetList") {
-    $on(self.$resetButton, "click", function () {
-      handler();
-    });
-  } else if (event === "setRandom") {
-    $on(self.$randomButton, "click", function () {
-      if (self.$sortContainer.childElementCount < 10) {
+  switch (event) {
+    case "addNumber":
+      $on(self.$inputForm, "submit", function (event) {
+        event.preventDefault();
+        handler(self.$inputBox.value);
+        self.$inputBox.value = "";
+      });
+      break;
+
+    case "startSort":
+      $on(self.$startButton, "click", function () {
+        if (!self.$sortContainer.childElementCount) {
+          return;
+        }
         handler();
-      }
-    });
+      });
+      break;
+
+    case "shuffleNum":
+      $on(self.$shuffleButton, "click", function () {
+        if (!self.$sortContainer.childElementCount) {
+          return;
+        }
+        handler();
+      });
+      break;
+
+    case "resetList":
+      $on(self.$resetButton, "click", function () {
+        handler();
+      });
+      break;
+
+    case "setRandom":
+      $on(self.$randomButton, "click", function () {
+        if (self.$sortContainer.childElementCount < 10) {
+          handler();
+        }
+      });
+      break;
+
+    default:
+      break;
   }
 };
 

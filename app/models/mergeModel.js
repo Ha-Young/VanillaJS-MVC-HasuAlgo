@@ -2,67 +2,42 @@ const MergeModel = function () {
   this._inputArray = [];
 };
 
-// MergeModel.prototype.addNumber = function (array, callback) {
-//   if (this._inputArray.length > 9) {
-//     return;
-//   }
+MergeModel.prototype.addNumber = function (number, callback) {
+  if (this._inputArray.length > 7) {
+    return;
+  }
 
-//   this._inputArray = this._inputArray.concat(array);
-//   callback(this._inputArray);
-// };
+  this._inputArray.push(number);
+  callback(number, this._inputArray.length - 1);
+};
 
-// MergeModel.prototype.startSort = function (
-//   startCompare,
-//   swapElement,
-//   finishCompare,
-//   finishSort
-// ) {
-//   const sortingArr = [...this._inputArray];
-//   let time = 0;
-//   for (let i = 0; i < sortingArr.length; i++) {
-//     for (let j = 0; j < sortingArr.length - i - 1; j++) {
-//       const lastIndex = sortingArr.length - i - 1;
-//       startCompare(j, ++time);
+MergeModel.prototype.startSort = function () {};
 
-//       if (sortingArr[j] > sortingArr[j + 1]) {
-//         let temp = sortingArr[j];
-//         sortingArr[j] = sortingArr[j + 1];
-//         sortingArr[j + 1] = temp;
+MergeModel.prototype.resetList = function (callback) {
+  this._inputArray = [];
+  callback();
+};
 
-//         swapElement(j, sortingArr[j], sortingArr[j + 1], ++time);
-//       }
+MergeModel.prototype.shuffleNum = function (callback) {
+  const shuffledArray = [...this._inputArray];
 
-//       finishCompare(j, lastIndex, ++time);
-//     }
-//   }
-//   finishSort(time);
-// };
+  for (let i = shuffledArray.length; i; i--) {
+    const j = Math.floor(Math.random() * i);
+    let temp = shuffledArray[i - 1];
+    shuffledArray[i - 1] = shuffledArray[j];
+    shuffledArray[j] = temp;
+  }
 
-// MergeModel.prototype.resetList = function (callback) {
-//   this._inputArray = [];
-//   callback();
-// };
+  this._inputArray = [...shuffledArray];
+  callback(shuffledArray);
+};
 
-// MergeModel.prototype.shuffleNum = function (callback) {
-//   const shuffledArray = [...this._inputArray];
+MergeModel.prototype.setRandom = function (callback) {
+  const newRandom = Math.floor(Math.random() * 50) + 1;
 
-//   for (let i = shuffledArray.length; i; i--) {
-//     const j = Math.floor(Math.random() * i);
-//     let temp = shuffledArray[i - 1];
-//     shuffledArray[i - 1] = shuffledArray[j];
-//     shuffledArray[j] = temp;
-//   }
+  this._inputArray.push(newRandom);
 
-//   this._inputArray = [...shuffledArray];
-//   callback(shuffledArray);
-// };
-
-// MergeModel.prototype.setRandom = function (callback) {
-//   const newRandom = Math.floor(Math.random() * 50) + 1;
-
-//   this._inputArray.push(newRandom);
-
-//   callback(this._inputArray);
-// };
+  callback(newRandom, this._inputArray.length - 1);
+};
 
 export default MergeModel;
