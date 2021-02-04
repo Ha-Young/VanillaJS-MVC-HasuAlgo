@@ -1,29 +1,19 @@
 function Model() {
-	const storage = {};
+	this.storage = {};
+	// get
 
-	this.makeNumber = function (list) {
-		return list.trim().split(',')
-			.map(elem => parseInt(elem, 10));
-	}
+	// find
 
-  this.checkValidation = function (list) {
-		checkValidation(list);
-	};
+	// remove
 
-	this.saveModel = function (type, list) {
-		storage[type] = {type, list};
-		return storage[type];
-	};
+	// update
+
+	// getCount
+
 }
 
-function checkValidation(list) {
-	if (!list.every(elem => !!elem === true)) {
-		throw Error('Insert Numbers...');
-	} else if (list.length < 5) {
-		throw Error('Need at least 5 numbers...');
-	} else if (list.length > 10) {
-		throw Error('Need at most 10 numbers...');
-	}
-}
+Model.prototype.saveModel = function (type, list) {
+	this.storage[type] = { type, list };
+};
 
 export default Model;
