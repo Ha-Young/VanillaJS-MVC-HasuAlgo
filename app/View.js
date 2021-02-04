@@ -89,11 +89,22 @@ View.prototype.paintSortItems = function (sortList) {
   }
 };
 
+View.prototype.splitArr = function (item) {
+  const left = this.$allItem.slice(2);
+}
+
+View.prototype.upLocation = function (...items) {
+  items.forEach(function (item) {
+    view.addClass(view.classList.moving, item);
+    item.style.transform = `translateY(${-30}px)`;
+  });
+}
+
 View.prototype.chageSortItemPosition = function (left, right) {
   const leftLocationX = left.getBoundingClientRect().x;
   const rightLocationX = right.getBoundingClientRect().x;
 
-  view.addClass(view.classList.moving, left, right);
+  this.addClass(view.classList.moving, left, right);
 
   left.style.transform = `translateX(${rightLocationX - leftLocationX}px)`;
   right.style.transform = `translateX(${leftLocationX - rightLocationX}px)`;

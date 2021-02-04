@@ -68,7 +68,10 @@ async function bubbleSort() {
   }
 }
 
-function mergeSort() {}
+function mergeSort() {
+  Model.giveSortList();
+  View.upLocation(...View.$allItem);
+}
 
 function resetSort(event) {
   View.$resetButton.removeEventListener("click",resetSort);
