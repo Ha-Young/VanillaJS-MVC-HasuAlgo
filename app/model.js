@@ -1,116 +1,192 @@
 export default function Model () {
-  this._storage = {};
-}
+  const _storage = {};
 
-Model.prototype.refineNums = function (nums) {
-  const inputtedNums = nums
-    .replace(/ /g, "")
-    .split(",")
-    .map((numString) => parseInt(numString, 10))
-    .filter((num) => num);
+  Model.prototype.refineNums = function (nums) {
+    const inputtedNums = nums
+      .replace(/ /g, "")
+      .split(",")
+      .map((numString) => parseInt(numString, 10))
+      .filter((num) => num);
 
-  if (inputtedNums.length < 5 || inputtedNums.length > 10) {
-    return {
-      isComplete: false,
-      message: "Please enter 5 to 10 numbers.",
-    };
-  }
+    if (inputtedNums.length < 5 || inputtedNums.length > 10) {
+      return {
+        isComplete: false,
+        message: "Please enter 5 to 10 numbers.",
+      };
+    }
 
-  if (!inputtedNums.every((num, i) => num < 1000)) {
-    return {
-      isComplete: false,
-      message: "Please input numbers less than 1000",
-    };
-  }
+    if (!inputtedNums.every((num, i) => num < 1000)) {
+      return {
+        isComplete: false,
+        message: "Please input numbers less than 1000",
+      };
+    }
 
-  const tempNums = Array.from(inputtedNums);
-  const sortedNumsIndex = [
-    ...new Set(
-      tempNums.sort(
-        (a, b) => a - b
+    const tempNums = Array.from(inputtedNums);
+    const sortedNumsIndex = [
+      ...new Set(
+        tempNums.sort(
+          (a, b) => a - b
+        )
       )
-    )
-  ].reduce((numsIndex, num, i) => {
-    numsIndex[num] = i;
-    return numsIndex;
-  }, {});
+    ].reduce((numsIndex, num, i) => {
+      numsIndex[num] = i;
+      return numsIndex;
+    }, {});
 
-  const max = Math.max(...inputtedNums);
+    const max = Math.max(...inputtedNums);
 
-  const resultValue = inputtedNums.map((num, i) => ({
-      num,
-      max,
-      sortedIndex: sortedNumsIndex[num],
-      percentage: Math.round(num / max * 100),
-    })
-  );
+    const resultValue = inputtedNums.map((num, i) => ({
+        num,
+        max,
+        sortedIndex: sortedNumsIndex[num],
+        percentage: Math.round(num / max * 100),
+      })
+    );
 
-  return {
-    isComplete: true,
-    value: resultValue
+    return {
+      isComplete: true,
+      value: resultValue
+    };
   };
-};
 
-Model.prototype.swapItems = function (arr, aIndex, bIndex) {
-  const result = Array.from(arr);
-  [result[aIndex], result[bIndex]] = [result[bIndex], result[aIndex]];
+  Model.prototype.swapItems = function (arr, aIndex, bIndex) {
+    [arr[aIndex], arr[bIndex]] = [arr[bIndex], arr[aIndex]];
+  };
 
-  return result;
-};
+  Model.prototype.makeBubbleSortSteps = function (inputtedNums) {
+    const sortSteps = [];
 
-Model.prototype.makeBubbleSortProcesses = function () {
-  const refinedNums = this.get("refinedNums").map((num) => num.num);
-  if (!refinedNums) {
-    throw new Error("There is no inputted Numbers.");
-  }
+    for (let i = 0; i < inputtedNums.length - 1; i++) {
+      for (let j = 0; j < inputtedNums.length - 1 - i; j++) {
 
-  const sortSteps = [];
+        const a = inputtedNums[j];
+        const b = inputtedNums[j + 1];
 
-  for (let i = 0; i < refinedNums.length - 1; i++) {
-    for (let j = 0; j < refinedNums.length - 1 - i; j++) {
+        if (a > b) {
+          const before = Array.from(inputtedNums);
+          const after = Array.from(inputtedNums);
+          this.swapItems(after, j, j + 1);
+          this.swapItems(inputtedNums, j, j + 1);
 
-      const a = refinedNums[j];
-      const b = refinedNums[j + 1];
-
-      if (a > b) {
-        const before = Array.from(refinedNums);
-        const after = Array.from(refinedNums);
-        [after[j], after[j + 1]] = [after[j + 1], after[j]];
-        [refinedNums[j], refinedNums[j + 1]] = [refinedNums[j + 1], refinedNums[j]];
-
-        sortSteps.push({
-          shouldSwap: true,
-          a: a,
-          b: b,
-          indexA: j,
-          indexB: j + 1,
-          beforeSwap: JSON.stringify(before),
-          afterSwap: JSON.stringify(after),
-        });
-      }
-      else {
-        sortSteps.push({
-          shouldSwap: false,
-          a: a,
-          b: b,
-          indexA: j,
-          indexB: j + 1,
-        });
+          sortSteps.push({
+            shouldSwap: true,
+            a: a,
+            b: b,
+            indexA: j,
+            indexB: j + 1,
+            beforeSwap: JSON.stringify(before),
+            afterSwap: JSON.stringify(after),
+          });
+        }
+        else {
+          sortSteps.push({
+            shouldSwap: false,
+            a: a,
+            b: b,
+            indexA: j,
+            indexB: j + 1,
+          });
+        }
       }
     }
+
+    return sortSteps;
+  };
+
+  Model.prototype.getIndexForQuickSort = function (inputtedNums, start, end) {
+    const sortSteps = [];
+    const pivotIndex = end;
+    const pivotValue = inputtedNums[pivotIndex];
+
+    let nextPivotIndex = start;
+    let currentIndex = start;
+
+    while (currentIndex < end) {
+      const shouldSwap = inputtedNums[currentIndex] < pivotValue;
+
+      const before = Array.from(inputtedNums);
+      const after = Array.from(inputtedNums);
+
+      if (shouldSwap) {
+        this.swapItems(inputtedNums, currentIndex, nextPivotIndex);
+        this.swapItems(after, currentIndex, nextPivotIndex);
+      }
+
+      sortSteps.push(
+        {
+          start,
+          end,
+          pivotValue,
+          pivotIndex,
+          nextPivotIndex,
+          currentIndex,
+          nextPivotIndexValue: inputtedNums[nextPivotIndex],
+          currentIndexValue: inputtedNums[currentIndex],
+          shouldSwap,
+          isEnd: false,
+          beforeSwap: JSON.stringify(before),
+          afterSwap: JSON.stringify(after),
+        }
+      )
+
+      if (shouldSwap) {
+        nextPivotIndex++;
+      }
+
+      currentIndex++;
+    }
+
+    const before = Array.from(inputtedNums);
+    const after = Array.from(inputtedNums);
+    this.swapItems(inputtedNums, pivotIndex, nextPivotIndex);
+    this.swapItems(after, pivotIndex, nextPivotIndex);
+    sortSteps.push(
+      {
+        start,
+        end,
+        pivotValue,
+        pivotIndex,
+        nextPivotIndex,
+        currentIndex,
+        nextPivotIndexValue: inputtedNums[nextPivotIndex],
+        currentIndexValue: inputtedNums[currentIndex],
+        shouldSwap: true,
+        isEnd: true,
+        beforeSwap: JSON.stringify(before),
+        afterSwap: JSON.stringify(after),
+      }
+    );
+
+    return [nextPivotIndex, sortSteps];
   }
 
-  return sortSteps;
-};
+//1,12,5,26, 7, 14,3,7,2
+  Model.prototype.makeQuickSortSteps = function (inputtedNums, start = 0, end = inputtedNums.length - 1) {
+    if (start >= end) {
+      return [];
+    }
 
-Model.prototype.set = function (key, value) {
-  if (typeof key !== "string") {
-    throw new Error("The key argument must be a string");
-  }
+    const [prevPivotIndex, sortSteps] = this.getIndexForQuickSort(inputtedNums, start, end);
 
-  Object.assign(this._storage, { [key]: value });
-};
+    const leftArrSteps = this.makeQuickSortSteps(inputtedNums, start, prevPivotIndex - 1);
+    const rightArrSteps = this.makeQuickSortSteps(inputtedNums, prevPivotIndex + 1, end);
 
-Model.prototype.get = function (key) {
-  return this._storage[key];
-};
+    let resultSteps = [];
+    resultSteps = resultSteps.concat(sortSteps, leftArrSteps, rightArrSteps);
+
+    return resultSteps;
+  };
+
+  Model.prototype.set = function (key, value) {
+    if (typeof key !== "string") {
+      throw new Error("The key argument must be a string");
+    }
+
+    Object.assign(_storage, { [key]: value });
+  };
+
+  Model.prototype.get = function (key) {
+    return _storage[key];
+  };
+}

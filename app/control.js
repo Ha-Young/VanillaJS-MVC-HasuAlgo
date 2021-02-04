@@ -2,60 +2,85 @@ export default function Control(model, view) {
   this.model = model;
   this.view = view;
 
-  this.view.activateEvent("$mainForm", "submit", this.submitHandler.bind(this));
-}
+  this.model.set("state", { isPlaying: false });
 
-Control.prototype.submitHandler = function (event) {
-  event.preventDefault();
+  Control.prototype.inputHandler = function (event) {
+    const state = this.model.get("state");
 
-  const MAIN_INPUT_ELEM_INDEX = 0;
-  const SORT_SELECT_ELEM_INDEX = 1;
-  const inputtedNumsString = event.target[MAIN_INPUT_ELEM_INDEX].value;
-  const sortType = event.target[SORT_SELECT_ELEM_INDEX].value;
+    if (state.isPlaying) {
+      this.view.updateMessage("Sorting is already in progress.");
+      return;
+    }
 
-  const refinedNums = this.model.refineNums(inputtedNumsString);
-  if (!refinedNums.isComplete) {
-    this.view.updateMessage(refinedNums.message);
-    return;
-  }
+    this.model.set("state", { isPlaying: true });
 
-  this.model.set("refinedNums", refinedNums.value);
-  this.model.set("sortType", sortType);
-  this.view.updateMessage("Sort Start!");
-  this.drawGraph();
-};
+    const [inputtedNumsString, sortType] = this.view.getInputtedValue();
 
-Control.prototype.drawGraph = function () {
-  this.view.clearElem("$viewPort");
-  this.view.clearElem("$highlighterBox");
+    const refinedNums = this.model.refineNums(inputtedNumsString);
+    if (!refinedNums.isComplete) {
+      this.view.updateMessage(refinedNums.message);
+      return;
+    }
 
-  const sortType = this.model.get("sortType");
+    this.model.set("refinedNums", refinedNums.value);
+    this.model.set("sortType", sortType);
+    this.view.updateMessage("Sort Start!");
+    this.drawGraph();
+  };
 
-  if (sortType === "bubble") {
+  Control.prototype.enterKeyDownHandler = function (event) {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    this.inputHandler();
+  };
+
+  this.view.activateEvent("$mainInputButton", "click", this.inputHandler.bind(this));
+  this.view.activateEvent("$mainInput", "keydown", this.enterKeyDownHandler.bind(this));
+
+  Control.prototype.drawGraph = function () {
+    this.view.clearElem("$viewPort");
+    this.view.clearElem("$highlighterBox");
+    
     const refinedNums = this.model.get("refinedNums");
-
     this.view.createBarElem(refinedNums);
-    this.view.createHighlighterElem(2);
+    
+    const sortType = this.model.get("sortType");
+    if (sortType === "bubble") {
+      this.view.createHighlighterElem(2);
+    } else if (sortType === "quick") {
+      this.view.createHighlighterElem(3);
+      this.view.createPivotHighlighterElem();
+    }
 
     const barPositions = this.view.getElemDomRect("$barBoxes");
     this.model.set("barPositions", barPositions);
 
     this.sortBars();
-  }
-};
+  };
 
-Control.prototype.sortBars = function () {
-  const sortType = this.model.get("sortType");
+  Control.prototype.sortBars = async function () {
+    const sortType = this.model.get("sortType");
+    const inputtedNums = this.model.get("refinedNums").map((refinedNum) => refinedNum.num);
 
-  const sortSteps = (() => {
+    const sortSteps = (() => {
+      if (sortType === "bubble") {
+        return this.model.makeBubbleSortSteps(inputtedNums);
+      } else if (sortType === "quick") {
+        return this.model.makeQuickSortSteps(inputtedNums);
+      }
+    })();
+
+    this.model.set("sortSteps", sortSteps);
+    const barPositions = this.model.get("barPositions");
+
     if (sortType === "bubble") {
-      return this.model.makeBubbleSortProcesses();
+      await this.view.progressBubbleSortAnimation(sortSteps, barPositions);
+    } else if (sortType === "quick") {
+      await this.view.progressQuickSortAnimation(sortSteps, barPositions);
     }
-  })();
 
-  this.model.set("sortSteps", sortSteps);
-  const barPositions = this.model.get("barPositions");
-
-  this.view.progressBubbleSortAnimation(sortSteps, barPositions);
-};
-
+    this.model.set("state", { isPlaying: false });
+  };
+}
