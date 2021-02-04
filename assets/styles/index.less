@@ -1,39 +1,58 @@
+@margin-top: 10px;
 body {
   display: flex;
   justify-content: center;
 }
 
 .container {
-  width: 70%;
-  height: 500px;
+  width: 800px;
+  height: 700px;
   border: 2px solid green;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
 
+.title {
+  margin-top: @margin-top;
+  font-size: 30px;
+  font-weight: 600;
 }
 
 .user-interface {
+  margin-top: @margin-top;
   display: flex;
   flex-direction: column;
 }
 
 .animation-container {
-  width: 400px;
-  height: 300px;
-  border: 1px solid orange;
+  width: 700px;
+  height: 500px;
+  border: 3px solid orange;
+  margin-top: @margin-top;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.animation-container > article {
+  width: 230px;
+  height: 230px;
+  border: 2px solid blue;
   opacity: 0;
   display: flex;
   align-items: flex-end;
+  justify-content: space-around;
   transition: all 1s;
 }
 
 .stick {
-  width: 20px;
+  width: 16px;
   margin-left: 5px;
   background-color: yellowgreen;
-  transition: all 1s;
+  transition: all 1000ms;
 }
 
 .hidden {
