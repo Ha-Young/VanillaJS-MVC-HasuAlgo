@@ -5,6 +5,12 @@ import numModel from '../Model/model';
 import insertionSort from './insertSort/insertSortController';
 import quickSort from './quickSort/quickSortController';
 
+// TODO : (선택...) 각 막대에 뛸때 땀 추가
+// TODO : 글씨체 바꾸기
+// TODO : css정리
+
+// TODO : DOM selector 들은 모두 전역변수로
+// TODO : DOM selector 변수 명 앞에 $표시 붙이고 나머지들 수정
 const submitButton = document.querySelector("#submitButton");
 const textBox = document.querySelector('#textBox');
 const contentDiv = document.querySelector('.content');
@@ -15,14 +21,12 @@ const shadowDiv = document.querySelector('.shadow');
 const shadowTitleSpan = document.querySelector('.shadowTitle');
 let numbersObjArray = [];
 
-//submit 버튼에 이벤트 심기
 submitButton.addEventListener('click', buttonClickEvent);
-
 async function buttonClickEvent () {
   const blank = " ";
   const comma = ",";
   numbersObjArray = [];
-  initGraphPannel();
+  graphPannelDiv.innerHTML = "";
   $errorMessageDiv.style.display = 'block';
 
   // err handling
@@ -69,6 +73,7 @@ async function buttonClickEvent () {
   $errorMessageDiv.innerHTML = '';
   $errorMessageDiv.style.display = 'none';
 
+  // TODO : view에 묶어놓기
   contentDiv.style.opacity = 0;
   shadowTitleSpan.style.innerText = '';
   await wait(1000);
@@ -89,7 +94,6 @@ async function buttonClickEvent () {
     const quickResult = await quickSort(numbersObjArray);
     finishMove(quickResult);
   }
-  console.log('process done');
 }
 
 function splitString (textBoxString, seperator) {
