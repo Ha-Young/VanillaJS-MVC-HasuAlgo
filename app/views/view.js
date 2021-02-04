@@ -28,9 +28,17 @@ View.prototype.clear = function(n) {
 };
 
 // bubble sort 전용 methods..
-View.prototype.swap = function(a, b) {
+View.prototype.swap = async function(a, b) {
   const $target = document.querySelector('.visual');
   const $boxs = document.querySelectorAll('.sort-box');
+
+  this.swapY(a, b);
+
+  await new Promise(resolve =>
+    setTimeout(() => {
+      resolve();
+    }, 1000)
+  );
 
   return new Promise(resolve => {
     const styleA = window.getComputedStyle($boxs[a]);
@@ -45,8 +53,8 @@ View.prototype.swap = function(a, b) {
     const BmatrixValues = transformB.match(/matrix.*\((.+)\)/)[1].split(', ')
     const Bx = BmatrixValues[4]
     
-    $boxs[a].style.transform = `matrix(1, 0, 0, 1, ${Bx}, -20)`;
-    $boxs[b].style.transform = `matrix(1, 0, 0, 1, ${Ax}, -20)`;
+    $boxs[a].style.transform = `matrix(1, 0, 0, 1, ${Ax}, 0)`;
+    $boxs[b].style.transform = `matrix(1, 0, 0, 1, ${Bx}, 0)`;
     
     window.requestAnimationFrame(function() {
       setTimeout(() => {
@@ -56,6 +64,25 @@ View.prototype.swap = function(a, b) {
     });
   });
 };
+
+View.prototype.swapY = function(a, b) {
+  const $boxs = document.querySelectorAll('.sort-box');
+
+    const styleA = window.getComputedStyle($boxs[a]);
+    const styleB = window.getComputedStyle($boxs[b]);
+    
+    const transformA = styleA.getPropertyValue('transform');
+    const transformB = styleB.getPropertyValue('transform');
+    
+    const AmatrixValues = transformA.match(/matrix.*\((.+)\)/)[1].split(', ')
+    const Ax = AmatrixValues[4]
+
+    const BmatrixValues = transformB.match(/matrix.*\((.+)\)/)[1].split(', ')
+    const Bx = BmatrixValues[4]
+    
+    $boxs[a].style.transform = `matrix(1, 0, 0, 1, ${Bx}, -20)`;
+    $boxs[b].style.transform = `matrix(1, 0, 0, 1, ${Ax}, -20)`;
+}
 
 View.prototype.paint = function(a, b, n) {
   const $boxs = document.querySelector('.sort-box');
