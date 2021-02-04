@@ -1,4 +1,4 @@
-import {beforeSorting, moveBar, moveBarNoWait, exchange} from '../../View/view';
+import {beforeSorting, moveBar, exchange} from '../../View/view';
 
 const pivotMovingUp = 0;
 const pivotMovingYDistance = 100;

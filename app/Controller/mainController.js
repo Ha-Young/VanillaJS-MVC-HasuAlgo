@@ -12,6 +12,7 @@ import initGraphPannel from '../View/initGraphPannel';
 import numModel from '../Model/model';
 
 import insertionSort from './insertSort/insertSortController';
+import quickSort from './quickSort/quickSortController';
 
 const submitButton = document.querySelector("#submitButton");
 const textBox = document.querySelector('#textBox');
@@ -107,9 +108,12 @@ async function buttonClickEvent () {
 
   // TODO : insert와 Quick을 구분해 시작하기
   // 우선 insert부터
-
-  await insertionSort(numbersObjArray);
-
+  if (mainTitle.innerText === 'Insertion Sort') {
+    await insertionSort(numbersObjArray);
+  } else {
+    await quickSort(numbersObjArray);
+  }
+  console.log('process done');
 }
 
 function splitString (textBoxString, seperator) {

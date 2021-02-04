@@ -73,24 +73,30 @@ export function beforeSorting (targetObj, cordinateY, timing, whichJump) {
   });
 }
 
-export function moveBar (targetObj, cordinateX, cordinateY) {
+export function moveBar (targetObj, cordinateX, cordinateY, isShrink = true) {
   return new Promise((resolve, reject) => {
     targetObj.cordinateY = cordinateY;
     const targetBar = document.querySelector(`#bar${targetObj.index}`);
     const targetBarInnderDiv = targetBar.childNodes[0];
     targetBar.focus();
     targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
-    if (cordinateY > 0) {
-      targetBarInnderDiv.style.height = '30px';
-    } else {
-      console.log('is come????', targetObj.height);
-      targetBarInnderDiv.style.height = `${targetObj.height}px`;
-      targetBarInnderDiv.style.backgroundColor = '#1b58b2';
+    if (isShrink) {
+      shirinkBar(targetObj, targetBarInnderDiv, cordinateY);
     }
+    targetBarInnderDiv.style.backgroundColor = '#1b58b2';
     setTimeout(() => {
       resolve();
     }, 1000);
   });
+}
+
+function shirinkBar (targetObj, targetBarInnderDiv, cordinateY) {
+  if (cordinateY > 0) {
+    targetBarInnderDiv.style.height = '30px';
+  } else {
+    targetBarInnderDiv.style.height = `${targetObj.height}px`;
+    
+  }
 }
 
 export function moveBarNoWait (targetId, cordinateX, cordinateY) {
@@ -123,7 +129,7 @@ export function exchange (pivotObj, anotherObj) {
       targetBar1.setAttribute('id', `bar${pivotObj.index}`);
       targetBar2.setAttribute('id', `bar${anotherObj.index}`);
       resolve();
-    }, 1000);
+    }, 5000);
   })
 }
 
