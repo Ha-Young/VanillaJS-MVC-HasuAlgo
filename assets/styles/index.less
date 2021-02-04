@@ -1,5 +1,9 @@
 html, body {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
 *, *:before, *:after {
@@ -7,12 +11,89 @@ html, body {
 }
 
 .content {
-  max-width: 500px;
-  margin: 100px auto;
+  position: relative;
+  margin: 0 auto;
   text-align: center;
+
+  // max-width: 100%;
+  // min-width: 50%;
+  width: 100vw;
+  height: 60vh;
+
+  background-color: yellow;
 }
 
-img {
-  width: 300px;
-  height: 400px;
+.title {
+  margin: 0;
+  padding: 0;
+}
+
+.sort-setting-wrap {
+  width: 100%;
+  height: 20%;
+  background-color: pink;
+}
+
+.instruction-message {
+  background-color: yellowgreen;
+}
+
+.sort-display-section {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  height: 90%;
+
+  background-color: aquamarine;
+
+
+}
+
+.sort-setting-nav {
+  width: 100%;
+  height: 30%;
+}
+
+
+.rectangle {
+  position: relative;
+  width: 4%;
+  height: 50%;
+  top: 0;
+  background-color: green;
+  border: 1px solid;
+  margin: 0;
+}
+
+
+/*color...*/
+
+.target-elements-color {
+  background-color: hotpink;
+}
+
+.moving-effect {
+  transition: transform 0.5s ease-in-out;
+  // transition: top 0.5s ease-in-out
+}
+
+.hidden {
+  display: none;
+}
+
+.sorted-element-color {
+  background-color: red;;
+}
+
+
+
+.paint-pivot {
+  background-color: hotpink;
+}
+
+.paint-target-element {
+  background-color: skyblue;
 }

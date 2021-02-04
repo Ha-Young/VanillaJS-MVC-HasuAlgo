@@ -6,11 +6,34 @@
   <title>바닐라코딩</title>
 </head>
 <body>
-  <div class="content">
-    <h1>Visualize Sorting Algorithms</h1>
-    <img src="./assets/images/chicken.jpg" />
-    <p>README.md를 읽어보고 과제를 시작하세요.</p>
-  </div>
+    <div class="content">
+      <h1 class="title">Visualize Sorting Algorithms</h1>
+
+      <nav class="sort-setting-nav">
+        <div class="sort-setting-wrap">
+
+          <select class="sort-selector">
+            <option value="bubble-sort" selected>Bubble sort</option>
+            <option value="quick-sort">Quick sort</option>
+          </select>
+
+          <input class="user-input" type="text" placeholder="Please type any 5-10 numbers between 0 to 50 with comma">
+          <input class="submit-button" type="button" value="SUBMIT">
+          <input class="start-button hidden" type="button" value="START">
+          <input class="reset-button hidden" type="button" value="RESET">
+          <p class="instruction-message">hi!</p>
+        </div>
+      </nav>
+
+      <section class="sort-display-section"></section>
+
+      <!-- <footer class="sort-controller hidden">
+        <input class="previous-button" type="button" value="PREVIOUS">
+        <input class="stop-button" type="button" value="STOP">
+        <input class="resume-button" type="button" value="RESUME">
+      </footer> -->
+    </div>
+
   <script src="./app/index.js"></script>
 </body>
 </html>
