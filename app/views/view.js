@@ -1,12 +1,12 @@
-export const View = function(view) {
+export const View = function(bubbleView) {
   this.$visualFrame = document.querySelector('.visual-frame');
   this.$visual = document.querySelector('.visual');
 
-  this.swap = view.swap;
-  this.swapUp = view.swapUp;
-  this.paintDoing = view.paintDoing;
-  this.removePaint = view.removePaint;
-  this.paintDone = view.paintDone;
+  this.swap = bubbleView.swap;
+  this.swapUp = bubbleView.swapUp;
+  this.paintDoing = bubbleView.paintDoing;
+  this.removePaint = bubbleView.removePaint;
+  this.paintDone = bubbleView.paintDone;
 }
 
 View.prototype.create = function(v, n) {

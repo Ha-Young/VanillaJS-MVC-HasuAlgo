@@ -1,4 +1,4 @@
-export const Controller = function(model, view, controller) {
+export const Controller = function(model, view, bubbleController) {
   this.$userInput = document.querySelector('.user-input');
   this.$start = document.querySelector('.start');
   this.$random = document.querySelector('.random');
@@ -7,7 +7,7 @@ export const Controller = function(model, view, controller) {
 
   this.model = model;
   this.view = view;
-  this.sort = controller.sort.bind(this);
+  this.sort = bubbleController.sort.bind(this);
 }
 
 Controller.prototype.create = function(e) {

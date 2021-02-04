@@ -9,8 +9,8 @@ import { BubbleController } from './controllers/bubbleController';
 const BubbleSort = function() {
   this.model = new Model();
   this.bubbleView = new BubbleView();
-  this.bubbleController = new BubbleController();
   this.view = new View(this.bubbleView);
+  this.bubbleController = new BubbleController();
   this.controller = new Controller(this.model, this.view, this.bubbleController); 
 }
 
