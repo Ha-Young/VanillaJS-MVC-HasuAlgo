@@ -9,7 +9,7 @@ export class Model {
     this.onDisplayNodeList(lists);
   }
 
-  addNewState(state) {
+  pushStates(state) {
     this.onUpdateState(state);
   }
 
@@ -28,18 +28,18 @@ export class Model {
   }
 
   addState(state) {
-    this.sortState.push(state);// 수정해줌 => =이었음
+    this.sortState.push(state);
   }
 
   bindNodeListDisplayed(callback) {
     this.onDisplayNodeList = callback;
   }
 
-  bindState(callback) {
-    this.onUpdateState = callback;
-  }
-
   bindSortType(callback) {
     this.onUpdateSortType = callback;
+  }
+
+  bindStates(callback) {
+    this.onUpdateStates = callback;
   }
 }

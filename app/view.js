@@ -22,17 +22,17 @@ export class View {
     const DEFAULT_HEIGHTS = 4.5;
 
     for (let i = 0; i < nodeLists.length; i++) {
-      const nodeChild = document.createElement('div'); // 이제 차일드 아니어도 됨
+      const newNode = document.createElement('div'); // 이제 차일드 아니어도 됨
       const nodeValue = document.createElement('div');
 
-      nodeChild.classList.add('content-field-node');
+      newNode.classList.add('content-field-node');
       nodeValue.classList.add('content-filed-node-value');
-      nodeChild.classList.add(nodeLists[i]);
-      nodeChild.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
-      nodeValue.textContent = `${nodeLists[i]}`
+      newNode.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
 
-      this.table.appendChild(nodeChild);
-      nodeChild.appendChild(nodeValue);
+      nodeValue.textContent = nodeLists[i];
+
+      this.table.appendChild(newNode);
+      newNode.appendChild(nodeValue);
     }
   }
 
@@ -50,13 +50,13 @@ export class View {
         return typeof item === 'number' && !isNaN(item);
       });
       const isRanged = listArray.every(item => item > 0 && item < 100);
-      
+
       if (listArray.length < 5 || listArray.length > 10) {
         // ui 작업
-        throw new Error('please enter number 5 to 10');
+        //throw new Error('please enter number 5 to 10');
       }
 
-      if (!isNumbers) { // nan
+      if (!isNumbers) {
         throw new Error('please enter only number');
       }
 
@@ -77,30 +77,34 @@ export class View {
     });
   }
 
-  render(args) {
-    const state = args.shift();
+  render = async (args) => {
+    await delay(1000);
 
+    const state = args.shift();
+    console.log(state);
     const viewCommands = { // 매개변수 이름, 받는 타입 다시 설정해주기
-      startSort: function() {
-        //onHighlightAllNodes();
+      startSort: async () => {
+        //await onHighlightAllNodes();
       },
-      onLighthNode: function(args) { //  네이밍 다시..
+      onLighthNode: (args) => { //  네이밍 다시..
         onHighlightNode(args[0]);
       },
-      swapNodes: function(args) {
+      swapNodes: (args) => {
+        console.log(args);
         swapNode(args[0], args[1]);
       },
-      offLightNode: function(args) {
+      offLightNode: (args) => {
         offHighlightNode(args[0], 'pink'); // 네이밍 다시
       },
-      checkSortedNode: function(args) {
+      checkSortedNode: (args) => {
         offHighlightNode(args[0], '#FCE2E6'); // 컬러 테마 다시 뽑아넣기
       },
-      finishAllSort: function() {
+      finishAllSort: () => {
+        console.log(24);
         onHighlightAllNodes();
       },
     };
 
-    viewCommands[state](args);
+    await viewCommands[state](args); // await
   }
 }

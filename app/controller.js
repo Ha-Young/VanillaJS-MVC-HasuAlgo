@@ -7,7 +7,8 @@ export class Controller {
     this.view.bindInputNode(this.handleAddList);
     this.model.bindNodeListDisplayed(this.onDisplayNodeList);
     this.view.bindStartSort(this.quickSort); // 아직 구현 전..
-    this.model.bindState(this.onUpdateState);
+    this.model.bindStates(this.onUpdateStates);
+    //this.model.bindState(this.onUpdateState);
   }
 
   handleAddList = nodeLists => { // 코드 스타일 통일
@@ -22,11 +23,13 @@ export class Controller {
     this.view.displayNodes(nodes);
   }
 
-  onUpdateState(state) {
-    this.view.render(state);
+  onUpdateStates = async (states) => {
+    for (let i = 0; i < states.length; i++) {
+      await this.view.render(states[i]);
+    }
   }
 
-  startSort(sortType) {
+  handleStartSort(sortType) {
     switch (sortType) {
       case 'bubbleSort': {
         this.bubbleSort();
@@ -73,57 +76,56 @@ export class Controller {
     this.onUpdateState(['finishAllSort']);
   }
 
-  quickSort = () => {
+  quickSort = async () => {
+    const partition = async (arr, left, right) => {
+      const middle = Math.floor((left + right) / 2);
+      const pivot = arr[middle];
+
+      while (left <= right) {
+        while (arr[left] < pivot) {
+          left++;
+        }
+
+        while (arr[right] > pivot) {
+          right--;
+        }
+
+        await delay(100);
+
+        if (left <= right) {
+          if (left !== right) {
+            console.log(arr[left], arr[right]);
+            swap(arr, left, right);
+            this.handleAddState(['swapNodes', left, right]);
+          }
+
+          left++;
+          right--;
+        }
+      }
+
+      return left;
+    };
+
     const recursiveQuickSort = async (arr, left, right) => {
-      this.handleAddState(['startSort'])
-      const mid = Math.floor((left + right) / 2);
-      let low = left;
-      let high = right;
-      
-      while (low <= high) {
-        while (arr[low] < arr[mid]) {
-          low++;
-        }
-        
-        while(arr[high] > arr[mid]) {
-          high--;
-        }
-        
-        if (low <= high) {
-          swap(arr, low, high);
+      const pivot = await partition(arr, left, right);
 
-          await delay(2000);
-          this.onUpdateState(['swapNodes', low, high]);
-          await delay(2000);
+      if (left < pivot - 1) {
+        await recursiveQuickSort(arr, left, pivot - 1)
+      }
 
-          low++;
-          high--;
-        }
+      if (right > pivot) {
+        await recursiveQuickSort(arr, pivot, right);
       }
-      
-      if (left < high) {
-        console.log('25');
-        console.log(arr[mid]);
-        console.log(arr);
-        //await delay(2000);
-        recursiveQuickSort(arr, left, high);
-        //await delay(2000);
-      }
-      
-      if (low < right) {
-        console.log('26');
-        console.log(arr[mid]);
-        console.log(arr);
-        //await delay(2000);
-        recursiveQuickSort(arr, low, right);
-        //await delay(2000);
-      }
-      this.handleAddState(['finishAllSort']);
+
+      console.log(arr);
       return arr;
-    }
+    };
 
-    recursiveQuickSort(this.model.lists, 0, this.model.lists.length - 1);
-    console.log(this.model.lists);
-    console.log('end');
+    this.handleAddState(['startSort']);
+    await recursiveQuickSort(this.model.lists, 0, this.model.lists.length - 1);
+    this.handleAddState(['finishAllSort']);
+
+    this.onUpdateStates(this.model.sortState);
   }
 }
