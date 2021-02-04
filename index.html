@@ -5,17 +5,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <title>Sorting Algorithms</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
 <body>
   <main class="main">
     <header class="header">
-      <h2><span class="font-header-1">Sorting</span><span class="font-header-2"> Algorithms</span> ();</h2>
-      <h3><span class="description-input">Please type number</span></h3>
-      <form class="form">
-        <input class="user-input-table">
-        <button class="user-input-btn" type="button">Go</button>
-      </form>
+      <div class="header-title">
+        <h2><span class="font-header-1">Sorting</span><span class="font-header-2"> Algorithms</span> ();</h2>
+        <h3><span class="description-input">Choose sort type and insert number</span></h3>
+        <button class="sort-type-btn bubble-btn">Bubble</button>
+        <button class="sort-type-btn quick-btn">Quick</button>
+        <button class="sort-type-btn merge-ben">Merge</button>
+      </div>
+      <div class="header-form">
+        <form class="form">
+          <div class="error-msg-table"></div>
+          <input class="user-input-table" placeholder="maximum 10 number">
+          <button class="user-input-btn" type="button">Go</button>
+        </form>
+      </div>
     </header>
     <article class="article">
     </article>

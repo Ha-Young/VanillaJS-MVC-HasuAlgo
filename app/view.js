@@ -2,10 +2,9 @@ import { transform } from "lodash";
 import MYAPP from "./myapp";
 
 export default class View {
-  renderGraphs(userInputData, id) {
+  renderGraphs(userInputData, sortedGraphs) {
     const graphTable = MYAPP.table.graph;
     graphTable.innerHTML = null;
-    console.log("id is", id);
 
     for (let i = 0; i < userInputData.length; i++) {
       const graphPercent = userInputData[i];
@@ -14,20 +13,28 @@ export default class View {
       $graph.style.width = "10%";
       $graph.style.height = `${graphPercent}%`;
       $graph.dataset.id = userInputData[i];
-      if (userInputData[i] === id) {
-        console.log("is that?????");
-        console.log(userInputData[i], id);
-        $graph.classList.add("sorted-graph");
+      $graph.textContent = `${graphPercent}`;
+
+      if (sortedGraphs) {
+        for (const sortedValue of sortedGraphs) {
+          if (userInputData[i] === sortedValue) {
+            $graph.classList.add("sorted-graph");
+          }
+        }
       }
       graphTable.appendChild($graph);
-
-      //if (id === )
     }
   }
 
   clearAllColor(graphs) {
     for (let i = 0; i < graphs.children.length; i++) {
       graphs.children[i].classList.remove("current-graph");
+    }
+  }
+
+  renderAllColor(graphs) {
+    for (let i = 0; i < graphs.children.length; i++) {
+      graphs.children[i].classList.add("sorted-graph");
     }
   }
 
@@ -41,9 +48,9 @@ export default class View {
     });
   }
 
-  renderSortedGraphColor(id) {
+  renderFirstGraph(graphs) {
     return new Promise((resolve) => {
-      console.log(id);
+      graphs[0].classList.add("sorted-graph");
       setTimeout(() => {
         resolve();
       }, 2000);
@@ -70,6 +77,28 @@ export default class View {
       setTimeout(() => {
         resolve();
       }, 1000);
+    });
+  }
+
+  changeButtonState(selectedType) {
+    if (selectedType === 'Bubble') {
+      MYAPP.button.bubbleSort.style.backgroundColor = '#7FCDCE';
+      MYAPP.button.bubbleSort.style.width = "80px";
+    }
+
+    if (selectedType === 'Quick') {
+      MYAPP.button.quickSort.style.backgroundColor = '#7FCDCE';
+      MYAPP.button.quickSort.style.width = "80px";
+    }
+  }
+
+  renderPivotColor(pivot) {
+    console.log(pivot);
+    return new Promise(resolve => {
+      pivot.classList.add("pivot-graph");
+      setTimeout(() => {
+        resolve();
+      }, 2000);
     });
   }
 }

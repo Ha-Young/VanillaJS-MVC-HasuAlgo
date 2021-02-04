@@ -3,6 +3,7 @@ import MYAPP from './myapp';
 export default class Model {
   constructor() {
     const _userInputData = [];
+    const _sortedGraphStorage = [];
 
     this.set = string => {
       const splitted = string.split(',');
@@ -15,8 +16,6 @@ export default class Model {
     this.get = () => _userInputData;
 
     this.getValue = index => _userInputData[index];
-
-    this.pop = () => _userInputData.pop();
 
     this.checkInput = () => {
       if (!_userInputData.every(elem => elem < 100)) {
@@ -32,6 +31,12 @@ export default class Model {
       _userInputData[leftValue] = _userInputData[RightValue];
       _userInputData[RightValue] = temps;
     };
+
+    this.setSortedGraph = sortedGraph => {
+      _sortedGraphStorage.push(sortedGraph);
+    };
+
+    this.getSortedGraph = () => _sortedGraphStorage;
   }
 
   swap(left, right) {

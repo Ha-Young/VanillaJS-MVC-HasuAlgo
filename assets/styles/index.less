@@ -38,31 +38,73 @@ body {
 
 .header {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-start;
   height: 30%;
   color: white;
+}
+
+.header-title {
+  height: 100%;
+  width: 50%;
+}
+
+.header-form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  width: 50%;
 }
 
 .footer {
   height: 5%;
 }
 
-.user-input-table {
-  background: transparent;
-}
-
 .font-header-1 {
+  font-size: 30px;
   color: #fbeeb4;
 }
 
 .font-header-2 {
+  font-size: 30px;
   color: #D8A8ED;
 }
 
 .description-input {
+  
   color: #7FCDCE;
+}
+
+.sort-type-btn {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bolder;
+  width: 60px;
+  height: 60px;
+
+  background-color: #fbeeb4;
+  color: 353535;
+  border-radius: 15px;
+  cursor: pointer;
+
+  transition: 0.5s;
+}
+
+.sort-type-btn:hover {
+  width: 60px;
+  background-color: #7FCDCE;
+}
+
+.sort-type-btn:focus, .sort-type-btn:active {
+  outline:none;
+  width: 80px;
+  background-color: #7FCDCE;
 }
 
 h2 {
@@ -70,16 +112,44 @@ h2 {
   margin-bottom: 0;
 }
 
-.user-input-btn { 
+.form {
+  display: flex;
+  flex-direction: row;
+}
+
+.user-input-table {
+  background: transparent;
+  outline: none;
+  flex-grow: 2;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  width: 200px;
+
+  margin-bottom: 20px;
+  text-align: center;
   color: white;
 }
 
+.user-input-btn { 
+  border-radius: 5px;
+  background: transparent;
+  color: white;
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+
 .graph-item {
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #fbeeb4;
   border-radius: 5px;
   width: 10%;
   height: 50%;
+
+  font-weight: bolder;
+  color: aliceblue;
 }
 
 .current-graph {
@@ -88,5 +158,9 @@ h2 {
 
 .sorted-graph {
   background-color: #D8A8ED;
+}
+
+.pivot-graph {
+  background-color: lightsalmon;
 }
 
