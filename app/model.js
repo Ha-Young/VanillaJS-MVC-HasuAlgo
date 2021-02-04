@@ -22,6 +22,7 @@ Model.prototype.handleSort = function (type, ...callback)
   if (type === "bubbleSort") {
     this.bubbleSort(this._storage, ...callback);
   } else if (type === "quickSort") {
+    this.quickSort(this._storage, ...callback);
   } 
 }
 
@@ -59,15 +60,40 @@ Model.prototype.bubbleSort = async function (storage,
   }
  
   setTimeout(showForm, time * 500);
-
 }
 
-Model.prototype.quickSort = function (type, ...callback) {
+Model.prototype.quickSort = function (storage, ...callback) {
     
+  const doPartialQuickSort = function (startIndex, endIndex) {
+    if (startIndex >= endIndex) {
+      return;
+    }
+
+    const pivot = storage[startIndex];
+    const pivotIndex = startIndex;
+    let left = startIndex + 1;
+    let right = endIndex;
+
+    while (left <= right) {
+      while (left <= endIndex && storage[left] <= pivot) {
+        left++;
+      }
+      
+      while (right > startIndex && storage[right] >= pivot) {
+        right--;
+      }
+
+      if (left < right) {
+        [storage[left], storage[right]] = [storage[right], storage[left]];
+      }
+    }
+
+    [storage[pivotIndex], storage[right]] = [storage[right], storage[pivotIndex]];
+    doPartialQuickSort(startIndex, right - 1);
+    doPartialQuickSort(right + 1, endIndex);
+  }
+
+  doPartialQuickSort(0, storage.length - 1);
 }
 
 export {Model};
-
-
-
-
