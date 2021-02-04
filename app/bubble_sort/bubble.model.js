@@ -2,14 +2,12 @@ export default function BubbleModel() {
   this._storage = null;
 }
 
-BubbleModel.prototype.get = function () {
+BubbleModel.prototype.getData = function () {
   return this._storage;
 };
 
-BubbleModel.prototype.set = function (dataSet) {
+BubbleModel.prototype.setData = function (dataSet) {
   this._storage = dataSet;
-
-  return this;
 };
 
 BubbleModel.prototype.swap = function (left, right) {

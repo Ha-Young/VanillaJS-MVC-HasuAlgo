@@ -22,7 +22,7 @@ export default function QuickController() {
       return;
     }
 
-    this.QuickModel.set(checked.dataSet);
+    this.QuickModel.setData(checked.dataSet);
     this.QuickView.paintGraphs(this.QuickModel.get());
   }
 
@@ -34,13 +34,46 @@ export default function QuickController() {
 
     this.QuickView.paintMessage("정렬 중", " 🏃 🏃 🏃 ");
     this.QuickView.holdInput(true);
-    this.startSort();
+    this.startSort(this.QuickModel.get());
   }
 }
 
 QuickController.prototype = Object.create(BubbleController.prototype);
 QuickController.prototype.construcor = QuickController;
 
-QuickController.prototype.startSort = function () {
+QuickController.prototype.startSort = async function (dataSet) {
+  const DELAY = 700;
+  const status = {
+    loopCount: 0,
+    isSwaped: false
+  };
 
+  const showTarget = (index) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.QuickView.showTarget(index, index + 1);
+        resolve();
+      }, DELAY);
+    });
+  };
+
+  const viewSwap = (index) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.QuickView.swap(index, index + 1);
+        resolve();
+      }, DELAY);
+    })
+  };
+
+  const paintGraphs = (dataSet, loopCount, fixedIndices) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.QuickView.paintGraphs(dataSet, loopCount, fixedIndices);
+        resolve();
+      }, DELAY);
+    });
+  }
+
+  
 };

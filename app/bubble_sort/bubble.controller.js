@@ -21,19 +21,19 @@ export default function BubbleController() {
       return;
     }
 
-    this.BubbleModel.set(checked.dataSet);
-    this.BubbleView.paintGraphs(this.BubbleModel.get());
+    this.BubbleModel.setData(checked.dataSet);
+    this.BubbleView.paintGraphs(this.BubbleModel.getData());
   }
 
   function handleClick() {
-    if (!this.BubbleModel.get()) {
+    if (!this.BubbleModel.getData()) {
       this.BubbleView.paintMessage("데이터를 입력하세요.", " 🤲 ", 3000);
       return;
     }
 
     this.BubbleView.paintMessage("정렬 중", " 🏃 🏃 🏃 ");
     this.BubbleView.holdInput(true);
-    this.startSort();
+    this.startSort(this.BubbleModel.getData());
   }
 }
 
@@ -60,13 +60,9 @@ BubbleController.prototype.checkInput = function (inputValue) {
     : {isNumber: true, dataSet: result};
 };
 
-BubbleController.prototype.startSort = async function () {
-  const DELAY = 700;
-  const dataSet = this.BubbleModel.get();
-  const status = {
-    loopCount: 0,
-    isSwaped: false
-  };
+BubbleController.prototype.startSort = async function (dataSet) {
+  const DELAY = 100;
+  const status = { index: 0, isSwaped: false , fixedIndices: [] };
 
   const showTarget = (index) => {
     return new Promise((resolve, reject) => {
@@ -86,45 +82,47 @@ BubbleController.prototype.startSort = async function () {
     })
   };
 
-  const paintGraphs = (dataSet, loopCount) => {
+  const paintGraphs = (dataSet, fixedIndices) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        this.BubbleView.paintGraphs(dataSet, loopCount);
+        this.BubbleView.paintGraphs(dataSet, fixedIndices);
         resolve();
       }, DELAY);
     });
-  }
+  };
 
-  for (let index = 0; index < dataSet.length - status.loopCount; index++){
-    const isEndOfLoop = index === (dataSet.length - status.loopCount - 2);
+  while (true) {
+    await showTarget(status.index);
 
-    await showTarget(index);
+    if (dataSet[status.index] > dataSet[status.index + 1]) {
+      await viewSwap(status.index);
 
-    if (dataSet[index] > dataSet[index + 1]) {
-      await viewSwap(index);
-
-      this.BubbleModel.swap(index, index + 1);
+      this.BubbleModel.swap(status.index, status.index + 1);
       status.isSwaped = true;
     }
 
-    await paintGraphs(dataSet, status.loopCount);
+    await paintGraphs(dataSet, status.fixedIndices);
+
+    status.index++;
+
+    const isEndOfLoop = status.index === (dataSet.length - status.fixedIndices.length - 2);
 
     if (isEndOfLoop) {
-      status.loopCount++;
+      status.fixedIndices.push(status.index);
 
-      const isSortedAll = (dataSet.length - status.loopCount) === 1;
+      const isSortedAll = (dataSet.length - status.fixedIndices.length) === 1;
 
       if (!status.isSwaped || isSortedAll) {
-        await paintGraphs(dataSet, dataSet.length);
+        await paintGraphs(dataSet, "done");
 
         this.BubbleView.holdInput(false);
         this.BubbleView.paintMessage("정렬 끄읕", " 🤸‍♀️ ", 3000);
         return;
       }
 
-      await paintGraphs(dataSet, status.loopCount);
+      await paintGraphs(dataSet, status.fixedIndices);
 
-      index = -1;
+      status.index = 0;
       status.isSwaped = false;
     }
   }

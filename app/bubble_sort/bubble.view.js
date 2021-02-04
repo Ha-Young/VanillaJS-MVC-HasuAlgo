@@ -21,10 +21,8 @@ BubbleView.prototype.paintMessage = function (message, motion, delay) {
   }
 };
 
-BubbleView.prototype.paintGraphs = function (data, loopCount) {
-  const maxSize = data.reduce((acc, item) => {
-  return acc > item ? acc : item
-  });
+BubbleView.prototype.paintGraphs = function (data, fixedIndices = []) {
+  const maxSize = Math.max(...data);
 
   this.$graphs.textContent = "";
 
@@ -34,7 +32,7 @@ BubbleView.prototype.paintGraphs = function (data, loopCount) {
     newBlock.dataset.index = index + 1;
     newBlock.style.setProperty("height", (item / maxSize) * 90 + "%");
 
-    if (index >= data.length - loopCount) {
+    if (fixedIndices.includes(index) || fixedIndices === "done") {
       newBlock.classList.add("fixed");
     }
 
@@ -60,7 +58,6 @@ BubbleView.prototype.holdInput = function (sholdHold) {
     this.$excuteButton.disabled = true;
     this.$excuteButton.classList.add("fixed");
     this.$menuOptions.classList.add("fixed");
-    // this.$graphContainer.classList.add("fixed");
   } else {
     this.$inputBox.disabled = false;
     this.$bubbleRadio.disabled = false;
@@ -68,6 +65,5 @@ BubbleView.prototype.holdInput = function (sholdHold) {
     this.$excuteButton.disabled = false;
     this.$excuteButton.classList.remove("fixed");
     this.$menuOptions.classList.remove("fixed");
-    // this.$graphContainer.classList.remove("fixed");
   }
 };
