@@ -27,8 +27,7 @@ function View() {
   this.$sortButton = document.querySelector(".sort-button");
   this.$resetButton = document.querySelector(".reset-button");
 
-  this.transitionDelayTime = 410;
-  this.raise
+  this.transitionDelayTime = 700;
 }
 
 View.prototype.changeTemplate = function (target, template) {
@@ -55,6 +54,10 @@ View.prototype.clearInputContent = function () {
   this.$sortInput.value = "";
 };
 
+View.prototype.setTextContent = function (target, content) {
+  target.textContent = content;
+};
+
 View.prototype.setItemsHeight = function (targetNumber, height) {
   targetNumber.style.height = `${height}px`;
 };
@@ -76,26 +79,24 @@ View.prototype.getCoordinate = function (item, key) {
   return item.getBoundingClientRect()[key];
 };
 
-View.prototype.translateX = function (target, translateValue) {
-  target.style.transform = `translateX(${translateValue}px)`;
-};
-
-View.prototype.translateY = function (target, translateValue) {
-  target.style.transform = `translateY(${translateValue}px)`;
+View.prototype.translate = function (target, x, y = 0) {
+  target.style.transform = `translate(${x}px, ${y}px)`;
 };
 
 View.prototype.setDelayForTransition = function () {
+  const self = this;
+
   return new Promise(function (resolve) {
     setTimeout(function () {
       resolve();
-    }, view.transitionDelayTime);
+    }, self.transitionDelayTime);
   });
 };
 
 View.prototype.createSortItems = function (inputNumber) {
   const $item = document.createElement("li");
 
-  $item.textContent = inputNumber;
+  this.setTextContent($item, inputNumber);
   this.addClass(this.classList.sortItem, $item);
 
   if (this.$sortOptionSelector.value === this.sortOptions.bubble) {
@@ -115,19 +116,20 @@ View.prototype.paintSortItems = function (sortList) {
 };
 
 View.prototype.chageSortItemPosition = async function (left, right) {
+  const self = this;
   const itemList = [left, right];
 
-  const leftCoordinateX = this.getCoordinate(left, "x");
-  const rightCoordinateX = this.getCoordinate(right, "x");
+  const leftCoordinateX = self.getCoordinate(left, "x");
+  const rightCoordinateX = self.getCoordinate(right, "x");
 
   itemList.forEach(function (item) {
-    view.addClass(view.classList.moving, item);
+    self.addClass(self.classList.moving, item);
   });
 
-  this.translateX(left, rightCoordinateX - leftCoordinateX);
-  this.translateX(right, leftCoordinateX - rightCoordinateX);
+  self.translate(left, rightCoordinateX - leftCoordinateX);
+  self.translate(right, leftCoordinateX - rightCoordinateX);
 
-  await this.setDelayForTransition();
+  await self.setDelayForTransition();
 };
 
-export const view = new View();
+export default View;

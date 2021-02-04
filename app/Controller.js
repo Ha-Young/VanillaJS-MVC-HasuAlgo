@@ -1,93 +1,140 @@
-import { initialTemplate } from './templates/initialTemplate';
-import {model as Model} from './Model';
-import {view as View} from './View.js';
+import { initialTemplate } from "./templates/initialTemplate";
 
-function handleSubmit(event) {
-  event.preventDefault();
+function Controller(model, view) {
+  const self = this;
+  self.model = model;
+  self.view = view;
 
-  Model.getSortList(View.$sortInput.value);
+  self.bindHandleSubmit = self.handleSubmit.bind(self);
+  self.bindHandlePrintNumbers = self.handlePrintNumbers.bind(self);
+  self.bindHandlePaintSortItems = self.handlePaintSortItems.bind(self);
+  self.bindHandleStartSort = self.handleStartSort.bind(self);
+  self.bindResetSort = self.resetSort.bind(this);
+
+  self.view.$sortForm.addEventListener("submit", self.bindHandleSubmit);
+  self.view.$sortForm.addEventListener("submit", self.bindHandlePrintNumbers);
+  self.view.$paintButton.addEventListener("click", self.bindHandlePaintSortItems);
 }
 
-function handlePrintNumbers(event) {
+Controller.prototype.handleSubmit = function (event) {
   event.preventDefault();
 
-  View.printNumbers(Model.sortList);
-  View.$resetButton.addEventListener("click", resetSort);
-}
+  this.model.getSortList(this.view.$sortInput.value);
+};
 
-function handlePaintSortItems() {
-  if (Model.sortList.length < 5) {
+Controller.prototype.handlePrintNumbers = function (event) {
+  event.preventDefault();
+
+  this.view.printNumbers(this.model.sortList);
+  this.view.$resetButton.addEventListener("click", this.bindResetSort);
+};
+
+Controller.prototype.handlePaintSortItems = function () {
+  if (this.model.sortList.length < 5) {
     throw new Error("min 5 number!!");
   }
 
-  View.paintSortItems(Model.sortList);
-  View.makeSelectorDisable();
+  this.view.paintSortItems(this.model.sortList);
+  this.view.makeSelectorDisable();
 
-  View.$sortButton.addEventListener("click", handleStartSort);
+  this.view.$sortButton.addEventListener("click", this.bindHandleStartSort);
 
-  View.$sortForm.removeEventListener("submit", handleSubmit);
-  View.$paintButton.removeEventListener("click", handlePaintSortItems);
+  this.view.$sortForm.removeEventListener("submit", this.bindHandleSubmit);
+  this.view.$paintButton.removeEventListener("click", this.bindHandlePaintSortItems);
   //sorting이 끝난 후 다시 addEvent해준다.
-}
+};
 
-function handleStartSort() {
-  if (Model.sortList.length < 5) {
+Controller.prototype.handleStartSort = function () {
+  if (this.model.sortList.length < 5) {
     throw new Error("min 5 number!!");
   }
 
-  View.$sortButton.removeEventListener("click", handleStartSort);
+  this.view.$sortButton.removeEventListener("click", this.bindHandleStartSort);
 
-  if (View.$sortOptionSelector.value === View.sortOptions.bubble) {
-    bubbleSort();
+  if (this.view.$sortOptionSelector.value === this.view.sortOptions.bubble) {
+    this.bubbleSort.call(this);
   } else {
-    mergeSort();
+    this.mergeSort.call(this);
   }
-}
+};
 
-async function ascendingSortTwoItem(left, right, index) {
+Controller.prototype.ascendingSortTwoItem = async function(left, right, index) {
+  const self = this;
   const itemList  = [left, right];
 
   if (Number(left.textContent) > Number(right.textContent)) {
-    await View.chageSortItemPosition(left, right);
+    await this.view.chageSortItemPosition(left, right);
 
-    Model.changeListOrder(index, index + 1);
+    this.model.changeListOrder(index, index + 1);
 
     itemList.forEach(function (item) {
-      View.removeClass(View.classList.moving, item);
+      self.view.removeClass(self.view.classList.moving, item);
     });
     itemList.forEach(function (item) {
-      View.resetTranslate(item);
-    })
-    View.swapDomPosition(left, right);
+      self.view.resetTranslate(item);
+    });
+
+    this.view.swapDomPosition(left, right);
   }
 
   return Promise.resolve();
-}
+};
 
-async function bubbleSort() {
-  const item = View.$allItem;
+Controller.prototype.bubbleSort = async function () {
+  const item = this.view.$allItem;
 
   for (let i = 0; i < item.length - 1; i++) {
     for (let j = 0; j < item.length - 1; j++) {
-      await ascendingSortTwoItem(item[j], item[j + 1], j);
+      await this.ascendingSortTwoItem.call(this, item[j], item[j + 1], j);
     }
   }
-}
+};
 
-function mergeSort() {
-}
+Controller.prototype.resetSort = function (event) {
+  this.view.$resetButton.removeEventListener("click", this.bindResetSort);
 
-function resetSort(event) {
-  View.$resetButton.removeEventListener("click",resetSort);
+  this.view.changeTemplate(this.view.viewBox, initialTemplate());
+};
 
-  View.changeTemplate(View.viewBox, initialTemplate());
-  Controller();
-}
+Controller.prototype.mergeSort = async function () {
+  const self = this;
+  const items = Array.from(this.view.$allItem);
 
-function Controller() {
-  View.$sortForm.addEventListener("submit", handleSubmit);
-  View.$sortForm.addEventListener("submit", handlePrintNumbers);
-  View.$paintButton.addEventListener("click", handlePaintSortItems);
-}
+  items.forEach(function (item) {
+    self.view.addClass(self.view.classList.moving, item);
+  });
+debugger
+  await this.splitItems.call(this, items, 10, 0);
+};
+
+Controller.prototype.splitItems = async function (items, x, y) {
+  if (items.length === 1) {
+    return;
+  }
+
+  const xCount = 10 + x;
+  const yCount = y - 80;
+
+  const self = this;
+  const left = items.slice(0, items.length / 2);
+  const right = items.slice(items.length / 2);
+
+  await self.view.setDelayForTransition();
+
+  left.forEach(function (item) {
+    self.view.translate(item, -xCount, yCount);
+  });
+
+  await self.view.setDelayForTransition();
+
+  right.forEach(function (item) {
+    self.view.translate(item, xCount, yCount);
+  });
+
+  await self.view.setDelayForTransition();
+
+  await this.splitItems.call(this, left, xCount, yCount);
+  await this.splitItems.call(this, right, xCount, yCount);
+};
 
 export default Controller;
