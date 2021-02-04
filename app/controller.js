@@ -17,40 +17,42 @@ async function sortStorage(storeageArray) {
 
         await moveGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
         await changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
+
       }
     }
     await changeColor(view.$graphNodes[storeageArray.length - i - 1]);
 
-    model.changeCount = 0;
   }
 }
 
-function moveGraph(leftNode, rightNode) {
+function moveGraph(leftNode, rightNode) {  
+  leftNode.classList.add('transition');
+  rightNode.classList.add('transition');
+  leftNode.style.transform = 'translateX(60px)';
+  rightNode.style.transform = 'translateX(-60px)';
+  
   return new Promise((resolve) => {
     setTimeout(() => {
-      const leftPositionValue = Number(leftNode.getAttribute('position')) + 100;
-      const rightPositionValue = Number(rightNode.getAttribute('position')) - 100;
-
-      leftNode.style.transform = `translateX(${leftPositionValue}px)`;
-      rightNode.style.transform = `translateX(${rightPositionValue}px)`;
-
-      leftNode.setAttribute('position', leftPositionValue);
-      rightNode.setAttribute('position', rightPositionValue);
-
       resolve();
-    }, 1000);
+    }, 1500);
   });
 }
 
 function changeGraph(leftNode, rightNode) {
+  leftNode.classList.remove('transition');
+  rightNode.classList.remove('transition');
+
   return new Promise((resolve) => {
     setTimeout(() => {
+      leftNode.style.transform = null;
+      rightNode.style.transform = null;
 
-      view.$contentContainer.insertBefore(rightNode, leftNode);
-
-      resolve();
-    }, 1000);
-  });
+      setTimeout(() => {
+        view.$contentContainer.insertBefore(rightNode, leftNode);
+        resolve();
+      }, 2.5);
+    });
+  }, 2000);
 }
 
 function changeColor(node) {
@@ -70,7 +72,6 @@ function handleKeyUp(event) {
   if (view.$typed.value === '') return;
 
   if (event.key === 'Enter') { 
-    model.count++;
     view.addChildNode(view.$typed.value, model.count);
     model.storage.push(Number(view.$typed.value));
     this.value = null;

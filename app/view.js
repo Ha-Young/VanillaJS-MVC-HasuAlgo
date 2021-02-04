@@ -12,8 +12,7 @@ function View () {
   this.$restartButton.addEventListener('click', handleRestartClick);
 }
 
-View.prototype.addChildNode = function (value, count) {
-  const moveValue = count * 100;
+View.prototype.addChildNode = function (value) {
 
   this.$child = document.createElement('div');
 
@@ -26,8 +25,6 @@ View.prototype.addChildNode = function (value, count) {
   this.$child.classList.add('graphNode');
   this.$child.style.height = value + 5 + 'px';
   this.$contentContainer.appendChild(this.$child);
-  this.$child.setAttribute('position', `${moveValue}`);
-  this.$child.style.transform = `translateX(${moveValue}px)`;
   this.$graphNodes = document.getElementsByClassName('graphNode');
   this.$graphNodes.innerHTML = value;
 }
