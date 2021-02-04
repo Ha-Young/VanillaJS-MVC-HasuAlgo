@@ -114,7 +114,7 @@ View.prototype.paintSortItems = function (sortList) {
   }
 };
 
-View.prototype.chageSortItemPosition = function (left, right) {
+View.prototype.chageSortItemPosition = async function (left, right) {
   const itemList = [left, right];
 
   const leftCoordinateX = this.getCoordinate(left, "x");
@@ -127,7 +127,7 @@ View.prototype.chageSortItemPosition = function (left, right) {
   this.translateX(left, rightCoordinateX - leftCoordinateX);
   this.translateX(right, leftCoordinateX - rightCoordinateX);
 
-  this.setDelayForTransition();
+  await this.setDelayForTransition();
 };
 
 export const view = new View();
