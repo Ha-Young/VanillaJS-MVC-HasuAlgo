@@ -27,14 +27,15 @@ function View() {
   this.$sortButton = document.querySelector(".sort-button");
   this.$resetButton = document.querySelector(".reset-button");
 
-  this.translateDelayTime = 450;
+  this.transitionDelayTime = 410;
+  this.raise
 }
 
 View.prototype.changeTemplate = function (target, template) {
   target.innerHTML = template;
 }
 
-View.prototype.insertElement = function (parent, child) {
+View.prototype.insertChildElement = function (parent, child) {
   parent.appendChild(child);
 };
 
@@ -42,16 +43,12 @@ View.prototype.makeSelectorDisable = function () {
   this.$sortOptionSelector.disabled = true;
 };
 
-View.prototype.addClass = function (className, ...items) {
-  items.forEach(function (item) {
-    item.classList.add(className);
-  });
+View.prototype.addClass = function (className, item) {
+  item.classList.add(className);
 };
 
-View.prototype.removeClass = function (className, ...items) {
-  items.forEach(function (item) {
-    item.classList.remove(className);
-  });
+View.prototype.removeClass = function (className, item) {
+  item.classList.remove(className);
 };
 
 View.prototype.clearInputContent = function () {
@@ -65,6 +62,34 @@ View.prototype.setItemsHeight = function (targetNumber, height) {
 View.prototype.printNumbers = function (sortList) {
   this.$sortQueue.textContent = sortList.join(", ");
   this.clearInputContent();
+};
+
+View.prototype.resetTranslate = function (item) {
+  item.style.transform = null;
+};
+
+View.prototype.swapDomPosition = function (left, right) {
+  this.$sortItemList.insertBefore(right, left);
+};
+
+View.prototype.getCoordinate = function (item, key) {
+  return item.getBoundingClientRect()[key];
+};
+
+View.prototype.translateX = function (target, translateValue) {
+  target.style.transform = `translateX(${translateValue}px)`;
+};
+
+View.prototype.translateY = function (target, translateValue) {
+  target.style.transform = `translateY(${translateValue}px)`;
+};
+
+View.prototype.setDelayForTransition = function () {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      resolve();
+    }, view.transitionDelayTime);
+  });
 };
 
 View.prototype.createSortItems = function (inputNumber) {
@@ -85,45 +110,24 @@ View.prototype.paintSortItems = function (sortList) {
     const item = this.createSortItems(sortList[i]);
 
     this.addClass(this.classList[this.$sortOptionSelector.value], item);
-    this.insertElement(this.$sortItemList, item);
+    this.insertChildElement(this.$sortItemList, item);
   }
 };
 
-View.prototype.splitArr = function (item) {
-  const left = this.$allItem.slice(2);
-}
-
-View.prototype.upLocation = function (...items) {
-  items.forEach(function (item) {
-    view.addClass(view.classList.moving, item);
-    item.style.transform = `translateY(${-30}px)`;
-  });
-}
-
 View.prototype.chageSortItemPosition = function (left, right) {
-  const leftLocationX = left.getBoundingClientRect().x;
-  const rightLocationX = right.getBoundingClientRect().x;
+  const itemList = [left, right];
 
-  this.addClass(view.classList.moving, left, right);
+  const leftCoordinateX = this.getCoordinate(left, "x");
+  const rightCoordinateX = this.getCoordinate(right, "x");
 
-  left.style.transform = `translateX(${rightLocationX - leftLocationX}px)`;
-  right.style.transform = `translateX(${leftLocationX - rightLocationX}px)`;
-
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve();
-    }, view.translateDelayTime);
+  itemList.forEach(function (item) {
+    view.addClass(view.classList.moving, item);
   });
-};
 
-View.prototype.resetTranslate = function (...items) {
-  items.forEach(function (item) {
-    item.style.transform = null;
-  });
-};
+  this.translateX(left, rightCoordinateX - leftCoordinateX);
+  this.translateX(right, leftCoordinateX - rightCoordinateX);
 
-View.prototype.swapDomPosition = function (left, right) {
-  this.$sortItemList.insertBefore(right, left);
+  this.setDelayForTransition();
 };
 
 export const view = new View();

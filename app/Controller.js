@@ -45,13 +45,19 @@ function handleStartSort() {
 }
 
 async function ascendingSortTwoItem(left, right, index) {
+  const itemList  = [left, right];
+
   if (Number(left.textContent) > Number(right.textContent)) {
     await View.chageSortItemPosition(left, right);
 
     Model.changeListOrder(index, index + 1);
 
-    View.removeClass(View.classList.moving, left, right);
-    View.resetTranslate(left, right);
+    itemList.forEach(function (item) {
+      View.removeClass(View.classList.moving, item);
+    });
+    itemList.forEach(function (item) {
+      View.resetTranslate(item);
+    })
     View.swapDomPosition(left, right);
   }
 
@@ -69,8 +75,6 @@ async function bubbleSort() {
 }
 
 function mergeSort() {
-  Model.giveSortList();
-  View.upLocation(...View.$allItem);
 }
 
 function resetSort(event) {
