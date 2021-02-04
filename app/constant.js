@@ -22,6 +22,11 @@ export const ITEM = {
   MAX_HEIGHT: 230,
 }
 
+export const ARROW = {
+  DISTANCE_XPOS: 10,
+  DISTANCE_YPOS: 30,
+}
+
 export const THEME = {
   LIGHT_THEME: 'light',
   DARK_THEME: 'dark',

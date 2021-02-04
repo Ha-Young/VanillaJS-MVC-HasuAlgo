@@ -19,6 +19,16 @@ export function qsAll(selector, scope) {
 }
 
 /**
+ * getElementsByClassName wrapper
+ *
+ * @param {string} className Selector to query
+ * @param {Element} [scope] Optional scope element for the selector
+ */
+export function getByClassName(selector, scope) {
+	return (scope || document).getElementsByClassName(selector);
+}
+
+/**
  * addEventListener wrapper
  *
  * @param {Element|Window} target Target Element
@@ -74,9 +84,10 @@ export const escapeForHTML = s => s.replace(/[&<]/g, c => c === '&' ? '&amp;' : 
  * @param {number} leftIndex child node left index
  * @param {number} rightIndex child node right index
  */
-export function changeDOMOrder(parentNode, leftIndex, rightIndex) {
-	const childNodes = parentNode.children;
-	const childNum = childNodes.length;
+export function changeDOMOrder(parentNode, childNodes, leftIndex, rightIndex) {
+  if (childNodes[0].parentNode !== parentNode) throw new Error("parentNode must be childNodes's parent");
+ 
+  const childNum = childNodes.length;
 	const leftElement = childNodes[leftIndex];
 	const rightElement = childNodes[rightIndex];
 	if (childNum < 2) {
