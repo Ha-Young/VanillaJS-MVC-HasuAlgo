@@ -1,7 +1,7 @@
 function Controller(Model, View) {
   this.model = Model;
   this.view = View;
-  this.INTERVAL = 1;
+  this.INTERVAL = 3;
 }
 
 Controller.prototype.submitHandler = function () {
@@ -26,6 +26,11 @@ Controller.prototype.asyncRecursion = async function (sortType, list) {
     const hasChanged = await this.bubbleSort(list);
     if (hasChanged) await this.asyncRecursion(sortType, list);
   }
+
+  if (sortType === 'quick') {
+    const hasChanged = await this.quickSort(0, list.length - 1, list);
+    if (hasChanged) await this.asyncRecursion(list);
+  }
 }
 
 Controller.prototype.bubbleSort = async function (list) {
@@ -36,16 +41,46 @@ Controller.prototype.bubbleSort = async function (list) {
     if (BUBBLE_SORT) {
       hasChanged = await this.moveSlowly(i - 1, i, list);
       [list[i - 1], list[i]] = [list[i], list[i - 1]];
+      this.view.render(list);
     }
   }
   return hasChanged;
 }
 
+Controller.prototype.quickSort = async function (start, end, list) {
+  const part2 = await this.partition(start, end, list);
+
+  if (start < part2 - 1) {
+    this.quickSort(start, part2 - 1, list);
+  }
+  if (part2 < end) {
+    this.quickSort(part2, end, list);
+  }
+}
+
+Controller.prototype.partition = async function (start, end, list) {
+  const index = Math.floor((start + end) / 2);
+  const pivot = list[index];
+
+  while (start < end) {
+    while (list[start] < pivot) start++; // async + css
+    while (list[end] > pivot) end--; // async + css
+
+    if (start <= end) {
+      await this.moveSlowly(start, end, list);
+      [list[start], list[end]] = [list[end], list[start]];
+      this.view.render(list);
+      start++;
+      end--;
+    }
+    return start;
+  }
+}
+
 Controller.prototype.moveSlowly = async function (bigNumber, smallNumber, list) {
   await makeInterval(this.INTERVAL);
-  await this.view.bubbleChange(bigNumber, smallNumber, this.INTERVAL);
+  await this.view.moveElement(bigNumber, smallNumber, this.INTERVAL);
   this.view.render(list);
-  return await this.view.changeDom(bigNumber, smallNumber);
 }
 
 function makeNumber(inputString) {

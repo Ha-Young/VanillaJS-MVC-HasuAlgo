@@ -4,16 +4,11 @@ function View() {
 }
 
 View.prototype.render = function(list) {
+  console.log(list);
   this.makeTemplate(list);
-  // css변경
-  // less.modifyVars({
-  //   '@bgColor': 'blue',
-  //   '@textColor': 'red'
-  // });
 }
 
 View.prototype.makeTemplate = function (list) {
-  console.log(list);
   this.$resultView.innerHTML = '';
   list.forEach(elem => {
     const div = document.createElement('div');
@@ -27,7 +22,7 @@ View.prototype.getCurrentItems = function () {
   return Array.prototype.slice.call(this.$resultView.childNodes);
 }
 
-View.prototype.bubbleChange = function (left, right, interval) {
+View.prototype.moveElement = function (left, right, interval) {
   return new Promise(resolve => {
     const $items = this.getCurrentItems();
     const differ = $items[right].getBoundingClientRect().x - $items[left].getBoundingClientRect().x;
@@ -40,23 +35,6 @@ View.prototype.bubbleChange = function (left, right, interval) {
       resolve();
     }, interval * 1000);
   })
-}
-
-View.prototype.changeDom = function (bigNumber, smallNumber) {
-  return new Promise(resolve => {
-    const $items = this.getCurrentItems();
-    this.$resultView.insertBefore($items[smallNumber], $items[bigNumber]);
-    setTimeout(function () {
-      resolve(true);
-    }, 0);
-  });
-}
-
-function resetTransform() {
-  document.body.addEventListener('transitionend', () => {
-    $items[left].style.transform = 'none';
-    $items[right].style.transform = 'none';
-  });
 }
 
 export default View;
