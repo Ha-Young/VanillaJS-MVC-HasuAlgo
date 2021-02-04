@@ -229,4 +229,9 @@ export default class View {
 
     this.makeArrowDOM(arrowKinds, arrowXPos, arrowYPos);
   }
+
+  removeArrow(arrowKinds) {
+    const arrowElement = qs(`.${arrowKinds}-arrow`);
+    arrowElement.parentNode.removeChild(arrowElement);
+  }
 }
