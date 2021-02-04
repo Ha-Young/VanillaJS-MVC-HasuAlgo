@@ -23,6 +23,7 @@ export default function Controller (model, view) {
 
     this.hasSortingFinished = false;
     this.hasReset = false;
+    this.basicTransitionPercentage = 100;
 
 }
 
@@ -117,62 +118,75 @@ Controller.prototype.confirmSelectedSortOption = function() {
     }
 }
 
-Controller.prototype.quickSort = async function(arr, left = 0, right = arr.length-1) {
+Controller.prototype.quickSort = async function(sortingElements, left = 0, right = sortingElements.length-1) {
     if (left < right) {
-        let pivot = this.placingPivotIdx(arr, left, right)
+        let pivot = this.placingPivotIdx(sortingElements, left, right)
 
-        console.log('pivot', pivot)
-        console.log('arr', arr)
-
-        this.quickSort(arr, left, pivot-1);
-        this.quickSort(arr, pivot+1, right);
+        this.quickSort(sortingElements, left, pivot-1);
+        this.quickSort(sortingElements, pivot+1, right);
     }
 }
 
 
-Controller.prototype.placingPivotIdx = async function(children, left, right) {
-    const sortingElements = children;
+Controller.prototype.placingPivotIdx = async function(elements, start, end) {
+    const sortingElements = elements;
 
-    let mentalNote = left;
-    let pivot = sortingElements[left];
+    let pivotIdx = start;
+    let pivot = sortingElements[start];
+    let difference;
+    let transitionPercentage;
 
-    function swap (arr, mentalNote, i) {
-        return [arr[mentalNote], arr[i]] = [arr[i], arr[mentalNote]];
-    }
-
+    // function swap (arr, pivotIdx, i) {
+    //   return [arr[pivotIdx], arr[i]] = [arr[i], arr[pivotIdx]];
+    // }
 
     this.view.paintPivot(pivot);
-
     await this.view.delay(1000);
 
-    for (let i = left + 1; i <= right; i++) {
+    for (let i = start + 1; i <= end; i++) {
         this.view.paintTargetElement(sortingElements[i]);
-
         await this.view.delay(1000);
 
         if (Number(pivot.getAttribute('data-value')) > Number(sortingElements[i].getAttribute('data-value'))) {
-
-            mentalNote++;
-            console.log(mentalNote);
-
-            swap(sortingElements, mentalNote, i);
-
-            //this.view.swapDisplayElements(sortingElements[i], sortingElements[mentalNote])
-
-            // sortingElements[pivot].classList.add('moving-effect')
-            // sortingElements[i].classList.add('moving-effect')
-
-            // sortingElements[pivot].style.transform = 'translate(150%)'
-            // sortingElements[i].style.transform = 'translate(-150%)'
-
-
+            this.view.paintSmallerElement(sortingElements[i])
             await this.view.delay(1000)
 
+            pivotIdx++;
+
+            difference = i - pivotIdx;
+            transitionPercentage = difference * this.basicTransitionPercentage
+
+            this.view.swapDisplayElements(sortingElements[pivotIdx], sortingElements[i], transitionPercentage)
+            await this.view.delay(1000)
+
+            // swap(sortingElements, pivotIdx, i);
+
+            this.view.swapSortingElements(sortingElements[pivotIdx], sortingElements[i])
+            await this.view.delay(1000)
+
+            //this.view.swapDisplayElements(sortingElements[i], sortingElements[mentalNote])
+            // sortingElements[pivot].classList.add('moving-effect')
+            // sortingElements[i].classList.add('moving-effect')
+            // sortingElements[pivot].style.transform = 'translate(150%)'
+            // sortingElements[i].style.transform = 'translate(-150%)'
+            // await this.view.delay(1000)
         }
 
-        swap(sortingElements, mentalNote, left)
-        return mentalNote
+        this.view.paintBiggerElement(sortingElements[i]);
+        await this.view.delay(1000)
     }
+
+    difference = pivotIdx - start;
+    transitionPercentage = difference * this.basicTransitionPercentage
+
+    this.view.swapDisplayElements(sortingElements[start], sortingElements[pivotIdx], transitionPercentage)
+    await this.view.delay(1000)
+
+    this.view.swapSortingElements(sortingElements[start], sortingElements[pivotIdx])
+    await this.view.delay(1000)
+    // swap(sortingElements, mentalNote, left)
+
+    return pivotIdx;
 }
 
 

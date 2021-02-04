@@ -10,3 +10,5 @@ Model.prototype.getUserInput = function() {
 Model.prototype.setUserInput = function(givenUserInput) {
     this.userInput = givenUserInput;
 }
+
+// get dom element info?? -> div info

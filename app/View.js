@@ -13,7 +13,7 @@ View.prototype.createRectangles = function(userInputData) {
         $rectangleDiv.dataset.value = input;
         $rectangleDiv.dataset.idx = idx;
         $rectangleDiv.textContent = input;
-        $rectangleDiv.style.height = `${8 * input}px`;
+        $rectangleDiv.style.height = `${12 * input}px`;
 
         this.$sortDisplaySection.appendChild($rectangleDiv)
     })
@@ -35,12 +35,12 @@ View.prototype.delay = function (delayTime) {
     })
 }
 
-View.prototype.swapDisplayElements = function(firstDiv, secondDiv) {
+View.prototype.swapDisplayElements = function(firstDiv, secondDiv, transitionPercentage = 100) {
     firstDiv.classList.add('moving-effect')
     secondDiv.classList.add('moving-effect')
 
-    firstDiv.style.transform = 'translate(80%)'
-    secondDiv.style.transform = 'translate(-80%)'
+    firstDiv.style.transform = `translate(${transitionPercentage}%)`
+    secondDiv.style.transform = `translate(-${transitionPercentage}%)`
 }
 
 View.prototype.swapSortingElements = function(firstDiv, secondDiv) {
@@ -73,6 +73,13 @@ View.prototype.paintTargetElement = function(targetElement) {
     targetElement.classList.add('paint-target-element')
 }
 
+View.prototype.paintBiggerElement = function(biggerElement)  {
+    biggerElement.classList.add('paint-bigger-element')
+}
+
+View.prototype.paintSmallerElement = function(smallerElement)  {
+    smallerElement.classList.add('paint-smaller-element')
+}
 
 
 
