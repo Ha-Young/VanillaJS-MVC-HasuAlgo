@@ -85,11 +85,11 @@ export default class Model {
    *
    */
   getSortItemList(sortList) {
-    let xPos = ITEM.FIRST_X_POS - (ITEM.DISTANCE_POS / 2) * (sortList.length - 1);
+    let xPos = ITEM.FIRST_X_POS - (ITEM.DISTANCE_X_POS / 2) * (sortList.length - 1);
 
     const sortItemList = sortList.map((value) => {
       const sortItem = this.createSortItem(value, xPos);
-      xPos += ITEM.DISTANCE_POS;
+      xPos += ITEM.DISTANCE_X_POS;
       return sortItem;
     });
 

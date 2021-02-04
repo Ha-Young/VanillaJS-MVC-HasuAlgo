@@ -12,7 +12,7 @@ export default class Controller {
 		this.model = model;
 		this.view = view;
 		this.isReadySort = false;
-		this.delayTimeOnChange = 1000;
+		this.delayTimeOnChange = 500;
 
 		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
 		view.bindOnClickSetBtn(this.setInitNumsView.bind(this));
@@ -118,7 +118,11 @@ export default class Controller {
 
 	viewItemResetStatus(index) {
 		this.view.setSortItemStatusClear(index);
-	}
+  }
+
+  viewItemResetStatusAll(ignoreIndexs) {
+    this.view.setSortItemStatusClaerAll(ignoreIndexs);
+  }
 
 	viewItemCheckColor(index) {
 		this.view.setSortItemStatusCheck(index);
@@ -146,6 +150,10 @@ export default class Controller {
 
   viewRemoveArrow(arrowKinds) {
     this.view.removeArrow(arrowKinds);
+  }
+
+  viewArrowMoveNext(arrowKinds) {
+    this.view.moveArrowNext(arrowKinds, this.delayTimeOnChange);
   }
 
 	async insertionSort(sortList) {
@@ -203,8 +211,12 @@ export default class Controller {
 	}
 
 	async quickSort(sortList) {
+    const sortedItemIndex = [];
+
 		return await (async function _quickSort (sortList, leftIndex = 0, rightIndex = sortList.length - 1) {
 			if (leftIndex >= rightIndex) {
+        sortedItemIndex.push(leftIndex);
+
         await this.doUIWork([this.viewItemSortedColor.bind(this, leftIndex)]);
 				return;
       }
@@ -216,6 +228,8 @@ export default class Controller {
 
       const [partitionIndex, changePivotIndex] = await divide.call(this, sortList, leftIndex, rightIndex, pivotIndex);
 
+      sortedItemIndex.push(changePivotIndex);
+
       await this.doUIWork(
         [
           this.viewItemSortedColor.bind(this, changePivotIndex),
@@ -223,15 +237,15 @@ export default class Controller {
           this.viewRemoveArrow.bind(this, 'right'),
         ]);
 
+      await this.doUIWork([this.viewItemResetStatusAll.bind(this, sortedItemIndex)]);
+
 			await _quickSort.call(this, sortList, leftIndex, partitionIndex - 1);
 			await _quickSort.call(this, sortList, partitionIndex, rightIndex);
 
 			async function divide (sortList, leftIndex, rightIndex, pivotIndex) {
-        console.log(`sortList: ${sortList}, leftIndex: ${leftIndex}, pivotIndex: ${pivotIndex}, rightIndex: ${rightIndex}`);
-
         const pivot = sortList[pivotIndex];
 
-        this.doUIWork(
+        await this.doUIWork(
           [
             this.viewArrow.bind(this, leftIndex, 'left'),
             this.viewArrow.bind(this, rightIndex, 'right'),
@@ -244,15 +258,17 @@ export default class Controller {
 					while (sortList[leftIndex] < pivot) {
 
             if (leftIndex !== pivotIndex) {
-              // await this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
+              this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
             }
+            await this.doUIWork([this.viewArrowMoveNext.bind(this, 'left')]);
 						leftIndex++;
           }
 
 					while (sortList[rightIndex] > pivot) {
             if (rightIndex !== pivotIndex) {
-              // await this.doUIWork([this.viewItemLarge.bind(this, rightIndex)]);
+              this.doUIWork([this.viewItemLarge.bind(this, rightIndex)]);
             }
+            await this.doUIWork([this.viewArrowMoveNext.bind(this, 'right')]);
 						rightIndex--;
           }
 
