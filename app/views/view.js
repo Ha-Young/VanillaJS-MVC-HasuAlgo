@@ -38,9 +38,15 @@ View.prototype.swap = function(a, b) {
     
     const transformA = styleA.getPropertyValue('transform');
     const transformB = styleB.getPropertyValue('transform');
+    
+    const AmatrixValues = transformA.match(/matrix.*\((.+)\)/)[1].split(', ')
+    const Ax = AmatrixValues[4]
 
-    $boxs[a].style.transform = transformB;
-    $boxs[b].style.transform = transformA;
+    const BmatrixValues = transformB.match(/matrix.*\((.+)\)/)[1].split(', ')
+    const Bx = BmatrixValues[4]
+    
+    $boxs[a].style.transform = `matrix(1, 0, 0, 1, ${Bx}, -20)`;
+    $boxs[b].style.transform = `matrix(1, 0, 0, 1, ${Ax}, -20)`;
     
     window.requestAnimationFrame(function() {
       setTimeout(() => {

@@ -91,7 +91,6 @@ Controller.prototype.random = function() {
     this.model.create(randomNumber);
     this.view.create(randomNumber, this.model.size());
   }
-  console.log(this.model.get())
 };
 
 // start를 하면 new로 생성한 controller에 prototype으로 bubbleSort 메서드를 아래와 같이 추가해주면 실행 가능한가?
