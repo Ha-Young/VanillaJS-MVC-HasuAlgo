@@ -12,7 +12,7 @@ export default class Controller {
 		this.model = model;
 		this.view = view;
 		this.isReadySort = false;
-		this.delayTimeOnChange = 1000;
+		this.delayTimeOnChange = 500;
 
 		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
 		view.bindOnClickSetBtn(this.setInitNumsView.bind(this));
@@ -24,20 +24,19 @@ export default class Controller {
 		try {
 			const sortList = this.model.initDatas(inputData);
 			this.setNumsView(sortList);
-			this.isReadySort = true;
+      this.isReadySort = true;
+
+      if (this.model.currentSortKinds === 'quick') {
+        this.view.addArrowDefSVG();
+      }
 		} catch(error) {
 			window.alert(error);
 		}
 	}
 
-	setNumsView(sortList, delay = 0) {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				const sortItemList = this.model.getSortItemList(sortList);
-				this.view.showSortItems(sortItemList);
-				resolve();
-			}, delay);
-		});
+	setNumsView(sortList) {
+    const sortItemList = this.model.getSortItemList(sortList);
+    this.view.showSortItems(sortItemList);
 	}
 
 	setSortKinds(sortKinds) {
@@ -50,12 +49,26 @@ export default class Controller {
 	}
 
 	swapOnRealList(sortList, aIndex, bIndex) {
-		const sortedList = [...sortList];
-		const temp = sortedList[aIndex];
-		sortedList[aIndex] = sortedList[bIndex];
-		sortedList[bIndex] = temp;
-		return sortedList;
-	}
+		const temp = sortList[aIndex];
+		sortList[aIndex] = sortList[bIndex];
+		sortList[bIndex] = temp;
+  }
+
+  getPivotIndex(leftIndex, rightIndex, pivotKinds) {
+    let pivotIndex = leftIndex;
+    switch (pivotKinds) {
+      case 'first':
+        pivotIndex = leftIndex;
+        break;
+      case 'end':
+        pivotIndex = rightIndex;
+        break;
+      case 'mid':
+        pivotIndex = Math.floor((leftIndex + rightIndex) / 2);
+    }
+
+    return pivotIndex;
+  }
 
 	startSort() {
 		if (this.isReadySort) {
@@ -80,7 +93,7 @@ export default class Controller {
 		sortedListPromise.then((sortedList) => {
 			console.log('sort 완료!');
 			console.log(sortedList);
-		})
+		});
 	}
 
 	doUIWork(uiWorkFunctions) {
@@ -99,12 +112,12 @@ export default class Controller {
 		this.view.setSortItemStatusSorted(index, this.delayTimeOnChange);
 	}
 
-	viewItemSelection(index) {
-		this.view.setSortItemStatusSelected(index, this.delayTimeOnChange);
+	viewItemSelect(index, isMoveDown) {
+		this.view.setSortItemStatusSelected(index, isMoveDown, this.delayTimeOnChange);
 	}
 
 	viewItemResetStatus(index) {
-		this.view.clearSortItemColor(index);
+		this.view.setSortItemStatusClear(index);
 	}
 
 	viewItemCheckColor(index) {
@@ -113,14 +126,34 @@ export default class Controller {
 
 	viewItemChange(fromIndex, toIndex) {
 		this.view.changeSortItem(fromIndex, toIndex, this.delayTimeOnChange);
-	}
+  }
+
+  viewItemPivotColor(index) {
+    this.view.setSortItemStatusPivot(index);
+  }
+
+  viewItemSmall(index) {
+    this.view.setSortItemStatusSmall(index);
+  }
+
+  viewItemLarge(index) {
+    this.view.setSortItemStatusLarge(index);
+  }
+
+  viewLeftArrow(index) {
+    this.view.setArrow(index, 'left');
+  }
+
+  viewRightArrow(index) {
+    this.view.setArrow(index, 'right');
+  }
 
 	async insertionSort(sortList) {
 		await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
 
 		for (let i = 1; i < sortList.length; i++) {
 			let keyIndex = i;
-			await this.doUIWork([this.viewItemSelection.bind(this, keyIndex)]);
+			await this.doUIWork([this.viewItemSelect.bind(this, keyIndex, true)]);
 
 			let checkIndex = keyIndex - 1;
 
@@ -129,7 +162,7 @@ export default class Controller {
 			while (checkIndex >= 0) {
 
 				if (sortList[checkIndex] > sortList[keyIndex]) {
-					sortList = this.swapOnRealList(sortList, checkIndex, keyIndex);
+					this.swapOnRealList(sortList, checkIndex, keyIndex);
 
 					await this.doUIWork([this.viewItemChange.bind(this, checkIndex, keyIndex)]);
 
@@ -153,7 +186,7 @@ export default class Controller {
 							this.viewItemSortedColor.bind(this, keyIndex + 1),
 							this.viewItemCheckColor.bind(this, checkIndex),
 						]
-					);
+          );
 
 				} else {
 					await this.doUIWork(
@@ -170,43 +203,76 @@ export default class Controller {
 	}
 
 	async quickSort(sortList) {
-		return await (async function _quickSort (array, left = 0, right = array.length - 1) {
-      console.log('_quickSort this', this);
-			if (left >= right) {
+		return await (async function _quickSort (sortList, leftIndex = 0, rightIndex = sortList.length - 1) {
+			if (leftIndex >= rightIndex) {
+        await this.doUIWork([this.viewItemSortedColor.bind(this, leftIndex)]);
 				return;
       }
 
-			const mid = Math.floor((left + right) / 2);
-			const pivot = array[mid];
-			const partition = await divide.call(this, array, left, right, pivot);
-			_quickSort.call(this, array, left, partition - 1);
-			_quickSort.call(this, array, partition, right);
-      console.log('array in quick sort', array);
+			const pivotIndex = this.getPivotIndex(leftIndex, rightIndex, 'mid');
+      // const pivot = sortList[midIndex];
 
-			async function divide (array, left, right, pivot) {
-        console.log(`array: ${array}, left: ${array[left]}, pivot: ${pivot}, right: ${array[right]}`);
-        console.log('divide this', this);
-				while (left <= right) {
-					while (array[left] < pivot) {
-						left++;
+      await this.doUIWork([this.viewItemPivotColor.bind(this, pivotIndex)]);
+
+      const [partitionIndex, changePivotIndex] = await divide.call(this, sortList, leftIndex, rightIndex, pivotIndex);
+
+      await this.doUIWork([this.viewItemSortedColor.bind(this, changePivotIndex)]);
+
+			await _quickSort.call(this, sortList, leftIndex, partitionIndex - 1);
+			await _quickSort.call(this, sortList, partitionIndex, rightIndex);
+
+			async function divide (sortList, leftIndex, rightIndex, pivotIndex) {
+        console.log(`sortList: ${sortList}, leftIndex: ${leftIndex}, pivotIndex: ${pivotIndex}, rightIndex: ${rightIndex}`);
+
+        const pivot = sortList[pivotIndex];
+
+        // this.doUIWork([this.viewLeftArrow.bind(this, leftIndex)]);
+        // this.doUIWork([this.viewRightArrow.bind(this, rightIndex)]);
+
+				while (leftIndex <= rightIndex) {
+
+          // await this.doUIWork([this.viewItemSelect.bind(this, leftIndex)]);
+
+					while (sortList[leftIndex] < pivot) {
+
+            if (leftIndex !== pivotIndex) {
+              // await this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
+            }
+						leftIndex++;
+          }
+
+					while (sortList[rightIndex] > pivot) {
+            if (rightIndex !== pivotIndex) {
+              // await this.doUIWork([this.viewItemLarge.bind(this, rightIndex)]);
+            }
+						rightIndex--;
+          }
+
+					if (leftIndex <= rightIndex) {
+            console.log('do swap', leftIndex, rightIndex);
+            if (leftIndex === pivotIndex) {
+              pivotIndex = rightIndex;
+            } else if (rightIndex === pivotIndex) {
+              pivotIndex = leftIndex;
+            }
+
+            this.swapOnRealList(sortList, leftIndex, rightIndex);
+
+            await this.doUIWork([this.viewItemChange.bind(this, leftIndex, rightIndex)]);
+
+            this.view.swapOnDomList(leftIndex, rightIndex);
+
+						leftIndex++;
+            rightIndex--;
+
+            console.log('swaped sortList :', sortList);
+            // await this.setNumsView(sortList, this.delayTimeOnChange + 3000);
 					}
-					while (array[right] > pivot) {
-						right--;
-					}
-					if (left <= right) {
-						let swap = array[left];
-						array[left] = array[right];
-						array[right] = swap;
-						left++;
-            right--;
-            console.log('array in divide', array);
-            await this.setNumsView(array, this.delayTimeOnChange + 3000);
-					}
-				}
-				return left;
+        }
+				return [leftIndex, pivotIndex];
       }
 
-			return array;
+			return sortList;
 		}).bind(this)(sortList);
 	}
 }
