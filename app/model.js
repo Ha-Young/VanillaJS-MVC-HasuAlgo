@@ -16,6 +16,8 @@ export default class Model {
 
     this.getValue = index => _userInputData[index];
 
+    this.pop = () => _userInputData.pop();
+
     this.checkInput = () => {
       if (!_userInputData.every(elem => elem < 100)) {
         throw console.log('number is too high');

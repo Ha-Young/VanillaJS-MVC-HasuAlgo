@@ -43,9 +43,7 @@ export default class Controller {
         if (leftValue > rightValue) {
           await this.view.renderSwapAnimation(left, right);
           this.model.swapIndex(j, j + 1);
-          if (i !== 0) {
-            this.storage.pop();
-          }
+
           await this.view.renderGraphs(this.storage);
           swapped = true;
         }
