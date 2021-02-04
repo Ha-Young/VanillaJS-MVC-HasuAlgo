@@ -7,7 +7,7 @@
 
 */
 
-import {bufferRender, renderNumber} from '../View/view';
+import {bufferRender, renderNumber, beforeSorting} from '../View/view';
 import initGraphPannel from '../View/initGraphPannel';
 import numModel from '../Model/model';
 
@@ -20,6 +20,8 @@ const contentDiv = document.querySelector('.content');
 const graphPannelDiv = document.querySelector('.graphPannel');
 const $errorMessageDiv = document.querySelector('.errorMessageDiv');
 const mainTitle = document.querySelector('.mainTitle--h1');
+const shadowDiv = document.querySelector('.shadow');
+const shadowTitleSpan = document.querySelector('.shadowTitle');
 let numbersObjArray = [];
 
 //submit 버튼에 이벤트 심기
@@ -83,10 +85,10 @@ async function buttonClickEvent () {
     renderNumber(newNumObj.getNumRecords());
   });
 
-  const shadowDiv = document.querySelector('.shadow');
+  
 
   contentDiv.style.opacity = 0;
-  shadowDiv.style.innerText = '';
+  shadowTitleSpan.style.innerText = '';
   $errorMessageDiv.innerHTML = '';
   $errorMessageDiv.style.display = 'none';
   await new Promise((resolve, reject) => {
@@ -96,22 +98,30 @@ async function buttonClickEvent () {
       graphPannelDiv.style.opacity = 1;
       shadowDiv.style.display = 'flex';
       setTimeout(() => {
-        shadowDiv.innerText = 'insert Sort!';
+        shadowTitleSpan.innerText = mainTitle.innerText;
         setTimeout(() => {
-          shadowDiv.innerText = '';
+          shadowTitleSpan.innerText = '';
           shadowDiv.style.display = 'none';
           resolve();
-        }, 1000);
+        }, 3000);
       }, 1000);
     }, 1000);
   });
 
-  // TODO : insert와 Quick을 구분해 시작하기
-  // 우선 insert부터
   if (mainTitle.innerText === 'Insertion Sort') {
     await insertionSort(numbersObjArray);
   } else {
-    await quickSort(numbersObjArray);
+    const quickResult = await quickSort(numbersObjArray);
+    const backArrowSpan = document.querySelector('.backwardArrow');
+      await new Promise(async (resolve, reject) => {
+        for (let numberObj of quickResult) {
+          await beforeSorting(numberObj, 0, 300, 'last');
+        }
+        backArrowSpan.style.display = 'inline-block';
+        setTimeout(() => {
+          resolve();
+        }, 2000);
+      });
   }
   console.log('process done');
 }
@@ -123,7 +133,6 @@ function splitString (textBoxString, seperator) {
     word = word.replace(/[\s]/g, '').trim();
     word = Number.parseInt(word);
     if(Number.isNaN(word) || word > 20) {
-        
       return -1;
     }
 

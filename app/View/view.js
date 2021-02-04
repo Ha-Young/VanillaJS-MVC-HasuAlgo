@@ -129,7 +129,7 @@ export function exchange (pivotObj, anotherObj) {
       targetBar1.setAttribute('id', `bar${pivotObj.index}`);
       targetBar2.setAttribute('id', `bar${anotherObj.index}`);
       resolve();
-    }, 5000);
+    }, 1000);
   })
 }
 
@@ -141,5 +141,13 @@ async function backToInputPage () {
         contentDiv.style.display = 'flex';
         contentDiv.style.opacity = 1;
       }, 1000);
+  })
+}
+
+export function wait(second) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      
+    }, second);
   })
 }
