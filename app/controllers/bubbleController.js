@@ -30,11 +30,15 @@ BubbleController.prototype.sort = async function() {
       }
     }
     this.view.paintDone(i);
-
+    
     await new Promise(resolve =>
       setTimeout(() => {
         resolve();
       }, 1000)
     );
+
+    if (i === this.model.size() -2) {
+      this.view.paintDone(i + 1);
+    }
   }
 };

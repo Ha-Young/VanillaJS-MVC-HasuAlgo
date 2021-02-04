@@ -63,8 +63,8 @@ BubbleView.prototype.swapUp = function(a, b) {
 }
 
 BubbleView.prototype.paintDoing = function(a, b) {
-  a.style.backgroundColor = '#A2BBD9';
-  b.style.backgroundColor = '#A2BBD9';
+  a.style.backgroundColor = '#5D8AA8';
+  b.style.backgroundColor = '#5D8AA8';
 };
 
 BubbleView.prototype.removePaint = function(a, b) {
@@ -74,7 +74,7 @@ BubbleView.prototype.removePaint = function(a, b) {
 
 BubbleView.prototype.paintDone = function(n) {
   const $boxs = document.querySelectorAll('.sort-box');
-  
+  console.log(n);
   $boxs[$boxs.length -n -1].style.backgroundColor = '#3F468C';
   $boxs[$boxs.length -n -1].style.color = '#E5F1FF';
 };
