@@ -7,7 +7,7 @@ export const Controller = function(model, view, controller) {
 
   this.model = model;
   this.view = view;
-  //this.sort = controller.sort.bind(this);
+  this.sort = controller.sort.bind(this);
 }
 
 Controller.prototype.create = function(e) {
@@ -74,7 +74,7 @@ Controller.prototype.start = function() {
   }
   
   this.model.save();
-  this.sort(); // prototype 아래로 내려갈수 있나?
+  this.sort();
 };
 
 Controller.prototype.random = function() {
@@ -87,48 +87,10 @@ Controller.prototype.random = function() {
   const randomRange = makeRandomNumber(5, 11);
 
   for (let i = 0; i < randomRange; i++) {
-    const randomNumber = makeRandomNumber(1, 11);
+    const randomNumber = makeRandomNumber(1, 16);
+
     this.model.create(randomNumber);
     this.view.create(randomNumber, this.model.size());
-  }
-};
-
-// start를 하면 new로 생성한 controller에 prototype으로 bubbleSort 메서드를 아래와 같이 추가해주면 실행 가능한가?
-Controller.prototype.sort = async function() {
-  const sorting = this.model.get();
-    
-  for (let i = 0; i < this.model.size() -1; i++) {
-    for (let j = 0; j < this.model.size() -i -1; j++) {
-      if (sorting[j] > sorting[j + 1]) {
-        let temp = sorting[j];
-        sorting[j] = sorting[j + 1];
-        sorting[j + 1] = temp;
-        
-        this.model.update(i + j, sorting);
-
-        await new Promise(resolve =>
-          setTimeout(() => {
-            resolve();
-          }, 200)
-        );
-        
-        await this.view.swap(j, j + 1);
-        
-      } else {
-        await new Promise(resolve =>
-          setTimeout(() => {
-            resolve();
-          }, 800)
-        );
-      }
-    }
-    this.view.paintDone(i);
-
-    await new Promise(resolve =>
-      setTimeout(() => {
-        resolve();
-      }, 1000)
-    );
   }
 };
 
