@@ -78,7 +78,6 @@ export default class Controller {
 		}
 
 		sortedListPromise.then((sortedList) => {
-			debugger;
 			console.log('sort 완료!');
 			console.log(sortedList);
 		})
@@ -133,8 +132,8 @@ export default class Controller {
 					sortList = this.swapOnRealList(sortList, checkIndex, keyIndex);
 
 					await this.doUIWork([this.viewItemChange.bind(this, checkIndex, keyIndex)]);
-					// debugger;
-					this.view.swapOnDomList(checkIndex, keyIndex);
+
+          this.view.swapOnDomList(checkIndex, keyIndex);
 
 					checkIndex--;
 					keyIndex--;
@@ -171,19 +170,22 @@ export default class Controller {
 	}
 
 	async quickSort(sortList) {
-		debugger;
-		return (function _quickSort (array, left = 0, right = array.length - 1) {
+		return await (async function _quickSort (array, left = 0, right = array.length - 1) {
+      console.log('_quickSort this', this);
 			if (left >= right) {
 				return;
-			}
+      }
+
 			const mid = Math.floor((left + right) / 2);
 			const pivot = array[mid];
-			const partition = divide(array, left, right, pivot);
-			_quickSort(array, left, partition - 1);
-			_quickSort(array, partition, right);
+			const partition = await divide.call(this, array, left, right, pivot);
+			_quickSort.call(this, array, left, partition - 1);
+			_quickSort.call(this, array, partition, right);
+      console.log('array in quick sort', array);
 
-			function divide (array, left, right, pivot) {
-				console.log(`array: ${array}, left: ${array[left]}, pivot: ${pivot}, right: ${array[right]}`)
+			async function divide (array, left, right, pivot) {
+        console.log(`array: ${array}, left: ${array[left]}, pivot: ${pivot}, right: ${array[right]}`);
+        console.log('divide this', this);
 				while (left <= right) {
 					while (array[left] < pivot) {
 						left++;
@@ -196,12 +198,15 @@ export default class Controller {
 						array[left] = array[right];
 						array[right] = swap;
 						left++;
-						right--;
+            right--;
+            console.log('array in divide', array);
+            await this.setNumsView(array, this.delayTimeOnChange + 3000);
 					}
 				}
 				return left;
-			}
+      }
+
 			return array;
-		})(sortList);
+		}).bind(this)(sortList);
 	}
 }

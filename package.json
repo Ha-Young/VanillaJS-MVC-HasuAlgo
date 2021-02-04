@@ -6,7 +6,8 @@
   "license": "MIT",
   "homepage": "https://gitlab.com/vanilla-coding/bootcamp/foundations/sorting-algorithms",
   "scripts": {
-    "start": "parcel index.html"
+    "clean": "rm -rf .cache dist",
+    "start": "npm run clean && parcel index.html"
   },
   "dependencies": {
     "lodash": "4.17.11"
