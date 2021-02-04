@@ -34,7 +34,7 @@ function moveGraph(leftNode, rightNode) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 1500);
+    }, 1300);
   });
 }
 
@@ -50,9 +50,9 @@ function changeGraph(leftNode, rightNode) {
       setTimeout(() => {
         view.$contentContainer.insertBefore(rightNode, leftNode);
         resolve();
-      }, 2.5);
+      }, 10.824325);
     });
-  }, 2000);
+  }, 1500);
 }
 
 function changeColor(node) {
@@ -89,6 +89,7 @@ function handleBubbleClick(event) {
   }
 
   view.$errorMessage.innerHTML = '';
+  view.$bubbleSortButton.style.display = 'none';
   
   sortStorage(model.storage);
 }
@@ -103,6 +104,8 @@ function handleRestartClick(event) {
   while (view.$contentContainer.hasChildNodes()) {
     view.$contentContainer.removeChild(view.$contentContainer.firstChild);
   }
+
+  view.$bubbleSortButton.style.display = 'inline';
 }
 
 export const controller = new Controller(model, view);

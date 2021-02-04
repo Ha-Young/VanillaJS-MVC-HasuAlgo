@@ -23,7 +23,7 @@ View.prototype.addChildNode = function (value) {
 
   this.$child.innerHTML = value;
   this.$child.classList.add('graphNode');
-  this.$child.style.height = value + 5 + 'px';
+  this.$child.style.height = value + 3 + 'px';
   this.$contentContainer.appendChild(this.$child);
   this.$graphNodes = document.getElementsByClassName('graphNode');
   this.$graphNodes.innerHTML = value;
