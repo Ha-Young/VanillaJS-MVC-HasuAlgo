@@ -22,21 +22,18 @@ Controller.prototype.getData = function () {
       () => {
         this.view.initializeContainer();
       },
-      () => {
-        this.view.showForm();
-      },
-      () => {
-        this.view.hideForm();
-      },
       (result) => {
         this.view.showInitial(result);
       },
       (index1, index2) => {
         this.view.showSwap(index1, index2);
       },
-      (index) => {
-        this.view.paintSorted(index);
+      (type, ...index) => {
+        this.view.paintBar(type, ...index);
       },
+      (index1, index2) => {
+        this.view.pointBars(index1, index2);
+      }
     );
   });
 }

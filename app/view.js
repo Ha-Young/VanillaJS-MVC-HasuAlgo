@@ -1,19 +1,13 @@
 
-function View (template) {
+function View () {
   this._INPUT = document.querySelector(".numberInput");
   this._VISUALIZATION = document.querySelector(".visualization");
   this._CONTAINER = document.querySelector(".container");
   this._FORM = document.querySelector(".sortForm");
-  this._COLOR = "#2BAE66";
+  this._INITIAL_COLOR = "#bdc3c7";
+  this._PIVOT_COLOR = "#f1c40f";
+  this._SORTED_COLOR = "#27ae60";
   this._HEIGHT_ADJUST = 35;
-}
-
-View.prototype.showForm = function () {
-  this._FORM.classList.remove("hide");
-}
-
-View.prototype.hideForm = function () {
-  this._FORM.classList.add("hide");
 }
 
 View.prototype.initializeContainer = function () {
@@ -37,7 +31,7 @@ View.prototype.showInitial = function (result) {
 View.prototype.showSwap = function (index1, index2) {
   const greater = this._CONTAINER.childNodes[index1 + 1];
   const smaller = this._CONTAINER.childNodes[index2 + 1];
-  
+
   const smallerValue = parseInt(smaller.innerText);
   const greaterValue = parseInt(greater.innerText);
 
@@ -47,9 +41,25 @@ View.prototype.showSwap = function (index1, index2) {
   smaller.innerText = greaterValue;
 }
 
-View.prototype.paintSorted = function (index) {
-  const done = this._CONTAINER.childNodes[index + 1];
-  done.style.backgroundColor = "#78e08f";
+View.prototype.paintBar = function (type, ...indexList) {
+  let color;
+
+  if (type === "pivot") {
+    color = this._PIVOT_COLOR;
+  } else if (type === "sorted") {
+    color = this._SORTED_COLOR;
+  } else if (type === "initial") {
+    color = this._INITIAL_COLOR;
+  }
+
+  for (let i = 0; i < indexList.length; i++) {
+    const bar = this._CONTAINER.childNodes[indexList[i] + 1];
+    bar.style.backgroundColor = color;
+  }
+}
+
+View.prototype.pointBars = function (index1, index2) {
+
 }
 
 export {View};
