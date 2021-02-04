@@ -34,9 +34,10 @@ View.prototype.showInitial = function (result) {
   this._VISUALIZATION.appendChild(this._CONTAINER);
 }
 
-View.prototype.showSwap = function (index) {
-  const greater = this._CONTAINER.childNodes[index + 1];
-  const smaller = this._CONTAINER.childNodes[index + 2];
+View.prototype.showSwap = function (index1, index2) {
+  const greater = this._CONTAINER.childNodes[index1 + 1];
+  const smaller = this._CONTAINER.childNodes[index2 + 1];
+  
   const smallerValue = parseInt(smaller.innerText);
   const greaterValue = parseInt(greater.innerText);
 

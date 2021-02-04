@@ -31,8 +31,8 @@ Controller.prototype.getData = function () {
       (result) => {
         this.view.showInitial(result);
       },
-      (index) => {
-        this.view.showSwap(index);
+      (index1, index2) => {
+        this.view.showSwap(index1, index2);
       },
       (index) => {
         this.view.paintSorted(index);

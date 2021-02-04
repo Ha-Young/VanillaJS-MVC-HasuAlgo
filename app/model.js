@@ -46,9 +46,9 @@ Model.prototype.bubbleSort = async function (storage,
       if (storage[j] > storage[j + 1]) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
 
-        (function (index, time) {
-          setTimeout(function () {showSwap(index)}, time * 500);
-        })(j, time);
+        (function (index1, index2, time) {
+          setTimeout(function () {showSwap(index1, index2)}, time * 500);
+        })(j, j + 1, time);
       }
       time++;
     }
@@ -62,9 +62,25 @@ Model.prototype.bubbleSort = async function (storage,
   setTimeout(showForm, time * 500);
 }
 
-Model.prototype.quickSort = function (storage, ...callback) {
-    
-  const doPartialQuickSort = function (startIndex, endIndex) {
+Model.prototype.quickSort = async function (storage, 
+  initializeContainer,
+  showForm,
+  hideForm,
+  showInitial,
+  showSwap,
+  paintSorted
+  ) {
+  let time = 1;
+
+  function doSetTimeout() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+  }
+
+  const doPartialQuickSort = async function (startIndex, endIndex) {
     if (startIndex >= endIndex) {
       return;
     }
@@ -85,15 +101,29 @@ Model.prototype.quickSort = function (storage, ...callback) {
 
       if (left < right) {
         [storage[left], storage[right]] = [storage[right], storage[left]];
+
+        await doSetTimeout(left, right);
+        showSwap(left, right);
       }
     }
 
     [storage[pivotIndex], storage[right]] = [storage[right], storage[pivotIndex]];
+    await doSetTimeout();
+    showSwap(pivotIndex, right);
+    await doSetTimeout();
+    paintSorted(right);
+
     doPartialQuickSort(startIndex, right - 1);
     doPartialQuickSort(right + 1, endIndex);
   }
 
+  initializeContainer();
+  showInitial(storage);
+  await doSetTimeout();
   doPartialQuickSort(0, storage.length - 1);
+
+  hideForm();
+  showForm();
 }
 
 export {Model};
