@@ -1,56 +1,97 @@
 export { Controller };
 
 class Controller {
+
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
   }
 
-  clickEvent(target, callback) {
-    target.addEventListener("click", callback);
+  handleAddData(data) {
+    this.model.addData(data);
   }
 
-  getInputValue() {
-    return this.view.input.value;
+  handleAddClass(target, className) {
+    this.view.addClass(target, className);
+  }
+
+  handleRemoveClass(target, className) {
+    this.view.removeClass(target, className);
+  }
+
+  handleChangeValidation(name) {
+    const text = this.view.validationText;
+    this.view.changeValidation(text[name]);
+  }
+
+  handleRenderGraph() {
+    this.view.inputButton.addEventListener("click", () => {
+      if (this.checkData() && this.checkSort()) {
+        this.view.clearGraph();
+        this.view.renderGraph(this.model.unsortedArray);
+        this.handleAddClass(this.view.validation, "hidden");
+        this.handleRemoveClass(this.view.sortButton, "invisible");
+        this.startSort();
+      }
+    });
   }
 
   checkData() {
-    this.model.data = this.getInputValue();
-    this.model.filteredData = this.model.data.replaceAll(',', '').replace(/ /g, '');
-    this.model.unsortedArray = this.model.data.replace(/ /g, '').split(",").map((num) => Number(num));
-    this.model.sortedArray = this.model.unsortedArray.slice();
+    this.handleAddData(this.view.inputValue);
 
     if (isNaN(this.model.filteredData)) {
-      this.view.changeValidation(this.view.validationText["isNaN"]);
+      this.handleChangeValidation("isNaN");
       return false;
     }
 
     if (this.model.unsortedArray.length > 10) {
-      this.view.changeValidation(this.view.validationText["over10"]);
+      this.handleChangeValidation("over10");
       return false;
     }
 
     if (this.model.unsortedArray.length < 5) {
-      this.view.changeValidation(this.view.validationText["under5"]);
+      this.handleChangeValidation("under5");
       return false;
     }
 
     for (let i = 0; i < this.model.unsortedArray.length; i++) {
       if (this.model.unsortedArray[i] > 50) {
-        this.view.changeValidation(this.view.validationText["over50"]);
+        this.handleChangeValidation("over50");
         return false;
       }
     }
+
     return true;
   }
 
   checkSort() {
-    if (this.view.options[0].selected) {
-      this.view.changeValidation(this.view.validationText["sort"]);
-      return false;
+    const select = this.view.selectbox;
+    const sortName = select.options[select.selectedIndex].value;
+
+    switch (sortName) {
+      case "SELECT" :
+        this.handleChangeValidation("sort");
+        break;
+      case "BUBBLE SORT" :
+        return "Bubble";
+      case "QUICK SORT" :
+        return "Quick";
     }
-    if (this.view.options[1].selected) return 1;
-    if (this.view.options[2].selected) return 2;
+  }
+
+  startSort() {
+    this.view.sortButton.addEventListener("click", () => {
+      const sortName = this.checkSort();
+
+      if (sortName === "Bubble") {
+        this.doBubbleSort(this.model.unsortedArray);
+        return;
+      }
+      if (sortName === "Quick") {
+        this.doQuickSort(this.model.unsortedArray, 0, this.model.unsortedArray.length - 1);
+      }
+    });
   }
 
   async doBubbleSort(dataArray) {

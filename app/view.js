@@ -27,13 +27,6 @@ class View {
     }
   }
 
-  createElement(tag, className) {
-    const element = document.createElement(tag)
-    if (className) element.classList.add(className)
-
-    return element;
-  }
-
   addClass(target, className) {
     target.classList.add(className);
   }
@@ -41,7 +34,11 @@ class View {
   removeClass(target, className) {
     target.classList.remove(className);
   }
-  
+
+  get inputValue() {
+    return this.input.value;
+  }
+
   changeValidation(text) {
     this.validation.classList.remove("hidden");
     this.validation.textContent = text;
