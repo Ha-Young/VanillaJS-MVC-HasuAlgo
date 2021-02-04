@@ -1,10 +1,14 @@
 @mainColor: #3867d6;
 @subColor: #f5d042;
 @subColor-white: #f5f6fa;
+@subColor-blue: #3742fa;
+@subColor-darkgray: #535c68;
 @subColor-gray: #dcdde1;
+@subColor-brightgray: #f1f2f6;
 @main-font: "Press Start 2P", cursive;
 @import (inline) "./font.css";
-@import (inline) "./font.css";
+@import (inline) "./bubble.css";
+@import (inline) "./merge.css";
 
 html,
 body {
@@ -175,47 +179,6 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-}
-
-.sort-list-bubble {
-  align-items: flex-end;
-}
-
-.sort-list-merge {
-  margin-top: 40px;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.sort-element-merge {
-  padding: 0 10px;
-  height: 50px;
-  width: 80px;
-  border: 2px solid black;
-}
-
-.sort-number-merge {
-  font-size: 30px;
-  line-height: 50px;
-}
-
-.sort-element {
-  text-align: center;
-}
-
-.sort-element .sort-bar {
-  margin-bottom: 10px;
-  // height: 90px;
-  width: 50px;
-  background-color: @subColor;
-}
-
-.sort-element .comparing {
-  background-color: #e84118;
-}
-
-.sort-element .done {
-  background-color: #3742fa;
 }
 
 .sort-element .sort-number {

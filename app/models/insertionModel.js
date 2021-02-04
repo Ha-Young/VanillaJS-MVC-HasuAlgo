@@ -1,8 +1,8 @@
-const BubbleModel = function () {
+const InsertionModel = function () {
   this._inputArray = [];
 };
 
-BubbleModel.prototype.addNumber = function (array, callback) {
+InsertionModel.prototype.addNumber = function (array, callback) {
   if (this._inputArray.length > 9) {
     return;
   }
@@ -11,7 +11,7 @@ BubbleModel.prototype.addNumber = function (array, callback) {
   callback(this._inputArray);
 };
 
-BubbleModel.prototype.startSort = async function (
+InsertionModel.prototype.startSort = async function (
   startCompare,
   swapElement,
   finishCompare,
@@ -37,12 +37,12 @@ BubbleModel.prototype.startSort = async function (
   await finishSort();
 };
 
-BubbleModel.prototype.resetList = function (callback) {
+InsertionModel.prototype.resetList = function (callback) {
   this._inputArray = [];
   callback();
 };
 
-BubbleModel.prototype.shuffleNum = function (callback) {
+InsertionModel.prototype.shuffleNum = function (callback) {
   const shuffledArray = [...this._inputArray];
 
   for (let i = shuffledArray.length; i; i--) {
@@ -56,7 +56,7 @@ BubbleModel.prototype.shuffleNum = function (callback) {
   callback(shuffledArray);
 };
 
-BubbleModel.prototype.setRandom = function (callback) {
+InsertionModel.prototype.setRandom = function (callback) {
   const newRandom = Math.floor(Math.random() * 50) + 1;
 
   this._inputArray.push(newRandom);
@@ -64,4 +64,4 @@ BubbleModel.prototype.setRandom = function (callback) {
   callback(this._inputArray);
 };
 
-export default BubbleModel;
+export default InsertionModel;

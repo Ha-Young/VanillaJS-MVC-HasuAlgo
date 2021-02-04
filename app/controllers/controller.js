@@ -1,5 +1,7 @@
 import BubbleController from "./bubbleController";
+import InsertionController from "./insertionController";
 import MergeController from "./mergeController";
+import QuickController from "./quickController";
 
 const Controller = function (model, view) {
   const self = this;
@@ -26,10 +28,10 @@ Controller.prototype.setSortStyle = function (sortStyle) {
       break;
 
     case "insertion":
-      // this.insertionController = new InsertionController(
-      //   this.model.insertionModel,
-      //   this.view.insertionView
-      // );
+      this.insertionController = new InsertionController(
+        this.model.insertionModel,
+        this.view.insertionView
+      );
       break;
 
     case "merge":
@@ -40,10 +42,10 @@ Controller.prototype.setSortStyle = function (sortStyle) {
       break;
 
     case "quick":
-      // this.quickController = new QuickController(
-      //   this.model.quickModel,
-      //   this.view.quickView
-      // );
+      this.quickController = new QuickController(
+        this.model.quickModel,
+        this.view.quickView
+      );
       break;
 
     default:

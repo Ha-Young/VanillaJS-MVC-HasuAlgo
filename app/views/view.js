@@ -1,6 +1,8 @@
-import { Template } from "./template";
+import { Template } from "../template";
 import BubbleView from "./bubbleView";
+import InsertionView from "./insertionView";
 import MergeView from "./mergeView";
+import QuickView from "./quickVIew";
 
 const View = function () {
   this.template = new Template();
@@ -16,7 +18,7 @@ View.prototype.setSortStyle = function (sortStyle) {
 
     case "insertion":
       this.$sortSpace.innerHTML = this.template.insertionTemplate;
-      // this.insertionView = new InsertionView();
+      this.insertionView = new InsertionView();
       break;
 
     case "merge":
@@ -26,7 +28,7 @@ View.prototype.setSortStyle = function (sortStyle) {
 
     case "quick":
       this.$sortSpace.innerHTML = this.template.quickTemplate;
-      // this.quickView = new QuickView();
+      this.quickView = new QuickView();
       break;
 
     default:

@@ -1,4 +1,4 @@
-const BubbleController = function (model, view) {
+const InsertionController = function (model, view) {
   const self = this;
   self.model = model;
   self.view = view;
@@ -24,7 +24,7 @@ const BubbleController = function (model, view) {
   });
 };
 
-BubbleController.prototype.addNumber = function (input) {
+InsertionController.prototype.addNumber = function (input) {
   const self = this;
   const newNumber = input
     .split(",")
@@ -40,7 +40,7 @@ BubbleController.prototype.addNumber = function (input) {
   });
 };
 
-BubbleController.prototype.startSort = function () {
+InsertionController.prototype.startSort = function () {
   const self = this;
 
   const startCompare = function (index) {
@@ -77,7 +77,7 @@ BubbleController.prototype.startSort = function () {
   self.model.startSort(startCompare, swapElement, finishCompare, finishSort);
 };
 
-BubbleController.prototype.resetList = function () {
+InsertionController.prototype.resetList = function () {
   const self = this;
 
   self.model.resetList(() => {
@@ -85,7 +85,7 @@ BubbleController.prototype.resetList = function () {
   });
 };
 
-BubbleController.prototype.setRandom = function () {
+InsertionController.prototype.setRandom = function () {
   const self = this;
 
   self.model.setRandom((newList) => {
@@ -93,7 +93,7 @@ BubbleController.prototype.setRandom = function () {
   });
 };
 
-BubbleController.prototype.shuffleNum = function () {
+InsertionController.prototype.shuffleNum = function () {
   const self = this;
 
   self.model.shuffleNum((shuffledArray) => {
@@ -101,4 +101,4 @@ BubbleController.prototype.shuffleNum = function () {
   });
 };
 
-export default BubbleController;
+export default InsertionController;

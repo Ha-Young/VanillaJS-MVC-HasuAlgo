@@ -1,3 +1,5 @@
+import { forOwn } from "lodash";
+
 const MergeController = function (model, view) {
   const self = this;
   self.model = model;
@@ -42,7 +44,24 @@ MergeController.prototype.addNumber = function (input) {
   }
 };
 
-MergeController.prototype.startSort = function () {};
+MergeController.prototype.startSort = async function () {
+  const self = this;
+
+  const divide = function (turn) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        self.view.render("divide", turn);
+        resolve();
+      }, 300);
+    });
+  };
+
+  for (let i = 1; i < 4; i++) {
+    await divide(i);
+  }
+
+  self.model.mergeSort(self.model._inputArray).then(console.log);
+};
 
 MergeController.prototype.resetList = function () {
   const self = this;

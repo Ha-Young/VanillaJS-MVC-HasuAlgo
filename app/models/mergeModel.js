@@ -1,5 +1,6 @@
 const MergeModel = function () {
   this._inputArray = [];
+  this.mergedOrder = [];
 };
 
 MergeModel.prototype.addNumber = function (number, callback) {
@@ -11,7 +12,37 @@ MergeModel.prototype.addNumber = function (number, callback) {
   callback(number, this._inputArray.length - 1);
 };
 
-MergeModel.prototype.startSort = function () {};
+MergeModel.prototype.mergeSort = async function (arr) {
+  if (arr.length < 2) {
+    return arr;
+  }
+  const length = arr.length;
+  const middle = Math.floor(length / 2);
+  const arrLeft = arr.slice(0, middle);
+  const arrRight = arr.slice(middle);
+
+  return await this.merge(this.mergeSort(arrLeft), this.mergeSort(arrRight));
+};
+
+MergeModel.prototype.merge = async function (left, right) {
+  let temp = [];
+  while (left.length && right.length) {
+    if (left[0] <= right[0]) {
+      temp.push(left.shift());
+    } else {
+      temp.push(right.shift());
+    }
+  }
+
+  const result = temp.concat(left, right);
+
+  await new Promise((resolve) => {
+    this.mergedOrder.push(result);
+    resolve();
+  });
+
+  return result;
+};
 
 MergeModel.prototype.resetList = function (callback) {
   this._inputArray = [];
