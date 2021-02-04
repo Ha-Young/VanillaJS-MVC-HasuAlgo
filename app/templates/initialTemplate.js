@@ -6,8 +6,8 @@ export function initialTemplate() {
   </form>
   <div class="sorting__queue"></div>
   <select required class="sorting__select-sort">
+  <option id="Bubble">Bubble Sort</option>
     <option id="Merge">Merge Sort</option>
-    <option id="Bubble">Bubble Sort</option>
   </select>
   <div class="row">
     <button class="paint-button">Paint</button>

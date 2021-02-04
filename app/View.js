@@ -17,6 +17,7 @@ function View() {
 
   this.classList = {
     moving: "moving",
+    sort: "sort",
     sortItem: "sorting__item",
   };
 
@@ -42,18 +43,6 @@ View.prototype.makeSelectorDisable = function () {
   this.$sortOptionSelector.disabled = true;
 };
 
-View.prototype.addClass = function (className, item) {
-  item.classList.add(className);
-};
-
-View.prototype.removeClass = function (className, item) {
-  item.classList.remove(className);
-};
-
-View.prototype.clearInputContent = function () {
-  this.$sortInput.value = "";
-};
-
 View.prototype.setTextContent = function (target, content) {
   target.textContent = content;
 };
@@ -64,7 +53,7 @@ View.prototype.setItemsHeight = function (targetNumber, height) {
 
 View.prototype.printNumbers = function (sortList) {
   this.$sortQueue.textContent = sortList.join(", ");
-  this.clearInputContent();
+  this.$sortInput.value = "";
 };
 
 View.prototype.resetTranslate = function (item) {
@@ -83,13 +72,11 @@ View.prototype.translate = function (target, x, y = 0) {
   target.style.transform = `translate(${x}px, ${y}px)`;
 };
 
-View.prototype.setDelayForTransition = function () {
-  const self = this;
-
+View.prototype.setDelayForTransition = function (delay) {
   return new Promise(function (resolve) {
     setTimeout(function () {
       resolve();
-    }, self.transitionDelayTime);
+    }, delay);
   });
 };
 
@@ -97,7 +84,7 @@ View.prototype.createSortItems = function (inputNumber) {
   const $item = document.createElement("li");
 
   this.setTextContent($item, inputNumber);
-  this.addClass(this.classList.sortItem, $item);
+  $item.classList.add(this.classList.sortItem);
 
   if (this.$sortOptionSelector.value === this.sortOptions.bubble) {
     this.setItemsHeight($item, inputNumber);
@@ -110,7 +97,7 @@ View.prototype.paintSortItems = function (sortList) {
   for (let i = 0; i < sortList.length; i++) {
     const item = this.createSortItems(sortList[i]);
 
-    this.addClass(this.classList[this.$sortOptionSelector.value], item);
+    item.classList.add(this.classList[this.$sortOptionSelector.value]);
     this.insertChildElement(this.$sortItemList, item);
   }
 };
@@ -123,13 +110,13 @@ View.prototype.chageSortItemPosition = async function (left, right) {
   const rightCoordinateX = self.getCoordinate(right, "x");
 
   itemList.forEach(function (item) {
-    self.addClass(self.classList.moving, item);
+    item.classList.add(self.classList.moving);
   });
 
   self.translate(left, rightCoordinateX - leftCoordinateX);
   self.translate(right, leftCoordinateX - rightCoordinateX);
 
-  await self.setDelayForTransition();
+  await self.setDelayForTransition(self.transitionDelayTime);
 };
 
 export default View;
