@@ -1,4 +1,4 @@
-import MYAPP from './myapp';
+import MYAPP from "./myapp";
 
 export default class Controller {
   constructor(model, view) {
@@ -9,7 +9,7 @@ export default class Controller {
 
   run() {
     let isClicked = false;
-    MYAPP.button.start.addEventListener(('click'), () => {
+    MYAPP.button.start.addEventListener("click", () => {
       if (!isClicked && MYAPP.table.input.value) {
         this.init();
         this.sort();
@@ -43,17 +43,30 @@ export default class Controller {
         if (leftValue > rightValue) {
           await this.view.renderSwapAnimation(left, right);
           this.model.swapIndex(j, j + 1);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95ea85e43d62ff01f1a9f76ba99d418928eabd28
           await this.view.renderGraphs(this.storage);
           swapped = true;
         }
+
+        if (j === numberGraphs - 2 - i) {
+          const sortedGraph = graph[numberGraphs - i - 1];
+          console.log("in");
+          console.log(sortedGraph);
+          await this.view.renderGraphs(
+            this.storage,
+            Number(sortedGraph.dataset.id)
+          );
+        }
       }
 
-      const sortedGraph = graph[numberGraphs - i - 1];
-      console.log(sortedGraph);
-      await this.view.renderSortedGraphColor(sortedGraph);
+      //await this.view.renderSortedGraphColor();
 
-      console.log(`${i}회전한 결과는 ${this.graphTable}---------------------------`);
+      console.log(
+        `${i}회전한 결과는 ${this.graphTable}---------------------------`
+      );
 
       if (!swapped) {
         //this.view.clearAllColor(graphTable);
