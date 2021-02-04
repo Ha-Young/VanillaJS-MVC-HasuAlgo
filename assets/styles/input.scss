@@ -1,0 +1,31 @@
+$char-w: 1ch;
+$gap: .5*$char-w;
+$n-char: 7;
+$in-w: $n-char*($char-w + $gap);
+
+.number-input {
+	display: block;
+	border: none;
+	padding: 0;
+  // width: $in-w;
+  width: 109px;
+	background: repeating-linear-gradient(90deg, 
+		dimgrey 0, dimgrey $char-w, 
+		transparent 0, transparent $char-w + $gap) 
+		0 100%/ #{$in-w - $gap} 2px no-repeat;
+	font: 4ch droid sans mono, consolas, monospace;
+	letter-spacing: $gap;
+	
+	&:focus {
+		outline: none;
+		color: rgb(124, 122, 122);
+  }
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
