@@ -50,63 +50,28 @@ QuickController.prototype.startSort = async function (dataSet, from, to, fixedIn
   let leftIndex = from + 1;
   let rightIndex = to;
 
-  const showPivot = (index) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.QuickView.showPivot(index);
-        resolve();
-      }, DELAY);
-    });
-  };
-
-  const showTarget = (left, right) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.QuickView.showTarget(left, right);
-        resolve();
-      }, DELAY);
-    });
-  };
-
-  const viewSwap = (left, right) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.QuickView.swap(left, right);
-        resolve();
-      }, DELAY);
-    })
-  };
-
-  const paintGraphs = (dataSet, fixedIndices, pivotIndex) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.QuickView.paintGraphs(dataSet, fixedIndices, pivotIndex);
-        resolve();
-      }, DELAY);
-    });
-  }
-
   if (pivotIndex >= rightIndex) {
     fixedIndices.push(from);
-    await paintGraphs(dataSet, fixedIndices);
+
+    await this.QuickView.paintGraphs(dataSet, fixedIndices, this.wait, DELAY);
 
     if (dataSet.length - fixedIndices.length === 0) {
-      await paintGraphs(dataSet, "done");
+      await this.QuickView.paintGraphs(dataSet, "DONE", this.wait, DELAY);
 
       this.QuickView.holdInput(false);
-      this.QuickView.paintMessage("정렬 끄읕", " 🤸‍♀️ ", 3000);
+      this.QuickView.paintMessage("정렬 끄읕", " 🤸‍♀️ 🤸‍♀️ 🤸‍♀️ ", 3000);
       return;
     }
     return;
   }
 
-  await showPivot(pivotIndex);
+  await this.QuickView.showPivot(pivotIndex, this.wait, DELAY);
 
   while (true) {
-    await showTarget(leftIndex, rightIndex);
+    await this.QuickView.showTarget(leftIndex, rightIndex, this.wait, DELAY);
 
     if (dataSet[leftIndex] > dataSet[pivotIndex] && dataSet[rightIndex] < dataSet[pivotIndex]) {
-      await viewSwap(leftIndex, rightIndex);
+      await this.QuickView.swap(leftIndex, rightIndex, this.wait, DELAY);
 
       this.QuickModel.swap(leftIndex, rightIndex);
       leftIndex++;
@@ -121,21 +86,21 @@ QuickController.prototype.startSort = async function (dataSet, from, to, fixedIn
       }
     }
 
-    await paintGraphs(dataSet, fixedIndices, pivotIndex);
+    await this.QuickView.paintGraphs(dataSet, fixedIndices, this.wait, DELAY, pivotIndex);
 
     if (leftIndex > rightIndex) {
-      await viewSwap(pivotIndex, rightIndex);
+      await this.QuickView.swap(pivotIndex, rightIndex, this.wait, DELAY);
 
       this.QuickModel.swap(pivotIndex, rightIndex);
       fixedIndices.push(rightIndex);
 
-      await paintGraphs(dataSet, fixedIndices);
+      await this.QuickView.paintGraphs(dataSet, fixedIndices, this.wait, DELAY);
 
       if (dataSet.length - fixedIndices.length <= 1) {
-        await paintGraphs(dataSet, "done");
+        await this.QuickView.paintGraphs(dataSet, "DONE", this.wait, DELAY);
 
         this.QuickView.holdInput(false);
-        this.QuickView.paintMessage("정렬 끄읕", " 🤸‍♀️ ", 3000);
+        this.QuickView.paintMessage("정렬 끄읕", " 🤸‍♀️ 🤸‍♀️ 🤸‍♀️ ", 3000);
         return;
       }
 

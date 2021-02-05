@@ -16,13 +16,43 @@ export default function QuickView() {
 QuickView.prototype = Object.create(View.prototype);
 QuickView.prototype.constructor = QuickView;
 
-QuickView.prototype.showPivot = function (index) {
+async function identity() {};
+QuickView.prototype.showPivot = async function (index, wait = identity, DELAY) {
   this.$graphs.children[index].classList.add("pivot");
+
+  await wait(DELAY);
 };
 
-QuickView.prototype.swap = function (left, right) {
+QuickView.prototype.swap = async function (left, right, wait = identity, DELAY) {
   const distance = right - left;
 
   this.$graphs.children[left].style.transform = `translateX(${distance * 30}px) rotate(0.5turn)`;
   this.$graphs.children[right].style.transform = `translateX(-${distance * 30}px) rotate(-0.5turn)`;
+
+  await wait(DELAY);
+};
+
+QuickView.prototype.paintGraphs = async function (data, fixedIndices = [], wait = identity, DELAY, pivotIndex) {
+  const maxSize = Math.max(...data);
+
+  this.$graphs.textContent = "";
+
+  data.forEach((item, index) => {
+    const newBlock = document.createElement("span");
+
+    newBlock.dataset.index = index + 1;
+    newBlock.style.setProperty("height", (item / maxSize) * 90 + "%");
+
+    if (pivotIndex === index) {
+      newBlock.classList.add("pivot");
+    }
+
+    if (fixedIndices.includes(index) || fixedIndices === "DONE") {
+      newBlock.classList.add("fixed");
+    }
+
+    this.$graphs.appendChild(newBlock);
+  });
+
+  await wait(DELAY);
 };

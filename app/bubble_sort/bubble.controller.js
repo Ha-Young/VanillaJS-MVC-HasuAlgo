@@ -42,48 +42,19 @@ BubbleController.prototype = Object.create(Controller.prototype);
 BubbleController.prototype.constructor = BubbleController;
 
 BubbleController.prototype.startSort = async function (dataSet) {
-  const DELAY = 100;
+  const DELAY = 500;
   const status = { index: 0, isSwaped: false , fixedIndices: [] };
 
-  const showTarget = (index) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.BubbleView.showTarget(index, index + 1);
-        resolve();
-      }, DELAY);
-    });
-  };
-
-  const viewSwap = (index) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.BubbleView.swap(index, index + 1);
-        resolve();
-      }, DELAY);
-    })
-  };
-
-  const paintGraphs = (dataSet, fixedIndices) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.BubbleView.paintGraphs(dataSet, fixedIndices);
-        resolve();
-      }, DELAY);
-    });
-  };
-
   while (true) {
-    await showTarget(status.index);
+    await this.BubbleView.showTarget(status.index, status.index + 1, this.wait, DELAY);
 
     if (dataSet[status.index] > dataSet[status.index + 1]) {
-      await viewSwap(status.index);
-
+      await this.BubbleView.swap(status.index, status.index + 1, this.wait, DELAY);
       this.BubbleModel.swap(status.index, status.index + 1);
       status.isSwaped = true;
     }
 
-    await paintGraphs(dataSet, status.fixedIndices);
-
+    await this.BubbleView.paintGraphs(dataSet, status.fixedIndices, this.wait, DELAY);
     status.index++;
 
     const isEndOfLoop = status.index === (dataSet.length - status.fixedIndices.length - 1);
@@ -94,14 +65,13 @@ BubbleController.prototype.startSort = async function (dataSet) {
       const isSortedAll = (dataSet.length - status.fixedIndices.length) === 1;
 
       if (!status.isSwaped || isSortedAll) {
-        await paintGraphs(dataSet, "done");
-
+        await this.BubbleView.paintGraphs(dataSet, "DONE", this.wait, DELAY);
         this.BubbleView.holdInput(false);
-        this.BubbleView.paintMessage("정렬 끄읕", " 🤸‍♀️ ", 3000);
+        this.BubbleView.paintMessage("정렬 끄읕", " 🤸‍♀️ 🤸‍♀️ 🤸‍♀️ ", 3000);
         return;
       }
 
-      await paintGraphs(dataSet, status.fixedIndices);
+      await this.BubbleView.paintGraphs(dataSet, status.fixedIndices, this.wait, DELAY);
 
       status.index = 0;
       status.isSwaped = false;

@@ -28,3 +28,9 @@ Controller.prototype.checkInput = function (inputValue) {
     ? {isNumber: false, dataSet: null}
     : {isNumber: true, dataSet: result};
 };
+
+Controller.prototype.wait = function (time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), time);
+  });
+};

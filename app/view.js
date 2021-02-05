@@ -21,7 +21,8 @@ View.prototype.paintMessage = function (message, motion, delay) {
   }
 };
 
-View.prototype.paintGraphs = function (data, fixedIndices = [], pivotIndex) {
+async function identity() {};
+View.prototype.paintGraphs = async function (data, fixedIndices = [], wait = identity, DELAY) {
   const maxSize = Math.max(...data);
 
   this.$graphs.textContent = "";
@@ -32,28 +33,30 @@ View.prototype.paintGraphs = function (data, fixedIndices = [], pivotIndex) {
     newBlock.dataset.index = index + 1;
     newBlock.style.setProperty("height", (item / maxSize) * 90 + "%");
 
-    if (pivotIndex === index) {
-      newBlock.classList.add("pivot");
-    }
-
-    if (fixedIndices.includes(index) || fixedIndices === "done") {
+    if (fixedIndices.includes(index) || fixedIndices === "DONE") {
       newBlock.classList.add("fixed");
     }
 
     this.$graphs.appendChild(newBlock);
   });
+
+  await wait(DELAY);
 };
 
-View.prototype.showTarget = function (left, right) {
+View.prototype.showTarget = async function (left, right, wait = identity, DELAY) {
   this.$graphs.children[left].classList.add("target");
   this.$graphs.children[right].classList.add("target");
+
+  await wait(DELAY);
 };
 
-View.prototype.swap = function (left, right) {
+View.prototype.swap = async function (left, right, wait = identity, DELAY) {
   const distance = right - left;
 
   this.$graphs.children[left].style.transform = `translateX(${distance * 30}px) rotate(0.5turn)`;
   this.$graphs.children[right].style.transform = `translateX(-${distance * 30}px) rotate(0.5turn)`;
+
+  await wait(DELAY);
 };
 
 View.prototype.holdInput = function (sholdHold) {
