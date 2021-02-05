@@ -1,5 +1,6 @@
 export const View = function(bubbleView) {
-  this.$visualFrame = document.querySelector('.visual-frame');
+  this.$title = document.querySelector('.title');
+  this.$inform = document.querySelector('.inform');
   this.$visual = document.querySelector('.visual');
 
   this.swap = bubbleView.swap;
@@ -45,4 +46,14 @@ View.prototype.clear = function(n) {
   for (let i = 0; i < n; i++) {
     this.$visual.removeChild(this.$visual.lastChild);
   }
+};
+
+View.prototype.changeBubble = function() {
+  this.$title.innerText = 'Bubble Sort';
+  this.$inform.style.visibility = 'hidden';
+};
+
+View.prototype.changeMerge = function() {
+  this.$title.innerText = 'Merge Sort';
+  this.$inform.style.visibility = 'visible';
 };

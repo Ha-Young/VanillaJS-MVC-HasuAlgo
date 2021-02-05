@@ -1,4 +1,6 @@
 export const Controller = function(model, view, bubbleController) {
+  this.$changeBubble = document.querySelector('.change-bubble');
+  this.$changeMerge = document.querySelector('.change-merge');
   this.$userInput = document.querySelector('.user-input');
   this.$start = document.querySelector('.start');
   this.$random = document.querySelector('.random');
@@ -94,7 +96,19 @@ Controller.prototype.random = function() {
   }
 };
 
+Controller.prototype.changeBubble = function() {
+    this.view.changeBubble();
+    this.clear();
+  };
+
+  Controller.prototype.changeMerge = function() {
+    this.view.changeMerge();
+    this.clear();
+  };
+  
 Controller.prototype.events = function() {
+  this.$changeBubble.addEventListener('click', this.changeBubble.bind(this));
+  this.$changeMerge.addEventListener('click', this.changeMerge.bind(this));
   this.$userInput.addEventListener('keyup', this.create.bind(this));
   this.$random.addEventListener('click', this.random.bind(this));
   this.$delete.addEventListener('click', this.delete.bind(this));
