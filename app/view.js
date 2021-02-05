@@ -11,10 +11,10 @@ export default function View() {
       <section class="user-input-container">
         <section class="sort-select-box">
           <div>
-            <input type="radio" name="sort-type"/><label>Bubble Sorting</label>
+            <input type="radio" name="sort-type" value="bubble-sort"/><label>Bubble Sort</label>
           </div>
           <div>
-            <input type="radio" name="sort-type"/><label>Merged Sorting</label>
+            <input type="radio" name="sort-type" value="quick-sort"/><label>Quick Sort</label>
           </div>
         </section>
         <input class="input-data-box" type="text" placeholder="Insert Data"/>
@@ -47,8 +47,9 @@ View.prototype.sendDataToController = function (target, property) {
 }
 
 View.prototype.initialRender = function (data) {
+  const manipulatedData = data.manipulatedData;
   const $animationBox = document.querySelector('.animation-box');
-  const maxData = Math.max(...data);
+  const maxData = Math.max(...manipulatedData);
   const animationBoxHeight = $animationBox.style.height;
   const oldNodeNumbers = $animationBox.children.length;
 
@@ -56,10 +57,10 @@ View.prototype.initialRender = function (data) {
     $animationBox.children[0].remove();
   }
 
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < manipulatedData.length; i++) {
     $animationBox.appendChild(document.createElement('div'));
-    $animationBox.children[i].textContent = data[i];
-    $animationBox.children[i].style.height = `${200 * data[i] / maxData}px`;
+    $animationBox.children[i].textContent = manipulatedData[i];
+    $animationBox.children[i].style.height = `${200 * manipulatedData[i] / maxData}px`;
   }
 
   $animationBox.classList.add('play');
@@ -68,9 +69,11 @@ View.prototype.initialRender = function (data) {
 View.prototype.render = function (sortData) {
   const $animationBox = document.querySelector('.animation-box');
   const $statusBox = document.querySelector('.status-box');
+  //console.log(sortData)
   const maxData = Math.max(...sortData.data);
   const animationBoxHeight = $animationBox.style.height;
   let ordinalNumberSuffix;
+  const dataLength = sortData.data.length;
 
   switch (sortData.sortCount % 10) {
     case 1:
@@ -86,13 +89,22 @@ View.prototype.render = function (sortData) {
       ordinalNumberSuffix = 'th';
   }
 
-  $animationBox.children[(sortData.i + 4) % sortData.data.length].classList.remove('play');
-  $animationBox.children[sortData.i].classList.add('play');
-  $animationBox.children[sortData.i].textContent = sortData.data[sortData.i];
-  $animationBox.children[sortData.i].style.height = `${200 * sortData.data[sortData.i] / maxData}px`;
-  $animationBox.children[(sortData.i + 1) % sortData.data.length].classList.add('play');
-  $animationBox.children[(sortData.i + 1) % sortData.data.length].textContent = sortData.data[(sortData.i + 1) % sortData.data.length];
-  $animationBox.children[(sortData.i + 1) % sortData.data.length].style.height = `${200 * sortData.data[(sortData.i + 1) % sortData.data.length] / maxData}px`;
+  const changedElements = [];
+  changedElements.push({leftElement: sortData.leftElement, rightElement: sortData.rightElement});
+
+  const $playElements = document.querySelectorAll('.play');
+  [].forEach.call($playElements, item => item.classList.remove('play'))
+  const $pivotElement = document.querySelectorAll('.pivot');
+  [].forEach.call($pivotElement, item => item.classList.remove('pivot'))
+  //$animationBox.children[(sortData.leftElement + dataLength - 1) % dataLength].classList.remove('play');
+  $animationBox.children[sortData.leftElement].classList.add('play');
+  $animationBox.children[sortData.leftElement].textContent = sortData.data[sortData.leftElement];
+  $animationBox.children[sortData.leftElement].style.height = `${200 * sortData.data[sortData.leftElement] / maxData}px`;
+  $animationBox.children[sortData.rightElement % dataLength].classList.add('play');
+  $animationBox.children[sortData.rightElement % dataLength].textContent = sortData.data[(sortData.rightElement) % dataLength];
+  $animationBox.children[sortData.rightElement % dataLength].style.height = `${200 * sortData.data[(sortData.rightElement) % dataLength] / maxData}px`;
+  $animationBox.children[sortData.pivotIndex].classList.add('pivot');
+
   $statusBox.textContent = `Searching ${sortData.sortCount}${ordinalNumberSuffix}`;
 
   return;

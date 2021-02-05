@@ -1,10 +1,9 @@
-import { countBy } from "lodash";
-
 export default function Model() {
-  this.storage = [];
+  this.storage = {};
 };
 
-Model.prototype.loadDataFromController = function (data) { // this = model
-  this.storage = data;
-  console.log(data)
+Model.prototype.loadDataFromController = function () { // this = model
+  this.storage['manipulatedData'] = arguments[0];
+  console.log(arguments[1])
+  this.storage['radioButtonData'] = arguments[1];
 }
