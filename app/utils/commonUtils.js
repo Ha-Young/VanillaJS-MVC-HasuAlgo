@@ -12,4 +12,4 @@ export const delay = (seconds = DEFAULT_SECONDS) => {
       resolve();
     }, seconds);
   });
-}
+};

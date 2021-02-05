@@ -38,7 +38,7 @@ export const swapNodes = async (nodeGroup, left, right) => {
   rightNode.textContent = leftNodeValue;
 
   await delay(UI_DEFAULT_SECONDS * (right - left) * UI_DELAY_CONSTANT);
-}
+};
 
 export const onHighlightNode = async (index, color = colorChart.SKY_BLUE) => {
   await delay(INCREASED_UI_SECONDS);
@@ -54,7 +54,7 @@ export const onHighlightNode = async (index, color = colorChart.SKY_BLUE) => {
 
   indexNode.classList.remove('transition-effect');
   await delay();
-}
+};
 
 export const offHighlightNode = async (index, color = colorChart.PINK) => {
   await delay(INCREASED_UI_SECONDS);
@@ -70,7 +70,7 @@ export const offHighlightNode = async (index, color = colorChart.PINK) => {
 
   indexNode.classList.remove('transition-effect');
   await delay();
-}
+};
 
 export const onHighlightAllNodes = async (color = colorChart.PINK) => {
   const nodeGroup = document.querySelectorAll('.content-field-node');
@@ -83,4 +83,4 @@ export const onHighlightAllNodes = async (color = colorChart.PINK) => {
 
     await delay();
   }
-}
+};
