@@ -6,7 +6,6 @@ import QuickController from './quick_sort/quick.controller.js';
 window.addEventListener("DOMContentLoaded", function () {
   const $bubble = document.querySelector("#bubble");
   const $quick = document.querySelector("#quick");
-  // let currentSort = new QuickController();
   let currentSort = new BubbleController();
 
   $bubble.addEventListener("change", (event) => {
