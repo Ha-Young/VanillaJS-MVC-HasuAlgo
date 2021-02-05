@@ -14,6 +14,13 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
+  background: rgb(49, 50, 71);
+  background: radial-gradient(
+    circle,
+    rgba(49, 50, 71, 1) 0%,
+    rgba(21, 22, 40, 1) 100%
+  );
+  color: #ebecf0;
 }
 
 *,
@@ -25,7 +32,8 @@ body {
 h1 {
   padding: 20px;
   font-size: 2em;
-  color: black;
+  color: #c6e2ff;
+  animation: flicker 1.5s infinite alternate;
 }
 
 .sorting-algorithms {
@@ -44,6 +52,13 @@ h1 {
   margin: @margin;
   font-size: @button-font;
   border: @border;
+  background: rgb(49, 50, 71);
+  background: radial-gradient(
+    circle,
+    rgba(49, 50, 71, 1) 0%,
+    rgba(21, 22, 40, 1) 100%
+  );
+  color: #ebecf0;
 }
 
 .sorting__queue {
@@ -55,6 +70,8 @@ h1 {
   border: @border;
   margin: @margin;
   font-size: 2em;
+  color: #c6e2ff;
+  animation: neon 0.08s ease-in-out infinite alternate;
 }
 
 .sorting__select-sort {
@@ -62,6 +79,13 @@ h1 {
   width: 13vh;
   height: 5vh;
   font-size: 1.5em;
+  background: rgb(49, 50, 71);
+  background: radial-gradient(
+    circle,
+    rgba(49, 50, 71, 1) 0%,
+    rgba(21, 22, 40, 1) 100%
+  );
+  color: #ebecf0;
   cursor: pointer;
 }
 
@@ -75,6 +99,13 @@ h1 {
   width: 8vh;
   margin: @margin;
   font-size: @button-font;
+  background: rgb(49, 50, 71);
+  background: radial-gradient(
+    circle,
+    rgba(49, 50, 71, 1) 0%,
+    rgba(21, 22, 40, 1) 100%
+  );
+  color: #ebecf0;
   outline: none;
   cursor: pointer;
 }
@@ -103,11 +134,11 @@ h1 {
 .sorting__item {
   list-style: none;
   margin: 5px;
-  background: rgb(218, 215, 232);
-  background: radial-gradient(
-    rgba(218, 215, 232, 1) 0%,
-    rgb(236, 236, 236) 100%
-  );
+  box-shadow: inset 0 0 8px #fff, inset 3px 0 10px rgb(218, 215, 232),
+    inset -3px 0 10px #92c2de, inset 3px 0 50px rgb(218, 215, 232),
+    inset -3px 0 50px #92c2de, 0 0 8px #fff, -1px 0 10px rgb(218, 215, 232),
+    1px 0 10px #92c2de;
+  color: black;
 }
 
 .bubble {
@@ -133,6 +164,46 @@ h1 {
 
 .sort,
 .sorted {
-  background: rgb(218, 215, 232);
-  background: radial-gradient(rgb(196, 193, 214) 0%, rgb(227, 228, 233) 100%);
+  box-shadow: inset 0 0 8px #fff, inset 3px 0 10px #92c2de,
+    inset -3px 0 10px #92c2de, inset 3px 0 50px #92c2de,
+    inset -3px 0 50px #c3dceb, 0 0 8px #fff, -1px 0 10px #92c2de,
+    1px 0 10px #92c2de;
+}
+
+@keyframes flicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
+      0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(30, 132, 242, 0.52),
+      0 0 21px rgba(30, 132, 242, 0.92), 0 0 34px rgba(30, 132, 242, 0.78),
+      0 0 54px rgba(30, 132, 242, 0.92);
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+    box-shadow: none;
+  }
+}
+
+@keyframes neon {
+  from {
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
+      0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(30, 132, 242, 0.52),
+      0 0 21px rgba(30, 132, 242, 0.92), 0 0 34px rgba(30, 132, 242, 0.78),
+      0 0 54px rgba(30, 132, 242, 0.92);
+  }
+  to {
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.98),
+      0 0 30px rgba(202, 228, 225, 0.42), 0 0 12px rgba(30, 132, 242, 0.58),
+      0 0 22px rgba(30, 132, 242, 0.84), 0 0 38px rgba(30, 132, 242, 0.88),
+      0 0 60px rgba(30, 132, 242, 1);
+  }
 }
