@@ -27,7 +27,7 @@ const BubbleController = function (model, view) {
 BubbleController.prototype.addNumber = function (input) {
   const self = this;
 
-  if (!input) {
+  if (!input || self.model.inputArray.length > 9) {
     return;
   }
 
@@ -74,7 +74,10 @@ BubbleController.prototype.shuffleNum = function () {
 
 BubbleController.prototype.setRandom = function () {
   const self = this;
-  const randomNum = Math.floor(Math.random() * 50) + 1;
+
+  if (self.model.inputArray.length > 9) {
+    return;
+  }
 
   self.model.setRandom((updatedList) => {
     self.view.renderInput("DRAW LIST", updatedList);

@@ -4,10 +4,6 @@ const InsertionModel = function () {
 };
 
 InsertionModel.prototype.addNumber = function (array, callback) {
-  if (this.inputArray.length > 9) {
-    return;
-  }
-
   this.inputArray = this.inputArray.concat(array);
   callback(this.inputArray);
 };
@@ -24,7 +20,6 @@ InsertionModel.prototype.startSort = function (callback) {
       if (j) {
         this.taskQueue.push(createTask("UNCOLOR TARGET", j - 1));
       }
-
       this.taskQueue.push(createTask("PICK TARGET", j));
 
       if (sortingList[i] < sortingList[j]) {
@@ -36,7 +31,7 @@ InsertionModel.prototype.startSort = function (callback) {
     }
   }
 
-  this.taskQueue.push(createTask("FINISH SORT"));
+  this.taskQueue.push(createTask("FINISH           SORT"));
   this.inputArray = [...sortingList];
 
   callback();
@@ -61,7 +56,9 @@ InsertionModel.prototype.shuffleNum = function (callback) {
   callback(shuffledArray);
 };
 
-InsertionModel.prototype.setRandom = function (randomNum, callback) {
+InsertionModel.prototype.setRandom = function (callback) {
+  const randomNum = Math.floor(Math.random() * 50) + 1;
+
   this.inputArray.push(randomNum);
   callback(this.inputArray);
 };
