@@ -1,7 +1,3 @@
-import Model from './model.js';
-import View from './view.js';
-import Template from '../utils/template.js'
-
 export default class Controller {
   "use strict";
 

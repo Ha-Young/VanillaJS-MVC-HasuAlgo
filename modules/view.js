@@ -1,15 +1,6 @@
 export default class View {
   "use strict";
 
-  /**
-       * View that abstracts away the browser's DOM completely.
-       * It has two simple entry points:
-       *
-       *   - bind(eventName, handler)
-       *     Takes a visual algorithm application event and registers the handler
-       *   - render(command, parameterObject)
-       *     Renders the given command with the options
-       */
   constructor(template) {
     this.template = template;
     this.$form = document.querySelector("form");
@@ -61,7 +52,7 @@ export default class View {
       return false;
     }
 
-    if (inputArray.some(element => element.match(/[^0-9]/g))) {
+    if (inputArray.some(element => element.trim().match(/[^0-9]/g))) {
       window.alert("Not valid");
       return false;
     }
@@ -75,18 +66,14 @@ export default class View {
   }
 
   enableInputs = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.$submitButton.disabled = false;
-        this.$startButton.disabled = false;
-      }, 1000);
-    });
+    this.$submitButton.disabled = false;
+    this.$startButton.disabled = false;
   }
 
   render = (command, data) => {
     const commands = {
       generateBlocks: () => {
-        this.$content.innerHTML = this.template.show(data);
+        this.$content.innerHTML = this.template.show(data).trim();
       },
       clearBlocks: () => {
         this._clearContent();
@@ -96,82 +83,60 @@ export default class View {
     return commands[command](data);
   }
 
-  swapBlocks = (i, j) => {
-    return new Promise((resolve, reject) => {
-      const $blockI = document.querySelectorAll('.number-block')[i];
-      const $blockJ = document.querySelectorAll('.number-block')[j];
-      const transformI = getComputedStyle($blockI).getPropertyValue("transform");
-      const transformJ = getComputedStyle($blockJ).getPropertyValue("transform");
-      $blockI.style.transform = transformJ;
-      $blockJ.style.transform = transformI;
+  swapBlocks = async (i, j) => {
+    if (i === j) return this._wait(200);
 
-      setTimeout(() => {
-        this.$content.insertBefore($blockJ, $blockI);
-        resolve();
-      }, 1000);
-    });
+    const $blockI = document.querySelectorAll(".number-block")[i];
+    const $blockJ = document.querySelectorAll(".number-block")[j];
+    const $siblingI = $blockI.nextSibling === $blockJ ? $blockI : $blockI.nextSibling;
+    const transformI = getComputedStyle($blockI).getPropertyValue("transform");
+    const transformJ = getComputedStyle($blockJ).getPropertyValue("transform");
+
+    $blockI.style.transform = transformJ;
+    $blockJ.style.transform = transformI;
+
+    await this._wait(100);
+
+    this.$content.insertBefore($blockI, $blockJ);
+    this.$content.insertBefore($blockJ, $siblingI);
+
+    await this._wait(100);
   }
 
-  pickBlocks = (i, j) => {
+  pickBlocks = async (i, j, areEqualBlocks = false) => {
+    if (!areEqualBlocks) {
+      const $blockRight = document.querySelectorAll(".number-block")[j];
+      $blockRight.classList.add("picked");
+    }
 
-    return new Promise((resolve, reject) => {
+    const $blockLeft = document.querySelectorAll(".number-block")[i];
+    $blockLeft.classList.add("picked");
 
-      setTimeout(() => {
-        const $blockLeft = document.querySelectorAll('.number-block')[i];
-        const $blockRight = document.querySelectorAll('.number-block')[j];
-        $blockLeft.classList.add("picked");
-        $blockRight.classList.add("picked");
-        resolve();
-      }, 1000);
-    });
+    await this._wait(200);
   }
 
-  releaseBlocks = (i, j) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
+  releaseBlocks = async (i, j, areEqualBlocks = false) => {
+    if (!areEqualBlocks) this._removeColor(j);
 
-        this.removeColor(i);
-        this.removeColor(j);
-      }, 1000);
-    });
+    this._removeColor(i);
+    await this._wait(200);
   }
 
-  releaseBlocksAfterSwap = (i, j) => {
-    new Promise((res, rej) => {
-      setTimeout(() => {
-        this.removeColor(i);
-        res();
-      }, 1000);
-    }).then(res => {
-      this.removeColor(j);
-    });
-  }
-
-  decideSorted = (i) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const $block = document.querySelectorAll('.number-block')[i];
-        $block.classList.add("sorted");
-        resolve();
-      }, 1000);
-    });
+  decideSorted = async (i) => {
+    const $block = document.querySelectorAll(".number-block")[i];
+    $block.classList.add("sorted");
+    await this._wait(200);
 
   }
 
-  pickPivot = (i, blockState = "pivot") => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const $block = document.querySelectorAll('.number-block')[i];
-        const $blocks = document.querySelectorAll('.number-block');
-        console.log($blocks);
-        $block.classList.add(blockState);
-        resolve();
-      }, 1000);
-    });
+  pickPivot = async (i, blockState = "pivot") => {
+    const $block = document.querySelectorAll(".number-block")[i];
+    $block.classList.add(blockState);
+    await this._wait(200);
   }
 
-  removeColor = (i) => {
-    const $block = document.querySelectorAll('.number-block')[i];
+  _removeColor = async (i) => {
+    const $block = document.querySelectorAll(".number-block")[i];
     $block.classList.remove("picked");
   }
 
@@ -180,4 +145,13 @@ export default class View {
       this.$content.removeChild(this.$content.lastElementChild);
     }
   }
+
+  _wait(t) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, t);
+    })
+  }
+
 }

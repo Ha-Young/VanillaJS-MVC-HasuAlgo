@@ -13,18 +13,6 @@ export default class Template {
       + `</div>`;
   }
 
-  /**
-   * @param {Array} data The Array containing objects you want to find in the
-   *                      template to replace.
-   * @returns {string} HTML String of an <li> element
-   *
-   * @example
-   * view.show({
-   *	defalutClass: "number-block",
-   *	colorState: "sorted",
-   *	height: 10,
-   * });
-   */
   show(data) {
     let view = "";
 
