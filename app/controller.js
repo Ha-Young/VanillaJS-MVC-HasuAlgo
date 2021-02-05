@@ -31,9 +31,6 @@ Controller.prototype.getData = function () {
       (type, ...index) => {
         this.view.paintBar(type, ...index);
       },
-      (index1, index2) => {
-        this.view.pointBars(index1, index2);
-      }
     );
   });
 }

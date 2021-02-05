@@ -1,11 +1,8 @@
-import { fill } from "lodash";
-
 function View () {
   this._INPUT = document.querySelector(".numberInput");
   this._VISUALIZATION = document.querySelector(".visualization");
   this._CONTAINER = document.querySelector(".container");
   this._FORM = document.querySelector(".sortForm");
-
   this._INITIAL_COLOR = "#bdc3c7";
   this._PIVOT_COLOR = "#f1c40f";
   this._SORTED_COLOR = "#27ae60";

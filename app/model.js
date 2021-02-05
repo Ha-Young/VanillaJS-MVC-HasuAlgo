@@ -1,5 +1,3 @@
-import { toPairsIn } from "lodash";
-
 function Model() {
   this._storage = [];
 }
@@ -8,7 +6,7 @@ function wait(seconds) {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
-    }, seconds * 1000);
+    }, seconds * 800);
   });
 }
 
@@ -17,7 +15,7 @@ Model.prototype.setData = function (string) {
 
   if (numberList.length < 3) {
     throw "too few numbers";
-  } else if (numberList.length > 20) {
+  } else if (numberList.length > 10) {
     throw "too many numbers";
   } else if (numberList.some((number) => number < 1 || number > 10)) {
     throw "some of number(s) out of range";
@@ -56,7 +54,7 @@ Model.prototype.bubbleSort = async function (storage,
         showSwap(j, j + 1);
       }
 
-      await wait(0.5);
+      await wait(1);
       paintBar("initial", j, j + 1);
     }
 
@@ -82,6 +80,7 @@ Model.prototype.quickSort = async function (storage,
     let left = startIndex + 1;
     let right = endIndex;
 
+    await wait(1);
     paintBar("pivot", pivotIndex);
 
     while (left <= right) {
@@ -97,8 +96,10 @@ Model.prototype.quickSort = async function (storage,
         [storage[left], storage[right]] = [storage[right], storage[left]];
         await wait(1);
         paintBar("selected", left, right);
-        await wait(1);
+
+        await wait(0.5);
         showSwap(left, right);
+
         await wait(1);
         paintBar("initial", left, right);
       }
@@ -113,18 +114,19 @@ Model.prototype.quickSort = async function (storage,
     await wait(1);
     paintBar("initial", pivotIndex);
 
-    await wait(2);
+    await wait(1);
     paintBar("sorted",right);
 
     await doPartialQuickSort(startIndex, right - 1);
-    await wait(2);
-    doPartialQuickSort(right + 1, endIndex);
+    await wait(1);
+
+    await doPartialQuickSort(right + 1, endIndex);
   }
 
   initializeContainer();
   showInitial(storage);
-  await wait(1);
 
+  await wait(1);
   await doPartialQuickSort(0, storage.length - 1);
 }
 

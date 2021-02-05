@@ -9,5 +9,5 @@ function Main() {
   this.controller = new Controller(this.model, this.view);
 }
 
-var main = new Main();
+const main = new Main();
 main.controller.getData();
