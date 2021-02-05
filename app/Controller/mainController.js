@@ -3,12 +3,9 @@ import numModel from '../Model/model';
 import insertionSort from './insertSort/insertSortController';
 import quickSort from './quickSort/quickSortController';
 
-// TODO : (선택...) 각 막대에 뛸때 땀 추가
-
 const submitButton = document.querySelector("#submitButton");
 const textBox = document.querySelector('#textBox');
 const mainTitle = document.querySelector('.mainTitle--h1');
-
 let numbersObjArray = [];
 
 submitButton.addEventListener('click', buttonClickEvent);
