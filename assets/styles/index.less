@@ -1,7 +1,9 @@
 @bgColor: rgb(218, 227, 228);
-@compare: rgb(0, 183, 255);
+@compare: rgb(61, 149, 184);
 @pivot: rgb(72, 192, 162);
 @done: rgb(99, 121, 141);
+@item: rgb(85, 106, 165);
+@border: rgb(192, 212, 216) solid 0.3vw;
 
 @flex-center: {
   display: flex;
@@ -34,18 +36,25 @@ html, body {
   width: 80%;
   height: 30vh;
   padding: 5vw;
+  color: @item;
+  .sortItems {
+    @flex-center();
+    margin: auto 2vw;
+    width: 50px;
+    height: 50px;
+    padding: 2vw;
+    border-radius: 50%;
+    transition: all 1s ease-in-out;
+  }
 }
 
-.sortItems {
-  margin: auto 2vw;
-  padding: 2vw;
-  border: rgb(192, 212, 216) solid 0.3vw;
-  border-radius: 50%;
-  transition: all 1s ease-in-out;
+.border {
+  border: @border;
 }
 
 .compare {
   color: @compare;
+  font-weight: bolder;
 }
 
 .pivot {
@@ -53,5 +62,6 @@ html, body {
 }
 
 .done {
+  color: @bgColor;
   background-color: @done;
 }

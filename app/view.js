@@ -1,9 +1,13 @@
 function View() {
   this.ITEM_CLASS_NAME = 'sortItems';
   this.$resultView = document.querySelector('.resultView');
+  this.$form = document.querySelector('form');
+  this.$inputValue = document.querySelector('.inputValue');
+  // this.list = '';
 }
 
 View.prototype.render = function(list) {
+  this.list = list;
   this.$resultView.innerHTML = '';
   list.forEach(elem => {
     const div = document.createElement('div');
@@ -13,32 +17,33 @@ View.prototype.render = function(list) {
   });
 };
 
-View.prototype.reRender = function(list) {
+View.prototype.reRender = function(list = this.list) {
   const $items = this.getCurrentDOM();
   const tempStorage = document.createElement('div');
 
   list.forEach(item => {
     const div = $items.find(elem => item === parseInt(elem.innerText, 10));
-    div.classList.remove('compare', 'pivot');
+    div.classList.remove('compare');
     div.style.transform = 'none';
     tempStorage.appendChild(div);
   });
 
   this.$resultView.innerHTML = tempStorage.innerHTML;
-}
+};
 
 View.prototype.getCurrentDOM = function () {
   return Array.prototype.slice.call(this.$resultView.childNodes);
 };
 
 View.prototype.start = async function () {
+  this.$resultView.childNodes.forEach(item => item.classList.add('border'));
   await makeInterval();
-}
+};
 
 View.prototype.pivot = async function (index) {
-  const $items = this.getCurrentDOM();
-  $items[index].classList.add('pivot');
-
+  this.reRender();
+  const $items = this.getCurrentDOM()[index];
+  $items.classList.add('pivot');
   await makeInterval();
 };
 
@@ -48,6 +53,7 @@ View.prototype.compare = async function (leftIndex, rightIndex) {
   if ($items[leftIndex].classList.contains('done')) {
     return;
   }
+
   if ($items[rightIndex].classList.contains('done')) {
     return;
   }
@@ -59,9 +65,8 @@ View.prototype.compare = async function (leftIndex, rightIndex) {
 
 View.prototype.move = async function (index, prevIndex) {
   const $items = this.getCurrentDOM();
-  $items[index].classList.add('compare');
   $items[prevIndex].classList.remove('compare');
-
+  $items[index].classList.add('compare');
   await makeInterval();
 };
 
@@ -79,13 +84,19 @@ View.prototype.singleItemDone = async function (index) {
   $item.classList.remove('compare', 'pivot');
   $item.classList.add('done');
   await makeInterval(0);
-}
+};
 
 View.prototype.finishSort = async function () {
   const $items = this.getCurrentDOM();
   $items.forEach(item => item.classList.remove('compare', 'pivot'));
   await makeInterval();
-}
+  this.showRestart();
+};
+
+View.prototype.showRestart = function () {
+  this.$inputValue.disabled = false;
+  this.$form.querySelector('input[type=submit]').value = 'restart';
+};
 
 function makeInterval(interval = 1) {
   return new Promise(resolve => {

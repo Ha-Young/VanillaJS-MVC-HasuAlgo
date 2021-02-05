@@ -7,8 +7,10 @@ Controller.prototype.submitHandler = function () {
   try {
     const $inputValue = document.querySelector('.inputValue');
     const sortType = document.querySelector('select').value;
-    const numberList = $inputValue.value.trim().split(',').map(elem => parseInt(elem, 10));
+    const numberList = modelingData($inputValue.value);
+
     $inputValue.value = '';
+    $inputValue.disabled = true;
     // checkValidation(numberList);
 
     this.view.render(numberList);
@@ -18,6 +20,11 @@ Controller.prototype.submitHandler = function () {
     document.querySelector('.resultView').textContent = err.message;
   }
 };
+
+function modelingData(string) {
+  const list = string.trim().split(',').map(elem => parseInt(elem, 10));
+  return list.filter(elem => !!elem === true);
+}
 
 Controller.prototype.sortingStart = function (sortType, list) {
   if (sortType === 'bubble') {
@@ -89,7 +96,7 @@ Controller.prototype.partition = async function (start, end, list) {
   this.model.createTask('pivot', index);
 
   while (start < end) {
-    this.model.createTask('compare', start, index);
+    this.model.createTask('compare', start, end);
     while (list[start] < pivot) {
       start++;
       this.model.createTask('move', start, start - 1);
