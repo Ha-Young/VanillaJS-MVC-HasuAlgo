@@ -1,13 +1,37 @@
-.mergeChart {
+// .mergeChart {
+//   width: 100px;
+//   height: 100px;
+//   border-radius: 50%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   margin-top: 10px;
+// }
+
+.merge-left {
   transition: all 0.6s cubic-bezier(1, -0.49, 4, 3.29);
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.canvas-number{
-  margin-top: auto;
+.merge-right {
+  transition: all 0.6s cubic-bezier(1, -0.49, 4, 3.29);
+}
+
+.number-cloud {
+  margin-left: unset;
+  width: 50px;
+  margin: 5px;
+  font-size: 1.5em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  opacity: 93%;
+  border-radius: 50%;
+  transition: all 0.5s cubic-bezier(0.96,-0.45, 0, 1.46);
+  background-image: url(../images/single-cloud.png);
+  background-repeat: no-repeat;
+  background-size: initial;
+}
+
+.number-cloud::after{
+  content: unset;
 }

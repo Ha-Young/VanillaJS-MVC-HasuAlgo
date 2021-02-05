@@ -23,5 +23,4 @@ export default function handleKeyup(e) {
   numbers.push(inputValue);
   resetInputTexts();
   createNewNumberBar(inputValue);
-  // nodes.push(newList); ? merge sort
 }

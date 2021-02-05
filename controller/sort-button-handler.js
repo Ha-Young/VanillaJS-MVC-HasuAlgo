@@ -1,7 +1,9 @@
 import bubbleSort from "../model/bubble-sort";
+import mergeSort from "../model/merge-sort";
 import { inputDatas } from "../model/user-input-data";
+import changeBarToCircle from "../view/change-bar-to-circle";
 
-const { numbers } = inputDatas;
+const { numbers, nodes } = inputDatas;
 
 export function handleClickMergeButton() {
   nodes.forEach(e => {
@@ -10,7 +12,7 @@ export function handleClickMergeButton() {
     e.style.width = "100px";
   });
 
-  mergeAnimation();
+  changeBarToCircle();
   mergeSort(numbers);
 }
 

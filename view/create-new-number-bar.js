@@ -1,7 +1,7 @@
 import { inputDatas } from "../model/user-input-data";
 import { canvas } from "./add-event-listeners";
 
-const { numbers } = inputDatas;
+const { numbers, nodes } = inputDatas;
 
 export default function createNewNumberBar(inputValue) {
   const newNumberBar = document.createElement("div");
@@ -17,4 +17,5 @@ export default function createNewNumberBar(inputValue) {
   newNumberBar.appendChild(numberTextBox);
   newNumberBar.dataset.value = inputValue;
   canvas.appendChild(newNumberBar);
+  nodes.push(newNumberBar);
 }
