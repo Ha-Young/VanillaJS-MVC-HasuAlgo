@@ -30,13 +30,18 @@ export function handleKeyup(e) {
   alretBox.textContent = "";
 
   const hexCode = getRandomHexCode();
-  const newList = document.createElement("li");
+  const newList = document.createElement("div");
 
-  newList.style.backgroundColor = `#${hexCode}`;
+  // newList.style.backgroundColor = `#${hexCode}`;
+  // newList.classList.add("canvas-number");
+
   newList.style.order = numbers.length;
   newList.style.height = `${(inputValue * 5) + 30 + inputValue}px`;
-  newList.textContent = inputValue;
-  newList.classList.add("canvas-number");
+  newList.classList.add("pipe");
+  const numberBox = document.createElement("div");
+  numberBox.textContent = inputValue;
+  numberBox.classList.add("numberBox");
+  newList.appendChild(numberBox);
   newList.dataset.value = inputValue;
   nodes.push(newList);
   canvas.appendChild(newList);

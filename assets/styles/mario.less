@@ -1,21 +1,16 @@
-.mario{
+.mario {
   position: absolute;
   width: 71px;
   height: 72px;
-  background: url('https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/mariowalking/result.png') left center;    
-  // top:-70px;
-  left:0px;
-  // -webkit-animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
-  animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
-  -webkit-animation: play 0.8s steps(4) infinite, 7s both infinite linear;
-  animation: play 0.8s steps(4) infinite, 7s both infinite linear;
+  background: url('https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/mariowalking/result.png');    
+  left:10px;
+  top: 82%;
+  // animation: play 0.8s steps(4) infinite, 7s both infinite linear;
+  // animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
 }
 
-@-webkit-keyframes play{
-  100%{background-position: -284px;}
-}
-@keyframes play{
-  100%{background-position: -284px;}
+@keyframes play {
+  100% { background-position: -284px; }
 }
 
 @keyframes run {
@@ -52,4 +47,62 @@
 .princess-container {
   display: flex;
   justify-content: center;
+}
+
+.numberBox {
+  width: 100%;
+  top: -40px;
+  color: whitesmoke;
+  font-size: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  position: absolute;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.pipe {
+  position: relative;
+  width: 50px;
+  background:#74bf2e;
+  border:1px solid #502946;
+  border-bottom: unset;
+  z-index:1;
+  box-shadow:inset 3px 0px 2px #9AE75B ,
+             inset 5px 0px 1px #F3FC85 ,
+             inset 8px 0px 2px #9AE75B ,
+             inset 9px 0px 2px #71BC2B ,
+             inset 11px 0px 2px #9AE75B,
+    /*--------------------------------------*/
+             inset -4px 0px 1px #538127 ,
+             inset -6px 0px 1px #78C32A ,
+             inset -8px 0px 1px #4D7E22 ;
+  margin-top:auto;
+}
+
+.pipe:after {
+  width:72px;
+  height:40px;
+  content:'';
+  background: #74bf2e;
+  position: absolute;
+  margin: -10px 0px 0px -11px;
+  box-shadow:inset 3px 0px 2px #9AE75B ,
+             inset 5px 0px 1px #F3FC85 ,
+             inset 8px 0px 2px #9AE75B ,
+             inset 9px 0px 2px #71BC2B ,
+             inset 11px 0px 2px #9AE75B ,
+    /*--------------------------------------*/
+             inset -4px 0px 1px #538127 ,
+             inset -6px 0px 1px #78C32A ,
+             inset -8px 0px 1px #4D7E22 ;
+  border:1px solid #502946;
+}
+
+body {
+  background-image: url(../images/clouds.png);
+  background-repeat: no-repeat;
+  background-size: 110vh;
+  background-position-x: 30vh;
+  background-position-y: 20vh;
 }
