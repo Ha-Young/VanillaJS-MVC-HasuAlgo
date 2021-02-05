@@ -13,3 +13,6 @@ bower_components/
 ## Files
 result.xml
 npm-debug.log
+
+# Users Environment Variables
+.lock-wscript
