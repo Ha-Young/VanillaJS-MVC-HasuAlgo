@@ -88,7 +88,7 @@ Controller.prototype.ascendingSortTwoItem = async function(left, right, index) {
 
   if (Number(left.textContent) <= Number(right.textContent)) {
     if(!right.classList.contains("sorted")) {
-      await self.view.setDelayForTransition(50);
+      await self.view.setDelayForTransition(0);
 
       left.classList.remove(self.view.classList.sort);
     }
@@ -104,7 +104,7 @@ Controller.prototype.bubbleSort = async function () {
     for (let j = 0; j < item.length - 1; j++) {
         await this.ascendingSortTwoItem.call(this, item[j], item[j + 1], j);
     }
-    await this.view.setDelayForTransition(50);
+    await this.view.setDelayForTransition(0);
     item[i - 1].classList.add("sorted");
   }
 };
@@ -120,45 +120,43 @@ Controller.prototype.resetSort = function () {
   //reset후, input을 submit하면 refresh되는 에러가 있습니다.
 };
 
-// Controller.prototype.mergeSort = async function () {
-//   const self = this;
-//   const items = Array.from(this.view.$allItem);
+Controller.prototype.mergeSort = async function () {
+  const self = this;
+  const items = Array.from(this.view.$allItem);
 
-//   items.forEach(function (item) {
-//     self.view.addClass(self.view.classList.moving, item);
-//   });
+  items.forEach(function (item) {
+    item.classList.add(self.view.classList.moving);
+  });
 
-//   await this.splitItems.call(this, items, 100, 0);
-// };
+  await this.splitItems.call(this, items, 0);
+};
 
-// Controller.prototype.splitItems = async function (items, x, y) {
-//   if (items.length === 1) {
-//     return;
-//   }
+Controller.prototype.splitItems = async function (items, y) {
+  if (items.length <= 2) {
+    return;
+  }
 
-//   const xCount = items.length;
-//   const yCount = y - 80;
+  const xCount = 5;
+  const yCount = y - 80;
 
-//   const self = this;
-//   const left = items.slice(0, items.length / 2);
-//   const right = items.slice(items.length / 2);
+  const self = this;
+  const left = items.slice(0, items.length / 2);
+  const right = items.slice(items.length / 2);
 
-//   await self.view.setDelayForTransition();
+  left.forEach(function (item) {
+    self.view.translate(item, -xCount, yCount);
+  });
 
-//   left.forEach(function (item) {
-//     self.view.translate(item, -xCount, yCount);
-//   });
+  await self.view.setDelayForTransition(1000);
 
-//   await self.view.setDelayForTransition();
+  right.forEach(function (item) {
+    self.view.translate(item, xCount, yCount);
+  });
 
-//   right.forEach(function (item) {
-//     self.view.translate(item, xCount, yCount);
-//   });
+  await self.view.setDelayForTransition(1000);
 
-//   await self.view.setDelayForTransition();
-
-//   await this.splitItems.call(this, left, xCount, yCount);
-//   await this.splitItems.call(this, right, xCount, yCount);
-// };
+  await this.splitItems.call(this, left, yCount);
+  await this.splitItems.call(this, right, yCount);
+};
 
 export default Controller;
