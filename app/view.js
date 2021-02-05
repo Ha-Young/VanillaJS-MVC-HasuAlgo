@@ -12,7 +12,7 @@ export class View {
     this.warningZone = document.querySelector('.content-warning');
   }
 
-  get nodeList() { // node 이름 혼용 고쳐주기
+  get nodeList() {
     return this.input.value;
   }
 
@@ -20,7 +20,7 @@ export class View {
     this.input.value = '';
   }
 
-  bindInputNumbers(handler) { // eventlistener 다 remove해주기.. 근데 그럼 유명함수로 만들어야하는데... 그럼 디스바인딩해줘야하는데... // if flag거는건 어때..?
+  bindInputNumbers(handler) {
     this.form.addEventListener('submit', (event) => {
       event.preventDefault();
 
