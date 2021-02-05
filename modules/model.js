@@ -123,16 +123,6 @@ export default class Model {
     return index;
   }
 
-  // mergeSort() {
-  //   this.mergeSort();
-  //   this._merge();
-  //   this._merge();
-  // }
-
-  // _merge() {
-
-  // }
-
   _setStandard = (maxNum, maxHeight) => {
     if (maxNum > maxHeight) {
       return (maxHeight / maxNum);
