@@ -8,7 +8,6 @@
 <body>
   <header>Visualize Sorting Algorithms</header>
   <section class="content">
-    <!-- <img src="./assets/images/pngegg.png" alt="bomb"> -->
     <div id="toolBar" class="tool-bar">
       <button id="playButton"><img src="./assets/images/play.png" alt="play"></button>
       <button id="pauseButton"><img src="./assets/images/pause.png" alt="pause"></button>
@@ -16,7 +15,7 @@
       <button id="fastButton"><img src="./assets/images/fast.png" alt="fast"></button>
       <button id="slowButton"><img src="./assets/images/slow.png" alt="slow"></button>
 
-      <select class="select-box" name="sorting">
+      <select id="selectBox" class="select-box" name="sorting">
         <option value="none">=== select ===</option>
         <option value="bubble">bubble sort</option>
         <option value="quick">quick sort</option>
@@ -27,6 +26,6 @@
     <div id="commentBox" class="comment-box"></div>
     <div id="sortBox" class="sort-box"></div>
   </section>
-  <script src="./app/model.js"></script>
+  <script src="./app/controller.js"></script>
 </body>
 </html>

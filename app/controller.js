@@ -17,7 +17,9 @@ const $pauseButton = document.getElementById('pauseButton');
 const $replayButton = document.getElementById('replayButton');
 const $fastButton = document.getElementById('fastButton');
 const $slowButton = document.getElementById('slowButton');
+const $selectBox = document.getElementById('selectBox');
 let sortingList;
+let sortingMethod;
 
 $submitButton.addEventListener('click', function () {
   const inputValue = $inputBox.value;
@@ -26,6 +28,7 @@ $submitButton.addEventListener('click', function () {
 
   if (sortingList) {
     $submitButton.disabled = true;
+
     view._createBlock(sortingList);
   }
 });
@@ -33,7 +36,14 @@ $submitButton.addEventListener('click', function () {
 $playButton.addEventListener('click', function () {
   if (sortingList) {
     $playButton.disabled = true;
-    model._bubbleSort(sortingList);
+
+    if (sortingMethod === 'bubbleSort') {
+      model._bubbleSort();
+    }
+
+    if (sortingMethod === 'quickSort') {
+      model._quickSort();
+    }
   }
 });
 
@@ -43,17 +53,32 @@ $fastButton.addEventListener('click', function () {
 
 $slowButton.addEventListener('click', function () {
   model._setTime("slow");
-})
+});
 
 $replayButton.addEventListener('click', function () {
   $submitButton.disabled = false;
   $playButton.disabled = false;
+  model.isStop = true;
+});
 
-  model._resetBoard();
-})
+$selectBox.addEventListener('change', function () {
+  if ($selectBox.options[$selectBox.selectedIndex].text === 'bubble sort') {
+    sortingMethod = 'bubbleSort';
+    return;
+  }
 
-async function swap(smallValue, largeValue) {
-  await view._swapElements(smallValue, largeValue);
+  if ($selectBox.options[$selectBox.selectedIndex].text === 'quick sort') {
+    sortingMethod = 'quickSort';
+    return;
+  }
+});
+
+async function swap(smallValue, largeValue, swapList, delay) {
+  await view._swapElements(smallValue, largeValue, swapList, delay);
 }
 
-export { swap };
+function moveToChangeFunction(leftElement, rightElement, className) {
+  view._changeBlockStyle(leftElement, rightElement, className);
+}
+
+export { swap, moveToChangeFunction };

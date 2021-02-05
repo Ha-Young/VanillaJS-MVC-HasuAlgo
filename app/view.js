@@ -3,10 +3,6 @@ export default function View() {
 }
 
 View.prototype._createBlock = function (sortList) {
-  if (!Array.isArray(sortList)) {
-    throw new Error("실패");
-  }
-
   for (let i = 0; i < sortList.length; i++) {
     const $block = document.createElement('div');
     const $label = document.createElement('b');
@@ -14,33 +10,45 @@ View.prototype._createBlock = function (sortList) {
     $block.classList.add('block');
     $block.style.height = `${sortList[i] * 5 + 10}px`;
     $label.textContent = `${sortList[i]}`;
-    $label.style.height = `${sortList[i] * 5 + 10}px`
+    $label.style.height = `${sortList[i] * 5 + 10}px`;
 
     $block.appendChild($label);
     this.$sortBox.appendChild($block);
   }
 }
 
-View.prototype._swapElements = function (smallValue, largeValue) {
+View.prototype._swapElements = function (smallValue, largeValue, swapList, delay) {
   return new Promise(resolve => {
-    const loa = smallValue.getBoundingClientRect().x;
-    const lob = largeValue.getBoundingClientRect().x;
+    const smallValueLocationX = this._getTargetTranslateX(smallValue);
+    const largeValueLocationX = this._getTargetTranslateX(largeValue);
 
-    smallValue.classList.add('transition');
-    largeValue.classList.add('transition');
+    this._changeBlockStyle(smallValue, largeValue, 'transition');
+    this._changeBlockStyle(smallValue, largeValue, 'selected');
 
-    smallValue.style.transform = `translateX(${lob - loa}px)`;
-    largeValue.style.transform = `translateX(${loa - lob}px)`;
+    smallValue.style.transform = `translateX(${largeValueLocationX - smallValueLocationX}px)`;
+    largeValue.style.transform = `translateX(${smallValueLocationX - largeValueLocationX}px)`;
 
     setTimeout(() => {
-      smallValue.classList.remove('transition');
-      largeValue.classList.remove('transition');    
-
       smallValue.style.transform = 'none';
       largeValue.style.transform = 'none';
+      
+      this._changeBlockStyle(smallValue, largeValue, 'selected');
+      while (this.$sortBox.hasChildNodes()) {
+        this.$sortBox.removeChild(this.$sortBox.firstChild);
+      }
 
-      this.$sortBox.insertBefore(smallValue, largeValue);
+      this._createBlock(swapList);
       resolve();
-    }, 1000);
+    }, delay);
   });
+}
+
+View.prototype._changeBlockStyle = function (leftElement, rightElement, className) {
+  leftElement.classList.toggle(className);
+  rightElement.classList.toggle(className);
+}
+
+
+View.prototype._getTargetTranslateX = function (target) {
+  return target.getBoundingClientRect().x;
 }

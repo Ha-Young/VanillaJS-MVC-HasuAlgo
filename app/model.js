@@ -1,35 +1,69 @@
-import { swap } from './controller.js';
+import { swap, moveToChangeFunction } from './controller.js';
 
 export default function Model() {
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
   this.sortChildren = this.$sortBox.children;
   this.sortingList = [];
-  this.storage = [];
-  this.delay = 1000;
   this.isStop = false;
+  this.delay = 1000;
 }
 
-Model.prototype._bubbleSort = async function (array) {
-  const sortingList = array;
+Model.prototype._quickSort = async function (array, start = 0, end = array.length - 1) {
+  if (start >= end) {
+    return; 
+  }
+
+  if (this.isStop) {
+    return this._resetBoard();
+  }
+
+  let borderIndex = await this._getQuickSortIndex(array, start, end);
+
+	await this._quickSort(array, start, borderIndex - 1);
+  await this._quickSort(array, borderIndex, end);
+
+	return array;
+}
+
+Model.prototype._getQuickSortIndex = async function (array, start, end) {
+  const pivotValue = array[ Math.floor((start + end) / 2) ];
+
+	while (start <= end) {
+		while (array[start] < pivotValue) {
+      start = start + 1; 
+    }
+
+		while (array[end] > pivotValue) {
+      end = end - 1;
+    }
+
+		if (start <= end) {
+      let tmp = array[start];
+
+      array[start] = array[end];
+      array[end] = tmp;
+
+      await swap(this.sortChildren[start], this.sortChildren[end], array, this.delay);
+
+			start = start + 1;
+			end = end - 1;
+		}
+	}
+
+	return start;
+}
+
+Model.prototype._bubbleSort = async function () {
   let swapValue;
 
-  this.storage.push(array);
-
-  for (let i = 0; i < sortingList.length; i++) {
-    for (let j = 0; j < sortingList.length - 1 - i; j++) {
+  for (let i = 0; i < this.sortChildren.length; i++) {
+    for (let j = 0; j < this.sortChildren.length - 1 - i; j++) {
       if (this.isStop) {
-        while (this.$sortBox.hasChildNodes()) {
-          this.$sortBox.removeChild(this.$sortBox.firstChild);
-        }
-
-        this.sortingList = [];
-        this.isStop = false;
-        return;
+        return this._resetBoard();
       }
 
-      this.sortChildren[j].classList.toggle('selected');
-      this.sortChildren[j + 1].classList.toggle('selected');
+      moveToChangeFunction(this.sortChildren[j], this.sortChildren[j + 1], 'selected');
 
       await new Promise(resolve => {
         setTimeout(() => {
@@ -37,23 +71,20 @@ Model.prototype._bubbleSort = async function (array) {
         }, this.delay);
       });
 
-      if (sortingList[j] > sortingList[j + 1]) {
-        await swap(this.sortChildren[j + 1], this.sortChildren[j]);
-
-        swapValue = sortingList[j];
-        sortingList[j] = sortingList[j + 1];
+      if (this.sortingList[j] > this.sortingList[j + 1]) {
+        swapValue = this.sortingList[j];
+        this.sortingList[j] = this.sortingList[j + 1];
         this.sortingList[j + 1] = swapValue;
+
+        await swap(this.sortChildren[j + 1], this.sortChildren[j], this.sortingList, this.delay);
+      } else {
+        moveToChangeFunction(this.sortChildren[j], this.sortChildren[j + 1], 'selected');
       }
-      
-      this.sortChildren[j].classList.toggle('selected');
-      this.sortChildren[j + 1].classList.toggle('selected');
     }
 
     if (!swapValue) {
       break;
     }
-
-    this.sortChildren[this.sortChildren.length - i - 1].classList.add('finish');
   }
 }
 
@@ -100,13 +131,12 @@ Model.prototype._checkValue = function (string) {
 }
 
 Model.prototype._resetBoard = function () {
-  this.isStop = true;
-
-  if (!this.isStop) {
-    while (this.$sortBox.hasChildNodes()) {
-      this.$sortBox.removeChild(this.$sortBox.firstChild);
-    }
-
-    this.sortingList = [];
+  while (this.$sortBox.hasChildNodes()) {
+    this.$sortBox.removeChild(this.$sortBox.firstChild);
   }
+
+  this.sortingList = [];
+  this.isStop = false;
+
+  return;
 }
