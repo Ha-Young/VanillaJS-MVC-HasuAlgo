@@ -44,12 +44,12 @@ export default class Templates {
     `)
   }
 
-  arrow(arrowKinds, xPos, yPos) {
+  arrow(arrowType, xPos, yPos) {
     return (`
-      <g transform="translate(${xPos}, ${yPos})" class="${arrowKinds}-arrow">
+      <g transform="translate(${xPos}, ${yPos})" class="${arrowType}-arrow">
         <polyline points="10,20,10,0" fill="none"
-          stroke-width="2" marker-end="url(#triangle-${arrowKinds})" />
-        <text class="arrow-text" dy=".35em" x="10" y="30">${arrowKinds}</text>
+          stroke-width="2" marker-end="url(#triangle-${arrowType})" />
+        <text class="arrow-text" dy=".35em" x="10" y="30">${arrowType}</text>
       </g>
     `)
   }

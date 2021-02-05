@@ -1,34 +1,37 @@
-import CONSTANT, { ITEM, THEME } from '../common/constant';
-import { SortItemList } from '../common/typeDef';
-
-
+import CONSTANT, { ITEM, THEME, SORT_TYPE } from "../common/constant";
+import { SortItemList } from "../common/typeDef";
 
 export default class Model {
   constructor() {
     this._sortList = [];
     this._sortMaxNum = -1;
-    this._currentSortKinds = 'insertion';
+    this._currentSortType = SORT_TYPE.INSERT;
     this._currentTheme = THEME.LIGHT_THEME;
   }
 
-  initDatas(data) {
+  initData(data) {
     if (!data) {
-      throw new Error("입력값이 없습니다. 입력은 숫자를 ','로 구분지어 나열해주십시오.");
+      throw new Error(
+        "입력값이 없습니다. 입력은 숫자를 ','로 구분지어 나열해주십시오."
+      );
     }
 
     this._sortList = [];
     this._sortMaxNum = -1;
 
-    const splittedData = data.split(',');
+    const splittedData = data.split(",");
 
     const parsedData = splittedData.map((char) => {
-      const parsedInt = +char;
+      const parsedInt = Number(char);
 
       if (Number.isNaN(parsedInt)) {
         throw new Error("입력받은 숫자가 잘못되었습니다.");
       }
 
-      if (parsedInt > CONSTANT.LIMIT_MAX_NUMBER || parsedInt < CONSTANT.LIMIT_MIN_NUMBER) {
+      if (
+        parsedInt > CONSTANT.LIMIT_MAX_NUMBER ||
+        parsedInt < CONSTANT.LIMIT_MIN_NUMBER
+      ) {
         throw new Error("숫자는 반드시 1이상 50이하 이어야 합니다.");
       }
 
@@ -56,19 +59,18 @@ export default class Model {
     this._sortList = sortList;
   }
 
-  get currentSortKinds() {
-    return this._currentSortKinds;
+  get currentSortType() {
+    return this._currentSortType;
   }
 
-  set currentSortKinds(sortKinds) {
-    this._currentSortKinds = sortKinds;
+  set currentSortType(sortType) {
+    this._currentSortType = sortType;
   }
 
   toggleTheme() {
-    if (this.currentTheme === THEME.LIGHT_THEME) this._currentTheme = THEME.DARK_THEME;
-    else this._currentTheme = THEME.LIGHT_THEME;
-
-    return this._currentTheme;
+    this.currentTheme === THEME.LIGHT_THEME
+      ? (this._currentTheme = THEME.DARK_THEME)
+      : (this._currentTheme = THEME.LIGHT_THEME);
   }
 
   get currentTheme() {
@@ -82,7 +84,8 @@ export default class Model {
    *
    */
   getSortItemList(sortList) {
-    let xPos = ITEM.FIRST_X_POS - (ITEM.DISTANCE_X_POS / 2) * (sortList.length - 1);
+    let xPos =
+      ITEM.FIRST_X_POS - (ITEM.DISTANCE_X_POS / 2) * (sortList.length - 1);
 
     const sortItemList = sortList.map((value) => {
       const sortItem = this.createSortItem(value, xPos);
@@ -116,6 +119,6 @@ export default class Model {
         size: ITEM.TEXT.SIZE,
       },
       value,
-    }
+    };
   }
 }
