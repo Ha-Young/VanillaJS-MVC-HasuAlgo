@@ -1,12 +1,24 @@
-import {view} from './view.js'
-import {model} from './model.js'
+import View from './view.js'
+import Model from './model.js'
 
-function Controller (model, view) {
-  this.model = model;
-  this.view = view;
+function Controller() {
+  this.model = new Model;
+  this.view = new View;
+
+  this.$typed = document.querySelector(".typed");
+  this.$bubbleSortButton = document.querySelector('.bubbleSortButton');
+  this.$restartButton = document.querySelector('.restartButton');
 }
 
-async function sortStorage(storeageArray) {
+Controller.prototype.getData = function () {
+
+
+  this.$typed.addEventListener('keypress', this.handleKeyUp.bind(this));
+  this.$bubbleSortButton.addEventListener('click', this.handleBubbleClick.bind(this));
+  this.$restartButton.addEventListener('click', this.handleRestartClick.bind(this));
+}
+
+Controller.prototype.sortStorage = async function(storeageArray) {
   for (let i = 0; i < storeageArray.length; i++) {
     for (var j= 0; j <storeageArray.length - 1 -i; j++) {
       if (storeageArray[j] > storeageArray[j + 1]) {
@@ -15,98 +27,53 @@ async function sortStorage(storeageArray) {
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
 
-        await moveGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
-        await changeGraph(view.$graphNodes[j], view.$graphNodes[j + 1]);
+        await this.view.moveGraph(this.view.$graphNodes[j], this.view.$graphNodes[j + 1]);
+        await this.view.changeGraph(this.view.$graphNodes[j], this.view.$graphNodes[j + 1]);
 
       }
     }
-    await changeColor(view.$graphNodes[storeageArray.length - i - 1]);
 
+    await this.view.changeColor(this.view.$graphNodes[storeageArray.length - i - 1]);
   }
 }
 
-function moveGraph(leftNode, rightNode) {  
-  leftNode.classList.add('transition');
-  rightNode.classList.add('transition');
-  leftNode.style.transform = 'translateX(60px)';
-  rightNode.style.transform = 'translateX(-60px)';
-  
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 1300);
-  });
-}
-
-function changeGraph(leftNode, rightNode) {
-  leftNode.classList.remove('transition');
-  rightNode.classList.remove('transition');
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      leftNode.style.transform = null;
-      rightNode.style.transform = null;
-
-      setTimeout(() => {
-        view.$contentContainer.insertBefore(rightNode, leftNode);
-        resolve();
-      }, 10.824325);
-    });
-  }, 1500);
-}
-
-function changeColor(node) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-
-      node.style.background = 'green';
-      resolve();
-    }, 1000);
-  });
-}
-
-function handleKeyUp(event) {
-
+Controller.prototype.handleKeyUp = function(event) {
   event.stopImmediatePropagation();
 
-  if (view.$typed.value === '') return;
+  if (event.value === '') return;
 
   if (event.key === 'Enter') { 
-    view.addChildNode(view.$typed.value, model.count);
-    model.storage.push(Number(view.$typed.value));
-    this.value = null;
+    this.view.addChildNode(event.target.value, this.model.count);
+    this.model.storage.push(Number(event.target.value));
+    this.$typed.value = null;
   }
 }
 
-function handleBubbleClick(event) {
+Controller.prototype.handleBubbleClick = function(event) {
   event.stopImmediatePropagation();
 
-  const childNodesLength = view.$contentContainer.childNodes.length;
+  const childNodesLength = this.view.$contentContainer.childNodes.length;
 
   if (childNodesLength < 5) {
-    view.$errorMessage.innerHTML = '입력 갯수가 너무 작습니다';
+    this.view.$errorMessage.innerHTML = '입력 갯수가 너무 작습니다';
     return;
   }
 
-  view.$errorMessage.innerHTML = '';
-  view.$bubbleSortButton.style.display = 'none';
+  this.view.$errorMessage.innerHTML = '';
+  this.$bubbleSortButton.style.display = 'none';
   
-  sortStorage(model.storage);
+  this.sortStorage(this.model.storage);
 }
 
-function handleRestartClick(event) {
+Controller.prototype.handleRestartClick = function(event) {
   event.stopImmediatePropagation();
 
-  model.storage = [];
-  model.count = 0;
-  model.changeCount = 0;
+  this.model.storage = [];
 
-  while (view.$contentContainer.hasChildNodes()) {
-    view.$contentContainer.removeChild(view.$contentContainer.firstChild);
+  while (this.view.$contentContainer.hasChildNodes()) {
+    this.view.$contentContainer.removeChild(this.view.$contentContainer.firstChild);
   }
 
-  view.$bubbleSortButton.style.display = 'inline';
+  this.$bubbleSortButton.style.display = 'inline';
 }
-
-export const controller = new Controller(model, view);
-export {handleBubbleClick, handleKeyUp, handleRestartClick}
+export default Controller
