@@ -76,4 +76,5 @@ Controller.prototype.handleRestartClick = function(event) {
 
   this.$bubbleSortButton.style.display = 'inline';
 }
+
 export default Controller
