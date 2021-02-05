@@ -5,22 +5,18 @@
   color: white;
 
   button {
-    color: rgba(109, 204, 46, 0.8);
-    box-shadow: rgba(82, 151, 36, 0.4) 0 0px 0px 2px inset;
+    color: rgba(255, 255, 255, 0.8);
+    box-shadow: rgb(189, 188, 188) 0 0px 0px 2px inset;
 
     &:hover {
-      color: rgba(255, 255, 255, 0.85);
-      box-shadow: rgba(82, 151, 36, 0.7) 0 0px 0px 40px inset;
+      color: rgba(0, 0, 0, 0.8);
+      box-shadow: rgb(189, 188, 188) 0 0px 0px 40px inset;
     }
   }
 
   button.selected {
-    color: rgba(255, 255, 255, 0.85);
-    box-shadow: rgba(82, 151, 36, 0.7) 0 0px 0px 40px inset;
-  }
-
-  header {
-    color: @dark-hilight-color;
+    color:rgba(0, 0, 0, 0.8);
+    box-shadow:  rgb(189, 188, 188) 0 0px 0px 40px inset;
   }
 
   .type-area {
@@ -63,10 +59,10 @@
   svg {
     g {
       rect {
-        fill: rgb(18, 6, 128);
+        fill: rgb(173, 216, 230);
       }
       text {
-        fill: white;
+        fill: black;
       }
     }
     .selected {
@@ -85,6 +81,58 @@
       rect {
         fill:  rgba(82, 151, 36);
       }
+    }
+
+    .small {
+      rect {
+        fill: rgba(82, 151, 36);
+      }
+    }
+
+    .large {
+      rect {
+        fill: purple;
+      }
+    }
+
+    .pivot {
+      rect {
+        fill: rgb(156, 75, 45);
+      }
+    }
+
+    .left-arrow {
+      polyline {
+        stroke: rgb(2, 2, 145);
+      }
+    }
+
+    .right-arrow {
+      polyline {
+        stroke: rgb(150, 4, 4);
+      }
+    }
+
+    .pivot-arrow {
+      polyline {
+        stroke: coral;
+      }
+    }
+
+    .arrow-text {
+      fill: white;
+    }
+
+    #triangle-left {
+      fill: rgb(0, 0, 165);
+    }
+
+    #triangle-right {
+      fill: rgb(150, 4, 4);
+    }
+
+    #triangle-pivot {
+      fill: coral;
     }
   }
 }

@@ -2,12 +2,14 @@ section.visual-wrapper {
   display: flex;
   justify-content: center;
   padding-top: 10px;
+  margin-top: 80px;
   width: 100vw;
   text-align: center;
   overflow: hidden;
 
   .visual-algo {
     padding: 30px;
+    transition: background-color 0.3s linear;
 
     svg {
       rect {
@@ -16,6 +18,24 @@ section.visual-wrapper {
       text {
         font: 20px sans-serif;
         text-anchor: middle;
+      }
+
+      .main-sort-text {
+        text {
+          font-family: 'Russo One', sans-serif;
+          font-size: 7rem;
+          text-transform: uppercase;
+          stroke: #365fa0;
+          stroke-width: 4rem;
+        }
+
+        .title-first {
+          animation: stroke 5s infinite alternate;
+        }
+
+        .title-second {
+          animation: stroke_hilight 5s infinite alternate;
+        }
       }
     }
   }
