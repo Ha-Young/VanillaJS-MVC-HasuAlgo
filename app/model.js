@@ -95,18 +95,22 @@ Model.prototype.quickSort = async function (storage,
 
       if (left < right) {
         [storage[left], storage[right]] = [storage[right], storage[left]];
-
+        await wait(1);
+        paintBar("selected", left, right);
         await wait(1);
         showSwap(left, right);
+        await wait(1);
+        paintBar("initial", left, right);
       }
     }
 
     [storage[pivotIndex], storage[right]] = [storage[right], storage[pivotIndex]];
-    await wait(3);
+    await wait(1);
+    paintBar("selected", right);
+    await(0.5);
     showSwap(pivotIndex, right);
-    paintBar("pivot", right);
-
-    await wait(3);
+    
+    await wait(1);
     paintBar("initial", pivotIndex);
 
     await wait(2);
