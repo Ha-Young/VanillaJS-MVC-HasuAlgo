@@ -1,24 +1,21 @@
 function createModel() {
-  const storage = [];
-  const sortedStorage = [];
+  let userInputList;
 
   return {
+    storage: [],
+
     addList: function (list) {
-      storage.push(list);
+      model.storage.push(list);
+    },
+
+    cacheUserInputList: function () {
+      userInputList = model.storage.slice();
     },
 
     removeList: function () {
-      sortedStorage.pop();
+      model.storage.pop();
     },
-
-    sendStorage: function () {
-      return storage;
-    },
-
-    sendSortedStorage: function () {
-      return sortedStorage;
-    }
-  }
+  };
 }
 
 const model = createModel();
