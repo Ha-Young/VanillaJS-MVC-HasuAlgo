@@ -1,6 +1,9 @@
-import { swap, moveToChangeFunction } from './controller.js';
+import { swapInView, changeViewStyle, showViewText } from './controller.js';
 
 export default function Model() {
+  this.ENDING_COMMENT = '다 끝났습니다';
+  this.OUT_OF_RANGE_ERROR_COMMENT = '5개 이상 10개 이하의 값을 입력하세요';
+  this.INPUT_TYPE_ERROR_COMMENT = '정렬은 숫자로만 합시다';
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
   this.sortChildren = this.$sortBox.children;
@@ -9,7 +12,9 @@ export default function Model() {
   this.delay = 1000;
 }
 
-Model.prototype._quickSort = async function (array, start = 0, end = array.length - 1) {
+Model.prototype._quickSort = async function (start = 0, end = this.sortingList.length - 1) {
+  changeViewStyle('select', this.sortChildren[start], this.sortChildren[end]);
+
   if (start >= end) {
     return; 
   }
@@ -18,20 +23,22 @@ Model.prototype._quickSort = async function (array, start = 0, end = array.lengt
     return this._resetBoard();
   }
 
-  let borderIndex = await this._getQuickSortIndex(array, start, end);
+  let borderIndex = await this._getQuickSortIndex(this.sortingList, start, end);
 
-	await this._quickSort(array, start, borderIndex - 1);
-  await this._quickSort(array, borderIndex, end);
+	await this._quickSort(start, borderIndex - 1);
+  await this._quickSort(borderIndex, end);
 
-	return array;
+	return this.sortingList;
 }
 
 Model.prototype._getQuickSortIndex = async function (array, start, end) {
-  const pivotValue = array[ Math.floor((start + end) / 2) ];
+  const pivotIndex = Math.floor((start + end) / 2)
+  const pivotValue = array[pivotIndex];
+
 
 	while (start <= end) {
 		while (array[start] < pivotValue) {
-      start = start + 1; 
+      start = start + 1;
     }
 
 		while (array[end] > pivotValue) {
@@ -39,12 +46,12 @@ Model.prototype._getQuickSortIndex = async function (array, start, end) {
     }
 
 		if (start <= end) {
-      let tmp = array[start];
+      let swapValue = array[start];
 
       array[start] = array[end];
-      array[end] = tmp;
+      array[end] = swapValue;
 
-      await swap(this.sortChildren[start], this.sortChildren[end], array, this.delay);
+      await swapInView(this.sortChildren[start], this.sortChildren[end], array, this.delay);
 
 			start = start + 1;
 			end = end - 1;
@@ -63,7 +70,7 @@ Model.prototype._bubbleSort = async function () {
         return this._resetBoard();
       }
 
-      moveToChangeFunction(this.sortChildren[j], this.sortChildren[j + 1], 'selected');
+      changeViewStyle('selected', this.sortChildren[j], this.sortChildren[j + 1]);
 
       await new Promise(resolve => {
         setTimeout(() => {
@@ -76,9 +83,9 @@ Model.prototype._bubbleSort = async function () {
         this.sortingList[j] = this.sortingList[j + 1];
         this.sortingList[j + 1] = swapValue;
 
-        await swap(this.sortChildren[j + 1], this.sortChildren[j], this.sortingList, this.delay);
+        await swapInView(this.sortChildren[j + 1], this.sortChildren[j], this.sortingList, this.delay);
       } else {
-        moveToChangeFunction(this.sortChildren[j], this.sortChildren[j + 1], 'selected');
+        changeViewStyle('selected', this.sortChildren[j], this.sortChildren[j + 1]);
       }
     }
 
@@ -86,6 +93,8 @@ Model.prototype._bubbleSort = async function () {
       break;
     }
   }
+
+  showViewText(this.ENDING_COMMENT);
 }
 
 Model.prototype._setTime = function (standard) {
@@ -100,33 +109,36 @@ Model.prototype._setTime = function (standard) {
     }
 
     this.delay += TIME_INTERVAL;
-  } else {
-    if (this.delay < LIMIT_HIGH_TIME) {
-      this.delay = LIMIT_HIGH_TIME;
-      return;
-    }
-
-    this.delay -= TIME_INTERVAL;
+    return;
   }
+
+  if (this.delay < LIMIT_HIGH_TIME) {
+    this.delay = LIMIT_HIGH_TIME;
+    return;
+  }
+
+  this.delay -= TIME_INTERVAL;
 }
 
 Model.prototype._checkValue = function (string) {
   const stringList = string.split(',');
 
   if (stringList.length < 5 || stringList.length > 10) {
-    this.$commentBox.textContent = '5개 이상 10개 이하의 값을 입력하세요';
+    showViewText(this.OUT_OF_RANGE_ERROR_COMMENT);
     return;
   }
 
   for (let i = 0; i < stringList.length; i++) {
     if (isNaN(Number(stringList[i])) || Number(stringList[i]) <= 0) {
-      this.$commentBox.textContent = '정렬은 숫자로만 합시다';
+      showViewText(this.INPUT_TYPE_ERROR_COMMENT);
+
+      this.sortingList = [];
       return;
     }
-
+    
     this.sortingList.push(Number(stringList[i]));
   }
-
+  
   return this.sortingList;
 }
 

@@ -1,5 +1,6 @@
 export default function View() {
   this.$sortBox = document.getElementById('sortBox');
+  this.$commentBox = document.getElementById('commentBox');
 }
 
 View.prototype._createBlock = function (sortList) {
@@ -17,38 +18,43 @@ View.prototype._createBlock = function (sortList) {
   }
 }
 
-View.prototype._swapElements = function (smallValue, largeValue, swapList, delay) {
+View.prototype._swapElements = function (rightElement, leftElement, array, delay) {
   return new Promise(resolve => {
-    const smallValueLocationX = this._getTargetTranslateX(smallValue);
-    const largeValueLocationX = this._getTargetTranslateX(largeValue);
+    const rightElementLocationX = this._getTargetTranslateX(rightElement);
+    const leftElementLocationX = this._getTargetTranslateX(leftElement);
 
-    this._changeBlockStyle(smallValue, largeValue, 'transition');
-    this._changeBlockStyle(smallValue, largeValue, 'selected');
+    this._changeBlockStyle('transition', [rightElement, leftElement]);
+    this._changeBlockStyle('selected', [rightElement, leftElement]);
 
-    smallValue.style.transform = `translateX(${largeValueLocationX - smallValueLocationX}px)`;
-    largeValue.style.transform = `translateX(${smallValueLocationX - largeValueLocationX}px)`;
+    rightElement.style.transform = `translateX(${leftElementLocationX - rightElementLocationX}px)`;
+    leftElement.style.transform = `translateX(${rightElementLocationX - leftElementLocationX}px)`;
 
     setTimeout(() => {
-      smallValue.style.transform = 'none';
-      largeValue.style.transform = 'none';
+      rightElement.style.transform = 'none';
+      leftElement.style.transform = 'none';
       
-      this._changeBlockStyle(smallValue, largeValue, 'selected');
+      this._changeBlockStyle('selected', [rightElement, leftElement]);
+
       while (this.$sortBox.hasChildNodes()) {
         this.$sortBox.removeChild(this.$sortBox.firstChild);
       }
 
-      this._createBlock(swapList);
+      this._createBlock(array);
       resolve();
     }, delay);
   });
 }
 
-View.prototype._changeBlockStyle = function (leftElement, rightElement, className) {
-  leftElement.classList.toggle(className);
-  rightElement.classList.toggle(className);
+View.prototype._changeBlockStyle = function (className, elementList) {
+  for (let i = 0; i < elementList.length; i++) {
+    elementList[i].classList.toggle(className);
+  }
 }
-
 
 View.prototype._getTargetTranslateX = function (target) {
   return target.getBoundingClientRect().x;
+}
+
+View.prototype._showText = function (text) {
+  this.$commentBox.textContent = text;
 }
