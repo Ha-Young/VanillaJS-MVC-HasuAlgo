@@ -45,12 +45,12 @@ QuickController.prototype = Object.create(Controller.prototype);
 QuickController.prototype.construcor = QuickController;
 
 QuickController.prototype.startSort = async function (dataSet, from, to, fixedIndices) {
-  const DELAY = 500;
+  const DELAY = 200;
   const pivotIndex = from;
   let leftIndex = from + 1;
   let rightIndex = to;
 
-  if (pivotIndex >= rightIndex) {
+  if (pivotIndex === rightIndex) {
     fixedIndices.push(from);
 
     await this.view.paintGraphs(dataSet, fixedIndices, this.wait, DELAY);
@@ -96,23 +96,14 @@ QuickController.prototype.startSort = async function (dataSet, from, to, fixedIn
 
       await this.view.paintGraphs(dataSet, fixedIndices, this.wait, DELAY);
 
-      if (dataSet.length - fixedIndices.length <= 1) {
-        this.finish(dataSet);
-        return;
-      }
-
       if (rightIndex === pivotIndex) {
         await this.startSort(dataSet, rightIndex + 1, to, fixedIndices);
-        return;
-      }
-
-      if (rightIndex === to) {
+      } else if (rightIndex === to) {
         await this.startSort(dataSet, pivotIndex, rightIndex - 1, fixedIndices);
-        return;
-      };
-
-      await this.startSort(dataSet, pivotIndex, rightIndex - 1, fixedIndices);
-      await this.startSort(dataSet, rightIndex + 1, to, fixedIndices);
+      } else {
+        await this.startSort(dataSet, pivotIndex, rightIndex - 1, fixedIndices);
+        await this.startSort(dataSet, rightIndex + 1, to, fixedIndices);
+      }
       return;
     }
   }
