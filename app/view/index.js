@@ -1,11 +1,12 @@
-import { $on, qs, getByClassName, qsAll, changeDOMOrder } from './helpers';
-import { SortItemList } from './typeDef';
-import { fromToTranslatePosition, positionFactory } from './animate';
-import { ITEM, ARROW } from './constant';
+import { $on, qs, getByClassName, qsAll, changeDOMOrder } from './utils/domHelper';
+import Templates from './utils/templates';
+import { SortItemList } from '../common/typeDef';
+import { fromToTranslatePosition, positionFactory } from './utils/animate';
+import { ITEM, ARROW } from '../common/constant';
 
 export default class View {
-	constructor(template) {
-		this.template = template;
+	constructor() {
+		this.template = new Templates();
 		this.$container = qs('.container');
 		this.$themeSwitch = qs('#theme-switch');
 		this.$sortKindsBtns = qs('.sort-kinds-btns');
