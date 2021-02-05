@@ -30,35 +30,36 @@ import swapNumbersInCanvas from "../view/swap-numbers-in-canvas";
 //   secondElm.style.transform = `translateX(-${xGap}px)`;
 // }
 
-function swap(first, second) {
+function swapNumbers(first, second) {
   const temp = first;
   first = second;
   second = temp;
 
-  return {first, second};
+  return { first, second };
 }
 
-export default async function bubbleSort(numbers) {
-  const unSorted = numbers;
+export default async function bubbleSort(array) {
+  const numbers = array;
   let isSorted = false;
 
-  for (let i = 0; i < unSorted.length; i++) {
+  for (let i = 0; i < numbers.length; i++) {
     if (isSorted) {
       break;
     }
     
-    let beforeLoop = Array.from(unSorted);
+    let beforeSort = Array.from(numbers);
 
-    for (let j = 0; j < unSorted.length - 1; j++) {
-      if (unSorted[j] > unSorted[j + 1]) {
-        let { first, second } = swap(unSorted[j], unSorted[j + 1]);
-        swapNumbersInCanvas(unSorted[j], unSorted[j + 1], j);
+    for (let j = 0; j < numbers.length - 1; j++) {
+      if (numbers[j] > numbers[j + 1]) {
+        const { first, second } = swapNumbers(numbers[j], numbers[j + 1]);
+        swapNumbersInCanvas(numbers[j], numbers[j + 1], j);
+        
+        numbers[j] = first;
+        numbers[j + 1] = second;
         await delay(600);
-        unSorted[j] = first;
-        unSorted[j + 1] = second;
       }
     }
     
-    isSorted = JSON.stringify(beforeLoop) === JSON.stringify(unSorted);
+    isSorted = JSON.stringify(beforeSort) === JSON.stringify(numbers);
   }
 }

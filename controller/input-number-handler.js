@@ -1,4 +1,3 @@
-import getRandomHexCode from "../model/generate-random-color";
 import { nodes, numbers, boxes } from "../model/user-input-data";
 import { alretBox, canvas, numberInput } from "../view/event-listeners";
 
@@ -28,7 +27,6 @@ export function handleKeyup(e) {
   numberInput.placeholder = "";
   alretBox.textContent = "";
 
-  const hexCode = getRandomHexCode();
   const newList = document.createElement("div");
 
   newList.style.order = numbers.length;
