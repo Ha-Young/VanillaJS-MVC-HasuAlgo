@@ -8,16 +8,19 @@ export default class Controller {
 	 * @param  {!View} view A View instance
 	 */
 	constructor(model, view) {
-		console.log('Controller Constructor!');
 		this.model = model;
 		this.view = view;
 		this.isReadySort = false;
-		this.delayTimeOnChange = 1000;
+		this.delayTimeOnChange = 500;
 
 		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
 		view.bindOnClickSetBtn(this.setInitNumsView.bind(this));
 		view.bindOnClickThemeSwitch(this.toggleTheme.bind(this));
 		view.bindOnClickSortBtns(this.startSort.bind(this));
+	}
+
+	setStartView() {
+		this.view.setStartView();
 	}
 
 	setInitNumsView(inputData) {
@@ -121,8 +124,9 @@ export default class Controller {
 		this.view.setSortItemStatusClear(index);
   }
 
-  viewItemResetStatusAll(ignoreIndexs) {
-    this.view.setSortItemStatusClaerAll(ignoreIndexs);
+  viewItemResetStatusAll(sortedIndexs) {
+		debugger;
+    this.view.setSortItemStatusClaerAllIgnoreSorted(sortedIndexs);
   }
 
 	viewItemCheckColor(index) {
@@ -231,8 +235,7 @@ export default class Controller {
         ]);
 
       const [partitionIndex, changePivotIndex] = await divide.call(this, sortList, leftIndex, rightIndex, pivotIndex);
-
-      sortedItemIndex.push(changePivotIndex);
+			sortedItemIndex.push(changePivotIndex);
 
       await this.doUIWork(
         [
@@ -286,7 +289,6 @@ export default class Controller {
 					}
 
 					if (leftIndex < rightIndex) {
-            console.log('do swap', leftIndex, rightIndex);
             if (leftIndex === pivotIndex) {
               pivotIndex = rightIndex;
             } else if (rightIndex === pivotIndex) {
@@ -307,14 +309,13 @@ export default class Controller {
 						leftIndex++;
 						rightIndex--;
 
+						if (leftIndex >= rightIndex) continue;
+
 						await this.doUIWork(
 							[
 								this.viewArrowMoveNext.bind(this, 'left'),
 								this.viewArrowMoveNext.bind(this, 'right')
 							]);
-
-            console.log('swaped sortList :', sortList);
-            // await this.setNumsView(sortList, this.delayTimeOnChange + 3000);
 					}
         }
 				return [leftIndex, pivotIndex];
