@@ -7,10 +7,9 @@ $in-w: $n-char*($char-w + $gap);
 	display: block;
 	border: none;
 	padding: 0;
-  // width: $in-w;
   width: 109px;
 	background: repeating-linear-gradient(90deg, 
-		dimgrey 0, dimgrey $char-w, 
+		white 0, white $char-w, 
 		transparent 0, transparent $char-w + $gap) 
 		0 100%/ #{$in-w - $gap} 2px no-repeat;
 	font: 4ch droid sans mono, consolas, monospace;

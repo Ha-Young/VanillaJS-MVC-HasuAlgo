@@ -6,7 +6,7 @@
   // top:-70px;
   left:0px;
   // -webkit-animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
-  // animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
+  animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
   -webkit-animation: play 0.8s steps(4) infinite, 7s both infinite linear;
   animation: play 0.8s steps(4) infinite, 7s both infinite linear;
 }
@@ -23,7 +23,6 @@
   to { left: 100%;}
 }
 
-
 .pipe {
   background : url(../images/green-pipe.png);
   background-size: cover;
@@ -31,4 +30,26 @@
   height: 200px;
   width: 50px;
   margin-left: 100px;
+}
+
+.ground { 
+  position: relative;
+  height: 100%;
+  background-color: #C84C0C; 
+  background-image: url('https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/groundblock.png');     
+}
+
+.top-right-blocks {
+  position: absolute;
+  right: 0;
+}
+
+.brick {
+  position: relative;        
+  margin: -3px;
+}
+
+.princess-container {
+  display: flex;
+  justify-content: center;
 }
