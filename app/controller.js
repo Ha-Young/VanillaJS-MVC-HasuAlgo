@@ -32,12 +32,13 @@ class Controller {
   }
 
   handleEventListener(view) {
-    const inputButton = view.inputButton;
+    const inputBox = view.inputBox;
     const sortButton = view.sortButton;
     const sortRestartButton = view.sortRestartButton;
     const clearButton = view.sortClearButton;
 
-    inputButton.addEventListener("click", () => {
+    inputBox.addEventListener("submit", (event) => {
+      event.preventDefault();
       this.handleRenderGraph(event);
       this.handleAddClass(sortRestartButton, "invisible");
       this.handleAddClass(clearButton, "invisible");

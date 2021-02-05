@@ -12,6 +12,7 @@ class View {
     this.graphList = document.querySelector(".graph-list");
     this.graphBars = Array.prototype.slice.call(this.graphList.getElementsByTagName("li"));
 
+    this.inputBox = document.querySelector(".input-box");
     this.inputButton = document.querySelector(".input-button");
     this.input = document.querySelector(".input-value");
     this.sortButton = document.querySelector(".sort-start-button");
