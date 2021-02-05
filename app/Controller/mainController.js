@@ -100,7 +100,6 @@ function mainTitleMouseOutHandler () {
   this.style.textShadow = '0px 0px 0px white';
 }
 
-
 mainTitle.addEventListener('click', mainTitleToggleHandler);
 
 function mainTitleToggleHandler () {
