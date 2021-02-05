@@ -4,7 +4,7 @@ function Model() {
   this._storage = [];
 }
 
-function doSetTimeout(seconds) {
+function wait(seconds) {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
@@ -15,7 +15,7 @@ function doSetTimeout(seconds) {
 Model.prototype.setData = function (string) {
   const numberList = string.split(",").map(Number);
 
-  if (numberList.length < 5) {
+  if (numberList.length < 3) {
     throw "too few numbers";
   } else if (numberList.length > 20) {
     throw "too many numbers";
@@ -51,12 +51,14 @@ Model.prototype.bubbleSort = async function (storage,
       if (storage[j] > storage[j + 1]) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
 
-        await doSetTimeout(2);
+        await wait(2);
         showSwap(j, j + 1);
+        await wait(0.5);
+        paintBar("initial", j, j + 1);
       }
     }
 
-    await doSetTimeout(1);
+    await wait(1);
     paintBar("sorted", storage.length - 1 - i);
   }
 }
@@ -92,30 +94,30 @@ Model.prototype.quickSort = async function (storage,
       if (left < right) {
         [storage[left], storage[right]] = [storage[right], storage[left]];
 
-        await doSetTimeout(1);
+        await wait(1);
         showSwap(left, right);
       }
     }
 
     [storage[pivotIndex], storage[right]] = [storage[right], storage[pivotIndex]];
-    await doSetTimeout(3);
+    await wait(3);
     showSwap(pivotIndex, right);
     paintBar("pivot", right);
 
-    await doSetTimeout(3);
+    await wait(3);
     paintBar("initial", pivotIndex);
 
-    await doSetTimeout(2);
+    await wait(2);
     paintBar("sorted",right);
 
     await doPartialQuickSort(startIndex, right - 1);
-    await doSetTimeout(2);
+    await wait(2);
     doPartialQuickSort(right + 1, endIndex);
   }
 
   initializeContainer();
   showInitial(storage);
-  await doSetTimeout(1);
+  await wait(1);
 
   await doPartialQuickSort(0, storage.length - 1);
 }
