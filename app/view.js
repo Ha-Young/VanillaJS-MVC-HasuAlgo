@@ -16,7 +16,6 @@ View.prototype.addChildNode = function(value) {
   this.$child.style.height = value + 3 + 'px';
   this.$contentContainer.appendChild(this.$child);
   this.$graphNodes = document.getElementsByClassName('graphNode');
-  this.$graphNodes.innerHTML = value;
 }
 
 View.prototype.moveGraph = function moveGraph(leftNode, rightNode) { 

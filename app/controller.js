@@ -11,8 +11,6 @@ function Controller() {
 }
 
 Controller.prototype.getData = function () {
-
-
   this.$typed.addEventListener('keypress', this.handleKeyUp.bind(this));
   this.$bubbleSortButton.addEventListener('click', this.handleBubbleClick.bind(this));
   this.$restartButton.addEventListener('click', this.handleRestartClick.bind(this));
