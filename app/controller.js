@@ -22,12 +22,10 @@ async function swapInView(smallValue, largeValue, swapList, delay) {
   await view._swapElements(smallValue, largeValue, swapList, delay);
 }
 
-
 function init() {
   const $inputBox = document.getElementById('inputBox');
   const $submitButton = document.getElementById('submitButton');
   const $playButton = document.getElementById('playButton');
-  const $pauseButton = document.getElementById('pauseButton');
   const $replayButton = document.getElementById('replayButton');
   const $fastButton = document.getElementById('fastButton');
   const $slowButton = document.getElementById('slowButton');

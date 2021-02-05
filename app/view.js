@@ -4,21 +4,23 @@ export default function View() {
 }
 
 View.prototype._createBlock = function (sortList) {
+  const highestValue = Math.max(...sortList);
+
   for (let i = 0; i < sortList.length; i++) {
     const $block = document.createElement('div');
     const $label = document.createElement('b');
 
     $block.classList.add('block');
-    $block.style.height = `${sortList[i] * 5 + 10}px`;
+    $block.style.height = `${sortList[i] / highestValue * 90}%`;
     $label.textContent = `${sortList[i]}`;
-    $label.style.height = `${sortList[i] * 5 + 10}px`;
+    $label.style.height = `${sortList[i] / highestValue * 90}%`;
 
     $block.appendChild($label);
     this.$sortBox.appendChild($block);
   }
 }
 
-View.prototype._swapElements = function (rightElement, leftElement, array, delay) {
+View.prototype._swapElements = function (rightElement, leftElement, swappedArray, delay) {
   return new Promise(resolve => {
     const rightElementLocationX = this._getTargetTranslateX(rightElement);
     const leftElementLocationX = this._getTargetTranslateX(leftElement);
@@ -39,7 +41,7 @@ View.prototype._swapElements = function (rightElement, leftElement, array, delay
         this.$sortBox.removeChild(this.$sortBox.firstChild);
       }
 
-      this._createBlock(array);
+      this._createBlock(swappedArray);
       resolve();
     }, delay);
   });

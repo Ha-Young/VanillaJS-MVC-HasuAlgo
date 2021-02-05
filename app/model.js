@@ -32,7 +32,7 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
 }
 
 Model.prototype._getQuickSortIndex = async function (array, start, end) {
-  const pivotIndex = Math.floor((start + end) / 2)
+  const pivotIndex = Math.floor((start + end) / 2);
   const pivotValue = array[pivotIndex];
 
 
