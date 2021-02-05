@@ -15,3 +15,4 @@ const view = new View(template);
  * @type {Controller}
  */
 const controller = new Controller(model, view);
+controller.setStartView();

@@ -3,8 +3,6 @@ import { SortItemList } from './typeDef';
 import { fromToTranslatePosition, positionFactory } from './animate';
 import { ITEM, ARROW } from './constant';
 
-const svgns = "http://www.w3.org/2000/svg";
-
 export default class View {
 	constructor(template) {
 		console.log('View Constructor!');
@@ -54,7 +52,12 @@ export default class View {
 		this.$container.className = `container ${theme}`;
 	}
 
+
 	// SortItem 관련 (SVG)
+	setStartView() {
+		this.$vizCanvas.innerHTML = this.template.init();
+	}
+
 	getSortItemListsOnView() {
 		return qsAll('g', this.$vizCanvas);
   }
@@ -148,11 +151,13 @@ export default class View {
 		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
 		this.setSortItemColorFromStatus(sortItemElement, 'sorted');
 
-		const [currentXPos, currentYPos] = this.getSVGItemPosition(sortItemElement);
-		const fromPosition = positionFactory(currentXPos, currentYPos);
-		const toPosition = positionFactory(currentXPos, ITEM.MAX_HEIGHT - sortItemRectHeight);
+		if (duration) {
+			const [currentXPos, currentYPos] = this.getSVGItemPosition(sortItemElement);
+			const fromPosition = positionFactory(currentXPos, currentYPos);
+			const toPosition = positionFactory(currentXPos, ITEM.MAX_HEIGHT - sortItemRectHeight);
 
-		fromToTranslatePosition(sortItemElement, fromPosition, toPosition, duration);
+			fromToTranslatePosition(sortItemElement, fromPosition, toPosition, duration);
+		}
 	}
 
 	setSortItemStatusSelected(index, isMoveDown, duration) {
@@ -163,7 +168,7 @@ export default class View {
 		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
 		this.setSortItemColorFromStatus(sortItemElement, 'selected');
 
-    if (isMoveDown) {
+    if (isMoveDown && duration) {
       const [currentXPos, currentYPos] = this.getSVGItemPosition(sortItemElement);
       const fromPosition = positionFactory(currentXPos, currentYPos);
       const toPosition = positionFactory(currentXPos, currentYPos + sortItemRectHeight);
@@ -181,18 +186,23 @@ export default class View {
   setSortItemStatusClear(index) {
 		if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
+		if (sortItemElement.classList.contains('pivot')) return;
 		this.clearSortItemStatus(sortItemElement);
   }
 
-  setSortItemStatusClaerAll(ignoreIndexs) {
+  setSortItemStatusClaerAllIgnoreSorted(sortedIndexs) {
     const sortItemElements = this.getSortItemListsOnView();
 
     if (!sortItemElements || sortItemElements.length === 0) return;
 
     for (let i = 0; i < sortItemElements.length; i++) {
-      if (ignoreIndexs.includes(i)) continue;
-
       const sortItemElement = sortItemElements[i];
+      if (sortedIndexs.includes(i)) {
+				if (!sortItemElement.classList.contains('sorted')) {
+					this.setSortItemColorFromStatus(sortItemElement, 'sorted');
+				}
+				continue;
+			}
 
       this.clearSortItemStatus(sortItemElement);
     }
@@ -224,12 +234,18 @@ export default class View {
   setSortItemStatusSmall(index) {
     if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
+		if (sortItemElement.classList.contains('pivot')) return;
+		if (sortItemElement.classList.contains('sorted')) return;
+
 		this.setSortItemColorFromStatus(sortItemElement, 'small');
   }
 
   setSortItemStatusLarge(index) {
     if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
+		if (sortItemElement.classList.contains('pivot')) return;
+		if (sortItemElement.classList.contains('sorted')) return;
+
 		this.setSortItemColorFromStatus(sortItemElement, 'large');
   }
 
