@@ -4,7 +4,6 @@ import Controller from './controller';
 import Model from './model';
 import View from './view';
 
-
 // ================================
 // START YOUR APP HERE
 // ================================

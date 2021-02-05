@@ -1,19 +1,21 @@
 function Model() {
-	this.storage = {};
-	// get
+	const taskQueue = [];
 
-	// find
+	this.createTask = function (type, sourceIndex, targetIndex, list) {
+		taskQueue.push({
+			type,
+			sourceIndex,
+			targetIndex,
+			list
+		});
+	};
 
-	// remove
+	this.findNextTask = function () {
+		if (!taskQueue.length) return;
 
-	// update
-
-	// getCount
+		return taskQueue.shift();
+	};
 
 }
-
-Model.prototype.saveModel = function (type, list) {
-	this.storage[type] = { type, list };
-};
 
 export default Model;
