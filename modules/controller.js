@@ -1,6 +1,12 @@
 export default class Controller {
   "use strict";
-
+  /**
+   * Takes a model and view and acts as the controller between them
+   *
+   * @constructor
+   * @param {object} model The model instance
+   * @param {object} view The view instance
+   */
   constructor(Model, View) {
     this.model = Model;
     this.view = View;

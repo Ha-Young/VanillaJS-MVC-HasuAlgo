@@ -94,7 +94,7 @@ export default class Model {
   }
 
   _partition = async (low, high, { pickPivot, pickBlocks,
-    swapBlocks, releaseBlocks, decideSorted, enableInputs }) => {
+    swapBlocks, releaseBlocks, decideSorted }) => {
     const pivot = this.numberArray[high];
     let i;
     let index = low;
