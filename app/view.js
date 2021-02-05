@@ -1,6 +1,7 @@
 function View () {
   this.$errorMessage = document.querySelector('.errorMessage');
   this.$contentContainer = document.querySelector('.contentContainer');
+  this.indexCount = 0;
 }
 
 View.prototype.addChildNode = function(value) {
@@ -12,41 +13,31 @@ View.prototype.addChildNode = function(value) {
   }
 
   this.$div.innerHTML = value;
+  this.$div.setAttribute('data-X', this.indexCount);
+  this.$div.setAttribute('data-count', 0);
   this.$div.classList.add('graphNode');
   this.$div.style.height = value + 3 + 'px';
   this.$contentContainer.appendChild(this.$div);
   this.$graphNodes = document.getElementsByClassName('graphNode');
+  this.indexCount++;
 }
 
-View.prototype.moveGraph = function moveGraph(leftNode, rightNode) { 
+View.prototype.moveGraph = function moveGraph(leftNode, rightNode) {
   leftNode.classList.add('transition');
   rightNode.classList.add('transition');
-  leftNode.style.transform = 'translateX(60px)';
-  rightNode.style.transform = 'translateX(-60px)';
+
+  const left = ++leftNode.dataset.count;
+  const right = --rightNode.dataset.count;
+
+  leftNode.style.transform = `translateX(${left*60}px)`;
+  rightNode.style.transform = `translateX(${right*60}px)`;
+  
   
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 1300);
+    }, 1000);
   });
-}
-
-View.prototype.changeGraph = function(leftNode, rightNode) {
-
-  leftNode.classList.remove('transition');
-  rightNode.classList.remove('transition');
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      leftNode.style.transform = null;
-      rightNode.style.transform = null;
-
-      setTimeout(() => {
-        this.$contentContainer.insertBefore(rightNode, leftNode);
-        resolve();
-      }, 12);
-    });
-  }, 2000);
 }
 
 View.prototype.changeColor = function(node) {
