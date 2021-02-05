@@ -35,6 +35,8 @@ BubbleModel.prototype.startSort = function (callback) {
   }
   this.taskQueue.push(createTask("FINISH BUBBLE"));
 
+  this.inputArray = [...sortingArr];
+
   callback();
 };
 

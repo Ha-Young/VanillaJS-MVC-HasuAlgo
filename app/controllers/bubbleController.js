@@ -1,4 +1,4 @@
-const BubbleControlle = function (model, view) {
+const BubbleController = function (model, view) {
   const self = this;
   self.model = model;
   self.view = view;
@@ -24,7 +24,7 @@ const BubbleControlle = function (model, view) {
   });
 };
 
-BubbleControlle.prototype.addNumber = function (input) {
+BubbleController.prototype.addNumber = function (input) {
   const self = this;
 
   if (!input) {
@@ -45,13 +45,13 @@ BubbleControlle.prototype.addNumber = function (input) {
   });
 };
 
-BubbleControlle.prototype.startSort = function () {
+BubbleController.prototype.startSort = function () {
   const self = this;
 
   self.model.startSort(self.startVisualize.bind(self));
 };
 
-BubbleControlle.prototype.startVisualize = async function () {
+BubbleController.prototype.startVisualize = async function () {
   const self = this;
 
   if (!self.model.taskQueue.length) {
@@ -64,7 +64,7 @@ BubbleControlle.prototype.startVisualize = async function () {
   await self.startVisualize();
 };
 
-BubbleControlle.prototype.shuffleNum = function () {
+BubbleController.prototype.shuffleNum = function () {
   const self = this;
 
   self.model.shuffleNum((shuffledArray) => {
@@ -72,7 +72,7 @@ BubbleControlle.prototype.shuffleNum = function () {
   });
 };
 
-BubbleControlle.prototype.setRandom = function () {
+BubbleController.prototype.setRandom = function () {
   const self = this;
   const randomNum = Math.floor(Math.random() * 50) + 1;
 
@@ -81,7 +81,7 @@ BubbleControlle.prototype.setRandom = function () {
   });
 };
 
-BubbleControlle.prototype.resetList = function () {
+BubbleController.prototype.resetList = function () {
   const self = this;
 
   self.model.resetList(() => {
@@ -89,4 +89,4 @@ BubbleControlle.prototype.resetList = function () {
   });
 };
 
-export default BubbleControlle;
+export default BubbleController;
