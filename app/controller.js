@@ -94,8 +94,7 @@ export default class Controller {
 		}
 
 		sortedListPromise.then((sortedList) => {
-			console.log('sort 완료!');
-			console.log(sortedList);
+			alert('sort 완료');
 		});
 	}
 
