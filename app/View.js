@@ -72,12 +72,18 @@ View.prototype.translate = function (target, x, y = 0) {
   target.style.transform = `translate(${x}px, ${y}px)`;
 };
 
-View.prototype.setDelayForTransition = function (delay) {
+View.prototype.setDelay = function (delay) {
   return new Promise(function (resolve) {
     setTimeout(function () {
       resolve();
     }, delay);
   });
+};
+
+View.prototype.clickButtonEffect = async function (button) {
+  this.translate(button, 0, 2);
+  await this.setDelay(40);
+  this.resetTranslate(button);
 };
 
 View.prototype.createSortItems = function (inputNumber) {
@@ -116,7 +122,7 @@ View.prototype.chageSortItemPosition = async function (left, right) {
   self.translate(left, rightCoordinateX - leftCoordinateX);
   self.translate(right, leftCoordinateX - rightCoordinateX);
 
-  await self.setDelayForTransition(self.transitionDelayTime);
+  await self.setDelay(self.transitionDelayTime);
 };
 
 export default View;

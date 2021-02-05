@@ -30,6 +30,8 @@ Controller.prototype.handlePrintNumbers = function (event) {
 };
 
 Controller.prototype.handlePaintSortItems = function () {
+  this.view.clickButtonEffect(this.view.$paintButton);
+
   if (this.model.sortList.length < 5) {
     throw new Error("min 5 number!!");
   }
@@ -44,6 +46,8 @@ Controller.prototype.handlePaintSortItems = function () {
 };
 
 Controller.prototype.handleStartSort = function () {
+  this.view.clickButtonEffect(this.view.$sortButton);
+
   if (this.model.sortList.length < 5) {
     throw new Error("min 5 number!!");
   }
@@ -67,7 +71,7 @@ Controller.prototype.ascendingSortTwoItem = async function(left, right, index) {
   const itemList  = [left, right];
 
   left.classList.add(self.view.classList.sort);
-  await self.view.setDelayForTransition(50);
+  await self.view.setDelay(50);
   right.classList.add(self.view.classList.sort);
 
   if (Number(left.textContent) > Number(right.textContent)) {
@@ -88,7 +92,7 @@ Controller.prototype.ascendingSortTwoItem = async function(left, right, index) {
 
   if (Number(left.textContent) <= Number(right.textContent)) {
     if(!right.classList.contains("sorted")) {
-      await self.view.setDelayForTransition(0);
+      await self.view.setDelay(0);
 
       left.classList.remove(self.view.classList.sort);
     }
@@ -104,12 +108,14 @@ Controller.prototype.bubbleSort = async function () {
     for (let j = 0; j < item.length - 1; j++) {
         await this.ascendingSortTwoItem.call(this, item[j], item[j + 1], j);
     }
-    await this.view.setDelayForTransition(0);
+    await this.view.setDelay(0);
     item[i - 1].classList.add("sorted");
   }
 };
 
 Controller.prototype.resetSort = function () {
+  this.view.clickButtonEffect(this.view.$resetButton);
+
   this.view.$resetButton.removeEventListener("click", this.bindResetSort);
 
   this.view.changeTemplate(this.view.viewBox, initialTemplate());
@@ -128,35 +134,37 @@ Controller.prototype.mergeSort = async function () {
     item.classList.add(self.view.classList.moving);
   });
 
-  await this.splitItems.call(this, items, 0);
+  await this.splitItems.call(this, items, -350);
 };
 
 Controller.prototype.splitItems = async function (items, y) {
-  if (items.length <= 2) {
-    return;
-  }
-
-  const xCount = 5;
-  const yCount = y - 80;
-
   const self = this;
+
+  items.forEach(function (item) {
+    self.view.translate(item, 0, y);
+  });
+
+  await self.view.setDelay(self.view.transitionDelayTime);
+
+  items.forEach(function (item) {
+    item.style.margin = "20px";
+  });
+
+  this.sliceItems(items);
+};
+
+Controller.prototype.sliceItems = function (items) {
   const left = items.slice(0, items.length / 2);
   const right = items.slice(items.length / 2);
 
-  left.forEach(function (item) {
-    self.view.translate(item, -xCount, yCount);
-  });
+  if (left.length > 1) {
+    this.sliceItems(left);
+  }
+  if (right.length > 1) {
+    this.sliceItems(right);
+  }
 
-  await self.view.setDelayForTransition(1000);
-
-  right.forEach(function (item) {
-    self.view.translate(item, xCount, yCount);
-  });
-
-  await self.view.setDelayForTransition(1000);
-
-  await this.splitItems.call(this, left, yCount);
-  await this.splitItems.call(this, right, yCount);
-};
+  return;
+}
 
 export default Controller;
