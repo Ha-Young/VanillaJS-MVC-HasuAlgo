@@ -47,12 +47,10 @@ class View {
 
   controlRestartClearButtons() {
     if (this.sortRestartButton.classList.contains("invisible")) {
-      console.log("visible");
       this.removeClass(this.sortRestartButton, "invisible");
       this.removeClass(this.sortClearButton, "invisible");
       return;
     }
-    console.log("invisible");
     this.addClass(this.sortRestartButton, "invisible");
     this.addClass(this.sortClearButton, "invisible");
   }
