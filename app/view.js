@@ -11,9 +11,10 @@ export default class View {
     this[elemName].addEventListener(type, callback);
   }
 
-  makeElement(tagName, className = null) {
+  makeElement(tagName, className = "", id = "") {
     this["$" + className] = document.createElement(tagName);
-    this["$" + className].className = className || "";
+    this["$" + className].className = className;
+    this["$" + className].id = id;
     return this["$" + className];
   }
 
@@ -45,10 +46,10 @@ export default class View {
     } else if (act === "changed") {
       this._sortVisual(sortType, index);
     } else if (act === "semifinished") {
-      sticks[index].style.backgroundColor = "red";
+      sticks[index].style.backgroundColor = "rgb(234, 195, 0)";
     } else if (act === "finished") {
       for (let j = index - 1; 0 <= j; j--) {
-        sticks[j].style.backgroundColor = "red";
+        sticks[j].style.backgroundColor = "rgb(234, 195, 0)";
       }
     } else if (act === "clear") {
       const $article = this["$article-" + sortType];
@@ -73,8 +74,10 @@ export default class View {
 
       frontStick.setAttribute("data-move-distance", frontMoved + moveDistance);
       rearStick.setAttribute("data-move-distance", rearMoved - moveDistance);
+
       frontStick.style.transform = `translate(${frontMoved + moveDistance}px)`;
       rearStick.style.transform = `translate(${rearMoved - moveDistance}px)`;
+
       this._caches[sortType][changedIndex] = rearStick;
       this._caches[sortType][changedIndex + 1] = frontStick;
       return;

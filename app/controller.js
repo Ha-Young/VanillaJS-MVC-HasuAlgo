@@ -69,6 +69,7 @@ export default class Controller {
       .getProperty(sortType, "collection")
       .slice()
       .sort((a, b) => a.value - b.value);
+
     const stickElements = [];
 
     for (let i = 0; i < sortedCollection.length; i++) {
@@ -78,7 +79,8 @@ export default class Controller {
       );
     }
 
-    const $article = this.view.makeElement("article", "article-" + sortType);
+    const $article = this.view.makeElement("article", "article-" + sortType, "article-" + sortType);
+
     this.view.appendChild("$mainAnimationContainer", $article);
 
     stickElements
