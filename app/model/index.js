@@ -1,5 +1,5 @@
-import CONSTANT, { ITEM, THEME } from './constant';
-import { SortItemList } from './typeDef';
+import CONSTANT, { ITEM, THEME } from '../common/constant';
+import { SortItemList } from '../common/typeDef';
 
 
 

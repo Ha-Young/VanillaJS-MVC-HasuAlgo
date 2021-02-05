@@ -1,6 +1,6 @@
-import Model from './model';
-import View from './view';
-import { SORT_KINDS } from './constant';
+import Model from '../model';
+import View from '../view';
+import { SORT_KINDS } from '../common/constant';
 
 export default class Controller {
 	/**

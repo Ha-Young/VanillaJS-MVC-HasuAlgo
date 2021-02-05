@@ -1,4 +1,4 @@
-import { SortItemList } from './typeDef';
+import { SortItemList } from '../../common/typeDef';
 
 export default class Templates {
 
