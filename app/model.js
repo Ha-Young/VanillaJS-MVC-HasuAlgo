@@ -5,16 +5,23 @@ export default class Model {
   }
 
   setProperty(sortType, key, value) {
-    if (Object.hasOwnProperty(this._storage[sortType])) {
+    if (this._storage.hasOwnProperty(sortType)) {
       this._storage[sortType][key] = value;
-      return;
+      return this._storage[sortType];
     }
     this._storage[sortType] = {};
     this._storage[sortType][key] = value;
+    return this._storage[sortType];
   }
 
   getProperty(sortType, key) {
-    return this._storage[sortType][key];
+    if (this._storage.hasOwnProperty(sortType)){
+      return this._storage[sortType][key];
+    }
+  }
+
+  clearProperty(sortType) {
+    delete this._storage[sortType];
   }
 
   setValueToCollection(sortType) {
@@ -40,12 +47,6 @@ export default class Model {
       }
     }
   }
-
-  getSortedValue() {
-    const userValue = this._storage[this._temp.sortType].value;
-    userValue;
-  }
-
 
   bubble (callback) {
     const collection = this._storage.bubble.collection;

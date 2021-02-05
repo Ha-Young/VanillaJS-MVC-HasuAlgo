@@ -39,14 +39,22 @@ export default class View {
 
   render(act, sortType, index) {
     const sticks = this._caches[sortType];
-    if (act === "init") this["$article-" + sortType].style.opacity = "1";
-    if (act === "changed") this._sortVisual(sortType, index);
 
-    if (act === "semifinished") sticks[index].style.backgroundColor = "red";
-    if (act === "finished") {
+    if (act === "init") {
+      this["$article-" + sortType].style.opacity = "1";
+    } else if (act === "changed") {
+      this._sortVisual(sortType, index);
+    } else if (act === "semifinished") {
+      sticks[index].style.backgroundColor = "red";
+    } else if (act === "finished") {
       for (let j = index - 1; 0 <= j; j--) {
         sticks[j].style.backgroundColor = "red";
       }
+    } else if (act === "clear") {
+      const $article = this["$article-" + sortType];
+      const $sticks = $article.children;
+      while ($sticks.length) $sticks[0].remove();
+      $article.remove();
     }
   }
 

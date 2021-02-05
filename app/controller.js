@@ -1,11 +1,8 @@
-let count = 0;
-
 export default class Controller {
   constructor(view, model) {
     this._temp = {};
     this.view = view;
     this.model = model;
-    this.isRunning = false;
     view.addEvent(
       "$inputNumber",
       "input",
@@ -14,7 +11,7 @@ export default class Controller {
     view.addEvent(
       "$selectSort",
       "input",
-      this.handleEventForUserSortInput.bind(this)
+      this.handleEventForUserSortType.bind(this)
     );
     view.addEvent(
       "$buttonRun",
@@ -35,9 +32,8 @@ export default class Controller {
     event.target.value = typedValue.slice(0, typedValue.length - 1);
   }
 
-  handleEventForUserSortInput(event) {
-    const sortType = event.target.value;
-    this.writeInstantValue("sortType", sortType);
+  handleEventForUserSortType(event) {
+    this.writeInstantValue("sortType", event.target.value);
   }
 
   handleEventForUserRunClick(event) {
@@ -48,16 +44,26 @@ export default class Controller {
       alert(error.message);
       return;
     }
-
     const sortType = this._temp.sortType;
+    const isRunning = !!this.model.getProperty(sortType, "isRunning");
+
+    if (isRunning) {
+      this.view.render("clear", sortType);
+      this.model.clearProperty(sortType);
+      clearTimeout(this.model.getProperty(sortType, "timeoutId"));
+      setTimeout(() => { this.handleEventForUserRunClick() }, 800);
+      return;
+    }
+
     this.model.setProperty(sortType, "value", this._temp.value);
+    this.model.setProperty(sortType, "isRunning", true);
     this.model.setValueToCollection(sortType);
-    const $article = this.view.makeElement("article", "article-" + sortType);
-    this.view.appendChild("$mainAnimationContainer", $article);
     const sortedCollection = this.model
       .getProperty(sortType, "collection")
       .slice()
       .sort((a, b) => a.value - b.value);
+    const $article = this.view.makeElement("article", "article-" + sortType);
+    this.view.appendChild("$mainAnimationContainer", $article);
     const stickElements = [];
 
     for (let i = 0; i < sortedCollection.length; i++) {
@@ -75,7 +81,7 @@ export default class Controller {
   }
 
   initiateAnimation(sortType) {
-    const ARTICLE_TRANSITION = 1000;
+    const ARTICLE_TRANSITION = 500;
     setTimeout(() => {
       this.view.render("init", sortType);
       this.handleAnimation(sortType);
@@ -85,11 +91,12 @@ export default class Controller {
   handleAnimation(sortType) {
     const STICK_TRANSITION = 1000;
     this.model[sortType]((act, sortType, index) => {
-        setTimeout(() => {
-          this.view.render(act, sortType, index);
-          if (act === "finished") return;
-          this.handleAnimation(sortType);
+      const timeoutId = setTimeout(() => {
+        this.view.render(act, sortType, index);
+        if (act === "finished") return;
+        this.handleAnimation(sortType);
         }, STICK_TRANSITION);
+      this.model.setProperty(sortType, "timeoutId", timeoutId);
       }
     );
   }
