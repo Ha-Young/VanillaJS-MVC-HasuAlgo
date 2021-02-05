@@ -1,3 +1,5 @@
+import { pause, swap } from './helpers';
+
 export default class Controller {
   constructor(model, view) {
     this.model = model;
@@ -68,57 +70,34 @@ export default class Controller {
     const listToSort = this.model.getStorage();
     let bubbleChangeCount = 0;
 
-    for (let i = listToSort.length - 1; i >= 1; i--) {
-      for (let j = 0; j < i; j++) {
-        this.view.changeColorOfSelectedItem(j, j + 1);
+    for (let outerIndex = listToSort.length - 1; outerIndex >= 1; outerIndex--) {
+      for (let innerIndex = 0; innerIndex < outerIndex; innerIndex++) {
+        await this.view.changeClass(500, 'add', 'selected', innerIndex, innerIndex + 1);
 
-        await this.sleep(500);
-
-        if (listToSort[j] > listToSort[j + 1]) {
+        if (listToSort[innerIndex] > listToSort[innerIndex + 1]) {
+          swap(listToSort, innerIndex, innerIndex + 1);
           bubbleChangeCount++;
 
-          listToSort.splice(j + 1, 0, listToSort.splice(j, 1)[0]);
-
-          this.view.changeClass('add', 'move-right', j);
-          this.view.changeClass('add', 'move-left', j + 1);
-          // this.view.moveRight(j);
-          // this.view.moveLeft(j + 1);
-
-          await this.sleep(500);
-
-          this.view.changeOrder(j, j + 2);
+          await this.view.switchItemsWithAnimation(innerIndex);
         }
 
-        this.view.removeColorOfUnselectedItem(j, j + 1);
+        this.view.changeClass(null, 'remove', 'selected', innerIndex, innerIndex + 1);
 
-        if (i === 1 && j === 0) {
-          this.view.changeColorOfSortedItem(i, j);
-          return;
-        }
-
-        if (j === i - 1) {
+        if (innerIndex === outerIndex - 1) {
           if (bubbleChangeCount === 0) {
-            this.view.changeColorOfSortedItem(...Array.from(Array(i + 1).keys()));
+            this.view.changeClass(null, 'add', 'sorted', ...Array.from(Array(outerIndex + 1).keys()));
             return;
           }
 
-          bubbleChangeCount = 0;
-
-          if (listToSort[i] === parseInt(this.view.$sortingWindow.childNodes[i].innerText)) {
-            this.view.changeColorOfSortedItem(i);
-          } else {
-            this.view.changeColorOfSortedItem(i - 1);
-          }
+          this.view.changeClass(null, 'add', 'sorted', outerIndex);
         }
-
-        await this.sleep(300);
       }
-    }
-    return;
-  }
 
-  sleep = function (ms) {
-    return new Promise((resolve) => setTimeout(() => resolve(), ms));
+      bubbleChangeCount = 0;
+    }
+
+    this.view.changeClass(null, 'add', 'sorted', 0);
+    return;
   }
 
   quickSort = async function (listToSort, startIndex = 0, endIndex = listToSort.length - 1, isFirstExecuted = true) {
@@ -126,54 +105,41 @@ export default class Controller {
       return;
     }
 
-    this.view.changeColorOfSelectedQuickItem(startIndex, endIndex);
+    this.view.changeColorOfQuickItem('add', startIndex, endIndex);
     await this.partition.call(this, listToSort, startIndex, endIndex);
-    this.view.removeColorOfDeselectedQuickItem(startIndex, endIndex);
+    this.view.changeColorOfQuickItem('remove', startIndex, endIndex);
 
     await this.quickSort.call(this, listToSort, startIndex, this.borderIndex - 1, false);
-    await this.quickSort.call(this, listToSort, this.borderIndex + 1, endIndex, false);
+    await this.quickSort.call(this, listToSort, this.borderIndex, endIndex, false);
 
     if (isFirstExecuted) {
-      this.view.changeColorOfSortedItem(...Array.from(Array(listToSort.length).keys()));
+      this.view.changeClass(null, 'add', 'sorted', ...Array.from(Array(listToSort.length).keys()));
     }
-  }
-
-  swap = function (array, index1, index2) {
-    const temp = array[index1];
-    array[index1] = array[index2];
-    array[index2] = temp;
   }
 
   partition = async function (array, startIndex, endIndex) {
     let pivotIndex = Math.floor((startIndex + endIndex) / 2);
     const pivotValue = array[pivotIndex];
 
-    this.view.changeColorOfSortedItem(pivotIndex);
+    this.view.changeClass(null, 'add', 'sorted', pivotIndex);
 
     while (startIndex <= endIndex) {
-      this.view.changeColorOfSelectedItem(startIndex, endIndex);
-      await this.sleep(300);
+      await this.view.changeClass(300, 'add', 'selected', startIndex, endIndex);
 
       while (array[startIndex] < pivotValue) {
-        this.view.removeColorOfUnselectedItem(startIndex);
-        await this.sleep(300);
-
-        this.view.changeColorOfSelectedItem(++startIndex);
-        await this.sleep(300);
+        await this.view.changeClass(300, 'remove', 'selected', startIndex);
+        await this.view.changeClass(300, 'add', 'selected', ++startIndex);
       }
+
       while (array[endIndex] > pivotValue) {
-        this.view.removeColorOfUnselectedItem(endIndex);
-        await this.sleep(300);
-
-        this.view.changeColorOfSelectedItem(--endIndex);
-        await this.sleep(300);
+        await this.view.changeClass(300, 'remove', 'selected', endIndex);
+        await this.view.changeClass(300, 'add', 'selected', --endIndex);
       }
 
-      this.view.removeColorOfUnselectedItem(startIndex, endIndex);
+      this.view.changeClass(null, 'remove', 'selected', startIndex, endIndex);
 
       if (startIndex <= endIndex) {
-        this.view.changeColorOfSelectedItem(startIndex, endIndex);
-        await this.sleep(300);
+        await this.view.changeClass(300, 'add', 'selected', startIndex, endIndex);
 
         if (startIndex === pivotIndex) {
           pivotIndex = endIndex;
@@ -182,27 +148,20 @@ export default class Controller {
         }
 
         if (startIndex !== endIndex) {
-          this.swap(array, startIndex, endIndex);
-          this.view.moveQuick(startIndex, endIndex);
-          this.view.moveQuick(endIndex, startIndex);
-          await this.sleep(600);
+          swap(array, startIndex, endIndex);
 
-          this.view.changeOrderQuick(startIndex, endIndex);
-          await this.sleep(300);
+          await this.view.switchQuickItemsWithAnimation(startIndex, endIndex);
         }
 
-        this.view.removeColorOfUnselectedItem(startIndex, endIndex);
-        await this.sleep(300);
+        await this.view.changeClass(300, 'remove', 'selected', startIndex, endIndex);
 
         startIndex++;
         endIndex--;
       }
     }
 
-    this.view.removeColorOfSortedItem(pivotIndex);
-    this.borderIndex = pivotIndex;
-    await this.sleep(100);
-
+    this.borderIndex = startIndex;
+    await this.view.changeClass(300, 'remove', 'sorted', pivotIndex);
     return;
   }
 }

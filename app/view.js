@@ -1,3 +1,5 @@
+import {pause} from './helpers';
+
 export default class View {
   constructor() {
     this.$inputNumbers = document.querySelector('#input-form');
@@ -88,28 +90,31 @@ export default class View {
     this.bindSetAlgorithm(setAlgorithmHandler);
   }
 
-  changeClass = function (type, className, ...indexList) {
+  changeClass = async function (pauseTime, type, className, ...indexList) {
     const nodeList = this.$sortingWindow.childNodes;
 
     indexList.forEach((index) => {
       nodeList[index].classList[type](className);
     });
+
+    if (pauseTime) {
+      await pause(pauseTime);
+    }
   }
 
-  moveRight = function (...indexList) {
-    const nodeList = this.$sortingWindow.childNodes;
-
-    indexList.forEach((index) => {
-      nodeList[index].classList.add('move-right');
-    });
+  switchItemsWithAnimation = async function (index) {
+    this.changeClass(null, 'add', 'move-right', index);
+    this.changeClass(null, 'add', 'move-left', index + 1);
+    await pause(500);
+    this.changeOrder(index, index + 2);
   }
 
-  moveLeft = function (...indexList) {
-    const nodeList = this.$sortingWindow.childNodes;
-
-    indexList.forEach((index) => {
-      nodeList[index].classList.add('move-left');
-    });
+  switchQuickItemsWithAnimation = async function (startIndex, endIndex) {
+    this.moveQuick(startIndex, endIndex);
+    this.moveQuick(endIndex, startIndex);
+    await pause(600);
+    this.changeOrderQuick(startIndex, endIndex);
+    await pause(300);
   }
 
   moveQuick = function (index, whereToGoNanADiRo) {
@@ -120,51 +125,11 @@ export default class View {
     nodeList[index].style.transform = `translateX(${distance}px)`;
   }
 
-  changeColorOfSelectedItem = function (...indexList) {
-    const nodeList = this.$sortingWindow.childNodes;
-
-    indexList.forEach((index) => {
-      nodeList[index].classList.add('selected');
-    });
-  }
-
-  removeColorOfUnselectedItem = function (...indexList) {
-    const nodeList = this.$sortingWindow.childNodes;
-
-    indexList.forEach((index) => {
-      nodeList[index].classList.remove('selected');
-    });
-  }
-
-  changeColorOfSortedItem = function (...indexList) {
-    const nodeList = this.$sortingWindow.childNodes;
-
-    indexList.forEach((index) => {
-      nodeList[index].classList.add('sorted');
-    });
-  }
-
-  removeColorOfSortedItem = function (...indexList) {
-    const nodeList = this.$sortingWindow.childNodes;
-
-    indexList.forEach((index) => {
-      nodeList[index].classList.remove('sorted');
-    });
-  }
-
-  changeColorOfSelectedQuickItem = function (left, right) {
+  changeColorOfQuickItem = function (type, left, right) {
     const nodeList = this.$sortingWindow.childNodes;
 
     for (let i = left; i <= right; i++) {
-      nodeList[i].classList.add('quick-group');
-    }
-  }
-
-  removeColorOfDeselectedQuickItem = function (left, right) {
-    const nodeList = this.$sortingWindow.childNodes;
-
-    for (let i = left; i <= right; i++) {
-      nodeList[i].classList.remove('quick-group');
+      nodeList[i].classList[type]('quick-group');
     }
   }
 
