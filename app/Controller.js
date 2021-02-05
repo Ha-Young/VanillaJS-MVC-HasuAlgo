@@ -18,6 +18,7 @@ export default function Controller(model, view) {
 
   this.BUBUBLE_SORT = "bubble-sort";
   this.QUICK_SORT = "quick-sort";
+  this.DATA_VALUE = "data-value"
 
   this.INITIAL_MESSAGE = "Please type any 5-10 numbers between 0 to 50 seperating with comma";
   this.PROPER_NUMBER_MESSAGE = "Please type proper 5-10 numbers";
@@ -128,8 +129,8 @@ Controller.prototype.placingPivotIdx = async function(givenElements, start, end)
         this.view.paintTargetElement(targetElement);
         await this.view.delay(1000);
 
-        const pivotValue = Number(pivot.getAttribute('data-value'))
-        const targetValue = Number(targetElement.getAttribute('data-value'))
+        const pivotValue = Number(pivot.getAttribute(this.DATA_VALUE))
+        const targetValue = Number(targetElement.getAttribute(this.DATA_VALUE))
 
         if (pivotValue > targetValue) {
             this.view.paintSmallerElement(targetElement)
@@ -190,8 +191,8 @@ Controller.prototype.bubleSort = async function() {
       await this.view.delay(this.DELAY);
       this.view.colorTargetElements(leftTarget, rightTarget);
 
-      const leftValue = Number(leftTarget.getAttribute("data-value"));
-      const rightValue = Number(rightTarget.getAttribute("data-value"));
+      const leftValue = Number(leftTarget.getAttribute(this.DATA_VALUE));
+      const rightValue = Number(rightTarget.getAttribute(this.DATA_VALUE));
 
       if (leftValue > rightValue) {
         await this.view.delay(this.DELAY);

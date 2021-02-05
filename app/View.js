@@ -1,5 +1,9 @@
 export default function View () {
   this.TRANSITION_PERCENTAGE = 100;
+  this.HIDDEN_CLASSNAME = "hidden";
+  this.DISABLED_CLASSNAME = "disabled";
+  this.TRANSFORM_NONE = "none";
+  this.PLACEHOLDER_TEXT = "Type here..."
 }
 
 View.prototype.createElements = function(userInputList, sortDisplaySection) {
@@ -14,19 +18,19 @@ View.prototype.createElements = function(userInputList, sortDisplaySection) {
 };
 
 View.prototype.toggleSubmitButton = function(submitButton, toggle) {
-  toggle ? submitButton.classList.remove("hidden") : submitButton.classList.add("hidden");
+  toggle ? submitButton.classList.remove(this.HIDDEN_CLASSNAME) : submitButton.classList.add(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.toggleStartButton = function(startButton, toggle) {
-  toggle ? startButton.classList.remove("hidden") : startButton.classList.add("hidden");
+  toggle ? startButton.classList.remove(this.HIDDEN_CLASSNAME) : startButton.classList.add(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.toggleResetButton = function(resetButton, toggle) {
-  toggle ? resetButton.classList.remove("hidden") : resetButton.classList.add("hidden");
+  toggle ? resetButton.classList.remove(this.HIDDEN_CLASSNAME) : resetButton.classList.add(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.toggleSortSelector = function(sortSelector, toggle) {
-  toggle ? sortSelector.classList.add("hidden") : sortSelector.classList.remove("hidden");
+  toggle ? sortSelector.classList.add(this.HIDDEN_CLASSNAME) : sortSelector.classList.remove(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.setInstructionMessage = function(instructionMessageElement, settingMessage) {
@@ -39,9 +43,9 @@ View.prototype.setInstructionMessageAfterSubmit = function(userInput, instructio
 };
 
 View.prototype.hideSortSelectorAfterInputValidation = function(userInput, sortSelector, validatedUserInput) {
-  sortSelector.classList.add("hidden");
+  sortSelector.classList.add(this.HIDDEN_CLASSNAME);
   userInput.placeholder = validatedUserInput;
-  userInput.disabled = "disabled";
+  userInput.disabled = this.DISABLED_CLASSNAME;
 };
 
 View.prototype.delay = function (delayTime) {
@@ -64,8 +68,8 @@ View.prototype.moveVisualTargetElements = function(leftTarget, rightTarget, tran
 View.prototype.swapTargetElements = function(leftTarget, rightTarget, targetParent) {
   leftTarget.classList.remove("element-moving-effect");
   rightTarget.classList.remove("element-moving-effect");
-  leftTarget.style.transform = "none";
-  rightTarget.style.transform = "none";
+  leftTarget.style.transform = this.TRANSFORM_NONE;
+  rightTarget.style.transform = this.TRANSFORM_NONE;
 
   targetParent.insertBefore(rightTarget, leftTarget);
 };
@@ -85,8 +89,8 @@ View.prototype.colorSortedElements = function(sortedElement) {
 };
 
 View.prototype.resetUserInputElement = function(userInput) {
-  userInput.removeAttribute("disabled");
-  userInput.placeholder = "Type here...";
+  userInput.removeAttribute(this.DISABLED_CLASSNAME);
+  userInput.placeholder = this.PLACEHOLDER_TEXT;
 };
 
 View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
