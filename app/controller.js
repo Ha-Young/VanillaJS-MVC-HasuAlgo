@@ -33,16 +33,13 @@ class Controller {
 
   handleEventListener(view) {
     const inputBox = view.inputBox;
+    const inputButton = view.inputButton;
     const sortButton = view.sortButton;
     const sortRestartButton = view.sortRestartButton;
     const clearButton = view.sortClearButton;
 
-    inputBox.addEventListener("submit", (event) => {
-      event.preventDefault();
-      this.handleRenderGraph(event);
-      this.handleAddClass(sortRestartButton, "invisible");
-      this.handleAddClass(clearButton, "invisible");
-    });
+    inputBox.addEventListener("submit", this._makeGraph);
+    inputButton.addEventListener("click", this._makeGraph);
     sortButton.addEventListener("click", this.startSort);
     sortRestartButton.addEventListener("click", (event) => {
       this.handleRenderGraph(event);
@@ -53,6 +50,13 @@ class Controller {
       view.clearGraph();
       view.controlRestartClearButtons();
     });
+  }
+
+  _makeGraph = (event) => {
+    event.preventDefault();
+    this.handleRenderGraph(event);
+    this.handleAddClass(sortRestartButton, "invisible");
+    this.handleAddClass(clearButton, "invisible");
   }
 
   handleRenderGraph = (event) => {
