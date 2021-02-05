@@ -11,7 +11,7 @@ class Model {
   addData(data) {
     this.data = data;
     this.filteredData = data.replaceAll(',', '').replace(/ /g, '');
-    this.unsortedArray = this.filteredData.split("").map((num) => Number(num));
+    this.unsortedArray = data.replace(/ /gm, "").replace(/^,|,$/gm, '').split(",").map((num) => Number(num));
     this.sortedArray = this.unsortedArray.slice();
   }
 }
