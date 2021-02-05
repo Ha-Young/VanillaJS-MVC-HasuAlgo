@@ -128,7 +128,7 @@ export default function Model () {
           beforeSwap: JSON.stringify(before),
           afterSwap: JSON.stringify(after),
         }
-      )
+      );
 
       if (shouldSwap) {
         nextPivotIndex++;
@@ -159,7 +159,7 @@ export default function Model () {
     );
 
     return [nextPivotIndex, sortSteps];
-  }
+  };
 
   Model.prototype.makeQuickSortSteps = function (inputtedNums, start = 0, end = inputtedNums.length - 1) {
     if (start >= end) {
