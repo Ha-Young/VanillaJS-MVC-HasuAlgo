@@ -9,6 +9,7 @@ function View () {
   this._INITIAL_COLOR = "#bdc3c7";
   this._PIVOT_COLOR = "#f1c40f";
   this._SORTED_COLOR = "#27ae60";
+  this._SELECTED_COLOR = "purple";
   this._HEIGHT_ADJUST = 35;
 }
 
@@ -31,36 +32,29 @@ View.prototype.showInitial = function (result) {
   this._VISUALIZATION.appendChild(this._CONTAINER);
 }
 
-//애니메이션 추가 
 View.prototype.showSwap = function (index1, index2) {
   const greater = document.getElementById(index1);
   const smaller = document.getElementById(index2);
-
-  greater.style.backgroundColor ="red";
-  smaller.style.backgroundColor = "red";
 
   const greaterRect = greater.getBoundingClientRect();
   const smallerRect = smaller.getBoundingClientRect();
   const diff = smallerRect.x - greaterRect.x;
 
-  greater.style.transition = "transform 1s linear";
-  smaller.style.transition = "transform 1s linear";
-
-  var greaterStyle = window.getComputedStyle(greater);
-  var greaterMatrix = new WebKitCSSMatrix(greaterStyle.transform);
-  const greaterTranslatedX = greaterMatrix.m41;
-
+  const greaterStyle = window.getComputedStyle(greater);
   const smallerStyle = window.getComputedStyle(smaller);
+  const greaterMatrix = new WebKitCSSMatrix(greaterStyle.transform);
   const smallerMatrix = new WebKitCSSMatrix(smallerStyle.transform);
+  const greaterTranslatedX = greaterMatrix.m41;
   const smallerTranslatedX = smallerMatrix.m41;
 
+  greater.style.transition = "transform 0.5s linear";
+  smaller.style.transition = "transform 0.5s linear";
 
   greater.style.transform = `translateX(${greaterTranslatedX + diff}px)`;
   smaller.style.transform = `translateX(${smallerTranslatedX - diff}px)`;
 
   greater.setAttribute("id", index2);
   smaller.setAttribute("id", index1);
-
 }
 
 View.prototype.paintBar = function (type, ...indexList) {
@@ -72,16 +66,14 @@ View.prototype.paintBar = function (type, ...indexList) {
     color = this._SORTED_COLOR;
   } else if (type === "initial") {
     color = this._INITIAL_COLOR;
+  } else if (type === "selected") {
+    color = this._SELECTED_COLOR;
   }
 
   for (let i = 0; i < indexList.length; i++) {
     const bar = document.getElementById(indexList[i]);
     bar.style.backgroundColor = color;
   }
-}
-
-View.prototype.pointBars = function (index1, index2) {
-
 }
 
 export {View};

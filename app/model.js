@@ -47,15 +47,17 @@ Model.prototype.bubbleSort = async function (storage,
 
   for (let i = 0; i < storage.length; i++) {
     for (let j = 0; j < storage.length - 1 - i; j++) {
+      await wait(1);
+      paintBar("selected", j, j + 1);
 
       if (storage[j] > storage[j + 1]) {
         [storage[j], storage[j + 1]] = [storage[j + 1], storage[j]];
-
-        await wait(2);
+        await wait(1);
         showSwap(j, j + 1);
-        await wait(0.5);
-        paintBar("initial", j, j + 1);
       }
+
+      await wait(0.5);
+      paintBar("initial", j, j + 1);
     }
 
     await wait(1);
