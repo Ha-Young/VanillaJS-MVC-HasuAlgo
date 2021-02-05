@@ -1,49 +1,50 @@
 const BubbleModel = function () {
-  this._inputArray = [];
+  this.inputArray = [];
+  this.taskQueue = [];
 };
 
 BubbleModel.prototype.addNumber = function (array, callback) {
-  if (this._inputArray.length > 9) {
+  if (this.inputArray.length > 9) {
     return;
   }
 
-  this._inputArray = this._inputArray.concat(array);
-  callback(this._inputArray);
+  this.inputArray = this.inputArray.concat(array);
+  callback(this.inputArray);
 };
 
-BubbleModel.prototype.startSort = async function (
-  startCompare,
-  swapElement,
-  finishCompare,
-  finishSort
-) {
-  const sortingArr = [...this._inputArray];
+BubbleModel.prototype.startSort = function (callback) {
+  const sortingArr = [...this.inputArray];
+
+  this.taskQueue.push(createTask("START BUBBLE"));
+
   for (let i = 0; i < sortingArr.length; i++) {
     for (let j = 0; j < sortingArr.length - i - 1; j++) {
-      const lastIndex = sortingArr.length - i - 1;
-      await startCompare(j);
+      this.taskQueue.push(createTask("PAINT COMPARE", j, j + 1));
 
       if (sortingArr[j] > sortingArr[j + 1]) {
         let temp = sortingArr[j];
         sortingArr[j] = sortingArr[j + 1];
         sortingArr[j + 1] = temp;
 
-        await swapElement(j, sortingArr[j], sortingArr[j + 1]);
+        this.taskQueue.push(createTask("SWAP", j, j + 1));
       }
 
-      await finishCompare(j, lastIndex);
+      this.taskQueue.push(createTask("UNPAINT COMPARE", j, j + 1));
     }
+    this.taskQueue.push(createTask("PAINT SORTED", sortingArr.length - i - 1));
   }
-  await finishSort();
+  this.taskQueue.push(createTask("FINISH BUBBLE"));
+
+  callback();
 };
 
 BubbleModel.prototype.resetList = function (callback) {
-  this._inputArray = [];
+  this.inputArray = [];
   callback();
 };
 
 BubbleModel.prototype.shuffleNum = function (callback) {
-  const shuffledArray = [...this._inputArray];
+  const shuffledArray = [...this.inputArray];
 
   for (let i = shuffledArray.length; i; i--) {
     const j = Math.floor(Math.random() * i);
@@ -52,16 +53,13 @@ BubbleModel.prototype.shuffleNum = function (callback) {
     shuffledArray[j] = temp;
   }
 
-  this._inputArray = [...shuffledArray];
+  this.inputArray = [...shuffledArray];
   callback(shuffledArray);
 };
 
-BubbleModel.prototype.setRandom = function (callback) {
-  const newRandom = Math.floor(Math.random() * 50) + 1;
-
-  this._inputArray.push(newRandom);
-
-  callback(this._inputArray);
+BubbleModel.prototype.setRandom = function (randomNum, callback) {
+  this.inputArray.push(randomNum);
+  callback(this.inputArray);
 };
 
 export default BubbleModel;

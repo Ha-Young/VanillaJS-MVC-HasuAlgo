@@ -1,4 +1,4 @@
-const BubbleController = function (model, view) {
+const BubbleControlle = function (model, view) {
   const self = this;
   self.model = model;
   self.view = view;
@@ -11,10 +11,6 @@ const BubbleController = function (model, view) {
     self.startSort();
   });
 
-  self.view.connectHandler("resetList", function () {
-    self.resetList();
-  });
-
   self.view.connectHandler("shuffleNum", function (array) {
     self.shuffleNum(array);
   });
@@ -22,10 +18,19 @@ const BubbleController = function (model, view) {
   self.view.connectHandler("setRandom", function () {
     self.setRandom();
   });
+
+  self.view.connectHandler("resetList", function () {
+    self.resetList();
+  });
 };
 
-BubbleController.prototype.addNumber = function (input) {
+BubbleControlle.prototype.addNumber = function (input) {
   const self = this;
+
+  if (!input) {
+    return;
+  }
+
   const newNumber = input
     .split(",")
     .map((num) => parseInt(num))
@@ -36,69 +41,52 @@ BubbleController.prototype.addNumber = function (input) {
   }
 
   self.model.addNumber(newNumber, function (newList) {
-    self.view.render("paintNewList", newList);
+    self.view.renderInput("DRAW LIST", newList);
   });
 };
 
-BubbleController.prototype.startSort = function () {
+BubbleControlle.prototype.startSort = function () {
   const self = this;
 
-  const startCompare = function (index) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        self.view.render("colorElement", index);
-        resolve();
-      }, 350);
-    });
-  };
-
-  const swapElement = function (index, element1, element2) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        self.view.render("swapElement", index, element1, element2);
-        resolve();
-      }, 350);
-    });
-  };
-
-  const finishCompare = function (index, lastIndex) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        self.view.render("uncolorElement", index, lastIndex);
-        resolve();
-      }, 350);
-    });
-  };
-
-  const finishSort = function () {
-    self.view.render("finishSort");
-  };
-
-  self.model.startSort(startCompare, swapElement, finishCompare, finishSort);
+  self.model.startSort(self.startVisualize.bind(self));
 };
 
-BubbleController.prototype.resetList = function () {
+BubbleControlle.prototype.startVisualize = async function () {
   const self = this;
 
-  self.model.resetList(() => {
-    self.view.render("paintReset");
-  });
+  if (!self.model.taskQueue.length) {
+    return;
+  }
+
+  await self.view.renderVisualize(self.model.taskQueue[0]);
+  await self.model.taskQueue.shift();
+
+  await self.startVisualize();
 };
 
-BubbleController.prototype.setRandom = function () {
-  const self = this;
-
-  self.model.setRandom((newList) => {
-    self.view.render("paintNewList", newList);
-  });
-};
-
-BubbleController.prototype.shuffleNum = function () {
+BubbleControlle.prototype.shuffleNum = function () {
   const self = this;
 
   self.model.shuffleNum((shuffledArray) => {
-    self.view.render("paintNewList", shuffledArray);
+    self.view.renderInput("DRAW LIST", shuffledArray);
   });
 };
 
-export default BubbleController;
+BubbleControlle.prototype.setRandom = function () {
+  const self = this;
+  const randomNum = Math.floor(Math.random() * 50) + 1;
+
+  self.model.setRandom(randomNum, (updatedList) => {
+    self.view.renderInput("DRAW LIST", updatedList);
+  });
+};
+
+BubbleControlle.prototype.resetList = function () {
+  const self = this;
+
+  self.model.resetList(() => {
+    self.view.renderInput("RESET");
+  });
+};
+
+export default BubbleControlle;

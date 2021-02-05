@@ -1,8 +1,8 @@
 const BubbleView = function () {
-  this.$sortStyle = qs(".sort-style");
-  this.$inputBox = qs(".input-box");
+  this.moveFactor = {};
+
   this.$inputForm = qs(".input-form");
-  this.$insertButton = qs(".insert-button");
+  this.$inputBox = qs(".input-box");
   this.$randomButton = qs(".random-button");
   this.$shuffleButton = qs(".shuffle-button");
   this.$startButton = qs(".start-button");
@@ -11,70 +11,89 @@ const BubbleView = function () {
   this.$sortContainer = qs(".sort-list");
 };
 
-BubbleView.prototype.render = function (viewCommand, parameter, ...args) {
+BubbleView.prototype.renderInput = function (type, parameter) {
   const self = this;
-
-  const viewCommands = {
-    paintNewList: function () {
+  const renderType = {
+    "DRAW LIST": function () {
       self.$resetButton.classList.remove("hide");
 
       self.paintBar(parameter);
     },
-    colorElement: function () {
-      self.$shuffleButton.classList.add("hide");
-      self.$randomButton.classList.add("hide");
-      self.$startButton.classList.add("hide");
-      self.$resetButton.classList.add("hide");
-      self.$sortElementList = qsa(".sort-element");
-
-      const firstIndex = parameter;
-      const secondIndex = firstIndex + 1;
-      const firstElement = self.$sortElementList[firstIndex];
-      const secondElement = self.$sortElementList[secondIndex];
-
-      firstElement.childNodes[1].classList.add("comparing");
-      secondElement.childNodes[1].classList.add("comparing");
-    },
-    swapElement: function () {
-      const firstElement = self.$sortElementList[parameter];
-      const secondElement = self.$sortElementList[parameter + 1];
-      const firstValue = args[0];
-      const secondValue = args[1];
-      const firstHeight = firstElement.childNodes[1].style.height;
-      const secondHeight = secondElement.childNodes[1].style.height;
-
-      firstElement.childNodes[3].innerHTML = firstValue;
-      firstElement.childNodes[1].style.height = secondHeight;
-
-      secondElement.childNodes[3].innerHTML = secondValue;
-      secondElement.childNodes[1].style.height = firstHeight;
-    },
-    uncolorElement: function () {
-      const firstElement = self.$sortElementList[parameter];
-      const secondElement = self.$sortElementList[parameter + 1];
-      const lastIndex = args[0];
-
-      firstElement.childNodes[1].classList.remove("comparing");
-      secondElement.childNodes[1].classList.remove("comparing");
-
-      if (parameter === lastIndex - 1) {
-        secondElement.childNodes[1].classList.add("done");
-      }
-    },
-    finishSort: function () {
-      self.$sortElementList[0].childNodes[1].classList.add("done");
-      self.$resetButton.classList.remove("hide");
-    },
-    paintReset: function () {
+    RESET: function () {
       self.$sortContainer.innerHTML = "";
       self.$startButton.classList.remove("hide");
       self.$shuffleButton.classList.remove("hide");
       self.$randomButton.classList.remove("hide");
       self.$resetButton.classList.add("hide");
+
+      self.moveHistory = {};
     },
   };
 
-  viewCommands[viewCommand]();
+  renderType[type]();
+};
+
+BubbleView.prototype.renderVisualize = async function ({
+  type,
+  sourceIndex,
+  targetIndex,
+}) {
+  const self = this;
+  const source = gbi(`#${sourceIndex}`);
+  const target = gbi(`#${targetIndex}`);
+
+  self.$sortElementList = qsa(".sort-element");
+  const visualize = {
+    "START BUBBLE": async function () {
+      self.$inputForm.classList.add("hide");
+      self.$shuffleButton.classList.add("hide");
+      self.$randomButton.classList.add("hide");
+      self.$startButton.classList.add("hide");
+      self.$resetButton.classList.add("hide");
+    },
+    "PAINT COMPARE": async function () {
+      source.children[0].classList.add("comparing");
+      target.children[0].classList.add("comparing");
+      await wait(400);
+    },
+    SWAP: async function () {
+      const sourceCoordiX = source.getBoundingClientRect().x;
+      const targetCoordiX = target.getBoundingClientRect().x;
+      const distance = targetCoordiX - sourceCoordiX;
+      const sourceFactor = ++self.moveFactor[source.id];
+      const targetFactor = --self.moveFactor[target.id];
+
+      source.style.transform = `translateX(${distance * sourceFactor}px)`;
+      target.style.transform = `translateX(${distance * targetFactor}px)`;
+
+      await wait(600);
+
+      target.removeAttribute("id");
+      source.removeAttribute("id");
+      target.setAttribute("id", `#${sourceIndex}`);
+      source.setAttribute("id", `#${targetIndex}`);
+
+      self.moveFactor[source.id] = sourceFactor;
+      self.moveFactor[target.id] = targetFactor;
+
+      await wait(0);
+    },
+    "UNPAINT COMPARE": async function () {
+      source.children[0].classList.remove("comparing");
+      target.children[0].classList.remove("comparing");
+      await wait(400);
+    },
+    "PAINT SORTED": async function () {
+      source.children[0].classList.add("done");
+      await wait(400);
+    },
+    "FINISH BUBBLE": function () {
+      self.$inputForm.classList.remove("hide");
+      self.$resetButton.classList.remove("hide");
+    },
+  };
+
+  await visualize[type]();
 };
 
 BubbleView.prototype.connectHandler = function (event, handler) {
@@ -87,7 +106,6 @@ BubbleView.prototype.connectHandler = function (event, handler) {
         handler(self.$inputBox.value);
         self.$inputBox.value = "";
       });
-      break;
 
     case "startSort":
       $on(self.$startButton, "click", function () {
@@ -130,14 +148,19 @@ BubbleView.prototype.paintBar = function (list) {
   this.$sortContainer.innerHTML = "";
   const maxNumber = Math.max.apply(null, list);
 
-  for (const number of list) {
+  for (let i = 0; i < list.length; i++) {
     const li = document.createElement("li");
-    li.classList.add("sort-element");
+
+    li.setAttribute("class", "sort-element");
+    li.setAttribute("id", `#${i}`);
     li.innerHTML = `
-			<div class="sort-bar" style="height:${(number / maxNumber) * 320}px"></div>
-			<span class="sort-number">${number}</span>
-			`;
+			<div class="sort-bar"></div>
+			<span class="sort-number">${list[i]}</span>
+      `;
+    li.children[0].style.height = `${(list[i] / maxNumber) * 320}px`;
+
     this.$sortContainer.appendChild(li);
+    this.moveFactor[`#${i}`] = 0;
   }
 };
 
