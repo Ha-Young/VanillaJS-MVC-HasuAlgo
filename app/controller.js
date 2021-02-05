@@ -26,39 +26,36 @@ Controller.prototype.sortStorage = async function(storeageArray) {
         storeageArray[j + 1] = swap;
 
         this.model.stampStorage.push(this.model.getStamp(j, j + 1));
-        console.log(this.view.$graphNodes[0].dataset.x);
-        // await this.view.moveGraph(this.view.$graphNodes[j], this.view.$graphNodes[j + 1]);
-        // await this.view.changeGraph(this.view.$graphNodes[j], this.view.$graphNodes[j + 1]);
       }
     }
-    // await this.view.changeColor(this.view.$graphNodes[storeageArray.length - i - 1]);
   }
-    while(this.model.stampStorage.length) {
-      let leftNode;
-      let rightNode;
-      for (let i = 0; i < this.view.$graphNodes.length; i++) {
-        if ((this.model.stampStorage[0].leftIndex) === Number(this.view.$graphNodes[i].dataset.x)) {
-          leftNode = this.view.$graphNodes[i];
-        }
 
-        if ((this.model.stampStorage[0].rightIndex) === Number(this.view.$graphNodes[i].dataset.x)) {
-          rightNode = this.view.$graphNodes[i];
-        }
+  while (this.model.stampStorage.length) {
+    let leftNode;
+    let rightNode;
+    for (let i = 0; i < this.view.$graphNodes.length; i++) {
+      if ((this.model.stampStorage[0].leftIndex) === Number(this.view.$graphNodes[i].dataset.x)) {
+        leftNode = this.view.$graphNodes[i];
       }
 
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          this.view.moveGraph(leftNode, rightNode);
-          resolve();  
-        }, 1000);
-      });
-      
-      let temp = leftNode.dataset.x;
-      leftNode.dataset.x = rightNode.dataset.x;
-      rightNode.dataset.x = temp;
-      this.model.stampStorage.shift();
+      if ((this.model.stampStorage[0].rightIndex) === Number(this.view.$graphNodes[i].dataset.x)) {
+        rightNode = this.view.$graphNodes[i];
+      }
     }
-  }
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        this.view.moveGraph(leftNode, rightNode);
+        resolve();  
+      }, 1000);
+    });
+
+    let temp = leftNode.dataset.x;
+    leftNode.dataset.x = rightNode.dataset.x;
+    rightNode.dataset.x = temp;
+    this.model.stampStorage.shift();
+    }
+ }
 
 Controller.prototype.handleKeyUp = function(event) {
   event.stopImmediatePropagation();
