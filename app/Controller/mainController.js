@@ -1,12 +1,9 @@
 import {bufferRender, renderNumber, finishMove, shadowBlink, showErrorMessage, errorDivToggle, initGraphPannel} from '../View/view';
 import numModel from '../Model/model';
-
 import insertionSort from './insertSort/insertSortController';
 import quickSort from './quickSort/quickSortController';
 
 // TODO : (선택...) 각 막대에 뛸때 땀 추가
-// TODO : 글씨체 바꾸기
-// TODO : css정리
 
 const submitButton = document.querySelector("#submitButton");
 const textBox = document.querySelector('#textBox');
@@ -20,7 +17,6 @@ async function buttonClickEvent () {
   const comma = ",";
   numbersObjArray = [];
   initGraphPannel();
-
   // err handling
   if (mainTitle.innerText === 'Sorting' || !mainTitle.innerText) {
     showErrorMessage('Please choose the sorting you want!');
@@ -51,7 +47,6 @@ async function buttonClickEvent () {
   
   const oneSectionPx = Number.parseInt(Math.round(950 / (numbersArray.length - 1)));
   bufferRender();
-
   numbersArray.forEach((el, index) => {
     const cordinateX = oneSectionPx * index;
     const cordinateY = 0;
@@ -62,9 +57,7 @@ async function buttonClickEvent () {
   });
   
   errorDivToggle(true);
-
   await shadowBlink(mainTitle.innerText);
-
   if (mainTitle.innerText === 'Insertion Sort') {
     const insertionResult = await insertionSort(numbersObjArray);
     finishMove(insertionResult);

@@ -61,7 +61,6 @@ export default async function quickSort (numbersObjArray) {
   rightArray = await quickSort(rightArray);
   leftArray.push(pivot);
   const resultArray = leftArray.concat(rightArray);
-  // 동작 : resultArray가 다 되었다는 애니메이션
   return resultArray;
 }
 

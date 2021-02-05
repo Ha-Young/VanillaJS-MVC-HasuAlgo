@@ -58,9 +58,10 @@ export function renderNumber (numRecords) {
 }
 
 export async function beforeSorting (targetObj, cordinateY, timing, whichJump) {
-  targetObj.cordinateY = cordinateY;
   const $targetBar = document.querySelector(`#bar${targetObj.index}`);
   const targetBarInnderDiv = $targetBar.childNodes[0];
+
+  targetObj.cordinateY = cordinateY;
   $targetBar.focus();
   $targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
   if (whichJump === 'last') {
@@ -74,9 +75,10 @@ export async function beforeSorting (targetObj, cordinateY, timing, whichJump) {
 }
 
 export async function moveBar (targetObj, cordinateX, cordinateY, isShrink = true) {
-  targetObj.cordinateY = cordinateY;
   const $targetBar = document.querySelector(`#bar${targetObj.index}`);
   const targetBarInnderDiv = $targetBar.childNodes[0];
+  
+  targetObj.cordinateY = cordinateY;
   $targetBar.focus();
   $targetBar.style.transform = `translate(${targetObj.cordinateX}px, ${targetObj.cordinateY}px)`;
   targetBarInnderDiv.style.backgroundColor = '#1b58b2';
@@ -96,7 +98,6 @@ function shirinkBar (targetObj, targetBarInnderDiv, cordinateY) {
 }
 
 export async function exchange (pivotObj, anotherObj) {
-  console.log("exchanging");
   const tempX = pivotObj.cordinateX;
   pivotObj.cordinateX = anotherObj.cordinateX;
   anotherObj.cordinateX = tempX;
