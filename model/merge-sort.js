@@ -1,41 +1,5 @@
-const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
-const offsets = {};
-
-async function divideNumbersInCanvas(left, right) {
-  await waitFor(700);
-
-  left.forEach(item => {
-    let eachLeftItem = document.querySelector(`[data-value="${item}"]`);
-
-    if (!offsets[item]) {
-      offsets[item] = {x: 1, y: 1};
-    } else {
-      offsets[item].x += 1;
-      offsets[item].y += 1;
-    }
-
-    const posX = offsets[item].x;
-    const posY = offsets[item].y;
-
-    eachLeftItem.style.transform = `translate(-${posX+10}px, ${posY * 70}px)`;
-  });
-  
-  right.forEach(item => {
-    let eachRightItem = document.querySelector(`[data-value="${item}"]`);
-
-    if (!offsets[item]) {
-      offsets[item] = {x: 1, y: 1};
-    } else {
-      offsets[item].x += 1;
-      offsets[item].y += 1;
-    }
-
-    const posX = offsets[item].x;
-    const posY = offsets[item].y;
-
-    eachRightItem.style.transform = `translate(${posX + 10}px, ${posY * 70}px)`;
-  });
-}
+import { delay } from "../model/delay";
+import divideNumbersInCanvas from "../view/divide-numbers-in-canvas";
 
 function swapMergedItems(changed, origin) {
   origin.forEach((each, index) => {
@@ -79,7 +43,7 @@ async function getMergeSorted(left, right) {
   }
 
   swapMergedItems(result, origin);
-  await waitFor(700);
+  await delay(700);
   return result;
 }
 
@@ -93,7 +57,7 @@ async function divide(array) {
   const right = left.splice(mid);
 
   divideNumbersInCanvas(left, right);
-  await waitFor(700);
+  await delay(700);
 
   let leftVal;
   let rightVal;
