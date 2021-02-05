@@ -4,17 +4,17 @@ function View () {
 }
 
 View.prototype.addChildNode = function(value) {
-  this.$child = document.createElement('div');
+  this.$div = document.createElement('div');
 
   if (this.$contentContainer.childNodes.length > 10) {
     this.$errorMessage.innerHTML = "입력 갯수를 초과하셨습니다"
     return;
   }
 
-  this.$child.innerHTML = value;
-  this.$child.classList.add('graphNode');
-  this.$child.style.height = value + 3 + 'px';
-  this.$contentContainer.appendChild(this.$child);
+  this.$div.innerHTML = value;
+  this.$div.classList.add('graphNode');
+  this.$div.style.height = value + 3 + 'px';
+  this.$contentContainer.appendChild(this.$div);
   this.$graphNodes = document.getElementsByClassName('graphNode');
 }
 
@@ -32,6 +32,7 @@ View.prototype.moveGraph = function moveGraph(leftNode, rightNode) {
 }
 
 View.prototype.changeGraph = function(leftNode, rightNode) {
+
   leftNode.classList.remove('transition');
   rightNode.classList.remove('transition');
 
