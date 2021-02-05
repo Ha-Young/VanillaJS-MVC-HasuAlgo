@@ -44,6 +44,18 @@ class View {
     this.validation.textContent = text;
   }
 
+  controlRestartClearButtons() {
+    if (this.sortRestartButton.classList.contains("invisible")) {
+      console.log("visible");
+      this.removeClass(this.sortRestartButton, "invisible");
+      this.removeClass(this.sortClearButton, "invisible");
+      return;
+    }
+    console.log("invisible");
+    this.addClass(this.sortRestartButton, "invisible");
+    this.addClass(this.sortClearButton, "invisible");
+  }
+
   setGraphStyle() {
     const tempBar = document.createElement("li");
     this.graphList.appendChild(tempBar);
@@ -90,15 +102,10 @@ class View {
     let leftMove = (width + (margin * 2)) * gap;
     let rightMove = -(width + (margin * 2)) * gap;
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this._makeTransform(leftBar, leftMove);
-        this._makeTransform(rightBar, rightMove);
-        this.graphBars[leftBarIndex] = rightBar;
-        this.graphBars[rightBarIndex] = oldGraph;
-        resolve("done");
-      }, 500)
-    });
+    this._makeTransform(leftBar, leftMove);
+    this._makeTransform(rightBar, rightMove);
+    this.graphBars[leftBarIndex] = rightBar;
+    this.graphBars[rightBarIndex] = oldGraph;
   }
 
   _makeTransform(node, value) {
@@ -116,46 +123,18 @@ class View {
   }
 
   selectGraph(leftBar, rightBar, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        leftBar.classList.add(className);
-        rightBar.classList.add(className);
-        resolve("done");
-      }, 500);
-    });
+    leftBar.classList.add(className);
+    rightBar.classList.add(className);
   }
 
   deselectGraph(leftBar, rightBar, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        leftBar.classList.remove(className);
-        rightBar.classList.remove(className);
-        resolve("done");
-      }, 500);
-    });
+    leftBar.classList.remove(className);
+    rightBar.classList.remove(className);
   }
 
-  paintGraph(bar, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.addClass(bar, className);
-        resolve("done");
-      }, 500);
-    })
-  }
-
-  unpaintGraph(bar, className) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.removeClass(bar, className);
-        resolve("done");
-      }, 500);
-    })
-  }
-
-  confirmGraph() {
+  finishGraph() {
     for (let i = 0; i < this.graphBars.length; i++) {
-      this.paintGraph(this.graphBars[i], "confirmed");
+      this.addClass(this.graphBars[i], "confirmed");
     }
   }
 }

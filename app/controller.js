@@ -13,6 +13,11 @@ class Controller {
     this.model.addData(data);
   }
 
+  handleAddTask(name, leftBarIndex, rightBarIndex) {
+    const task = this.model.createTask(name, leftBarIndex, rightBarIndex);
+    this.model.addTask(task);
+  }
+
   handleAddClass(target, className) {
     this.view.addClass(target, className);
   }
@@ -29,19 +34,23 @@ class Controller {
   handleEventListener(view) {
     const inputButton = view.inputButton;
     const sortButton = view.sortButton;
-    const restartButton = view.sortRestartButton;
+    const sortRestartButton = view.sortRestartButton;
     const clearButton = view.sortClearButton;
 
-    inputButton.addEventListener("click", this.handleRenderGraph);
+    inputButton.addEventListener("click", () => {
+      this.handleRenderGraph(event);
+      this.handleAddClass(sortRestartButton, "invisible");
+      this.handleAddClass(clearButton, "invisible");
+    });
     sortButton.addEventListener("click", this.startSort);
-    restartButton.addEventListener("click", (event) => {
+    sortRestartButton.addEventListener("click", (event) => {
       this.handleRenderGraph(event);
       this.startSort();
-      this.controlRestartClearButtons();
+      view.controlRestartClearButtons();
     });
     clearButton.addEventListener("click", () => {
       view.clearGraph();
-      this.controlRestartClearButtons();
+      view.controlRestartClearButtons();
     });
   }
 
@@ -64,14 +73,61 @@ class Controller {
     }
   }
 
-  controlRestartClearButtons() {
-    if (this.view.sortRestartButton.classList.contains("invisible")) {
-      this.handleRemoveClass(this.view.sortRestartButton, "invisible");
-      this.handleRemoveClass(this.view.sortClearButton, "invisible");
+  async executeTask(tasks) {
+    const currentTask = tasks[0];
+
+    if (!tasks.length) {
+      this.view.controlRestartClearButtons();
       return;
     }
-    this.handleAddClass(this.view.sortRestartButton, "invisible");
-    this.handleAddClass(this.view.sortClearButton, "invisible");
+
+    this.handleAnimateGraph(currentTask);
+    tasks.shift();
+    await this.delay(300);
+    this.executeTask(tasks);
+  }
+
+  delay(time) {
+    return new Promise((resolve) => setTimeout(resolve, time))
+  }
+
+  handleAnimateGraph(task) {
+    const graphs = this.view.graphBars;
+
+    switch (task.name) {
+      case "select" :
+        this.view.selectGraph(graphs[task.leftBarIndex], graphs[task.rightBarIndex], "selected");
+        break;
+      case "swap" :
+        this.view.swapGraph(graphs[task.leftBarIndex], graphs[task.rightBarIndex], task.leftBarIndex, task.rightBarIndex);
+        break;
+      case "deselect" :
+        this.view.deselectGraph(graphs[task.leftBarIndex], graphs[task.rightBarIndex], "selected");
+        break;
+      case "stop two bars" :
+        this.view.selectGraph(graphs[task.leftBarIndex], graphs[task.rightBarIndex], "stopped");
+        break;
+      case "continue two bars" :
+        this.view.deselectGraph(graphs[task.leftBarIndex], graphs[task.rightBarIndex], "stopped");
+        break;
+      case "stop one bar" :
+        this.view.addClass(graphs[task.leftBarIndex], "stopped");
+        break;
+      case "continue one bar" :
+        this.view.removeClass(graphs[task.leftBarIndex], "stopped");
+        break;
+      case "confirm" :
+        this.view.addClass(graphs[task.leftBarIndex], "confirmed");
+        break;
+      case "pivot" :
+        this.view.addClass(graphs[task.leftBarIndex], "pivot");
+        break;
+      case "unpainted pivot" :
+        this.view.removeClass(graphs[task.leftBarIndex], "pivot");
+        break;
+      case "finish" :
+        this.view.finishGraph();
+    }
   }
 
   checkData() {
@@ -123,18 +179,13 @@ class Controller {
       this.doBubbleSort(this.model.sortedArray);
     }
     if (sortName === "Quick") {
-      (async () => {
-        await this.doQuickSort(this.model.sortedArray, 0, this.model.sortedArray.length - 1);
-        this.view.confirmGraph();
-        this.controlRestartClearButtons()
-      })();
+      this.doQuickSort(this.model.sortedArray, 0, this.model.sortedArray.length - 1);
     }
+    this.executeTask(this.model.tasks);
     this.handleAddClass(this.view.sortButton, "invisible");
   }
 
-  async doBubbleSort(dataArray) {
-    const graphs = this.view.graphBars;
-
+  doBubbleSort(dataArray) {
     for (let i = 0; i < dataArray.length; i++) {
       for (let j = 0; j < dataArray.length - i - 1; j++) {
         if (dataArray[j] > dataArray[j+1]) {
@@ -143,68 +194,64 @@ class Controller {
           dataArray[j] = dataArray[j+1];
           dataArray[j+1] = bigNumber;
 
-          await this.view.selectGraph(graphs[j], graphs[j + 1], "selected");
-          await this.view.swapGraph(graphs[j], graphs[j + 1], j, j + 1);
-          await this.view.deselectGraph(graphs[j], graphs[j + 1], "selected");
+          this.handleAddTask("select", j, j + 1)
+          this.handleAddTask("swap", j, j + 1);
+          this.handleAddTask("deselect", j, j + 1);
 
           if ((j + 1) === dataArray.length - i - 1) {
-            await this.view.paintGraph(graphs[j +1 ], "confirmed");
+            this.handleAddTask("confirm", j + 1);
           }
 
         } else {
-          await this.view.selectGraph(graphs[j], graphs[j + 1], "stopped");
-          await this.view.deselectGraph(graphs[j], graphs[j + 1], "stopped");
+          this.handleAddTask("stop two bars", j, j + 1);
+          this.handleAddTask("continue two bars", j, j + 1);
         }
       }
-      await this.view.paintGraph(graphs[dataArray.length - i - 1], "confirmed");
+      this.handleAddTask("confirm", dataArray.length - i - 1);
     }
-    this.controlRestartClearButtons();
   }
 
-  async doQuickSort(dataArray, start, end) {
+  doQuickSort(dataArray, start, end) {
     if (start >= end) return;
 
-    const pivotIndex = await this._divide(dataArray, start, end);
+    const pivotIndex = this._divide(dataArray, start, end);
 
-    await this.doQuickSort(dataArray, start, pivotIndex - 1);
-    await this.doQuickSort(dataArray, pivotIndex + 1, end);
+    this.doQuickSort(dataArray, start, pivotIndex - 1);
+    this.doQuickSort(dataArray, pivotIndex + 1, end);
   }
 
-  async _divide(dataArray, start, end) {
-    const graphs = this.view.graphBars;
+  _divide(dataArray, start, end) {
     const pivotValue = dataArray[end];
     let pivotIndex = start;
 
-    await this.view.paintGraph(graphs[end], "pivot");
+    this.handleAddTask("pivot", end);
 
     for (let i = start; i < end; i++) {
       if (dataArray[i] <= pivotValue) {
         this._swapElement(dataArray, pivotIndex, i);
 
         if (pivotIndex !== i) {
-          await this.view.selectGraph(graphs[pivotIndex], graphs[i], "selected");
-          await this.view.swapGraph(graphs[pivotIndex], graphs[i], pivotIndex, i);
-          await this.view.deselectGraph(graphs[pivotIndex], graphs[i], "selected");
+          this.handleAddTask("select", pivotIndex, i)
+          this.handleAddTask("swap", pivotIndex, i);
+          this.handleAddTask("deselect", pivotIndex, i);
         } else {
-          await this.view.paintGraph(graphs[i], "stopped");
-          await this.view.unpaintGraph(graphs[i], "stopped");
+          this.handleAddTask("stop one bar", i);
+          this.handleAddTask("continue one bar", i);
         }
-
         pivotIndex++;
       } else {
-        await this.view.paintGraph(graphs[i], "stopped");
-        await this.view.unpaintGraph(graphs[i], "stopped");
+        this.handleAddTask("stop one bar", i);
+        this.handleAddTask("continue one bar", i);
       }
     }
 
     this._swapElement(dataArray, pivotIndex, end);
 
-    await this.view.selectGraph(graphs[pivotIndex], graphs[end], "selected");
-    await this.view.swapGraph(graphs[pivotIndex], graphs[end], pivotIndex, end);
-    await this.view.deselectGraph(graphs[pivotIndex], graphs[end], "selected");
-
-    await this.view.unpaintGraph(graphs[pivotIndex], "pivot");
-    await this.view.paintGraph(graphs[pivotIndex], "confirmed");
+    this.handleAddTask("select", pivotIndex, end)
+    this.handleAddTask("swap", pivotIndex, end);
+    this.handleAddTask("deselect", pivotIndex, end);
+    this.handleAddTask("unpainted pivot", pivotIndex);
+    this.handleAddTask("confirm", pivotIndex);
 
     return pivotIndex;
   }
