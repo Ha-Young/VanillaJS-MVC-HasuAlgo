@@ -5,6 +5,7 @@ import { colorChart } from './constants/themeColor';
 export class View {
   constructor() {
     this.form = document.querySelector('form');
+    this.submitButton = document.querySelector('.content-form-submitButton');
     this.input = document.querySelector('input');
     this.selector = document.querySelector('select');
     this.startButton = document.querySelector('.content-startButton');
@@ -50,8 +51,10 @@ export class View {
         return;
       } 
 
-      handler(listArray);
       this.warningZone.textContent = '';
+      this.submitButton.disabled = true;
+
+      handler(listArray);
       this.resetInput();
     });
   }
@@ -65,7 +68,7 @@ export class View {
 
       this.warningZone.textContent = '';
       handler();
-      this.startButton.classList.add('none-visible');
+      this.startButton.disabled = true;
     });
   }
 
