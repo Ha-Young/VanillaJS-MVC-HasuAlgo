@@ -8,22 +8,13 @@ html, body {
   box-sizing: inherit;
 }
 
-// @keyframes flutter {
-//   from {
-//     transform: translate(0px, 0px);
-//   }
-
-//   to {
-//     transform: translate(0px, 15px);
-//   }
-// }
-
 .container {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   min-width: 100vw;
-  min-height: 100vh;;
+  min-height: 100vh;
+  z-index: -10;
 }
 
 .contents {
@@ -90,7 +81,7 @@ html, body {
 
 .view-port-box {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: column-reverse nowrap;
   justify-content: center;
   align-items: center;
   height: 400px;
@@ -104,22 +95,33 @@ html, body {
 }
 
 .pivot-highlighter {
+  position: absolute;
+  top: -35px;
+  background-color: #fff   ;
+  width: 45px;
+  height: 30px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 9px -5px #000000;
+  transition: all 0.5s;
+  z-index: 1;
+}
+
+.arrow {
+  position: absolute;
+  top: 5px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  height: 30px;
-  width: 40px;
-  border-radius: 10px;
-  // animation: flutter 0.6s infinite alternate
   transition: all ease 0.5s;
 }
 
-.arrow-down {
+.arrow-up {
+  margin-left: 3px;
   border: solid black;
-  border-width: 0 3px 3px 0;
+  border-width: 3px 0px 0px 3px;
   display: inline-block;
   padding: 5px;
   transform: rotate(45deg);
+  transition: all ease 0.5s;
 }
 
 .view-port {
@@ -129,7 +131,7 @@ html, body {
   align-items: flex-end;
   width: 90%;
   height: 300px;
-  overflow: hidden;
+  overflow: visible;
   perspective: 500px;
 }
 
@@ -139,6 +141,7 @@ html, body {
   justify-content: flex-start;
   width: 100%;
   margin-top: 10px;
+  z-index: 0;
 }
 
 .highlighter {
@@ -154,7 +157,7 @@ html, body {
 }
 
 .quick-should-swap {
-  background-color: #d42020;
+  background-color: #ff9191;
 }
 
 .range-highlighter {
@@ -165,16 +168,12 @@ html, body {
   height: 30px;
   border-radius: 30px;
   transition: all 0.5s;
-}
-
-.quick-index-highlighter {
-  position: absolute;
-  top: -2px;
+  z-index: 0;
 }
 
 .quick-next-pivot-index-highlighter {
   position: absolute;
-  top: 5px;
+  top: 18px;
 }
 
 .bar-box {
@@ -198,8 +197,9 @@ html, body {
 }
 
 .number {
+  position: relative;
+  z-index: 10;
   font-weight: bold;
-  z-index: 1;
 }
 
 .bar-box[data-idx="0"] > .bar {

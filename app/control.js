@@ -43,7 +43,6 @@ export default function Control(model, view) {
   Control.prototype.drawGraph = function () {
     this.view.clearElem("$viewPort");
     this.view.clearElem("$highlighterBox");
-    this.view.clearElem("$pivotHighlighterBox");
 
     const refinedNums = this.model.get("refinedNums");
     this.view.createBarElem(refinedNums);
@@ -52,9 +51,10 @@ export default function Control(model, view) {
     if (sortType === "bubble") {
       this.view.createHighlighterElem(2);
     } else if (sortType === "quick") {
-      this.view.createHighlighterElem(2);
+      this.view.createHighlighterElem(1);
       this.view.createPivotHighlighterElem();
       this.view.createRangeHighlighterElem();
+      this.view.createUpArrow();
     }
 
     const barPositions = this.view.getElemDomRect("$barBoxes");
