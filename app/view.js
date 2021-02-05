@@ -19,7 +19,6 @@ View.prototype.addChildNode = function(value) {
 }
 
 View.prototype.moveGraph = function moveGraph(leftNode, rightNode) { 
-
   leftNode.classList.add('transition');
   rightNode.classList.add('transition');
   leftNode.style.transform = 'translateX(60px)';
@@ -33,7 +32,6 @@ View.prototype.moveGraph = function moveGraph(leftNode, rightNode) {
 }
 
 View.prototype.changeGraph = function(leftNode, rightNode) {
-
   leftNode.classList.remove('transition');
   rightNode.classList.remove('transition');
 
