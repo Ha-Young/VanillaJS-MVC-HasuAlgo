@@ -6,6 +6,7 @@ function createController() {
   const $userInput = document.querySelector(".user-input");
   const $bubbleSortButton = document.querySelector(".bubble-sort-button");
   let isBubbleSortTurn = false;
+  let isQuickSortTurn = false;
 
   function convertNumber() {
     const inputValueList = $userInput.value.split(",").map( num => Number(num));
@@ -35,6 +36,10 @@ function createController() {
         isBubbleSortTurn = false;
       }
 
+      if (isQuickSortTurn) {
+        controller.quickSort();
+      }
+
       this.removeEventListener("click", handleInputItem);
     }
 
@@ -54,7 +59,7 @@ function createController() {
       view.showBlock(model.storage);
     },
 
-    removeItem: function (list) {
+    removeList: function (list) {
       model.removeList(list);
     },
 
@@ -96,6 +101,40 @@ function createController() {
       return new Promise( resolve => {
         setTimeout(() => { resolve() }, 300);
       });
+    },
+
+    quickSort: function (array, low, high) {
+      if (low < high) {
+        partitionIndex = partition(array, low, high);
+        
+        quickSort(array, low, partitionIndex - 1);
+        quickSort(array, partitionIndex + 1, high);
+      }
+    },
+ 
+    partition: function (array, low, high) {
+      let pivot = array[high];
+      let lowCount = low - 1;
+      
+      for (let i = low; i <= high - 1; i++) {
+        if (arr[i] < pivot) {
+          lowCount++;
+          swap(arr,lowCount, i);
+        }
+      }
+      
+      swap(array, lowCount + 1, high);
+ 
+      return lowCount + 1;
+    },
+ 
+    swap: function (array, lowCount, i) {
+      
+      if (array[lowCount] !== array[i]) {
+        const temp = array[lowCount];
+        array[lowCount] = array[i];
+        array[i] = temp;
+      }
     }
   };
 }
