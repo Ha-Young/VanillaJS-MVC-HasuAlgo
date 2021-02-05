@@ -19,7 +19,6 @@ export async function swapNode(left, right) { //visualize.. sortutil에서 분�
   const nodeGroup = document.querySelectorAll('.content-field-node');
   // const leftNode = nodeGroup[left];
   // const rightNode = nodeGroup[right];
-  console.log(left, right);
   console.log(nodeGroup[left].textContent, nodeGroup[right].textContent);
   // leftNode.style.transform = `translateX(${50 * (right - left)}px)`; // classList추가
   // rightNode.style.transform = `translateX(-${50 * (right - left)}px)`;
@@ -35,7 +34,9 @@ export async function swapNode(left, right) { //visualize.. sortutil에서 분�
 
   console.log('swap', nodeGroup[left], nodeGroup[right]);
   nodeGroup[left].after(nodeGroup[right]);
+  console.log('middle', nodeGroup[left], nodeGroup[right]);
   nodeGroup[right].after(nodeGroup[left]); // bubble용
+  console.log('after', nodeGroup[left], nodeGroup[right]);
 
   await delay(100 * (right - left) * 4);
 }
