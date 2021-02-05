@@ -156,14 +156,21 @@ Controller.prototype.splitItems = async function (items, y) {
 };
 
 Controller.prototype.sliceItems = function (items) {
-  const left = items.slice(0, items.length / 2);
-  const right = items.slice(items.length / 2);
+  const result = [];
 
+  const middleIndex = Math.floor(items.length / 2);
+  const left = items.slice(0, middleIndex);
+  const right = items.slice(middleIndex);
+
+  if (right.length > 1) {
+    this.sliceItems(right);
+  }
   if (left.length > 1) {
     this.sliceItems(left);
   }
-  if (right.length > 1) {
-    this.sliceItems(right);
+
+  if (left.textContent > right.textContent) {
+    this.ascendingSortTwoItem(left, right);
   }
 
   return;
