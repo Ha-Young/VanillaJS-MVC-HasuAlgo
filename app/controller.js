@@ -47,6 +47,8 @@ class Controller {
       view.controlRestartClearButtons();
     });
     clearButton.addEventListener("click", () => {
+      this.model.data = null;
+      this.view.input.value = '';
       view.clearGraph();
       view.controlRestartClearButtons();
     });
@@ -55,8 +57,8 @@ class Controller {
   _makeGraph = (event) => {
     event.preventDefault();
     this.handleRenderGraph(event);
-    this.handleAddClass(sortRestartButton, "invisible");
-    this.handleAddClass(clearButton, "invisible");
+    this.handleAddClass(this.view.sortRestartButton, "invisible");
+    this.handleAddClass(this.view.sortClearButton, "invisible");
   }
 
   handleRenderGraph = (event) => {
@@ -82,6 +84,7 @@ class Controller {
     const currentTask = tasks[0];
 
     if (!tasks.length) {
+      this.view.finishGraph();
       this.view.controlRestartClearButtons();
       return;
     }
