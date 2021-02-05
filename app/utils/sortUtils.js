@@ -14,45 +14,54 @@ export function delay(seconds) {
   });
 }
 
-export async function swapNode(left, right) { //visualize.. sortutil에서 분리..
+export async function swapNode(nodeGroup, left, right) { //visualize.. sortutil에서 분리..
   await delay(1000);
-  const nodeGroup = document.querySelectorAll('.content-field-node');
-  // const leftNode = nodeGroup[left];
-  // const rightNode = nodeGroup[right];
-  console.log(nodeGroup[left].textContent, nodeGroup[right].textContent);
-  // leftNode.style.transform = `translateX(${50 * (right - left)}px)`; // classList추가
-  // rightNode.style.transform = `translateX(-${50 * (right - left)}px)`;
 
-  // await delay(100 * (right - left) * 4); // magic number
+  const leftNode = nodeGroup[left];
+  const rightNode = nodeGroup[right];
 
-  // leftNode.classList.remove('transition-effect');
-  // rightNode.classList.remove('transition-effect');
+  const leftNodeHeight = leftNode.style.height;
+  const leftNodeValue = leftNode.textContent;
+  
+  
+  rightNode.style.transform = `translateX(-${50 * (right - left)}px)`;
+  leftNode.style.transform = `translateX(${50 * (right - left)}px)`; // classList추가
+  
+  await delay(100 * (right - left) * 10); // magic number
 
-  // leftNode.style.transform = 'none';
-  // rightNode.style.transform = 'none';
-  await delay(100 * (right - left) * 4) // await
+  leftNode.classList.remove('transition-effect');
+  rightNode.classList.remove('transition-effect');
 
-  console.log('swap', nodeGroup[left], nodeGroup[right]);
-  nodeGroup[left].after(nodeGroup[right]);
-  console.log('middle', nodeGroup[left], nodeGroup[right]);
-  nodeGroup[right].after(nodeGroup[left]); // bubble용
-  console.log('after', nodeGroup[left], nodeGroup[right]);
+  leftNode.style.transform = 'none';
+  rightNode.style.transform = 'none';
+
+  // const tempNode = nodeGroup[left];
+  // nodeGroup[left] = nodeGroup[right];
+  // nodeGroup[right] = tempNode;
+
+  leftNode.style.height = nodeGroup[right].style.height;
+  rightNode.style.height = leftNodeHeight;
+
+  leftNode.textContent = nodeGroup[right].textContent;
+  rightNode.textContent = leftNodeValue;
 
   await delay(100 * (right - left) * 4);
 }
 
-export async function onHighlightNode(index) {
+export async function onHighlightNode(index, color = 'skyblue') {
   const nodeGroup = document.querySelectorAll('.content-field-node');
   const indexNode = nodeGroup[index];
 
   indexNode.classList.add('transition-effect');
   await delay(400);
 
-  indexNode.style.backgroundColor = 'skyblue';
+  indexNode.style.backgroundColor = color; // color로 바꿔주기
   await delay(400);
 }
 
 export async function offHighlightNode(index, color) {
+  await delay(500);
+  
   const nodeGroup = document.querySelectorAll('.content-field-node');
   const indexNode = nodeGroup[index];
 
@@ -63,6 +72,7 @@ export async function offHighlightNode(index, color) {
   await delay(400);
 
   indexNode.classList.remove('transition-effect');
+  await delay(500);
 }
 
 export async function onHighlightAllNodes() {

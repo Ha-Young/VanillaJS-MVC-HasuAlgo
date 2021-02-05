@@ -1,16 +1,12 @@
 export class Model {
   constructor() {
     this.lists = [];
-    this.sortState = []; // array 아니어도..
+    this.sortState = [];
     this.sortType ='';
   }
 
   addNewNodes(lists) {
     this.onDisplayNodeList(lists);
-  }
-
-  pushStates(state) {
-    this.onUpdateState(state);
   }
 
   addNewSortType(type) {
@@ -41,5 +37,9 @@ export class Model {
 
   bindStates(callback) {
     this.onUpdateStates = callback;
+  }
+
+  pushStates(state) {
+    this.onUpdateState(state);
   }
 }

@@ -46,34 +46,35 @@ export class Controller {
 
   bubbleSort = async () => { // 확장시 SORT로 분리, INPUT값 받아서 PARAMETER로 넣어줘서 SWITCH쓰기 //
     const nodeList = this.model.lists;
-    this.onUpdateState(['startSort']); // 굳이 어레이로 보내줘야 할 필요 없음.. 그래도 임시로 놔두기..
+    this.handleAddState(['startSort']); // 굳이 어레이로 보내줘야 할 필요 없음.. 그래도 임시로 놔두기..
 
     for (let i = 0; i < nodeList.length; i++) {
       for (let j = 0; j < nodeList.length - i - 1; j++) {
-        await delay(500);
-        this.onUpdateState(['onLighthNode', j]); // 수정
-        this.onUpdateState(['onLighthNode', j + 1]); // 수정
-        await delay(500);
+        //await delay(500);
+        this.handleAddState(['onLightNode', j]); // 수정
+        this.handleAddState(['onLightNode', j + 1]); // 수정
+        //await delay(500);
 
         if (nodeList[j] > nodeList[j + 1]) {
           swap(nodeList, j, j + 1);
 
-          await delay(500);
-          this.onUpdateState(['swapNodes', j, j + 1]);
-          await delay(500);
+          //await delay(500);
+          this.handleAddState(['swapNodes', j, j + 1]);
+          //await delay(500);
         }
 
         if ((j + 1) === nodeList.length - i - 1) {
-          await delay(500);
-          this.onUpdateState(['checkSortedNode', j + 1]);
+          //await delay(500);
+          this.handleAddState(['checkSortedNode', j + 1]);
         }
 
-        this.onUpdateState(['offLightNode', j]);
-        await delay(500);
+        this.handleAddState(['offLightNode', j]);
+        //await delay(500);
       }
     }
 
-    this.onUpdateState(['finishAllSort']);
+    this.handleAddState(['finishAllSort']);
+    this.onUpdateStates(this.model.sortState);
   }
 
   quickSort = async () => {
@@ -81,12 +82,18 @@ export class Controller {
       const middle = Math.floor((left + right) / 2);
       const pivot = arr[middle];
 
+      this.handleAddState(['onLightNode', middle]);
+
       while (left <= right) {
         while (arr[left] < pivot) {
+          this.handleAddState(['onLightNode', left]);
+          this.handleAddState(['offLightNode', left]);
           left++;
         }
 
         while (arr[right] > pivot) {
+          this.handleAddState(['onLightNode', right]);
+          this.handleAddState(['offLightNode', right]);
           right--;
         }
 
@@ -94,36 +101,34 @@ export class Controller {
 
         if (left <= right) {
           if (left !== right) {
-            console.log(arr[left], arr[right]);
             swap(arr, left, right);
             this.handleAddState(['swapNodes', left, right]);
+            this.handleAddState(['checkSortedNode', middle]);
           }
 
           left++;
           right--;
         }
       }
-
       return left;
     };
 
-    const recursiveQuickSort = async (arr, left, right) => {
+    const recurseQuickSort = async (arr, left, right) => {
       const pivot = await partition(arr, left, right);
 
       if (left < pivot - 1) {
-        await recursiveQuickSort(arr, left, pivot - 1)
+        await recurseQuickSort(arr, left, pivot - 1)
       }
 
       if (right > pivot) {
-        await recursiveQuickSort(arr, pivot, right);
+        await recurseQuickSort(arr, pivot, right);
       }
 
-      console.log(arr);
       return arr;
     };
 
     this.handleAddState(['startSort']);
-    await recursiveQuickSort(this.model.lists, 0, this.model.lists.length - 1);
+    await recurseQuickSort(this.model.lists, 0, this.model.lists.length - 1);
     this.handleAddState(['finishAllSort']);
 
     this.onUpdateStates(this.model.sortState);

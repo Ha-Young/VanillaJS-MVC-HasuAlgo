@@ -23,16 +23,12 @@ export class View {
 
     for (let i = 0; i < nodeLists.length; i++) {
       const newNode = document.createElement('div'); // 이제 차일드 아니어도 됨
-      const nodeValue = document.createElement('div');
 
       newNode.classList.add('content-field-node');
-      nodeValue.classList.add('content-filed-node-value');
       newNode.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
-
-      nodeValue.textContent = nodeLists[i];
+      newNode.textContent = nodeLists[i];
 
       this.table.appendChild(newNode);
-      newNode.appendChild(nodeValue);
     }
   }
 
@@ -77,21 +73,18 @@ export class View {
     });
   }
 
-  render = async (args) => {
-    await delay(1000);
-
+  render = async (args) => {   
     const state = args.shift();
     console.log(state);
     const viewCommands = { // 매개변수 이름, 받는 타입 다시 설정해주기
       startSort: async () => {
         //await onHighlightAllNodes();
       },
-      onLighthNode: (args) => { //  네이밍 다시..
+      onLightNode: (args) => { //  네이밍 다시..
         onHighlightNode(args[0]);
       },
       swapNodes: (args) => {
-        console.log(args);
-        swapNode(args[0], args[1]);
+        swapNode(this.table.children, args[0], args[1]);
       },
       offLightNode: (args) => {
         offHighlightNode(args[0], 'pink'); // 네이밍 다시
@@ -100,7 +93,6 @@ export class View {
         offHighlightNode(args[0], '#FCE2E6'); // 컬러 테마 다시 뽑아넣기
       },
       finishAllSort: () => {
-        console.log(24);
         onHighlightAllNodes();
       },
     };
