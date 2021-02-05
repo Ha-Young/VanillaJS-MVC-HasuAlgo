@@ -8,9 +8,6 @@ import View from './view';
 // START YOUR APP HERE
 // ================================
 
-// 1. data validation 위치
-// 2. animation design
-
 function App() {
   this.model = new Model();
   this.view = new View();

@@ -33,6 +33,7 @@ Controller.prototype.startVisualizing = async function (sortType) {
   if (!task) return;
 
   if (task.type === 'start') {
+    await this.view.start();
   } else if (task.type === 'compare') {
     await this.view.compare(task.sourceIndex, task.targetIndex);
   } else if (task.type === 'pivot') {
@@ -40,17 +41,16 @@ Controller.prototype.startVisualizing = async function (sortType) {
   } else if (task.type === 'swap') {
     await this.view.swapBubble(task.sourceIndex, task.targetIndex, task.list);
   } else if (task.type === 'single item done') {
-
-
+    await this.view.singleItemDone(task.sourceIndex);
   } else if (task.type === 'finish') {
-
+    await this.view.finishSort();
   }
 
   await this.startVisualizing(sortType);
 };
 
 
-Controller.prototype.bubbleSort = function (sortType, list) {
+Controller.prototype.bubbleSort = function (sortType, list, length = list.length - 1) {
   let hasChanged = false;
 
   this.model.createTask('start');
@@ -63,11 +63,10 @@ Controller.prototype.bubbleSort = function (sortType, list) {
       [list[i - 1], list[i]] = [list[i], list[i - 1]];
       this.model.createTask('swap', i - 1, i, list.slice());
     }
-
-    this.model.createTask('single item done', list.length - i - 1);
   }
+  this.model.createTask('single item done', length);
 
-  hasChanged? this.bubbleSort(sortType, list) : this.model.createTask('finish');
+  hasChanged? this.bubbleSort(sortType, list, length - 1) : this.model.createTask('finish');
 };
 
 Controller.prototype.quickSort = async function (start, end, list) {
