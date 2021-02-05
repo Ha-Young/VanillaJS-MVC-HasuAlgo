@@ -23,21 +23,19 @@ export async function swapNode(nodeGroup, left, right) { //visualize.. sortutil�
   const leftNodeHeight = leftNode.style.height;
   const leftNodeValue = leftNode.textContent;
   
+  leftNode.classList.add('transition-effect-moderate');
+  rightNode.classList.add('transition-effect-moderate');
   
   rightNode.style.transform = `translateX(-${50 * (right - left)}px)`;
   leftNode.style.transform = `translateX(${50 * (right - left)}px)`; // classList추가
   
-  await delay(100 * (right - left) * 10); // magic number
+  await delay(100 * (right - left) * 4); // magic number
 
-  leftNode.classList.remove('transition-effect');
-  rightNode.classList.remove('transition-effect');
+  leftNode.classList.remove('transition-effect-moderate');
+  rightNode.classList.remove('transition-effect-moderate');
 
   leftNode.style.transform = 'none';
   rightNode.style.transform = 'none';
-
-  // const tempNode = nodeGroup[left];
-  // nodeGroup[left] = nodeGroup[right];
-  // nodeGroup[right] = tempNode;
 
   leftNode.style.height = nodeGroup[right].style.height;
   rightNode.style.height = leftNodeHeight;
@@ -49,29 +47,34 @@ export async function swapNode(nodeGroup, left, right) { //visualize.. sortutil�
 }
 
 export async function onHighlightNode(index, color = 'skyblue') {
+  await delay(500);
+
   const nodeGroup = document.querySelectorAll('.content-field-node');
   const indexNode = nodeGroup[index];
 
-  indexNode.classList.add('transition-effect');
+  indexNode.classList.add('transition-effect-fast');
   await delay(400);
 
   indexNode.style.backgroundColor = color; // color로 바꿔주기
+  await delay(400);
+
+  indexNode.classList.remove('transition-effect-fast');
   await delay(400);
 }
 
 export async function offHighlightNode(index, color) {
   await delay(500);
-  
+
   const nodeGroup = document.querySelectorAll('.content-field-node');
   const indexNode = nodeGroup[index];
 
-  indexNode.classList.add('transition-effect');
+  indexNode.classList.add('transition-effect-fast');
   await delay(400);
 
   indexNode.style.backgroundColor = color;
   await delay(400);
 
-  indexNode.classList.remove('transition-effect');
+  indexNode.classList.remove('transition-effect-fast');
   await delay(500);
 }
 
@@ -81,7 +84,7 @@ export async function onHighlightAllNodes() {
   for (const node of nodeGroup) {
     await delay(200);
 
-    node.classList.add('transition-effect');
+    node.classList.add('transition-effect-fast');
     node.style.backgroundColor = 'pink';
 
     await delay(200);

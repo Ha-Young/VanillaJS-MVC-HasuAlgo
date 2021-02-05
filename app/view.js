@@ -97,6 +97,8 @@ export class View {
       },
     };
 
+    await delay(500);
     await viewCommands[state](args); // await
+    await delay(500);
   }
 }

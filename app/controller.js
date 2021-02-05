@@ -46,30 +46,24 @@ export class Controller {
 
   bubbleSort = async () => { // 확장시 SORT로 분리, INPUT값 받아서 PARAMETER로 넣어줘서 SWITCH쓰기 //
     const nodeList = this.model.lists;
-    this.handleAddState(['startSort']); // 굳이 어레이로 보내줘야 할 필요 없음.. 그래도 임시로 놔두기..
+    this.handleAddState(['startSort']);
 
     for (let i = 0; i < nodeList.length; i++) {
       for (let j = 0; j < nodeList.length - i - 1; j++) {
-        //await delay(500);
-        this.handleAddState(['onLightNode', j]); // 수정
-        this.handleAddState(['onLightNode', j + 1]); // 수정
-        //await delay(500);
+        this.handleAddState(['onLightNode', j]);
+        this.handleAddState(['onLightNode', j + 1]);
 
         if (nodeList[j] > nodeList[j + 1]) {
           swap(nodeList, j, j + 1);
 
-          //await delay(500);
           this.handleAddState(['swapNodes', j, j + 1]);
-          //await delay(500);
         }
 
         if ((j + 1) === nodeList.length - i - 1) {
-          //await delay(500);
           this.handleAddState(['checkSortedNode', j + 1]);
         }
 
         this.handleAddState(['offLightNode', j]);
-        //await delay(500);
       }
     }
 
@@ -88,12 +82,14 @@ export class Controller {
         while (arr[left] < pivot) {
           this.handleAddState(['onLightNode', left]);
           this.handleAddState(['offLightNode', left]);
+
           left++;
         }
 
         while (arr[right] > pivot) {
           this.handleAddState(['onLightNode', right]);
           this.handleAddState(['offLightNode', right]);
+
           right--;
         }
 
