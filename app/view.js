@@ -342,9 +342,7 @@ export default function View() {
     this.moveElem($pivotHighlighter, barPositions[barPositions.length - 1], 0, false, true, -14, 0);
     //$highlighter, start, end, barPositions, waitingTime = 0
     this.moveAndLengthenHighlighter($rangeHighlighter, 0, barPositions.length - 1, barPositions);
-    console.log("준비, 시작 대기");
     await this.waitTime(500);
-    console.log("시작")
 
     for (const [i, step] of sortSteps.entries()) {
       console.log(step);
@@ -359,11 +357,9 @@ export default function View() {
       this.moveElem($nextPivotIndexHighlighter, barPositions[nextPivotIndex], 0, false, true);
       this.moveElem($pivotHighlighter, barPositions[pivotIndex], 0, false, true, -14, 0);
       this.moveElem($currentIndexHighlighter, barPositions[currentIndex], 0, false, true);
-      console.log("다음 인덱스로 이동");
       await this.waitTime(500);
 
       if (shouldSwap) {
-        console.log("바꿔야하는지 평가! 바꿔야함!");
         if (isEnd) {
           this.addClassName($pivotHighlighter, "quick-should-swap");
         } else {
@@ -389,7 +385,6 @@ export default function View() {
           [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
           //$a, $b, indexA, indexB, elemPositions, skipX = false, skipY = false, waitingTime = 0
           this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
-          console.log("교체");
           await this.waitTime(500);
         }
 
@@ -400,12 +395,11 @@ export default function View() {
         if (sortSteps[i + 1] && !isEnd) {
           const nextNextPivotIndex = sortSteps[i + 1].nextPivotIndex
           this.moveElem($nextPivotIndexHighlighter, barPositions[nextNextPivotIndex], 0, false, true);
-          console.log("교체하면 nextPivotIdx 증가");
           await this.waitTime(500);
         }
+      } else {
+        await this.waitTime(500);
       }
-
-      await this.waitTime(500);
     }
   }
 }

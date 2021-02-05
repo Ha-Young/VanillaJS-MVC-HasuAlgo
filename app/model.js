@@ -161,7 +161,6 @@ export default function Model () {
     return [nextPivotIndex, sortSteps];
   }
 
-//1,12,5,26, 7, 14,3,7,2
   Model.prototype.makeQuickSortSteps = function (inputtedNums, start = 0, end = inputtedNums.length - 1) {
     if (start >= end) {
       return [];
