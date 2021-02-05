@@ -13,5 +13,5 @@ export function handleClickMerge() {
 }
 
 export function handleClickBubble() {
-  bubbleSort(canvas, numbers, boxes);
+  bubbleSort(numbers);
 }
