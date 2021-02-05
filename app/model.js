@@ -2,34 +2,34 @@ import MYAPP from './myapp';
 
 export default class Model {
   constructor() {
-    const _userInputData = [];
+    const _localStorage = [];
     const _sortedGraphStorage = [];
 
     this.set = string => {
       const splitted = string.split(',');
       for (const elem of splitted) {
-        _userInputData.push(Number(elem));
+        _localStorage.push(Number(elem));
       }
       this.checkInput();
     };
 
-    this.get = () => _userInputData;
+    this.get = () => _localStorage;
 
-    this.getValue = index => _userInputData[index];
+    this.getValue = index => _localStorage[index];
 
     this.checkInput = () => {
-      if (!_userInputData.every(elem => elem < 100)) {
-        throw console.log('number is too high');
+      if (!_localStorage.every(elem => elem < 100)) {
+        throw new Error('number is too high');
       }
-      if (_userInputData.length > 8) {
-        throw console.log('too many numbers');
+      if (_localStorage.length > 8) {
+        throw new Error('too many numbers');
       }
     };
 
     this.swapIndex = (leftValue, RightValue) => {
-      const temps = _userInputData[leftValue];
-      _userInputData[leftValue] = _userInputData[RightValue];
-      _userInputData[RightValue] = temps;
+      const temps = _localStorage[leftValue];
+      _localStorage[leftValue] = _localStorage[RightValue];
+      _localStorage[RightValue] = temps;
     };
 
     this.setSortedGraph = sortedGraph => {
@@ -43,5 +43,4 @@ export default class Model {
     const graphTable = MYAPP.table.graph;
     graphTable.insertBefore(right, left);
   }
-
 }
