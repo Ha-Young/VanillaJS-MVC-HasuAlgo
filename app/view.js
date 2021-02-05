@@ -67,6 +67,7 @@ View.prototype.holdInput = function (sholdHold) {
     this.$excuteButton.disabled = true;
     this.$excuteButton.classList.add("fixed");
     this.$menuOptions.classList.add("fixed");
+    this.$graphContainer.classList.add("fixed");
   } else {
     this.$inputBox.disabled = false;
     this.$bubbleRadio.disabled = false;
@@ -74,5 +75,6 @@ View.prototype.holdInput = function (sholdHold) {
     this.$excuteButton.disabled = false;
     this.$excuteButton.classList.remove("fixed");
     this.$menuOptions.classList.remove("fixed");
+    this.$graphContainer.classList.remove("fixed");
   }
 };

@@ -2,8 +2,8 @@ import Model from './model.js';
 import View from './view.js';
 
 export default function Controller() {
-  this.Model = new Model();
-  this.View = new View();
+  this.model = new Model();
+  this.view = new View();
 }
 
 Controller.prototype.clear = function () {
@@ -33,4 +33,10 @@ Controller.prototype.wait = function (time) {
   return new Promise((resolve, reject) => {
     setTimeout(() => resolve(), time);
   });
+};
+
+Controller.prototype.finish = function (dataSet) {
+  this.view.paintGraphs(dataSet, "DONE");
+  this.view.holdInput(false);
+  this.view.paintMessage("정렬 끄읕", " 🤸‍♀️ 🤸‍♀️ 🤸‍♀️ ", 3000);
 };
