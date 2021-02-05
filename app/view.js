@@ -5,8 +5,6 @@ import { ITEM, ARROW } from './constant';
 
 export default class View {
 	constructor(template) {
-		console.log('View Constructor!');
-
 		this.template = template;
 		this.$container = qs('.container');
 		this.$themeSwitch = qs('#theme-switch');
@@ -161,10 +159,11 @@ export default class View {
 	}
 
 	setSortItemStatusSelected(index, isMoveDown, duration) {
-    console.log('setSortItemStatusSelected', arguments);
-
 		if (index < 0) return;
 		const sortItemElement = this.getSortItemElement(index);
+
+		if (sortItemElement.classList.contains('pivot')) return;
+
 		const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
 		this.setSortItemColorFromStatus(sortItemElement, 'selected');
 
@@ -275,8 +274,6 @@ export default class View {
   }
 
   moveArrowNext(arrowKinds, duration) {
-    console.log('moveArrowNext', arrowKinds, duration);
-
     const arrowElement = qs(`.${arrowKinds}-arrow`);
     const [arrowItemXPos, arrowItemYPos] = this.getSVGItemPosition(arrowElement);
 

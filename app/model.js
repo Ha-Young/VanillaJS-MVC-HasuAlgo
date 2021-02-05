@@ -5,7 +5,6 @@ import { SortItemList } from './typeDef';
 
 export default class Model {
   constructor() {
-    console.log('Model Constructor!');
     this._sortList = [];
     this._sortMaxNum = -1;
     this._currentSortKinds = 'insertion';
@@ -45,7 +44,6 @@ export default class Model {
     }
 
     this.sortList = parsedData;
-    console.log('init Data :', this.sortList);
 
     return this.sortList;
   }
@@ -63,7 +61,6 @@ export default class Model {
   }
 
   set currentSortKinds(sortKinds) {
-    console.log('set', sortKinds);
     this._currentSortKinds = sortKinds;
   }
 
