@@ -1,7 +1,7 @@
 export class Model {
   constructor() {
     this.lists = [];
-    this.sortState = [];
+    this.sortStates = [];
   }
 
   addNewNodes(lists) {
@@ -19,7 +19,7 @@ export class Model {
   }
 
   addState(state) {
-    this.sortState.push(state);
+    this.sortStates.push(state);
   }
 
   bindDisplayNodeList(callback) {

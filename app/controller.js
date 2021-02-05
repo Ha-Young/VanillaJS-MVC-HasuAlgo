@@ -69,7 +69,7 @@ export class Controller {
     }
 
     this.handleAddState(['finishAllSort']);
-    this.onUpdateTotalStates(this.model.sortState);
+    this.onUpdateTotalStates(this.model.sortStates);
   }
 
   quickSort = async () => {
@@ -102,13 +102,19 @@ export class Controller {
           if (left !== right) {
             swap(arr, left, right);
             this.handleAddState(['changeNodes', left, right]);
-            this.handleAddState(['checkSortedNode', middle]);
           }
 
           left++;
+          this.handleAddState(['onLightNode', left]);
+          this.handleAddState(['offLightNode', left]);
+
           right--;
+          this.handleAddState(['onLightNode', right]);
+          this.handleAddState(['offLightNode', right]);
         }
       }
+
+      this.handleAddState(['offLightNode', middle]);
 
       return left;
     };
@@ -132,6 +138,6 @@ export class Controller {
     await recurseQuickSort(this.model.lists, 0, this.model.lists.length - 1);
 
     this.handleAddState(['finishAllSort']);
-    this.onUpdateTotalStates(this.model.sortState);
+    this.onUpdateTotalStates(this.model.sortStates);
   }
 }
