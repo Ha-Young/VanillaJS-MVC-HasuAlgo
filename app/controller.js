@@ -1,50 +1,51 @@
-import { delay, swap } from './utils/sortUtils';
+import { delay, swap } from './utils/commonUtils';
 
 export class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-    this.view.bindInputNode(this.handleAddList);
+    this.view.bindInputNumbers(this.handleAddNumberList);
     this.model.bindNodeListDisplayed(this.onDisplayNodeList);
-    this.view.bindStartSort(this.quickSort); // 아직 구현 전..
-    this.model.bindStates(this.onUpdateStates);
-    //this.model.bindState(this.onUpdateState);
+    this.view.bindStartSort(this.handleStartSort);
+    this.model.bindStates(this.onUpdateTotalStates);
   }
 
-  handleAddList = nodeLists => { // 코드 스타일 통일
-    this.model.addList(nodeLists);
+  handleAddNumberList = (numberLists) => { // 코드 스타일 통일
+    this.model.addList(numberLists);
   }
 
-  handleAddState = state => { // 새로 가한 함수임.. 원래 온업데이트스테이트가 바인딩 되어있었음..
+  handleAddState = (state) => {
     this.model.addState(state);
   }
 
-  onDisplayNodeList = nodes => {
+  onDisplayNodeList = (nodes) => {
     this.view.displayNodes(nodes);
   }
 
-  onUpdateStates = async (states) => {
+  onUpdateTotalStates = async (states) => {
     for (let i = 0; i < states.length; i++) {
+      if (!states[i]) {
+        throw new Error ('States have error!'); // 이거 필요한가...?
+      }
+
       await this.view.render(states[i]);
     }
   }
 
-  handleStartSort(sortType) {
-    switch (sortType) {
-      case 'bubbleSort': {
+  handleStartSort = () => {
+    switch (this.view.selector.value) {
+      case 'bubble-sort': {
         this.bubbleSort();
         break;
       }
-      case 'quickSort': {
+      case 'quick-sort': {
         this.quickSort();
         break;
-      }
-      default: {
       }
     }; // semi 붙이나 안붙이나 검색해보기
   }
 
-  bubbleSort = async () => { // 확장시 SORT로 분리, INPUT값 받아서 PARAMETER로 넣어줘서 SWITCH쓰기 //
+  bubbleSort = async () => {
     const nodeList = this.model.lists;
     this.handleAddState(['startSort']);
 
@@ -56,7 +57,7 @@ export class Controller {
         if (nodeList[j] > nodeList[j + 1]) {
           swap(nodeList, j, j + 1);
 
-          this.handleAddState(['swapNodes', j, j + 1]);
+          this.handleAddState(['changeNodes', j, j + 1]);
         }
 
         if ((j + 1) === nodeList.length - i - 1) {
@@ -68,7 +69,7 @@ export class Controller {
     }
 
     this.handleAddState(['finishAllSort']);
-    this.onUpdateStates(this.model.sortState);
+    this.onUpdateTotalStates(this.model.sortState);
   }
 
   quickSort = async () => {
@@ -98,7 +99,7 @@ export class Controller {
         if (left <= right) {
           if (left !== right) {
             swap(arr, left, right);
-            this.handleAddState(['swapNodes', left, right]);
+            this.handleAddState(['changeNodes', left, right]);
             this.handleAddState(['checkSortedNode', middle]);
           }
 
@@ -106,6 +107,7 @@ export class Controller {
           right--;
         }
       }
+
       return left;
     };
 
@@ -113,7 +115,7 @@ export class Controller {
       const pivot = await partition(arr, left, right);
 
       if (left < pivot - 1) {
-        await recurseQuickSort(arr, left, pivot - 1)
+        await recurseQuickSort(arr, left, pivot - 1);
       }
 
       if (right > pivot) {
@@ -124,9 +126,10 @@ export class Controller {
     };
 
     this.handleAddState(['startSort']);
-    await recurseQuickSort(this.model.lists, 0, this.model.lists.length - 1);
-    this.handleAddState(['finishAllSort']);
 
-    this.onUpdateStates(this.model.sortState);
+    await recurseQuickSort(this.model.lists, 0, this.model.lists.length - 1);
+
+    this.handleAddState(['finishAllSort']);
+    this.onUpdateTotalStates(this.model.sortState);
   }
 }

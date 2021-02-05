@@ -1,1 +1,0 @@
-const DEFAULT_HEIGHTS = 0.7;

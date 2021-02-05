@@ -1,4 +1,5 @@
-import { swapNode, onHighlightNode, offHighlightNode, onHighlightAllNodes, delay } from './utils/sortUtils';
+import { delay } from './utils/commonUtils';
+import { swapNodes, onHighlightNode, offHighlightNode, onHighlightAllNodes } from './utils/uiUtils';
 
 export class View {
   constructor() {
@@ -7,7 +8,7 @@ export class View {
     this.selector = document.querySelector('select');
     this.startButton = document.querySelector('.content-startButton');
     this.table = document.querySelector('.content-field');
-    // sort 선택 버튼 추가, 그래서 startbutton에 같이 날리기
+    this.warningZone = document.querySelector('.content-warning');
   }
 
   get nodeList() { // node 이름 혼용 고쳐주기
@@ -18,11 +19,54 @@ export class View {
     this.input.value = '';
   }
 
+  bindInputNumbers(handler) { // eventlistener 다 remove해주기.. 근데 그럼 유명함수로 만들어야하는데... 그럼 디스바인딩해줘야하는데... // if flag거는건 어때..?
+    this.form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (!this.nodeList) {
+        this.warningZone.textContent = 'Please enter numbers';
+        return;
+      }
+
+      const listArray = this.nodeList.split(',').map(item => Number(item));
+      const isRanged = listArray.every(item => item > 0 && item < 100);
+      const isNumbers = listArray.every(item => typeof item === 'number' && !isNaN(item));
+
+      if (listArray.length < 5 || listArray.length > 10) { // 너무 보기 싫음.. 어쩌지..?
+        this.warningZone.textContent = 'Please enter number 5 to 10';
+        return;
+      } else if (!isRanged) {
+        this.warningZone.textContent = 'Please enter number in 50 to 100';
+        return;
+      } else if (!isNumbers) {
+        this.warningZone.textContent = 'Please enter only number';
+        return;
+      } 
+
+      handler(listArray);
+      this.warningZone.textContent = '';
+      this.resetInput();
+    });
+  }
+
+  bindStartSort(handler) {
+    this.startButton.addEventListener('click', () => {
+      if (this.selector.value === '') {
+        this.warningZone.textContent = 'Please choose sort type';
+        return;
+      }
+
+      this.warningZone.textContent = '';
+      handler();
+      this.startButton.classList.add('none-visible');
+    });
+  }
+
   displayNodes(nodeLists) {
     const DEFAULT_HEIGHTS = 4.5;
 
     for (let i = 0; i < nodeLists.length; i++) {
-      const newNode = document.createElement('div'); // 이제 차일드 아니어도 됨
+      const newNode = document.createElement('div');
 
       newNode.classList.add('content-field-node');
       newNode.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
@@ -32,65 +76,24 @@ export class View {
     }
   }
 
-  bindInputNode(handler) { // eventlistener 다 remove해주기.. 근데 그럼 유명함수로 만들어야하는데... 그럼 디스바인딩해줘야하는데... // if flag거는건 어때..?
-    this.form.addEventListener('submit', event => {
-      event.preventDefault();
+  render = async (stateInfo) => {   
+    const stateType = stateInfo.shift();
 
-      if (!this.nodeList) {
-        // ui작업
-        throw new Error('Please enter numbers');
-      }
-
-      const listArray = this.nodeList.split(',').map(item => Number(item));
-      const isNumbers = listArray.every(item => {
-        return typeof item === 'number' && !isNaN(item);
-      });
-      const isRanged = listArray.every(item => item > 0 && item < 100);
-
-      if (listArray.length < 5 || listArray.length > 10) {
-        // ui 작업
-        //throw new Error('please enter number 5 to 10');
-      }
-
-      if (!isNumbers) {
-        throw new Error('please enter only number');
-      }
-
-      if (!isRanged) {
-        throw new Error('please enter number in 50 to 100');
-      }
-
-      // else if로 묶어주는게 가독성이 나을지도..
-      handler(listArray);
-      this.resetInput();
-    });
-  }
-
-  bindStartSort(handler) {
-    this.startButton.addEventListener('click', () => {
-      //validator ... nodeListlength === 0, sort 선택 안됐을때
-      handler(); // SORT TYPE도 같이 알려주기
-    });
-  }
-
-  render = async (args) => {   
-    const state = args.shift();
-    console.log(state);
-    const viewCommands = { // 매개변수 이름, 받는 타입 다시 설정해주기
-      startSort: async () => {
+    const viewCommands = {
+      startSort: () => {
         //await onHighlightAllNodes();
       },
-      onLightNode: (args) => { //  네이밍 다시..
-        onHighlightNode(args[0]);
+      onLightNode: (index) => {
+        onHighlightNode(index[0]);
       },
-      swapNodes: (args) => {
-        swapNode(this.table.children, args[0], args[1]);
+      changeNodes: (index) => {
+        swapNodes(this.table.children, index[0], index[1]);
       },
-      offLightNode: (args) => {
-        offHighlightNode(args[0], 'pink'); // 네이밍 다시
+      offLightNode: (index) => {
+        offHighlightNode(index[0]);
       },
-      checkSortedNode: (args) => {
-        offHighlightNode(args[0], '#FCE2E6'); // 컬러 테마 다시 뽑아넣기
+      checkSortedNode: (index) => {
+        offHighlightNode(index[0], '#FCE2E6'); // 컬러 테마 다시 뽑아넣기
       },
       finishAllSort: () => {
         onHighlightAllNodes();
@@ -98,7 +101,7 @@ export class View {
     };
 
     await delay(500);
-    await viewCommands[state](args); // await
+    await viewCommands[stateType](stateInfo);
     await delay(500);
   }
 }

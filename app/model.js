@@ -2,25 +2,20 @@ export class Model {
   constructor() {
     this.lists = [];
     this.sortState = [];
-    this.sortType ='';
   }
 
   addNewNodes(lists) {
     this.onDisplayNodeList(lists);
   }
 
-  addNewSortType(type) {
-    this.onUpdateSortType(type);
-  }
-
   addList(lists) {
-    this.lists = lists;
-    this.addNewNodes(this.lists);
-  }
+    this.lists = [...this.lists, ...lists];
 
-  addSortType(type) {
-    this.sortType = type;
-    this.addNewSortType(this.sortType);
+    if (this.lists.length > 10) {
+      throw Error('Input Numbers exceed 10');
+    }
+
+    this.addNewNodes(this.lists);
   }
 
   addState(state) {
@@ -31,12 +26,8 @@ export class Model {
     this.onDisplayNodeList = callback;
   }
 
-  bindSortType(callback) {
-    this.onUpdateSortType = callback;
-  }
-
   bindStates(callback) {
-    this.onUpdateStates = callback;
+    this.onUpdateTotalStates = callback;
   }
 
   pushStates(state) {
