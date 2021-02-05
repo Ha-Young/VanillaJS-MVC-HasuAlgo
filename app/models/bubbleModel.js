@@ -59,7 +59,9 @@ BubbleModel.prototype.shuffleNum = function (callback) {
   callback(shuffledArray);
 };
 
-BubbleModel.prototype.setRandom = function (randomNum, callback) {
+BubbleModel.prototype.setRandom = function (callback) {
+  const randomNum = Math.floor(Math.random() * 50) + 1;
+
   this.inputArray.push(randomNum);
   callback(this.inputArray);
 };

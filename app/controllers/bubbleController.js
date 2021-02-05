@@ -76,7 +76,7 @@ BubbleController.prototype.setRandom = function () {
   const self = this;
   const randomNum = Math.floor(Math.random() * 50) + 1;
 
-  self.model.setRandom(randomNum, (updatedList) => {
+  self.model.setRandom((updatedList) => {
     self.view.renderInput("DRAW LIST", updatedList);
   });
 };
