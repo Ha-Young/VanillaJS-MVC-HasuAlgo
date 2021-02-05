@@ -11,7 +11,6 @@ class Controller {
 
   handleAddData(data) {
     this.model.addData(data);
-    console.log(this.model);
   }
 
   handleAddClass(target, className) {
@@ -35,8 +34,8 @@ class Controller {
 
     inputButton.addEventListener("click", this.handleRenderGraph);
     sortButton.addEventListener("click", this.startSort);
-    restartButton.addEventListener("click", () => {
-      this.handleRenderGraph();
+    restartButton.addEventListener("click", (event) => {
+      this.handleRenderGraph(event);
       this.startSort();
       this.controlRestartClearButtons();
     });
@@ -46,12 +45,20 @@ class Controller {
     });
   }
 
-  handleRenderGraph = () => {
+  handleRenderGraph = (event) => {
     const sortButton = this.view.sortButton;
+    const sortRestartButton = this.view.sortRestartButton;
+
+    if (event.target === sortRestartButton) {
+      this.model.sortedArray = this.model.unsortedArray.slice();
+      this.view.clearGraph();
+      this.view.renderGraph(this.model.sortedArray);
+      return;
+    }
 
     if (this.checkData() && this.checkSort()) {
       this.view.clearGraph();
-      this.view.renderGraph(this.model.unsortedArray);
+      this.view.renderGraph(this.model.sortedArray);
       this.handleAddClass(this.view.validation, "hidden");
       this.handleRemoveClass(sortButton, "invisible");
     }
@@ -113,11 +120,11 @@ class Controller {
   startSort = () => {
     const sortName = this.checkSort();
     if (sortName === "Bubble") {
-      this.doBubbleSort(this.model.unsortedArray);
+      this.doBubbleSort(this.model.sortedArray);
     }
     if (sortName === "Quick") {
       (async () => {
-        await this.doQuickSort(this.model.unsortedArray, 0, this.model.unsortedArray.length - 1);
+        await this.doQuickSort(this.model.sortedArray, 0, this.model.sortedArray.length - 1);
         this.view.confirmGraph();
         this.controlRestartClearButtons()
       })();
