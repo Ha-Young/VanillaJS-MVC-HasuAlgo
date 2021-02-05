@@ -1,5 +1,4 @@
-
-export default function Controller (model, view) {
+export default function Controller(model, view) {
   this.model = model;
   this.view = view;
 
@@ -102,75 +101,78 @@ Controller.prototype.confirmSelectedSortOption = function() {
   }
 };
 
-// Controller.prototype.quickSort = async function(userInputElements, left = 0, right = userInputElements.length-1) {
-//   if (left < right) {
-//     let pivot = this.placingPivotIdx(userInputElements, left, right)
+Controller.prototype.quickSort = async function(userInputElements, left = 0, right = userInputElements.length-1) {
+  if (left < right) {
+    let pivot = this.placingPivotIdx(userInputElements, left, right);
 
-//     this.quickSort(userInputElements, left, pivot-1);
-//     this.quickSort(userInputElements, pivot+1, right);
-//   }
-// }
+    userInputElements = this.model.getUserInputElements()
+    this.quickSort(userInputElements, left, pivot-1);
+    this.quickSort(userInputElements, pivot+1, right);
+  }
+};
 
-// Controller.prototype.placingPivotIdx = async function(elements, start, end) {
-//     const sortingElements = elements;
+Controller.prototype.placingPivotIdx = async function(givenElements, start, end) {
+    let userInputElements = givenElements;
 
-//     let pivotIdx = start;
-//     let pivot = sortingElements[start];
-//     let difference;
-//     let transitionPercentage;
+    let pivotIdx = start;
+    let pivot = userInputElements[start];
+    let difference;
+    let transitionPercentage;
 
-//     // function swap (arr, pivotIdx, i) {
-//     //   return [arr[pivotIdx], arr[i]] = [arr[i], arr[pivotIdx]];
-//     // }
+    this.view.paintPivot(pivot);
+    await this.view.delay(1000);
 
-//     this.view.paintPivot(pivot);
-//     await this.view.delay(1000);
+    for (let i = start + 1; i <= end; i++) {
+        const targetElement = userInputElements[i];
 
-//     for (let i = start + 1; i <= end; i++) {
-//         this.view.paintTargetElement(sortingElements[i]);
-//         await this.view.delay(1000);
+        this.view.paintTargetElement(targetElement);
+        await this.view.delay(1000);
 
-//         if (Number(pivot.getAttribute('data-value')) > Number(sortingElements[i].getAttribute('data-value'))) {
-//             this.view.paintSmallerElement(sortingElements[i])
-//             await this.view.delay(1000)
+        const pivotValue = Number(pivot.getAttribute('data-value'))
+        const targetValue = Number(targetElement.getAttribute('data-value'))
 
-//             pivotIdx++;
+        if (pivotValue > targetValue) {
+            this.view.paintSmallerElement(targetElement)
+            await this.view.delay(1000)
 
-//             difference = i - pivotIdx;
-//             transitionPercentage = difference * this.basicTransitionPercentage
+            pivotIdx++;
 
-//             this.view.swapDisplayElements(sortingElements[pivotIdx], sortingElements[i], transitionPercentage)
-//             await this.view.delay(1000)
+            difference = i - pivotIdx;
+            transitionPercentage = difference * this.basicTransitionPercentage;
 
-//             // swap(sortingElements, pivotIdx, i);
+            this.view.moveVisualTargetElements(userInputElements[pivotIdx], userInputElements[i], transitionPercentage)
+            await this.view.delay(1000)
 
-//             this.view.swapSortingElements(sortingElements[pivotIdx], sortingElements[i])
-//             await this.view.delay(1000)
+            // swap(sortingElements, pivotIdx, i);
 
-//             //this.view.swapDisplayElements(sortingElements[i], sortingElements[mentalNote])
-//             // sortingElements[pivot].classList.add('moving-effect')
-//             // sortingElements[i].classList.add('moving-effect')
-//             // sortingElements[pivot].style.transform = 'translate(150%)'
-//             // sortingElements[i].style.transform = 'translate(-150%)'
-//             // await this.view.delay(1000)
-//         }
+            this.view.swapTargetElements(targetElement, userInputElements[pivotIdx], this.$sortDisplaySection)
+            await this.view.delay(1000)
 
-//         this.view.paintBiggerElement(sortingElements[i]);
-//         await this.view.delay(1000)
-//     }
+            //this.view.swapDisplayElements(sortingElements[i], sortingElements[mentalNote])
+            // sortingElements[pivot].classList.add('moving-effect')
+            // sortingElements[i].classList.add('moving-effect')
+            // sortingElements[pivot].style.transform = 'translate(150%)'
+            // sortingElements[i].style.transform = 'translate(-150%)'
+            // await this.view.delay(1000)
+        }
 
-//     difference = pivotIdx - start;
-//     transitionPercentage = difference * this.basicTransitionPercentage
+        this.view.paintBiggerElement(targetElement);
+        await this.view.delay(1000)
+    }
 
-//     this.view.swapDisplayElements(sortingElements[start], sortingElements[pivotIdx], transitionPercentage)
-//     await this.view.delay(1000)
+    difference = pivotIdx - start;
+    transitionPercentage = difference * this.TRANSITION_PERCENTAGE
 
-//     this.view.swapSortingElements(sortingElements[start], sortingElements[pivotIdx])
-//     await this.view.delay(1000)
-//     // swap(sortingElements, mentalNote, left)
+    this.view.moveVisualTargetElements(userInputElements[start], userInputElements[pivotIdx], transitionPercentage)
+    await this.view.delay(500)
 
-//     return pivotIdx;
-// }
+    this.view.swapTargetElements(userInputElements[pivotIdx], userInputElements[start], this.$sortDisplaySection)
+    await this.view.delay(500)
+
+    this.model.setUserInputElements(userInputElements)
+
+    return pivotIdx;
+}
 
 
 Controller.prototype.bubleSort = async function() {

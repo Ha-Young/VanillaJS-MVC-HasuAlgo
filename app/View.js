@@ -93,18 +93,20 @@ View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
   sortDisplaySection.innerHTML = "";
 };
 
+// quick sort
+
 View.prototype.paintPivot = function(pivot) {
-  pivot.classList.add('paint-pivot');
+  pivot.classList.add('pivot-element-color');
 };
 
 View.prototype.paintTargetElement = function(targetElement) {
-  targetElement.classList.add('paint-target-element');
+  targetElement.classList.add('target-element-color');
 };
 
 View.prototype.paintBiggerElement = function(biggerElement) {
-  biggerElement.classList.add('paint-bigger-element');
+  biggerElement.classList.add('bigger-element-color');
 };
 
 View.prototype.paintSmallerElement = function(smallerElement) {
-  smallerElement.classList.add('paint-smaller-element');
+  smallerElement.classList.add('smaller-element-color');
 };
