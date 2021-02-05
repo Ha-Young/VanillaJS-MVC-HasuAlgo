@@ -1,7 +1,15 @@
 import { delay } from './commonUtils';
+import { colorChart } from '../constants/themeColor';
+
+const INCREASED_UI_SECONDS = 500;
 
 export const swapNodes = async (nodeGroup, left, right) => {
-  await delay(500);
+  await delay(INCREASED_UI_SECONDS);
+
+  const NODE_GAP = 50;
+
+  const UI_DEFAULT_SECONDS = 100;
+  const UI_DELAY_CONSTANT = 4;
 
   const leftNode = nodeGroup[left];
   const rightNode = nodeGroup[right];
@@ -12,10 +20,10 @@ export const swapNodes = async (nodeGroup, left, right) => {
   leftNode.classList.add('transition-effect');
   rightNode.classList.add('transition-effect');
   
-  rightNode.style.transform = `translateX(-${50 * (right - left)}px)`;
-  leftNode.style.transform = `translateX(${50 * (right - left)}px)`;
+  rightNode.style.transform = `translateX(-${NODE_GAP * (right - left)}px)`;
+  leftNode.style.transform = `translateX(${NODE_GAP * (right - left)}px)`;
   
-  await delay(100 * (right - left) * 4); // magic number
+  await delay(UI_DEFAULT_SECONDS * (right - left) * UI_DELAY_CONSTANT);
 
   leftNode.classList.remove('transition-effect');
   rightNode.classList.remove('transition-effect');
@@ -29,11 +37,11 @@ export const swapNodes = async (nodeGroup, left, right) => {
   leftNode.textContent = rightNode.textContent;
   rightNode.textContent = leftNodeValue;
 
-  await delay(100 * (right - left) * 4);
+  await delay(UI_DEFAULT_SECONDS * (right - left) * UI_DELAY_CONSTANT);
 }
 
-export const onHighlightNode = async (index, color = '#CEECF2') => {
-  await delay(500);
+export const onHighlightNode = async (index, color = colorChart.SKY_BLUE) => {
+  await delay(INCREASED_UI_SECONDS);
 
   const nodeGroup = document.querySelectorAll('.content-field-node');
   const indexNode = nodeGroup[index];
@@ -48,8 +56,8 @@ export const onHighlightNode = async (index, color = '#CEECF2') => {
   await delay();
 }
 
-export const offHighlightNode = async (index, color = '#FBBABA') => {
-  await delay(500);
+export const offHighlightNode = async (index, color = colorChart.PINK) => {
+  await delay(INCREASED_UI_SECONDS);
 
   const nodeGroup = document.querySelectorAll('.content-field-node');
   const indexNode = nodeGroup[index];
@@ -64,7 +72,7 @@ export const offHighlightNode = async (index, color = '#FBBABA') => {
   await delay();
 }
 
-export const onHighlightAllNodes = async (color = '#FBBABA') => {
+export const onHighlightAllNodes = async (color = colorChart.PINK) => {
   const nodeGroup = document.querySelectorAll('.content-field-node');
 
   for (const node of nodeGroup) {

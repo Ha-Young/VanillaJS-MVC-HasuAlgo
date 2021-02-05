@@ -22,15 +22,15 @@ export class Model {
     this.sortState.push(state);
   }
 
-  bindNodeListDisplayed(callback) {
+  bindDisplayNodeList(callback) {
     this.onDisplayNodeList = callback;
   }
 
-  bindStates(callback) {
+  bindUpdateTotalStates(callback) {
     this.onUpdateTotalStates = callback;
   }
 
-  pushStates(state) {
+  pushNewStates(state) {
     this.onUpdateState(state);
   }
 }

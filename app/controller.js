@@ -4,13 +4,13 @@ export class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
-    this.view.bindInputNumbers(this.handleAddNumberList);
-    this.model.bindNodeListDisplayed(this.onDisplayNodeList);
+    this.model.bindUpdateTotalStates(this.onUpdateTotalStates);
+    this.model.bindDisplayNodeList(this.onDisplayNodeList);
     this.view.bindStartSort(this.handleStartSort);
-    this.model.bindStates(this.onUpdateTotalStates);
+    this.view.bindInputNumbers(this.handleAddNumberList);
   }
 
-  handleAddNumberList = (numberLists) => { // 코드 스타일 통일
+  handleAddNumberList = (numberLists) => {
     this.model.addList(numberLists);
   }
 
@@ -25,7 +25,7 @@ export class Controller {
   onUpdateTotalStates = async (states) => {
     for (let i = 0; i < states.length; i++) {
       if (!states[i]) {
-        throw new Error ('States have error!'); // 이거 필요한가...?
+        throw new Error ('States have error!');
       }
 
       await this.view.render(states[i]);
@@ -42,10 +42,10 @@ export class Controller {
         this.quickSort();
         break;
       }
-    }; // semi 붙이나 안붙이나 검색해보기
+    }
   }
 
-  bubbleSort = async () => {
+  bubbleSort = () => {
     const nodeList = this.model.lists;
     this.handleAddState(['startSort']);
 
@@ -73,6 +73,8 @@ export class Controller {
   }
 
   quickSort = async () => {
+    const ASYNC_DELAY_SECONDS = 100;
+
     const partition = async (arr, left, right) => {
       const middle = Math.floor((left + right) / 2);
       const pivot = arr[middle];
@@ -94,7 +96,7 @@ export class Controller {
           right--;
         }
 
-        await delay(100);
+        await delay(ASYNC_DELAY_SECONDS);
 
         if (left <= right) {
           if (left !== right) {

@@ -1,5 +1,6 @@
 import { delay } from './utils/commonUtils';
 import { swapNodes, onHighlightNode, offHighlightNode, onHighlightAllNodes } from './utils/uiUtils';
+import { colorChart } from './constants/themeColor';
 
 export class View {
   constructor() {
@@ -28,18 +29,24 @@ export class View {
         return;
       }
 
-      const listArray = this.nodeList.split(',').map(item => Number(item));
-      const isRanged = listArray.every(item => item > 0 && item < 100);
-      const isNumbers = listArray.every(item => typeof item === 'number' && !isNaN(item));
+      const MIN_LIST_LENGTH = 5;
+      const MAX_LIST_LENGTH = 10;
 
-      if (listArray.length < 5 || listArray.length > 10) { // 너무 보기 싫음.. 어쩌지..?
+      const MIN_NUMBER_RANGE = 0;
+      const MAX_NUMBER_RANGE = 100;
+
+      const listArray = this.nodeList.split(',').map(item => Number(item));
+      const isNumbers = listArray.every(item => typeof item === 'number' && !isNaN(item));
+      const isRanged = listArray.every(item => item > MIN_NUMBER_RANGE && item < MAX_NUMBER_RANGE);
+      
+      if (listArray.length < MIN_LIST_LENGTH || listArray.length > MAX_LIST_LENGTH) {
         this.warningZone.textContent = 'Please enter number 5 to 10';
-        return;
-      } else if (!isRanged) {
-        this.warningZone.textContent = 'Please enter number in 50 to 100';
         return;
       } else if (!isNumbers) {
         this.warningZone.textContent = 'Please enter only number';
+        return;
+      } else if (!isRanged) {
+        this.warningZone.textContent = 'Please enter number in 50 to 100';
         return;
       } 
 
@@ -81,7 +88,7 @@ export class View {
 
     const viewCommands = {
       startSort: () => {
-        //await onHighlightAllNodes();
+        onHighlightAllNodes();
       },
       onLightNode: (index) => {
         onHighlightNode(index[0]);
@@ -93,7 +100,7 @@ export class View {
         offHighlightNode(index[0]);
       },
       checkSortedNode: (index) => {
-        offHighlightNode(index[0], '#FCE2E6'); // 컬러 테마 다시 뽑아넣기
+        offHighlightNode(index[0], colorChart.LIGHT_PINK);
       },
       finishAllSort: () => {
         onHighlightAllNodes();
