@@ -1,7 +1,7 @@
 //import a from "../assets/images/chicken.jpg"
 export default function View() {
-  const $template = document.createAttribute('template');
   const $root = document.querySelector('.root');
+  const $template = document.createAttribute('template');
 
   $template.innerHTML = `
     <section class="container">
@@ -37,9 +37,7 @@ export default function View() {
 };
 
 View.prototype.addControllerEvent = function (target, event, handler) {
-  if (target === '.play-button') {
-    document.querySelector(target).addEventListener(event, handler);
-  }
+  document.querySelector(target).addEventListener(event, handler);
 }
 
 View.prototype.sendDataToController = function (target, property) {
@@ -47,65 +45,47 @@ View.prototype.sendDataToController = function (target, property) {
 }
 
 View.prototype.initialRender = function (data) {
-  const manipulatedData = data.manipulatedData;
   const $animationBox = document.querySelector('.animation-box');
-  const maxData = Math.max(...manipulatedData);
-  const animationBoxHeight = $animationBox.style.height;
   const oldNodeNumbers = $animationBox.children.length;
+  const maxData = Math.max(...data);
+  const animationBoxHeight = 200;
 
   for (let i = 0; i < oldNodeNumbers; i++) {
     $animationBox.children[0].remove();
   }
 
-  for (let i = 0; i < manipulatedData.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     $animationBox.appendChild(document.createElement('div'));
-    $animationBox.children[i].textContent = manipulatedData[i];
-    $animationBox.children[i].style.height = `${200 * manipulatedData[i] / maxData}px`;
+    $animationBox.children[i].textContent = data[i];
+    $animationBox.children[i].style.height = `${animationBoxHeight * data[i] / maxData}px`;
   }
-
-  $animationBox.classList.add('play');
 }
 
-View.prototype.render = function (sortData) {
+View.prototype.render = function (data) {
+  const {sortData, leftElement, rightElement} = data;
   const $animationBox = document.querySelector('.animation-box');
   const $statusBox = document.querySelector('.status-box');
-  //console.log(sortData)
-  const maxData = Math.max(...sortData.data);
-  const animationBoxHeight = $animationBox.style.height;
-  let ordinalNumberSuffix;
-  const dataLength = sortData.data.length;
-
-  switch (sortData.sortCount % 10) {
-    case 1:
-      ordinalNumberSuffix = 'st';
-      break;
-    case 2:
-      ordinalNumberSuffix = 'nd';
-      break;
-    case 3:
-      ordinalNumberSuffix = 'rd';
-      break;
-    default:
-      ordinalNumberSuffix = 'th';
-  }
-
-  const changedElements = [];
-  changedElements.push({leftElement: sortData.leftElement, rightElement: sortData.rightElement});
-
   const $playElements = document.querySelectorAll('.play');
-  [].forEach.call($playElements, item => item.classList.remove('play'))
   const $pivotElement = document.querySelectorAll('.pivot');
-  [].forEach.call($pivotElement, item => item.classList.remove('pivot'))
-  //$animationBox.children[(sortData.leftElement + dataLength - 1) % dataLength].classList.remove('play');
-  $animationBox.children[sortData.leftElement].classList.add('play');
-  $animationBox.children[sortData.leftElement].textContent = sortData.data[sortData.leftElement];
-  $animationBox.children[sortData.leftElement].style.height = `${200 * sortData.data[sortData.leftElement] / maxData}px`;
-  $animationBox.children[sortData.rightElement % dataLength].classList.add('play');
-  $animationBox.children[sortData.rightElement % dataLength].textContent = sortData.data[(sortData.rightElement) % dataLength];
-  $animationBox.children[sortData.rightElement % dataLength].style.height = `${200 * sortData.data[(sortData.rightElement) % dataLength] / maxData}px`;
-  $animationBox.children[sortData.pivotIndex].classList.add('pivot');
+  const leftBar = $animationBox.children[leftElement % sortData.length];
+  const rightBar = $animationBox.children[rightElement % sortData.length];
+  const maxData = Math.max(...sortData);
+  const animationBoxHeight = 200;
 
-  $statusBox.textContent = `Searching ${sortData.sortCount}${ordinalNumberSuffix}`;
+  [].forEach.call($playElements, item => item.classList.remove('play'));
+  [].forEach.call($pivotElement, item => item.classList.remove('pivot'));
+  leftBar.classList.add('play');
+  leftBar.textContent = sortData[leftElement % sortData.length];
+  leftBar.style.height = `${animationBoxHeight * sortData[leftElement % sortData.length] / maxData}px`;
+  rightBar.classList.add('play');
+  rightBar.textContent = sortData[(rightElement) % sortData.length];
+  rightBar.style.height = `${animationBoxHeight * sortData[(rightElement) % sortData.length] / maxData}px`;
+  $statusBox.textContent = 'Searching';
+
+  try {
+    $animationBox.children[data.pivotIndex].classList.add('pivot');
+  } catch {
+  }
 
   return;
 }

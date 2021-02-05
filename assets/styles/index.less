@@ -1,5 +1,6 @@
 @import (css) url('https://fonts.googleapis.com/css2?family=Hanalei+Fill&display=swap');
 @import (css) url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+@box-width: 90%;
 
 html, body {
   box-sizing: border-box;
@@ -13,8 +14,6 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 900px;
-  height: 600px;
   margin: 100px auto;
 }
 
@@ -30,7 +29,6 @@ html, body {
   border: 0;
 }
 
-@box-width: 90%;
 .title-box {
   width: @box-width;
   height: 60px;
@@ -89,7 +87,6 @@ html, body {
   padding: 0;
   border: 0;
   font: normal 100 16px / 20px 'Hanalei Fill', 'cursive';
-  color: black;
 }
 
 .input-data-box {
@@ -181,13 +178,13 @@ html, body {
   border: 0;
   background-color:rgb(#FFE0B2);
   font: normal 100 16px / 50px 'Hanalei Fill', 'cursive';
-  transition: 0.5s;
+  transition: 0.3s linear;
 }
 
 .animation-box div.play {
-  background-color:rgb(#FFA726);
+  background-color: rgb(#FFA726);
 }
 
 .animation-box div.pivot {
-  background-color: red;
+  background-color: rgb(#81D4FA);
 }

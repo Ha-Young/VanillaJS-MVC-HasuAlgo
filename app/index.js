@@ -7,17 +7,12 @@ import Controller from './controller';
 // ================================
 // START YOUR APP HERE
 // ================================
-
-console.log('여기서 작업하세요!');
+const visualSort = new VisualSort();
 
 function VisualSort () {
-  this.model = new Model(); // new Model(data)?
-  this.view = new View(); // new View(template)?
-  this.controller = new Controller(this.model, this.view); //controller method
+  this.model = new Model();
+  this.view = new View();
+  this.controller = new Controller(this.model, this.view);
 };
 
-const visualSort = new VisualSort();
 visualSort.controller.addEvent();
-
-//window.addEventListener('load', () => visualSort.controller.addViewEvent);
-//window.addEventListener('load', () => visualSort.controller.addModelEvent);
