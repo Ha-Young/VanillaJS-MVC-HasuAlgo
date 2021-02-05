@@ -1,7 +1,6 @@
 function Controller(Model, View) {
   this.model = Model;
   this.view = View;
-  this.INTERVAL = 1;
 }
 
 Controller.prototype.submitHandler = function () {
@@ -14,7 +13,7 @@ Controller.prototype.submitHandler = function () {
 
     this.view.render(numberList);
     this.sortingStart(sortType, numberList.slice());
-    this.asyncRecursion(sortType, numberList);
+    this.startVisualizing(sortType);
   } catch(err) {
     document.querySelector('.resultView').textContent = err.message;
   }
@@ -24,9 +23,32 @@ Controller.prototype.sortingStart = function (sortType, list) {
   if (sortType === 'bubble') {
     this.bubbleSort(sortType, list);
   } else if (sortType === 'quick') {
-
+    this.quickSort(0, list.length - 1, list);
   }
 };
+
+Controller.prototype.startVisualizing = async function (sortType) {
+  const task = this.model.findNextTask();
+
+  if (!task) return;
+
+  if (task.type === 'start') {
+  } else if (task.type === 'compare') {
+    await this.view.compare(task.sourceIndex, task.targetIndex);
+  } else if (task.type === 'pivot') {
+    await this.view.pivot(task.sourceIndex);
+  } else if (task.type === 'swap') {
+    await this.view.swapBubble(task.sourceIndex, task.targetIndex, task.list);
+  } else if (task.type === 'single item done') {
+
+
+  } else if (task.type === 'finish') {
+
+  }
+
+  await this.startVisualizing(sortType);
+};
+
 
 Controller.prototype.bubbleSort = function (sortType, list) {
   let hasChanged = false;
@@ -48,30 +70,9 @@ Controller.prototype.bubbleSort = function (sortType, list) {
   hasChanged? this.bubbleSort(sortType, list) : this.model.createTask('finish');
 };
 
-Controller.prototype.asyncRecursion = async function (sortType) {
-  const task = this.model.findNextTask();
-
-  if (!task) return;
-
-  if (task.type === 'start') {
-    await makeInterval(this.INTERVAL);
-  } else if (task.type === 'compare') {
-
-
-  } else if (task.type === 'swap') {
-    await this.view.swapBubble(task.sourceIndex, task.targetIndex, this.INTERVAL);
-    this.view.render(task.list);
-  } else if (task.type === 'single item done') {
-
-
-  } else if (task.type === 'finish') {
-
-  }
-
-  await this.asyncRecursion(sortType);
-};
-
 Controller.prototype.quickSort = async function (start, end, list) {
+  this.model.createTask('start');
+
   const part2 = await this.partition(start, end, list);
 
   if (start < part2 - 1) {
@@ -86,14 +87,22 @@ Controller.prototype.partition = async function (start, end, list) {
   const index = Math.floor((start + end) / 2);
   const pivot = list[index];
 
+  this.model.createTask('pivot', index);
+
   while (start < end) {
-    while (list[start] < pivot) start++; // async + css
-    while (list[end] > pivot) end--; // async + css
+    this.model.createTask('compare', start, index);
+    while (list[start] < pivot) {
+      start++;
+      this.model.createTask('move', start, start - 1);
+    }
+    while (list[end] > pivot) {
+      end--;
+      this.model.createTask('move', end, end + 1);
+    }
 
     if (start <= end) {
-      await this.moveSlowly(start, end, list);
       [list[start], list[end]] = [list[end], list[start]];
-      this.view.render(list);
+      this.model.createTask('swap', start, end, list.slice());
       start++;
       end--;
     }
@@ -109,12 +118,6 @@ function checkValidation(list) {
   } else if (list.length > 10) {
     throw Error('Need at most 10 numbers...');
   }
-}
-
-function makeInterval(x) {
-  return new Promise(resolve => {
-    setTimeout(resolve, x * 1000);
-  });
 }
 
 export default Controller;
