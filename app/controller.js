@@ -5,31 +5,37 @@ export default class Controller {
     this.bubbleSortCount = 0;
     this.borderIndex = 0;
 
-    view.bindAddArray(this.addArray.bind(this));
-    view.bindsetAlgorithm(this.setAlgorithm.bind(this));
-    view.bindExecuteSortingAldorithm(this.executeSortingAldorithm.bind(this));
+    this.inputBtnEventHandler = this.addArray.bind(this);
+    this.setAlgorithmHandler = this.setAlgorithm.bind(this);
+    this.executeBtnEventHandler = this.executeSortingAlgorithm.bind(this);
+
+    view.bindAddArray(this.inputBtnEventHandler);
+    view.bindSetAlgorithm(this.setAlgorithmHandler);
+    view.bindExecuteSortingAlgorithm(this.executeBtnEventHandler);
+  }
+
+  setAlgorithm = function (event) {
+    const selectedAlgorithm = event.target.id;
+
+    this.model.setAlgorithm(selectedAlgorithm);
   }
 
   addArray = function () {
-    const inputArray = document.querySelector('#input-form').value.split`,`.map(x=>+x);
+    const inputArray = this.view.$inputNumbers.value.split`,`.map(x => +x);
+
+    this.view.initializeInput();
+
+    if (this.inputValidation(inputArray)) {
+      this.model.setStorage(inputArray);
+      this.drawInputArray(inputArray);
+    }
+  }
+
+  inputValidation = function (inputArray) {
     const isEveryArrayItemNumber = inputArray.every((item) => {
       return Number.isInteger(item);
     });
 
-    this.view.$errorMsg.value = '';
-    this.view.$errorMsg.placeholder = '5~10개의 숫자를 콤마로 구분하여 입력';
-    this.view.$errorMsg.classList.remove('set-placeholder');
-
-    this.view.clearItems();
-    this.view.displayErrorMessage('');
-
-    if (this.inputValidation(inputArray, isEveryArrayItemNumber)) {
-      this.model.setStorage(inputArray);
-      this.addItems(this.model.getStorage());
-    }
-  }
-
-  inputValidation = function (inputArray, isEveryArrayItemNumber) {
     if (!(isEveryArrayItemNumber && (inputArray.length >= 5 && inputArray.length <= 10))) {
       this.view.displayErrorMessage('5~10개의 숫자 입력');
       return false;
@@ -38,42 +44,29 @@ export default class Controller {
     return true;
   }
 
-  addItems = function(data) {
-    for (const item of data) {
-      this.view.addItem(item, this.getIndex(item), data.length);
+  drawInputArray = function (inputArray) {
+    const orderList = inputArray.slice().sort((a, b) => (a - b));
+
+    for (const item of inputArray) {
+      this.view.drawItem(item, orderList.indexOf(item), inputArray.length);
     }
   }
 
-  getIndex = function(item) {
-    return this.model.getStorage().slice().sort((a, b) => (a - b)).indexOf(item);
-  }
-
-  setAlgorithm = function(event) {
-    const selectedAlgorithm = event.target.id;
-
-    this.model.setAlgorithm(selectedAlgorithm);
-  }
-
-  executeSortingAldorithm = async function() {
-    this.bubbleSortCount = 0;
-    this.view.shutDownButtons();
+  executeSortingAlgorithm = async function () {
+    this.view.deactivateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmHandler);
 
     if (this.model.getAlgorithm() === 'bubble') {
       await this.bubbleSortAsync();
-    }
-
-    if (this.model.getAlgorithm() === 'quick') {
+    } else if (this.model.getAlgorithm() === 'quick') {
       await this.quickSort(this.model.getStorage());
     }
 
-    this.view.reopenButtons();
-    this.view.bindAddArray(this.addArray.bind(this));
-    this.view.bindExecuteSortingAldorithm(this.executeSortingAldorithm.bind(this));
+    this.view.activateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmHandler);
   }
 
   bubbleSortAsync = async function () {
     const listToSort = this.model.getStorage();
-    let count = 0;
+    let bubbleChangeCount = 0;
 
     for (let i = listToSort.length - 1; i >= 1; i--) {
       for (let j = 0; j < i; j++) {
@@ -82,12 +75,14 @@ export default class Controller {
         await this.sleep(500);
 
         if (listToSort[j] > listToSort[j + 1]) {
-          count++;
+          bubbleChangeCount++;
 
-          listToSort.splice(j+1, 0, listToSort.splice(j,1)[0]);
+          listToSort.splice(j + 1, 0, listToSort.splice(j, 1)[0]);
 
-          this.view.moveRight(j);
-          this.view.moveLeft(j + 1);
+          this.view.changeClass('add', 'move-right', j);
+          this.view.changeClass('add', 'move-left', j + 1);
+          // this.view.moveRight(j);
+          // this.view.moveLeft(j + 1);
 
           await this.sleep(500);
 
@@ -102,12 +97,12 @@ export default class Controller {
         }
 
         if (j === i - 1) {
-          if (count === 0) {
+          if (bubbleChangeCount === 0) {
             this.view.changeColorOfSortedItem(...Array.from(Array(i + 1).keys()));
             return;
           }
 
-          count = 0;
+          bubbleChangeCount = 0;
 
           if (listToSort[i] === parseInt(this.view.$sortingWindow.childNodes[i].innerText)) {
             this.view.changeColorOfSortedItem(i);
@@ -126,19 +121,19 @@ export default class Controller {
     return new Promise((resolve) => setTimeout(() => resolve(), ms));
   }
 
-  quickSort = async function (listToSort, left = 0, right = listToSort.length - 1, cool) {
-    if (left >= right) {
+  quickSort = async function (listToSort, startIndex = 0, endIndex = listToSort.length - 1, isFirstExecuted = true) {
+    if (startIndex >= endIndex) {
       return;
     }
 
-    this.view.quickGroup(left, right);
-    await this.partition.call(this,listToSort, left, right);
-    this.view.quickGroupRemove(left, right);
+    this.view.changeColorOfSelectedQuickItem(startIndex, endIndex);
+    await this.partition.call(this, listToSort, startIndex, endIndex);
+    this.view.removeColorOfDeselectedQuickItem(startIndex, endIndex);
 
-    await this.quickSort.call(this, listToSort, left, this.borderIndex - 1, 1);
-    await this.quickSort.call(this, listToSort, this.borderIndex + 1, right, 1);
+    await this.quickSort.call(this, listToSort, startIndex, this.borderIndex - 1, false);
+    await this.quickSort.call(this, listToSort, this.borderIndex + 1, endIndex, false);
 
-    if (!cool) {
+    if (isFirstExecuted) {
       this.view.changeColorOfSortedItem(...Array.from(Array(listToSort.length).keys()));
     }
   }
@@ -149,62 +144,58 @@ export default class Controller {
     array[index2] = temp;
   }
 
-  partition = async function (array, left, right) {
-    let pivotIndex = Math.floor((left + right) / 2);
+  partition = async function (array, startIndex, endIndex) {
+    let pivotIndex = Math.floor((startIndex + endIndex) / 2);
     const pivotValue = array[pivotIndex];
 
     this.view.changeColorOfSortedItem(pivotIndex);
 
-    while (left <= right) {
-      this.view.changeColorOfSelectedItem(left, right);
+    while (startIndex <= endIndex) {
+      this.view.changeColorOfSelectedItem(startIndex, endIndex);
       await this.sleep(300);
 
-      while (array[left] < pivotValue) {
-        this.view.removeColorOfUnselectedItem(left);
+      while (array[startIndex] < pivotValue) {
+        this.view.removeColorOfUnselectedItem(startIndex);
         await this.sleep(300);
 
-        left++;
-
-        this.view.changeColorOfSelectedItem(left);
+        this.view.changeColorOfSelectedItem(++startIndex);
         await this.sleep(300);
       }
-      while (array[right] > pivotValue) {
-        this.view.removeColorOfUnselectedItem(right);
+      while (array[endIndex] > pivotValue) {
+        this.view.removeColorOfUnselectedItem(endIndex);
         await this.sleep(300);
 
-        right--;
-
-        this.view.changeColorOfSelectedItem(right);
+        this.view.changeColorOfSelectedItem(--endIndex);
         await this.sleep(300);
       }
 
-      this.view.removeColorOfUnselectedItem(left, right);
+      this.view.removeColorOfUnselectedItem(startIndex, endIndex);
 
-      if (left <= right) {
-        this.view.changeColorOfSelectedItem(left, right);
+      if (startIndex <= endIndex) {
+        this.view.changeColorOfSelectedItem(startIndex, endIndex);
         await this.sleep(300);
 
-        if (left === pivotIndex) {
-          pivotIndex = right;
-        } else if (right === pivotIndex) {
-          pivotIndex = left;
+        if (startIndex === pivotIndex) {
+          pivotIndex = endIndex;
+        } else if (endIndex === pivotIndex) {
+          pivotIndex = startIndex;
         }
 
-        if (left !== right) {
-          this.swap(array, left, right);
-          this.view.moveQuick(left, right);
-          this.view.moveQuick(right, left);
+        if (startIndex !== endIndex) {
+          this.swap(array, startIndex, endIndex);
+          this.view.moveQuick(startIndex, endIndex);
+          this.view.moveQuick(endIndex, startIndex);
           await this.sleep(600);
 
-          this.view.changeOrderQuick(left, right);
+          this.view.changeOrderQuick(startIndex, endIndex);
           await this.sleep(300);
         }
 
-        this.view.removeColorOfUnselectedItem(left, right);
+        this.view.removeColorOfUnselectedItem(startIndex, endIndex);
         await this.sleep(300);
 
-        left++;
-        right--;
+        startIndex++;
+        endIndex--;
       }
     }
 

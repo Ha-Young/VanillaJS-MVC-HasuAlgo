@@ -1,25 +1,29 @@
 export default class View {
   constructor() {
-    this.$inputNumbers = document.querySelector('#input-form'),
-    this.$inputBtn = document.querySelector("#input-btn"),
-    this.$bubbleBtn = document.querySelector('#bubble'),
-    this.$quickBtn = document.querySelector('#quick'),
-    this.$executeBtn = document.querySelector('#execute-btn'),
+    this.$inputNumbers = document.querySelector('#input-form');
+    this.$inputBtn = document.querySelector("#input-btn");
+    this.$bubbleBtn = document.querySelector('#bubble');
+    this.$quickBtn = document.querySelector('#quick');
+    this.$executeBtn = document.querySelector('#execute-btn');
     this.$sortingWindow = document.querySelector('.execute-window');
-    this.$errorMsg = document.querySelector('#input-form');
+    this.$inputBox = document.querySelector('#input-form');
+    this.$inputButtonText = document.querySelector('#input-text');
+    this.$executeButtonText = document.querySelector('#execute-text');
+    this.$inputButtonLoader = document.querySelector('#input-loader');
+    this.$executeButtonLoader = document.querySelector('#execute-loader');
   }
 
-  addItem = function (value, index, length) {
-    const child = document.createElement('div');
+  drawItem = function (value, index, length) {
+    const newItem = document.createElement('div');
 
-    child.classList.add('flex-item', 'sort-list');
-    child.style.height = `${(400/length) * (index+1)}px`;
-    child.textContent = value;
+    newItem.classList.add('flex-item', 'sort-list');
+    newItem.style.height = `${(400 / length) * (index + 1)}px`;
+    newItem.textContent = value;
 
-    this.$sortingWindow.appendChild(child);
+    this.$sortingWindow.appendChild(newItem);
   }
 
-  clearItems = function () {
+  clearSortingWindow = function () {
     const nodeList = this.$sortingWindow.childNodes;
 
     for (let i = nodeList.length - 1; i >= 0; i--) {
@@ -27,9 +31,16 @@ export default class View {
     }
   }
 
-  displayErrorMessage = function(message) {
-    this.$errorMsg.placeholder = message;
-    this.$errorMsg.classList.add('set-placeholder');
+  initializeInput = function () {
+    this.$inputBox.value = '';
+    this.$inputBox.placeholder = '5~10개의 숫자를 콤마로 구분하여 입력';
+    this.$inputBox.classList.remove('set-placeholder');
+    this.clearSortingWindow();
+  }
+
+  displayErrorMessage = function (message) {
+    this.$inputBox.placeholder = message;
+    this.$inputBox.classList.add('set-placeholder');
   }
 
   changeOrder = function (firstOrder, secondOrder) {
@@ -54,39 +65,54 @@ export default class View {
     this.$sortingWindow.insertBefore(rightClone, nodeList[left]);
   }
 
-  shutDownButtons = function () {
-    document.querySelector('#input-text').classList.add('none');
-    document.querySelector('#loader1').classList.remove('none');
-    document.querySelector('#execute-text').classList.add('none');
-    document.querySelector('#loader2').classList.remove('none');
+  deactivateButtons = function (inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
+    this.$inputButtonText.classList.add('none');
+    this.$inputButtonLoader.classList.remove('none');
+    this.$executeButtonText.classList.add('none');
+    this.$executeButtonLoader.classList.remove('none');
 
-    this.$inputBtn.outerHTML = this.$inputBtn.outerHTML;
-    this.$executeBtn.outerHTML = this.$executeBtn.outerHTML;
+    this.$inputBtn.removeEventListener('click', inputBtnEventHandler);
+    this.$executeBtn.removeEventListener('click', executeBtnEventHandler);
+    this.$bubbleBtn.removeEventListener('click', setAlgorithmHandler);
+    this.$quickBtn.removeEventListener('click', setAlgorithmHandler);
   }
 
-  reopenButtons = function () {
-    document.querySelector('#input-text').classList.remove('none');
-    document.querySelector('#loader1').classList.add('none');
-    document.querySelector('#execute-text').classList.remove('none');
-    document.querySelector('#loader2').classList.add('none');
+  activateButtons = function (inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
+    this.$inputButtonText.classList.remove('none');
+    this.$inputButtonLoader.classList.add('none');
+    this.$executeButtonText.classList.remove('none');
+    this.$executeButtonLoader.classList.add('none');
 
-    this.$inputBtn = document.querySelector("#input-btn");
-    this.$executeBtn = document.querySelector('#execute-btn');
+    this.bindAddArray(inputBtnEventHandler);
+    this.bindExecuteSortingAlgorithm(executeBtnEventHandler);
+    this.bindSetAlgorithm(setAlgorithmHandler);
   }
 
-  moveRight (index) {
+  changeClass = function (type, className, ...indexList) {
     const nodeList = this.$sortingWindow.childNodes;
 
-    nodeList[index].classList.add('move-right');
+    indexList.forEach((index) => {
+      nodeList[index].classList[type](className);
+    });
   }
 
-  moveLeft (index) {
+  moveRight = function (...indexList) {
     const nodeList = this.$sortingWindow.childNodes;
 
-    nodeList[index].classList.add('move-left');
+    indexList.forEach((index) => {
+      nodeList[index].classList.add('move-right');
+    });
   }
 
-  moveQuick (index, whereToGoNanADiRo) {
+  moveLeft = function (...indexList) {
+    const nodeList = this.$sortingWindow.childNodes;
+
+    indexList.forEach((index) => {
+      nodeList[index].classList.add('move-left');
+    });
+  }
+
+  moveQuick = function (index, whereToGoNanADiRo) {
     const nodeList = this.$sortingWindow.childNodes;
     const distance = (whereToGoNanADiRo - index) * 70;
 
@@ -126,7 +152,7 @@ export default class View {
     });
   }
 
-  quickGroup = function (left, right) {
+  changeColorOfSelectedQuickItem = function (left, right) {
     const nodeList = this.$sortingWindow.childNodes;
 
     for (let i = left; i <= right; i++) {
@@ -134,7 +160,7 @@ export default class View {
     }
   }
 
-  quickGroupRemove = function (left, right) {
+  removeColorOfDeselectedQuickItem = function (left, right) {
     const nodeList = this.$sortingWindow.childNodes;
 
     for (let i = left; i <= right; i++) {
@@ -146,12 +172,12 @@ export default class View {
     this.$inputBtn.addEventListener('click', handler);
   }
 
-  bindsetAlgorithm = function (handler) {
+  bindSetAlgorithm = function (handler) {
     this.$bubbleBtn.addEventListener('click', handler);
     this.$quickBtn.addEventListener('click', handler);
   }
 
-  bindExecuteSortingAldorithm = function (handler) {
+  bindExecuteSortingAlgorithm = function (handler) {
     this.$executeBtn.addEventListener('click', handler);
   }
 }
