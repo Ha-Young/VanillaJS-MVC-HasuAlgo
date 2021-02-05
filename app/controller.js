@@ -12,7 +12,7 @@ export default class Controller {
 		this.model = model;
 		this.view = view;
 		this.isReadySort = false;
-		this.delayTimeOnChange = 500;
+		this.delayTimeOnChange = 1000;
 
 		view.bindOnClickSortKindsBtns(this.setSortKinds.bind(this));
 		view.bindOnClickSetBtn(this.setInitNumsView.bind(this));
@@ -25,10 +25,6 @@ export default class Controller {
 			const sortList = this.model.initDatas(inputData);
 			this.setNumsView(sortList);
       this.isReadySort = true;
-
-      if (this.model.currentSortKinds === 'quick') {
-        this.view.addArrowDefSVG();
-      }
 		} catch(error) {
 			window.alert(error);
 		}
@@ -72,6 +68,10 @@ export default class Controller {
 
 	startSort() {
 		if (this.isReadySort) {
+			if (this.model.currentSortKinds === 'quick') {
+        this.view.addArrowDefSVG();
+			}
+
       this.sortFunction(this.model.currentSortKinds);
 		}
 	}
@@ -113,7 +113,8 @@ export default class Controller {
 	}
 
 	viewItemSelect(index, isMoveDown) {
-		this.view.setSortItemStatusSelected(index, isMoveDown, this.delayTimeOnChange);
+		const delay = isMoveDown ? this.delayTimeOnChange : this.delayTimeOnChange / 3;
+		this.view.setSortItemStatusSelected(index, isMoveDown, delay);
 	}
 
 	viewItemResetStatus(index) {
@@ -255,17 +256,17 @@ export default class Controller {
           ]);
 
 				while (leftIndex <= rightIndex) {
-
-          // await this.doUIWork([this.viewItemSelect.bind(this, leftIndex)]);
-
 					while (sortList[leftIndex] < pivot) {
-
             if (leftIndex !== pivotIndex) {
               this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
             }
             await this.doUIWork([this.viewArrowMoveNext.bind(this, 'left')]);
 						leftIndex++;
-          }
+					}
+
+					if (leftIndex !== pivotIndex) {
+						await this.doUIWork([this.viewItemSelect.bind(this, leftIndex, false)]);
+					}
 
 					while (sortList[rightIndex] > pivot) {
             if (rightIndex !== pivotIndex) {
@@ -273,9 +274,18 @@ export default class Controller {
             }
             await this.doUIWork([this.viewArrowMoveNext.bind(this, 'right')]);
 						rightIndex--;
-          }
+					}
 
-					if (leftIndex <= rightIndex) {
+					if (leftIndex !== pivotIndex) {
+						await this.doUIWork([this.viewItemSelect.bind(this, rightIndex, false)]);
+					}
+
+					if (leftIndex === rightIndex) {
+						leftIndex++;
+						rightIndex--;
+					}
+
+					if (leftIndex < rightIndex) {
             console.log('do swap', leftIndex, rightIndex);
             if (leftIndex === pivotIndex) {
               pivotIndex = rightIndex;
@@ -285,12 +295,23 @@ export default class Controller {
 
             this.swapOnRealList(sortList, leftIndex, rightIndex);
 
-            await this.doUIWork([this.viewItemChange.bind(this, leftIndex, rightIndex)]);
+            await this.doUIWork(
+							[
+								this.viewItemResetStatus.bind(this, leftIndex),
+								this.viewItemResetStatus.bind(this, rightIndex),
+								this.viewItemChange.bind(this, leftIndex, rightIndex),
+							]);
 
             this.view.swapOnDomList(leftIndex, rightIndex);
 
 						leftIndex++;
-            rightIndex--;
+						rightIndex--;
+
+						await this.doUIWork(
+							[
+								this.viewArrowMoveNext.bind(this, 'left'),
+								this.viewArrowMoveNext.bind(this, 'right')
+							]);
 
             console.log('swaped sortList :', sortList);
             // await this.setNumsView(sortList, this.delayTimeOnChange + 3000);

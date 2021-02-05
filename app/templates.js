@@ -49,7 +49,7 @@ export default class Templates {
       <g transform="translate(${xPos}, ${yPos})" class="${arrowKinds}-arrow">
         <polyline points="10,20,10,0" fill="none"
           stroke-width="2" marker-end="url(#triangle-${arrowKinds})" />
-        <text dy=".35em" x="10" y="30">${arrowKinds}</text>
+        <text class="arrow-text" dy=".35em" x="10" y="30">${arrowKinds}</text>
       </g>
     `)
   }
