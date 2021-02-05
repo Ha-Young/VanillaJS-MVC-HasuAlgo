@@ -7,7 +7,7 @@ export class Controller {
     this.model.bindUpdateTotalStates(this.onUpdateTotalStates);
     this.model.bindDisplayNodeList(this.onDisplayNodeList);
     this.view.bindStartSort(this.handleStartSort);
-    this.view.bindInputNumbers(this.handleAddNumberList);
+    this.view.bindInputNumbersAndValidate(this.handleAddNumberList);
   }
 
   handleAddNumberList = (numberLists) => {

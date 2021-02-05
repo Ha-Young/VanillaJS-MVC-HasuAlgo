@@ -21,7 +21,7 @@ export class View {
     this.input.value = '';
   }
 
-  bindInputNumbers(handler) {
+  bindInputNumbersAndValidate(handler) {
     this.form.addEventListener('submit', (event) => {
       event.preventDefault();
 
