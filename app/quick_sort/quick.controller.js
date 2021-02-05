@@ -45,7 +45,7 @@ QuickController.prototype = Object.create(Controller.prototype);
 QuickController.prototype.construcor = QuickController;
 
 QuickController.prototype.startSort = async function (dataSet, from, to, fixedIndices) {
-  const DELAY = 200;
+  const DELAY = 500;
   const pivotIndex = from;
   let leftIndex = from + 1;
   let rightIndex = to;
