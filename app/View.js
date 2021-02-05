@@ -28,7 +28,7 @@ function View() {
   this.$sortButton = document.querySelector(".sort-button");
   this.$resetButton = document.querySelector(".reset-button");
 
-  this.transitionDelayTime = 400;
+  this.transitionDelayTime = 600;
 }
 
 View.prototype.changeTemplate = function (target, template) {

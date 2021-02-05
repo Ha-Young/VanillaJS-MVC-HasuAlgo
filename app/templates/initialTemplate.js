@@ -12,10 +12,10 @@ export function initialTemplate() {
   <div class="row">
     <button class="paint-button">Paint</button>
     <button class="sort-button">Sort</button>
+    <button class="reset-button">Reset</button>
   </div>
   <div class="display-container">
     <ul class="sorting__item-list"></ul>
   </div>
-  <button class="reset-button">Reset</button>
 `;
 }

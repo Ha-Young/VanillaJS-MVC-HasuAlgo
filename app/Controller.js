@@ -33,7 +33,8 @@ Controller.prototype.handlePaintSortItems = function () {
   this.view.clickButtonEffect(this.view.$paintButton);
 
   if (this.model.sortList.length < 5) {
-    throw new Error("min 5 number!!");
+    alert("min 5 number!!");
+    return;
   }
 
   this.view.paintSortItems(this.model.sortList);
@@ -49,7 +50,8 @@ Controller.prototype.handleStartSort = function () {
   this.view.clickButtonEffect(this.view.$sortButton);
 
   if (this.model.sortList.length < 5) {
-    throw new Error("min 5 number!!");
+    alert("min 5 number!!");
+    return;
   }
 
   this.view.$sortButton.removeEventListener("click", this.bindHandleStartSort);

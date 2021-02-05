@@ -12,7 +12,8 @@ Model.prototype.getSortList = function (number) {
     return;
   }
 
-  throw new Error("max 10 numbers!!");
+  alert("max 10 numbers!!");
+  return;
 };
 
 Model.prototype.giveSortList = function () {
