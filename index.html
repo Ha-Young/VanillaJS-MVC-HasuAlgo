@@ -9,15 +9,13 @@
   <div class="content">
     <h1>Visualize Sorting Algorithms</h1>
     <div class="user-thing">
-      <select>
-        <option value="0">Bubble Sort</option>
-        <option value="1">Merge Sort</option>
-      </select>
-      <input type="text" class="user-input">
-      <button class="start-button">START</button>
+      <button class="bubble-sort-button button-style">BUBBLE</button>
+      <button class="quick-sort-button button-style">QUICK</button>
+      <input type="text" placeholder="5이상 10이하의 숫자를 입력하세요" class="user-input">
+      <button class="start-button button-style">START</button>
     </div>
     <div class="message-box"><p class="message"></p></div>
-    <div class="main"></div>
+    <div class="container"></div>
   </div>
   <script src="./app/index.js"></script>
   <script type="module" src="./app/model.js"></script>
