@@ -4,19 +4,19 @@ export default class Model {
     this._selectedAlgorithm = '';
   }
 
-  setStorage = function (data) {
+  setStorage(data) {
     this._storage = data;
   }
 
-  setAlgorithm = function(algorithm) {
+  setAlgorithm(algorithm) {
     this._selectedAlgorithm = algorithm;
   }
 
-  getStorage = function () {
+  getStorage() {
     return this._storage;
   }
 
-  getAlgorithm = function () {
+  getAlgorithm() {
     return this._selectedAlgorithm;
   }
 }

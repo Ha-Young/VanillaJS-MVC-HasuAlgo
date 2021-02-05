@@ -16,13 +16,13 @@ export default class Controller {
     view.bindExecuteSortingAlgorithm(this.executeBtnEventHandler);
   }
 
-  setAlgorithm = function (event) {
+  setAlgorithm(event) {
     const selectedAlgorithm = event.target.id;
 
     this.model.setAlgorithm(selectedAlgorithm);
   }
 
-  addArray = function () {
+  addArray() {
     const inputArray = this.view.$inputNumbers.value.split`,`.map(x => +x);
 
     this.view.initializeInput();
@@ -33,7 +33,7 @@ export default class Controller {
     }
   }
 
-  inputValidation = function (inputArray) {
+  inputValidation(inputArray) {
     const isEveryArrayItemNumber = inputArray.every((item) => {
       return Number.isInteger(item);
     });
@@ -46,7 +46,7 @@ export default class Controller {
     return true;
   }
 
-  drawInputArray = function (inputArray) {
+  drawInputArray(inputArray) {
     const orderList = inputArray.slice().sort((a, b) => (a - b));
 
     for (const item of inputArray) {
@@ -54,7 +54,7 @@ export default class Controller {
     }
   }
 
-  executeSortingAlgorithm = async function () {
+  async executeSortingAlgorithm() {
     this.view.deactivateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmHandler);
 
     if (this.model.getAlgorithm() === 'bubble') {
@@ -66,7 +66,7 @@ export default class Controller {
     this.view.activateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmHandler);
   }
 
-  bubbleSortAsync = async function () {
+  async bubbleSortAsync() {
     const listToSort = this.model.getStorage();
     let bubbleChangeCount = 0;
 
@@ -85,7 +85,7 @@ export default class Controller {
 
         if (innerIndex === outerIndex - 1) {
           if (bubbleChangeCount === 0) {
-            this.view.changeClass(null, 'add', 'sorted', ...Array.from(Array(outerIndex + 1).keys()));
+            this.view.changeClass(null, 'add', 'sorted', ...Array(outerIndex + 1).keys());
             return;
           }
 
@@ -100,7 +100,7 @@ export default class Controller {
     return;
   }
 
-  quickSort = async function (listToSort, startIndex = 0, endIndex = listToSort.length - 1, isFirstExecuted = true) {
+  async quickSort(listToSort, startIndex = 0, endIndex = listToSort.length - 1, isFirstExecuted = true) {
     if (startIndex >= endIndex) {
       return;
     }
@@ -113,11 +113,11 @@ export default class Controller {
     await this.quickSort.call(this, listToSort, this.borderIndex, endIndex, false);
 
     if (isFirstExecuted) {
-      this.view.changeClass(null, 'add', 'sorted', ...Array.from(Array(listToSort.length).keys()));
+      this.view.changeClass(null, 'add', 'sorted', ...Array(listToSort.length).keys());
     }
   }
 
-  partition = async function (array, startIndex, endIndex) {
+  async partition(array, startIndex, endIndex) {
     let pivotIndex = Math.floor((startIndex + endIndex) / 2);
     const pivotValue = array[pivotIndex];
 

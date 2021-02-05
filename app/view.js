@@ -15,7 +15,7 @@ export default class View {
     this.$executeButtonLoader = document.querySelector('#execute-loader');
   }
 
-  drawItem = function (value, index, length) {
+  drawItem(value, index, length) {
     const newItem = document.createElement('div');
 
     newItem.classList.add('flex-item', 'sort-list');
@@ -25,7 +25,7 @@ export default class View {
     this.$sortingWindow.appendChild(newItem);
   }
 
-  clearSortingWindow = function () {
+  clearSortingWindow() {
     const nodeList = this.$sortingWindow.childNodes;
 
     for (let i = nodeList.length - 1; i >= 0; i--) {
@@ -33,19 +33,19 @@ export default class View {
     }
   }
 
-  initializeInput = function () {
+  initializeInput() {
     this.$inputBox.value = '';
     this.$inputBox.placeholder = '5~10개의 숫자를 콤마로 구분하여 입력';
     this.$inputBox.classList.remove('set-placeholder');
     this.clearSortingWindow();
   }
 
-  displayErrorMessage = function (message) {
+  displayErrorMessage(message) {
     this.$inputBox.placeholder = message;
     this.$inputBox.classList.add('set-placeholder');
   }
 
-  changeOrder = function (firstOrder, secondOrder) {
+  changeOrder(firstOrder, secondOrder) {
     const nodeList = this.$sortingWindow.childNodes;
 
     nodeList[firstOrder].classList.remove('move-right');
@@ -54,7 +54,7 @@ export default class View {
     this.$sortingWindow.insertBefore(nodeList[firstOrder], nodeList[secondOrder]);
   }
 
-  changeOrderQuick = function (left, right) {
+  changeOrderQuick(left, right) {
     const nodeList = this.$sortingWindow.childNodes;
     const rightClone = nodeList[right];
 
@@ -67,7 +67,7 @@ export default class View {
     this.$sortingWindow.insertBefore(rightClone, nodeList[left]);
   }
 
-  deactivateButtons = function (inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
+  deactivateButtons(inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
     this.$inputButtonText.classList.add('none');
     this.$inputButtonLoader.classList.remove('none');
     this.$executeButtonText.classList.add('none');
@@ -79,7 +79,7 @@ export default class View {
     this.$quickBtn.removeEventListener('click', setAlgorithmHandler);
   }
 
-  activateButtons = function (inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
+  activateButtons(inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
     this.$inputButtonText.classList.remove('none');
     this.$inputButtonLoader.classList.add('none');
     this.$executeButtonText.classList.remove('none');
@@ -90,7 +90,7 @@ export default class View {
     this.bindSetAlgorithm(setAlgorithmHandler);
   }
 
-  changeClass = async function (pauseTime, type, className, ...indexList) {
+  async changeClass(pauseTime, type, className, ...indexList) {
     const nodeList = this.$sortingWindow.childNodes;
 
     indexList.forEach((index) => {
@@ -102,14 +102,14 @@ export default class View {
     }
   }
 
-  switchItemsWithAnimation = async function (index) {
+  async switchItemsWithAnimation(index) {
     this.changeClass(null, 'add', 'move-right', index);
     this.changeClass(null, 'add', 'move-left', index + 1);
     await pause(500);
     this.changeOrder(index, index + 2);
   }
 
-  switchQuickItemsWithAnimation = async function (startIndex, endIndex) {
+  async switchQuickItemsWithAnimation(startIndex, endIndex) {
     this.moveQuick(startIndex, endIndex);
     this.moveQuick(endIndex, startIndex);
     await pause(600);
@@ -117,7 +117,7 @@ export default class View {
     await pause(300);
   }
 
-  moveQuick = function (index, whereToGoNanADiRo) {
+  moveQuick(index, whereToGoNanADiRo) {
     const nodeList = this.$sortingWindow.childNodes;
     const distance = (whereToGoNanADiRo - index) * 70;
 
@@ -125,7 +125,7 @@ export default class View {
     nodeList[index].style.transform = `translateX(${distance}px)`;
   }
 
-  changeColorOfQuickItem = function (type, left, right) {
+  changeColorOfQuickItem(type, left, right) {
     const nodeList = this.$sortingWindow.childNodes;
 
     for (let i = left; i <= right; i++) {
@@ -133,16 +133,16 @@ export default class View {
     }
   }
 
-  bindAddArray = function (handler) {
+  bindAddArray(handler) {
     this.$inputBtn.addEventListener('click', handler);
   }
 
-  bindSetAlgorithm = function (handler) {
+  bindSetAlgorithm(handler) {
     this.$bubbleBtn.addEventListener('click', handler);
     this.$quickBtn.addEventListener('click', handler);
   }
 
-  bindExecuteSortingAlgorithm = function (handler) {
+  bindExecuteSortingAlgorithm(handler) {
     this.$executeBtn.addEventListener('click', handler);
   }
 }
