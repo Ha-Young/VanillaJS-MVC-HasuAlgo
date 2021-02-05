@@ -1,12 +1,12 @@
 export default function swapNumbersInCanvas(first, second, index) {
-  let firstAll = Array.from(document.querySelectorAll(`[data-value="${first}"]`)); 
-  let secondAll = Array.from(document.querySelectorAll(`[data-value="${second}"]`));
+  let nodesOfFirstValue = Array.from(document.querySelectorAll(`[data-value="${first}"]`)); 
+  let nodesOfSecondValue = Array.from(document.querySelectorAll(`[data-value="${second}"]`));
 
-  const firstNode = firstAll.find(eachNode => {
+  const firstNode = nodesOfFirstValue.find(eachNode => {
     return Number(eachNode.style.order) === index + 1;
   });
  
-  const secondNode = secondAll.find(eachNode => {
+  const secondNode = nodesOfSecondValue.find(eachNode => {
     return Number(eachNode.style.order) === index + 2;
   });
 
