@@ -63,7 +63,7 @@ Controller.prototype.init = function() {
     this.view.toggleSortSelector(this.$sortSelector, false);
     this.view.setInstructionMessage(this.$instructionMessage, this.INITIAL_MESSAGE);
   });
-}
+};
 
 Controller.prototype.validateUserInput = function() {
   const userInputList = this.$userInput.value.split(',').map(Number);
@@ -86,11 +86,11 @@ Controller.prototype.validateUserInput = function() {
   this.model.setUserInputList(userInputList);
   this.view.toggleSubmitButton(this.$submitButton, true);
   this.view.toggleStartButton(this.$startButton, false);
-  this.view.createElements(userInputList);
+  this.view.createElements(userInputList, this.$sortDisplaySection);
   this.view.setInstructionMessageAfterSubmit(this.$userInput, this.$instructionMessage, this.AFTER_SUBMIT_MESSAGE);
 
   return true;
-}
+};
 
 Controller.prototype.confirmSelectedSortOption = function() {
   const userInputElements = this.$sortDisplaySection.children;
@@ -100,7 +100,7 @@ Controller.prototype.confirmSelectedSortOption = function() {
   } else if (this.$sortSelector.value === this.QUICK_SORT) {
     this.quickSort(userInputElements, 0, userInputElements.length-1);
   }
-}
+};
 
 // Controller.prototype.quickSort = async function(userInputElements, left = 0, right = userInputElements.length-1) {
 //   if (left < right) {
@@ -211,4 +211,4 @@ Controller.prototype.bubleSort = async function() {
 
   this.view.setInstructionMessage(this.$instructionMessage, this.RETRY_MESSAGE);
   this.view.toggleResetButton(this.$resetButton, true);
-}
+};
