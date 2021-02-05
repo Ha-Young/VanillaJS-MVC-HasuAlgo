@@ -1,4 +1,6 @@
-import { handleClickBubble, handleClickMerge, handleKeyup } from "../controller/event-handlers";
+import { handleKeyup } from "../controller/input-number-handler";
+import { handleClickBubble, handleClickMerge } from "../controller/merge-sort-button-handler";
+
 
 const bubbleButton = document.querySelector(".bubble-sort-button");
 const mergeButton = document.querySelector(".merge-sort-button");

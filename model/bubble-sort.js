@@ -1,5 +1,3 @@
-const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
-
 async function doTransition(first, second, index) {
   let firstAll = Array.from(document.querySelectorAll(`[data-value="${first}"]`)); 
   let secondAll = Array.from(document.querySelectorAll(`[data-value="${second}"]`));
