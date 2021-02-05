@@ -1,7 +1,6 @@
 export default class Model {
   constructor() {
     this._storage = {};
-    this._temp = {};
   }
 
   setProperty(sortType, key, value) {
@@ -24,28 +23,29 @@ export default class Model {
     delete this._storage[sortType];
   }
 
-  setValueToCollection(sortType) {
-    this._storage[sortType].collection = [];
-    const collection = this._storage[sortType].collection;
+  convertValueToCollection(sortType) {
+    const collection = [];
     const value = this._storage[sortType].value + ",";
     let index = 0;
     let stringNum = "";
 
     for (const number of value) {
-      if (!Number.isNaN(+number) && typeof +number === "number" && number !== " ") {
+      if (!Number.isNaN(Number(number)) && typeof Number(number) === "number" && number !== " ") {
         stringNum = number && stringNum + number;
         continue;
       }
 
-      if (stringNum) {
+      if (!!stringNum) {
         collection.push({
           index: index,
-          value: +stringNum,
+          value: Number(stringNum),
         });
         index++;
         stringNum = "";
       }
     }
+
+    return collection;
   }
 
   bubble (callback) {

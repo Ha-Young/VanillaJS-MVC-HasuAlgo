@@ -62,16 +62,21 @@ export default class View {
     if (sortType === "bubble" || sortType === "insertion") {
       const frontStick = this._caches[sortType][changedIndex];
       const rearStick = this._caches[sortType][changedIndex + 1];
+      console.log(frontStick, rearStick)
+
       const frontXCoordinate = frontStick.getBoundingClientRect().x;
       const rearXCoordinate = rearStick.getBoundingClientRect().x;
+
       const moveDistance = Math.abs(rearXCoordinate - frontXCoordinate);
-      const frontMoved = +frontStick.getAttribute("data-move-distance");
-      const rearMoved = +rearStick.getAttribute("data-move-distance");
+      const frontMoved = Number(frontStick.getAttribute("data-move-distance"));
+      const rearMoved = Number(rearStick.getAttribute("data-move-distance"));
+
       frontStick.setAttribute("data-move-distance", frontMoved + moveDistance);
       rearStick.setAttribute("data-move-distance", rearMoved - moveDistance);
       frontStick.style.transform = `translate(${frontMoved + moveDistance}px)`;
       rearStick.style.transform = `translate(${rearMoved - moveDistance}px)`;
-      [this._caches[sortType][changedIndex], this._caches[sortType][changedIndex + 1]] = [rearStick, frontStick];
+      this._caches[sortType][changedIndex] = rearStick;
+      this._caches[sortType][changedIndex + 1] = frontStick;
       return;
     }
   }

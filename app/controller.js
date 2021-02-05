@@ -3,6 +3,7 @@ export default class Controller {
     this._temp = {};
     this.view = view;
     this.model = model;
+
     view.addEvent(
       "$inputNumber",
       "input",
@@ -44,6 +45,7 @@ export default class Controller {
       alert(error.message);
       return;
     }
+
     const sortType = this._temp.sortType;
     const isRunning = !!this.model.getProperty(sortType, "isRunning");
 
@@ -51,19 +53,22 @@ export default class Controller {
       this.view.render("clear", sortType);
       this.model.clearProperty(sortType);
       clearTimeout(this.model.getProperty(sortType, "timeoutId"));
-      setTimeout(() => { this.handleEventForUserRunClick() }, 800);
+      const TIME_TO_AVOID_COLLISION = 800;
+      setTimeout(() => this.handleEventForUserRunClick(), TIME_TO_AVOID_COLLISION);
       return;
     }
 
     this.model.setProperty(sortType, "value", this._temp.value);
     this.model.setProperty(sortType, "isRunning", true);
-    this.model.setValueToCollection(sortType);
+    this.model.setProperty(
+      sortType,
+      "collection",
+      this.model.convertValueToCollection(sortType));
+
     const sortedCollection = this.model
       .getProperty(sortType, "collection")
       .slice()
       .sort((a, b) => a.value - b.value);
-    const $article = this.view.makeElement("article", "article-" + sortType);
-    this.view.appendChild("$mainAnimationContainer", $article);
     const stickElements = [];
 
     for (let i = 0; i < sortedCollection.length; i++) {
@@ -73,29 +78,33 @@ export default class Controller {
       );
     }
 
-    stickElements.sort((a, b) => +a.getAttribute("data-index") - +b.getAttribute("data-index"));
-    stickElements.forEach(stick => this.view.appendChild("$article-" + sortType, stick));
+    const $article = this.view.makeElement("article", "article-" + sortType);
+    this.view.appendChild("$mainAnimationContainer", $article);
+
+    stickElements
+    .sort((a, b) => Number(a.getAttribute("data-index")) - Number(b.getAttribute("data-index")))
+    .forEach(stick => this.view.appendChild("$article-" + sortType, stick));
 
     this.view.setCaches(sortType, stickElements);
     this.initiateAnimation(sortType);
   }
 
   initiateAnimation(sortType) {
-    const ARTICLE_TRANSITION = 500;
+    const ARTICLE_TRANSITION_TIME = 500;
     setTimeout(() => {
       this.view.render("init", sortType);
       this.handleAnimation(sortType);
-    }, ARTICLE_TRANSITION);
+    }, ARTICLE_TRANSITION_TIME);
   }
 
   handleAnimation(sortType) {
-    const STICK_TRANSITION = 1000;
+    const STICK_TRANSITION_TIME = 1000;
     this.model[sortType]((act, sortType, index) => {
       const timeoutId = setTimeout(() => {
         this.view.render(act, sortType, index);
         if (act === "finished") return;
         this.handleAnimation(sortType);
-        }, STICK_TRANSITION);
+        }, STICK_TRANSITION_TIME);
       this.model.setProperty(sortType, "timeoutId", timeoutId);
       }
     );
@@ -115,7 +124,7 @@ export default class Controller {
     let shouldBeDivided = false;
     let count = 0;
     for (const character of userValue) {
-      if (!shouldBeDivided && typeof +character === "number") {
+      if (!shouldBeDivided && typeof Number(character) === "number") {
         shouldBeDivided = true;
         continue;
       }
@@ -127,13 +136,13 @@ export default class Controller {
     }
 
     if (count < 5 || 10 < count) {
-      throw new Error("should type length of numbers between 5 and 10");
+      throw new Error("should input over than 5 or less than 10.");
     }
   }
 
   checkSortType() {
     const hasSortType = !!this._temp.sortType;
-    if (!hasSortType) throw new Error("should select sort type");
+    if (!hasSortType) throw new Error("should select sort type.");
   }
 
   writeInstantValue(category, value) {
