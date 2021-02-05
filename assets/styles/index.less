@@ -27,34 +27,39 @@ h1 {
 }
 
 select {
-  cursor: pointer;
   height: 50%;
-  background-color: white;
   border: 1px solid #ccc;
+  background-color: white;
   outline: none;
   font-weight: 100;
+  cursor: pointer;
 }
 
 .user-input {
   height: 50%;
-  outline: none;
   border: 1px solid #ccc;
+  outline: none;
   font-weight: 100;
 }
 
-
-.start-button {
-  cursor: pointer;
-  height: 50%;
-  outline: none;
-  background-color: #ccc;
-  border: 1px solid #ccc;
-  font-size: 15px;
-  font-weight: 500;
+.user-input::placeholder {
+  font-size: 8px;
+  text-align: center;
+  color: #ccc;
 }
 
-.start-button:hover {
+.button-style {
+  height: 50%;
+  outline: none;
+  margin: 2px;
+  border: 1px solid #ccc;
   background-color: white;
+  font-weight: 100;
+  cursor: pointer;
+}
+
+.button-style:hover {
+  background-color: #ccc;
 }
 
 .message-box {
@@ -66,11 +71,11 @@ select {
 }
 
 .message {
+  margin: 0;
+  color: #c91836;
   font-weight: 100;
   font-size: 12px;
   text-align: center;
-  margin: 0;
-  color: #c91836;
 }
 
 .container {
@@ -86,12 +91,12 @@ select {
   display: block;
   max-height: 100%;
   width: 30px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  background-color: rgb(204, 194, 102);
   transition: 0.5s all ease;
   text-align: center;
-  border: 1px solid #ccc;
-  background-color: rgb(204, 194, 102);
   font-weight: 100;
-  padding: 5px;
 }
 
 .finished-blocks {
