@@ -52,8 +52,14 @@ export default class View {
       return false;
     }
 
-    if (inputArray.some(element => element.trim().match(/[^0-9]/g))) {
+    if (inputArray.some(element => element.trim().match(/[^0-9]-?$/g))) {
       window.alert("Not valid");
+      return false;
+    }
+
+    if (inputArray.some(element => parseInt(element.trim(), 10) >= 500
+      || parseInt(element.trim(), 10) <= 0)) {
+      window.alert("Available Range: 0 < Integer < 500");
       return false;
     }
 
