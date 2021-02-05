@@ -9,12 +9,13 @@ Controller.prototype.addEvent = function () {
 
 Controller.prototype.runAnimation = function () {
   const inputData = this.getDatafromView('.input-data-box', 'value');
+  const processdData = this.processDataFromView(inputData);
   const sortOption = {
     bubble: this.getDatafromView('[value="bubble-sort"]', 'checked'),
     quick: this.getDatafromView('[value="quick-sort"]', 'checked'),
   };
-  const processdData = this.processDataFromView(inputData);
   this.sendDataToModel(processdData, sortOption);
+  this.disableButton('.play-button');
   this.initializeView(this.model.storage);
   this.updateView(this.model.storage);
 }
@@ -29,6 +30,10 @@ Controller.prototype.sendDataToModel = function (...data) {
 
 Controller.prototype.getDatafromView = function (target, property) {
   return this.view.sendDataToController(target, property);
+}
+
+Controller.prototype.disableButton = function (target) {
+  this.view.disableButton(target);
 }
 
 Controller.prototype.initializeView = function (data) {

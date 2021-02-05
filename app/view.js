@@ -20,7 +20,7 @@ export default function View() {
         <input class="input-data-box" type="text" placeholder="Insert Data"/>
         <section class="control-box">
           <button class="play-button">Play</button>
-          <button class="pause-button">Pause</button>
+          <button class="stop-button">Stop</button>
         </section>
       </section>
       <main class="animation-container">
@@ -42,6 +42,10 @@ View.prototype.addControllerEvent = function (target, event, handler) {
 
 View.prototype.sendDataToController = function (target, property) {
   return document.querySelector(target)[property];
+}
+
+View.prototype.disableButton = function (target) {
+  document.querySelector(target).disabled = true;
 }
 
 View.prototype.initialRender = function (data) {
@@ -74,12 +78,16 @@ View.prototype.render = function (data) {
 
   [].forEach.call($playElements, item => item.classList.remove('play'));
   [].forEach.call($pivotElement, item => item.classList.remove('pivot'));
+
   leftBar.classList.add('play');
-  leftBar.textContent = sortData[leftElement % sortData.length];
-  leftBar.style.height = `${animationBoxHeight * sortData[leftElement % sortData.length] / maxData}px`;
   rightBar.classList.add('play');
+
+  leftBar.textContent = sortData[leftElement % sortData.length];
   rightBar.textContent = sortData[(rightElement) % sortData.length];
+
+  leftBar.style.height = `${animationBoxHeight * sortData[leftElement % sortData.length] / maxData}px`;
   rightBar.style.height = `${animationBoxHeight * sortData[(rightElement) % sortData.length] / maxData}px`;
+
   $statusBox.textContent = 'Searching';
 
   try {
