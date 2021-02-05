@@ -1,14 +1,12 @@
 
 export default function Model() {
-    this.userInput = [];
+  this.userInputList = [];
 }
 
-Model.prototype.getUserInput = function() {
-    return this.userInput;
+Model.prototype.getUserInputList = function() {
+  return this.userInputList;
 }
 
-Model.prototype.setUserInput = function(givenUserInput) {
-    this.userInput = givenUserInput;
+Model.prototype.setUserInputList = function(newUserInputList) {
+  this.userInputList = newUserInputList;
 }
-
-// get dom element info?? -> div info

@@ -3,28 +3,75 @@ export default function View () {
     this.$sortDisplaySection = document.querySelector('.sort-display-section');
 }
 
-View.prototype.createRectangles = function(userInputData) {
+View.prototype.createElements = function(userInputData) {
     userInputData.forEach((input, idx) => {
+        const $rectangleDivTextSpace = document.createElement("span");
+        const $rectangleDiv = document.createElement("div");
+        $rectangleDiv.classList.add("rectangle-element")
 
-        const $rectangleDiv = document.createElement('div');
-        $rectangleDiv.classList.add('rectangle')
-
-        // transition css adding..?
         $rectangleDiv.dataset.value = input;
         $rectangleDiv.dataset.idx = idx;
         $rectangleDiv.textContent = input;
         $rectangleDiv.style.height = `${12 * input}px`;
 
         this.$sortDisplaySection.appendChild($rectangleDiv)
-    })
+  })
 
     console.log(this.$sortDisplaySection)
 }
 
+View.prototype.toggleSubmitButton = function(submitButton, toggle) {
+  toggle ? submitButton.classList.remove("hidden") : submitButton.classList.add("hidden");
+}
 
-View.prototype.colorTargetElements = function (firstDiv, secondDiv) {
-    firstDiv.classList.add('target-elements-color')
-    secondDiv.classList.add('target-elements-color')
+View.prototype.toggleStartButton = function(startButton, toggle) {
+  toggle ? startButton.classList.remove("hidden") : startButton.classList.add("hidden");
+}
+
+View.prototype.toggleResetButton = function(resetButton, toggle) {
+  toggle ? resetButton.classList.remove("hidden") : resetButton.classList.add("hidden");
+}
+
+
+
+
+View.prototype.resetUserInputElement = function(userInput) {
+  userInput.removeAttribute("disabled");
+  userInput.placeholder = "Type here...";
+}
+
+View.prototype.setInstructionMessageAfterSubmit = function(userInput, instructionMessageElement, settingMessage){
+  userInput.value = "";
+  instructionMessageElement.textContent = settingMessage;
+}
+
+
+View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
+  sortDisplaySection.innerHTML = "";
+}
+
+View.prototype.setInstructionMessage = function(instructionMessageElement, settingMessage) {
+  instructionMessageElement.textContent = settingMessage;
+}
+
+View.prototype.toggleSortSelector = function(sortSelector, toggle) {
+  toggle ? sortSelector.classList.add("hidden") : sortSelector.classList.remove("hidden");
+}
+
+
+View.prototype.hideSortSelectorAfterInputValidation = function (userInput, sortSelector, validatedUserInput) {
+  sortSelector.classList.add("hidden");
+  userInput.placeholder = validatedUserInput;
+  userInput.disabled = "disabled";
+
+    // this.$userInputList.placeholder = this.model.getUserInput();
+    // this.$userInputList.disabled ="disabled";
+}
+
+
+View.prototype.colorTargetElements = function (leftTarget, rightTarget) {
+    leftTarget.classList.add("target-element-color");
+    rightTarget.classList.add("target-element-color");
 }
 
 View.prototype.delay = function (delayTime) {
@@ -35,28 +82,28 @@ View.prototype.delay = function (delayTime) {
     })
 }
 
-View.prototype.swapDisplayElements = function(firstDiv, secondDiv, transitionPercentage = 100) {
-    firstDiv.classList.add('moving-effect')
-    secondDiv.classList.add('moving-effect')
+View.prototype.moveVisualTargetElements = function(leftTarget, rightTarget, transitionPercentage = 100) {
+    leftTarget.classList.add("element-moving-effect");
+    rightTarget.classList.add("element-moving-effect");
 
-    firstDiv.style.transform = `translate(${transitionPercentage}%)`
-    secondDiv.style.transform = `translate(-${transitionPercentage}%)`
+    leftTarget.style.transform = `translate(${transitionPercentage}%)`;
+    rightTarget.style.transform = `translate(-${transitionPercentage}%)`;
 }
 
-View.prototype.swapSortingElements = function(firstDiv, secondDiv) {
-    firstDiv.classList.remove('moving-effect')
-    secondDiv.classList.remove('moving-effect')
-    console.log('beforenode', this.$sortDisplaySection);
+View.prototype.swapTargetElements = function(leftTarget, rightTarget, targetParent) {
+    leftTarget.classList.remove("element-moving-effect");
+    rightTarget.classList.remove("element-moving-effect");
 
-    firstDiv.style.transform = 'none'
-    secondDiv.style.transform = 'none'
-    this.$sortDisplaySection.insertBefore(secondDiv, firstDiv);
-    console.log('afterenode', this.$sortDisplaySection);
+    leftTarget.style.transform = "none";
+    rightTarget.style.transform = "none";
+
+    targetParent.insertBefore(rightTarget, leftTarget);
+    // console.log('afterenode', this.$sortDisplaySection);
 }
 
-View.prototype.uncolorTargetElements = function(firstDiv, secondDiv) {
-    firstDiv.classList.remove('target-elements-color')
-    secondDiv.classList.remove('target-elements-color')
+View.prototype.uncolorTargetElements = function(leftTarget, rightTarget) {
+    leftTarget.classList.remove('target-element-color')
+    rightTarget.classList.remove('target-element-color')
 }
 
 View.prototype.colorSortedElements = function(sortedElement) {
@@ -94,38 +141,38 @@ View.prototype.paintSmallerElement = function(smallerElement)  {
 
 
 // submit btn
-View.prototype.showSubmitBtn = function(submitBtn) {
-    submitBtn.classList.remove('hidden')
-}
+// View.prototype.showSubmitBtn = function(submitBtn) {
+//     submitBtn.classList.remove('hidden')
+// }
 
-View.prototype.hideSubmitBtn = function(submitBtn) {
-    submitBtn.classList.add('hidden')
-}
+// View.prototype.hideSubmitBtn = function(submitBtn) {
+//     submitBtn.classList.add('hidden')
+// }
 
 // start, retry btn
 
-View.prototype.showStartBtn = function(startBtn) {
-    startBtn.classList.remove('hidden')
-}
+// View.prototype.showStartBtn = function(startBtn) {
+//     startBtn.classList.remove('hidden')
+// }
 
-View.prototype.hideStartBtn = function(startBtn) {
-    startBtn.classList.add('hidden')
-}
+// View.prototype.hideStartBtn = function(startBtn) {
+//     startBtn.classList.add('hidden')
+// }
 
-View.prototype.showResetBtn = function(resetBtn) {
-    resetBtn.classList.remove('hidden')
-}
+// View.prototype.showResetBtn = function(resetBtn) {
+//     resetBtn.classList.remove('hidden')
+// }
 
-View.prototype.hideResetBtn = function(resetBtn) {
-    resetBtn.classList.add('hidden')
-}
+// View.prototype.hideResetBtn = function(resetBtn) {
+//     resetBtn.classList.add('hidden')
+// }
 
 // selector
 
-View.prototype.hideSortSelector = function(sortSelector) {
-    sortSelector.classList.add('hidden')
-}
+// View.prototype.hideSortSelector = function(sortSelector) {
+//     sortSelector.classList.add('hidden')
+// }
 
-View.prototype.showSortSelector = function(sortSelector) {
-    sortSelector.classList.remove('hidden')
-}
+// View.prototype.showSortSelector = function(sortSelector) {
+//     sortSelector.classList.remove('hidden')
+// }

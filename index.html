@@ -4,36 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
   <title>바닐라코딩</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Space+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="content">
+  <div class="content">
+    <div class="content-wrap">
       <h1 class="title">Visualize Sorting Algorithms</h1>
 
       <nav class="sort-setting-nav">
         <div class="sort-setting-wrap">
-
           <select class="sort-selector">
             <option value="bubble-sort" selected>Bubble sort</option>
             <option value="quick-sort">Quick sort</option>
           </select>
 
-          <input class="user-input" type="text" placeholder="Please type any 5-10 numbers between 0 to 50 with comma">
+          <input class="user-input" type="text" placeholder="ex) 3, 2, 1...">
           <input class="submit-button" type="button" value="SUBMIT">
           <input class="start-button hidden" type="button" value="START">
           <input class="reset-button hidden" type="button" value="RESET">
-          <p class="instruction-message">hi!</p>
         </div>
+
+        <p class="instruction-message">Please type any 5-10 numbers between 0 to 50</b></p>
       </nav>
-
-      <section class="sort-display-section"></section>
-
-      <!-- <footer class="sort-controller hidden">
-        <input class="previous-button" type="button" value="PREVIOUS">
-        <input class="stop-button" type="button" value="STOP">
-        <input class="resume-button" type="button" value="RESUME">
-      </footer> -->
     </div>
+  </div>
 
+  <section class="sort-display-section"></section>
   <script src="./app/index.js"></script>
 </body>
 </html>
