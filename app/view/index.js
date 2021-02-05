@@ -14,6 +14,7 @@ export default class View {
 		this.$setBtn = qs('.set-btn');
 		this.$vizCanvas = qs('#viz-canvas');
 		this.$sortBtn = qs('.sort-btn');
+		this.$randomBtn = qs('.random-btn');
 	}
 
 	bindOnClickSortKindsBtns(handler) {
@@ -47,10 +48,19 @@ export default class View {
 		});
 	}
 
+	bindOnClickRandomBtns(handler) {
+		$on(this.$randomBtn, 'click', () => {
+			handler();
+		});
+	}
+
 	setTheme(theme) {
 		this.$container.className = `container ${theme}`;
 	}
 
+	writeRandomNum(randomNumbers) {
+		this.$inputNumbers.value = randomNumbers;
+	}
 
 	// SortItem 관련 (SVG)
 	setStartView() {

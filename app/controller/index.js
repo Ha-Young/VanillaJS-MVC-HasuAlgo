@@ -1,6 +1,10 @@
 import Model from '../model';
 import View from '../view';
-import { SORT_KINDS } from '../common/constant';
+import CONSTANT, { SORT_KINDS } from '../common/constant';
+
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 
 export default class Controller {
 	/**
@@ -17,6 +21,7 @@ export default class Controller {
 		view.bindOnClickSetBtn(this.setInitNumsView.bind(this));
 		view.bindOnClickThemeSwitch(this.toggleTheme.bind(this));
 		view.bindOnClickSortBtns(this.startSort.bind(this));
+		view.bindOnClickRandomBtns(this.setRandomNum.bind(this));
 	}
 
 	setStartView() {
@@ -31,6 +36,20 @@ export default class Controller {
 		} catch(error) {
 			window.alert(error);
 		}
+	}
+
+	setRandomNum() {
+		let randomNumbers = "";
+		const randomNumsOf = getRandomArbitrary(5, CONSTANT.LIMIT_NUMBERS_OF + 1);
+		for (let i = 0; i < randomNumsOf; i++) {
+			randomNumbers += getRandomArbitrary(CONSTANT.LIMIT_MIN_NUMBER, CONSTANT.LIMIT_MAX_NUMBER);
+			if(i !== randomNumsOf - 1) {
+				randomNumbers += ",";
+			}
+		}
+		console.log(randomNumbers);
+
+		this.view.writeRandomNum(randomNumbers);
 	}
 
 	setNumsView(sortList) {
