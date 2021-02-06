@@ -3,12 +3,16 @@ function View() {
   this.$resultView = document.querySelector('.resultView');
   this.$form = document.querySelector('form');
   this.$inputValue = document.querySelector('.inputValue');
+  this.COMPARE = 'compare';
+  this.PIVOT = 'pivot';
+  this.DONE = 'done';
   // this.list = '';
 }
 
 View.prototype.render = function(list) {
   this.list = list;
   this.$resultView.innerHTML = '';
+
   list.forEach(elem => {
     const div = document.createElement('div');
     div.textContent = elem;
@@ -23,7 +27,7 @@ View.prototype.reRender = function(list = this.list) {
 
   list.forEach(item => {
     const div = $items.find(elem => item === parseInt(elem.innerText, 10));
-    div.classList.remove('compare');
+    div.classList.remove(this.COMPARE);
     div.style.transform = 'none';
     tempStorage.appendChild(div);
   });
@@ -43,30 +47,30 @@ View.prototype.start = async function () {
 View.prototype.pivot = async function (index) {
   this.reRender();
   const $items = this.getCurrentDOM()[index];
-  $items.classList.add('pivot');
+  $items.classList.add(this.PIVOT);
   await makeInterval();
 };
 
 View.prototype.compare = async function (leftIndex, rightIndex) {
   const $items = this.getCurrentDOM();
 
-  if ($items[leftIndex].classList.contains('done')) {
+  if ($items[leftIndex].classList.contains(this.DONE)) {
     return;
   }
 
-  if ($items[rightIndex].classList.contains('done')) {
+  if ($items[rightIndex].classList.contains(this.DONE)) {
     return;
   }
 
-  $items[leftIndex].classList.add('compare');
-  $items[rightIndex].classList.add('compare');
+  $items[leftIndex].classList.add(this.COMPARE);
+  $items[rightIndex].classList.add(this.COMPARE);
   await makeInterval();
 };
 
 View.prototype.move = async function (index, prevIndex) {
   const $items = this.getCurrentDOM();
-  $items[prevIndex].classList.remove('compare');
-  $items[index].classList.add('compare');
+  $items[prevIndex].classList.remove(this.COMPARE);
+  $items[index].classList.add(this.COMPARE);
   await makeInterval();
 };
 
@@ -81,14 +85,14 @@ View.prototype.swapBubble = async function (left, right, list) {
 
 View.prototype.singleItemDone = async function (index) {
   const $item = this.getCurrentDOM()[index];
-  $item.classList.remove('compare', 'pivot');
-  $item.classList.add('done');
+  $item.classList.remove(this.COMPARE, this.PIVOT);
+  $item.classList.add(this.DONE);
   await makeInterval(0);
 };
 
 View.prototype.finishSort = async function () {
   const $items = this.getCurrentDOM();
-  $items.forEach(item => item.classList.remove('compare', 'pivot'));
+  $items.forEach(item => item.classList.remove(this.COMPARE, this.PIVOT));
   await makeInterval();
   this.showRestart();
 };
