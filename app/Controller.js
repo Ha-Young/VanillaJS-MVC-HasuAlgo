@@ -16,6 +16,7 @@ export default function Controller(model, view) {
   this.DELAY = 300;
   this.EXTENDED_DEALY = this.DELAY * 2;
   this.hasReset = false;
+  this.hasStart = false;
 
   this.BUBUBLE_SORT = "bubble-sort";
   this.MERGE_SORT = "merge-sort";
@@ -32,7 +33,6 @@ export default function Controller(model, view) {
   this.ELEMENT_MOVING_EFFECT = "element-moving-effect";
 
   this.taskQueue = [];
-  this.hasStart = false;
 }
 
 Controller.prototype.init = function() {
@@ -133,7 +133,7 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
     const targetElement = userInputElements[i];
 
     this.view.toggleTargetElementColor(targetElement, true);
-    await this.view.delay(this.EXTENDED_DEALY);
+    await this.view.delay(this.DEALY);
 
     const pivotValue = Number(pivotElement.textContent);
     const targetValue = Number(targetElement.textContent);
@@ -141,7 +141,7 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
     if (targetValue <= pivotValue) {
       this.view.toggleTargetElementColor(targetElement, false);
       this.view.toggleSmallerElementColor(targetElement, true);
-      await this.view.delay(this.DELAY);
+      await this.view.delay(this.EXTENDED_DEALY);
 
       lookingForPivotIdx++;
       lookingForPivotPosition = userInputElements[lookingForPivotIdx];
@@ -155,7 +155,7 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
 
     this.view.toggleTargetElementColor(targetElement, false);
     this.view.toggleBiggerElementColor(targetElement, true);
-    await this.view.delay(this.DELAY);
+    await this.view.delay(this.EXTENDED_DEALY);
   }
 
   await this.view.delay(this.DELAY);
@@ -175,17 +175,13 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
     const pivot = await this.placingPivotIdx(userInputElements, left, right);
     const updatedUserInputElements = this.model.getUserInputElements();
 
-    //this.view.uncolorPivotElement(userInputElements[pivot]);
     this.view.togglePivotElementColor(userInputElements[pivot], false);
     this.view.toggleSortedElementColor(userInputElements[pivot], true);
-    //this.view.colorSortedElement(userInputElements[pivot]);
 
     userInputElements.map(element => {
-      // this.view.uncolorBiggerElement(element);
       this.view.toggleBiggerElementColor(element, false);
       this.view.toggleSmallerElementColor(element, false);
-      //this.view.uncolorSmallerElement(element);
-    })
+    });
 
     await this.view.delay(this.EXTENDED_DEALY);
     await this.quickSort(updatedUserInputElements, left, pivot-1);
@@ -234,7 +230,7 @@ Controller.prototype.bubbleSort = async function() {
     }
 
     this.view.colorSortedElement(userInputElements[userInputElements.length-i-1]);
-    await this.view.delay(this.DELAY * 3);
+    await this.view.delay(this.DELAY * 2);
   }
 
   this.view.setInstructionMessage(this.$instructionMessage, this.RETRY_MESSAGE);

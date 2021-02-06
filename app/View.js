@@ -43,6 +43,31 @@ View.prototype.toggleSortSelector = function(sortSelector, toggle) {
   : sortSelector.classList.remove(this.HIDDEN_CLASSNAME);
 };
 
+View.prototype.toggleTargetElementColor = function(targetElement, toggle) {
+  toggle ? targetElement.classList.add(this.TARGET_ELEMENT_COLOR)
+  : targetElement.classList.remove(this.TARGET_ELEMENT_COLOR);
+}
+
+View.prototype.toggleBiggerElementColor = function(biggerElement, toggle) {
+  toggle ? biggerElement.classList.add(this.BIGGER_ELEMENT_COLOR)
+  : biggerElement.classList.remove(this.BIGGER_ELEMENT_COLOR);
+}
+
+View.prototype.toggleSmallerElementColor = function(smallerElement, toggle) {
+  toggle ? smallerElement.classList.add(this.SMALLER_ELEMENT_COLOR)
+  : smallerElement.classList.remove(this.SMALLER_ELEMENT_COLOR);
+}
+
+View.prototype.toggleSortedElementColor = function(sortedElement, toggle) {
+  toggle ? sortedElement.classList.add(this.SORTED_ELEMENT_COLOR)
+  : sortedElement.classList.remove(this.SORTED_ELEMENT_COLOR);
+}
+
+View.prototype.togglePivotElementColor = function(pivotElement, toggle) {
+  toggle ? pivotElement.classList.add(this.PIVOT_ELEMENT_COLOR)
+  : pivotElement.classList.remove(this.PIVOT_ELEMENT_COLOR);
+}
+
 View.prototype.setInstructionMessage = function(instructionMessageElement, settingMessage) {
   instructionMessageElement.textContent = settingMessage;
 };
@@ -74,6 +99,14 @@ View.prototype.bubbleSortVisualSwap = function(leftTarget, rightTarget) {
   rightTarget.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
 };
 
+View.prototype.bubbleSortSwapTargetElements = function(leftTarget, rightTarget, targetParent) {
+  leftTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
+  rightTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
+  leftTarget.style.transform = this.TRANSFORM_NONE;
+  rightTarget.style.transform = this.TRANSFORM_NONE;
+  targetParent.insertBefore(rightTarget, leftTarget);
+};
+
 View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
   pivotIndexElem.classList.add(this.ELEMENT_MOVING_EFFECT);
   target.classList.add(this.ELEMENT_MOVING_EFFECT);
@@ -95,44 +128,6 @@ View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
   target.style.transform = `translate(${targetPreStyled-rectDifference}px)`;
 }
 
-View.prototype.bubbleSortSwapTargetElements = function(leftTarget, rightTarget, targetParent) {
-  leftTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
-  rightTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
-  leftTarget.style.transform = this.TRANSFORM_NONE;
-  rightTarget.style.transform = this.TRANSFORM_NONE;
-  targetParent.insertBefore(rightTarget, leftTarget);
-};
-
-View.prototype.colorTargetElement = function(targetElement) {
-  targetElement.classList.add('target-element-color');
-};
-
-//
-View.prototype.toggleTargetElementColor = function(targetElement, toggle) {
-  toggle ? targetElement.classList.add(this.TARGET_ELEMENT_COLOR)
-  : targetElement.classList.remove(this.TARGET_ELEMENT_COLOR);
-}
-
-View.prototype.toggleBiggerElementColor = function(biggerElement, toggle) {
-  toggle ? biggerElement.classList.add(this.BIGGER_ELEMENT_COLOR)
-  : biggerElement.classList.remove(this.BIGGER_ELEMENT_COLOR);
-}
-
-View.prototype.toggleSmallerElementColor = function(smallerElement, toggle) {
-  toggle ? smallerElement.classList.add(this.SMALLER_ELEMENT_COLOR)
-  : smallerElement.classList.remove(this.SMALLER_ELEMENT_COLOR);
-}
-
-View.prototype.toggleSortedElementColor = function(sortedElement, toggle) {
-  toggle ? sortedElement.classList.add(this.SORTED_ELEMENT_COLOR)
-  : sortedElement.classList.remove(this.SORTED_ELEMENT_COLOR);
-}
-
-View.prototype.togglePivotElementColor = function(pivotElement, toggle) {
-    toggle ? pivotElement.classList.add(this.PIVOT_ELEMENT_COLOR)
-    : pivotElement.classList.remove(this.PIVOT_ELEMENT_COLOR);
-  }
-
 View.prototype.resetUserInputElement = function(userInput) {
   userInput.removeAttribute(this.DISABLED_CLASSNAME);
   userInput.placeholder = this.PLACEHOLDER_TEXT;
@@ -141,4 +136,3 @@ View.prototype.resetUserInputElement = function(userInput) {
 View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
   sortDisplaySection.innerHTML = "";
 };
-
