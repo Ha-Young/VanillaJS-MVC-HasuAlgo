@@ -7,34 +7,34 @@ class Controller {
     self.page = page;
 
     self.view.connectHandler("addNumber", function (input) {
-      self.addNumber(input);
+      self.addNumbeControl(input);
     });
 
     self.view.connectHandler("startSort", function () {
-      self.startSort();
+      self.startSortControl();
     });
 
     self.view.connectHandler("shuffleNumber", function () {
-      self.shuffleNumber();
+      self.shuffleNumberControl();
     });
 
     self.view.connectHandler("setRandom", function () {
-      self.setRandom();
+      self.setRandomControl();
     });
 
     self.view.connectHandler("resetList", function () {
-      self.resetList();
+      self.resetListControl();
     });
   }
 
-  setView(page) {
+  setViewControl(page) {
     const self = this;
 
     self.model.initialize();
-    self.view.setSortStyle(page);
+    self.view.paintPage(page);
   }
 
-  addNumber(input) {
+  addNumberControl(input) {
     const self = this;
 
     if (!input || self.model.inputArray.length > 9) {
@@ -51,18 +51,18 @@ class Controller {
     }
 
     if (self.page === "merge") {
-      self.model.addNumber(newNumber, function (newList) {
+      self.model.setNewNumber(newNumber, function (newList) {
         self.view.paintInput("DRAW BOX", newList);
       });
       return;
     }
 
-    self.model.addNumber(newNumber, function (newList) {
+    self.model.setNewNumber(newNumber, function (newList) {
       self.view.paintInput("DRAW LIST", newList);
     });
   }
 
-  startSort() {
+  startSortControl() {
     const self = this;
     const sortType = self.page;
 
@@ -82,27 +82,27 @@ class Controller {
     await self.startVisualize();
   }
 
-  shuffleNumber() {
+  shuffleNumberControl() {
     const self = this;
 
-    self.model.shuffleNumber((shuffledArray) => {
+    self.model.setShuffleNumber((shuffledArray) => {
       self.view.paintInput("DRAW LIST", shuffledArray);
     });
   }
 
-  setRandom() {
+  setRandomControl() {
     const self = this;
 
     if (self.model.inputArray.length > 9) {
       return;
     }
 
-    self.model.setRandom((updatedList) => {
+    self.model.setRandomNumber((updatedList) => {
       self.view.paintInput("DRAW LIST", updatedList);
     });
   }
 
-  resetList() {
+  resetListControl() {
     const self = this;
 
     self.model.resetList(() => {

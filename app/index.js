@@ -14,7 +14,7 @@ class Sort {
     const route = document.location.hash.split("/")[1];
     const page = route || "";
 
-    this.controller.setView(page);
+    this.controller.setViewControl(page);
     this.view = new View();
     this.controller = new Controller(this.model, this.view, page);
   }

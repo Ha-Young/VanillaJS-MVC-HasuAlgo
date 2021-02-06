@@ -9,7 +9,7 @@ class Model {
     this.visualizeTask = [];
   }
 
-  addNumber(array, callback) {
+  setNewNumber(array, callback) {
     if (this.inputArray.length > 9) {
       return;
     }
@@ -23,7 +23,7 @@ class Model {
     callback();
   }
 
-  shuffleNumber(callback) {
+  setShuffleNumber(callback) {
     const shuffledArray = [...this.inputArray];
 
     for (let i = shuffledArray.length; i; i--) {
@@ -37,7 +37,7 @@ class Model {
     callback(shuffledArray);
   }
 
-  setRandom(callback) {
+  setRandomNumber(callback) {
     const randomNum = Math.floor(Math.random() * 150) + 1;
 
     this.inputArray.push(randomNum);

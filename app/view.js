@@ -16,7 +16,7 @@ class View {
     this.$sortContainer = qs(".sort-list");
   }
 
-  setSortStyle(sortStyle) {
+  paintPage(sortStyle) {
     switch (sortStyle) {
       case "bubble":
         this.$sortSpace.innerHTML = this.template.bubble;
