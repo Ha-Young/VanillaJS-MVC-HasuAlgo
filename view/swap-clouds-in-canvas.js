@@ -1,4 +1,7 @@
+import changeBarToCircle from "./change-pipe-to-clouds";
+
 export default function swapCloudsInCanvas(changed, origin) {
+  console.log(changed, origin);
   origin.forEach((each, index) => {
     const eachNode = document.querySelector(`[data-value="${each}"]`);
     const newIndex = changed.findIndex(item => item === each);

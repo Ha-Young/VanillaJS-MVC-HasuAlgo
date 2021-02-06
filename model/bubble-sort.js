@@ -1,5 +1,5 @@
 import { delay } from "../model/delay";
-import swapNumbersInCanvas from "../view/swap-numbers-in-canvas";
+import swapNumbersInCanvas from "../view/swap-pipes-in-canvas";
 
 function swapNumbers(first, second) {
   const temp = first;
