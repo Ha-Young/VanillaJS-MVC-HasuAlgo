@@ -9,6 +9,8 @@ export default function View () {
   this.TARGET_ELEMENT_COLOR = "target-element-color";
   this.BIGGER_ELEMENT_COLOR = "bigger-element-color";
   this.SMALLER_ELEMENT_COLOR = "smaller-element-color";
+  this.SORTED_ELEMENT_COLOR = "sorted-element-color";
+  this.PIVOT_ELEMENT_COLOR = "pivot-element-color";
 }
 
 View.prototype.createElements = function(userInputList, sortDisplaySection) {
@@ -89,16 +91,15 @@ View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
     return matrix.m41;
   }
 
-  pivotIndexElem.style.transform = `translate(${pivotIndexElementPreStyled + rectDifference}px)`;
+  pivotIndexElem.style.transform = `translate(${pivotIndexElementPreStyled+rectDifference}px)`;
   target.style.transform = `translate(${targetPreStyled-rectDifference}px)`;
 }
 
 View.prototype.bubbleSortSwapTargetElements = function(leftTarget, rightTarget, targetParent) {
-  leftTarget.classList.remove("element-moving-effect");
-  rightTarget.classList.remove("element-moving-effect");
+  leftTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
+  rightTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
   leftTarget.style.transform = this.TRANSFORM_NONE;
   rightTarget.style.transform = this.TRANSFORM_NONE;
-
   targetParent.insertBefore(rightTarget, leftTarget);
 };
 
@@ -106,34 +107,31 @@ View.prototype.colorTargetElement = function(targetElement) {
   targetElement.classList.add('target-element-color');
 };
 
+//
 View.prototype.toggleTargetElementColor = function(targetElement, toggle) {
-  toggle ? targetElement.classList.remove(this.TARGET_ELEMENT_COLOR)
-  : targetElement.classList.add(this.TARGET_ELEMENT_COLOR);
+  toggle ? targetElement.classList.add(this.TARGET_ELEMENT_COLOR)
+  : targetElement.classList.remove(this.TARGET_ELEMENT_COLOR);
 }
 
-View.prototype.uncolorBiggerElement = function(biggerElement) {
-  biggerElement.classList.remove('bigger-element-color');
-};
+View.prototype.toggleBiggerElementColor = function(biggerElement, toggle) {
+  toggle ? biggerElement.classList.add(this.BIGGER_ELEMENT_COLOR)
+  : biggerElement.classList.remove(this.BIGGER_ELEMENT_COLOR);
+}
 
-View.prototype.uncolorSmallerElement = function(smallerElement) {
-  smallerElement.classList.remove('smaller-element-color');
-};
+View.prototype.toggleSmallerElementColor = function(smallerElement, toggle) {
+  toggle ? smallerElement.classList.add(this.SMALLER_ELEMENT_COLOR)
+  : smallerElement.classList.remove(this.SMALLER_ELEMENT_COLOR);
+}
 
-View.prototype.colorSortedElement = function(sortedElement) {
-  sortedElement.classList.add("sorted-element-color");
-};
+View.prototype.toggleSortedElementColor = function(sortedElement, toggle) {
+  toggle ? sortedElement.classList.add(this.SORTED_ELEMENT_COLOR)
+  : sortedElement.classList.remove(this.SORTED_ELEMENT_COLOR);
+}
 
-View.prototype.colorPivotElement = function(pivotElement) {
-  pivotElement.classList.add('pivot-element-color');
-};
-
-View.prototype.uncolorPivotElement = function(pivotElement) {
-  pivotElement.classList.remove('pivot-element-color');
-};
-
-View.prototype.uncolorTargetElement = function(targetElement) {
-  targetElement.classList.remove("target-element-color");
-};
+View.prototype.togglePivotElementColor = function(pivotElement, toggle) {
+    toggle ? pivotElement.classList.add(this.PIVOT_ELEMENT_COLOR)
+    : pivotElement.classList.remove(this.PIVOT_ELEMENT_COLOR);
+  }
 
 View.prototype.resetUserInputElement = function(userInput) {
   userInput.removeAttribute(this.DISABLED_CLASSNAME);
@@ -144,18 +142,3 @@ View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
   sortDisplaySection.innerHTML = "";
 };
 
-View.prototype.colorPivotElement = function(pivot) {
-  pivot.classList.add('pivot-element-color');
-};
-
-View.prototype.colorTargetElement = function(targetElement) {
-  targetElement.classList.add('target-element-color');
-};
-
-View.prototype.colorBiggerElement = function(biggerElement) {
-  biggerElement.classList.add('bigger-element-color');
-};
-
-View.prototype.colorSmallerElement = function(smallerElement) {
-  smallerElement.classList.add('smaller-element-color');
-};

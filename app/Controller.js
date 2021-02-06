@@ -126,21 +126,21 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
     = [userInputElements[i], userInputElements[lookingForPivotIdx]];
   }
 
-  this.view.colorPivotElement(pivotElement);
+  this.view.togglePivotElementColor(pivotElement, true);
   await this.view.delay(this.EXTENDED_DEALY);
 
   for (let i = start + 1; i <= end; i++) {
     const targetElement = userInputElements[i];
 
-    this.view.colorTargetElement(targetElement);
+    this.view.toggleTargetElementColor(targetElement, true);
     await this.view.delay(this.EXTENDED_DEALY);
 
     const pivotValue = Number(pivotElement.textContent);
     const targetValue = Number(targetElement.textContent);
 
     if (targetValue <= pivotValue) {
-      this.view.uncolorTargetElement(targetElement);
-      this.view.colorSmallerElement(targetElement);
+      this.view.toggleTargetElementColor(targetElement, false);
+      this.view.toggleSmallerElementColor(targetElement, true);
       await this.view.delay(this.DELAY);
 
       lookingForPivotIdx++;
@@ -153,8 +153,8 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
       await this.view.delay(this.DELAY);
     }
 
-    this.view.uncolorTargetElement(targetElement);
-    this.view.colorBiggerElement(targetElement);
+    this.view.toggleTargetElementColor(targetElement, false);
+    this.view.toggleBiggerElementColor(targetElement, true);
     await this.view.delay(this.DELAY);
   }
 
@@ -175,12 +175,16 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
     const pivot = await this.placingPivotIdx(userInputElements, left, right);
     const updatedUserInputElements = this.model.getUserInputElements();
 
-    this.view.uncolorPivotElement(userInputElements[pivot]);
-    this.view.colorSortedElement(userInputElements[pivot]);
+    //this.view.uncolorPivotElement(userInputElements[pivot]);
+    this.view.togglePivotElementColor(userInputElements[pivot], false);
+    this.view.toggleSortedElementColor(userInputElements[pivot], true);
+    //this.view.colorSortedElement(userInputElements[pivot]);
 
     userInputElements.map(element => {
-      this.view.uncolorBiggerElement(element);
-      this.view.uncolorSmallerElement(element);
+      // this.view.uncolorBiggerElement(element);
+      this.view.toggleBiggerElementColor(element, false);
+      this.view.toggleSmallerElementColor(element, false);
+      //this.view.uncolorSmallerElement(element);
     })
 
     await this.view.delay(this.EXTENDED_DEALY);
