@@ -14,6 +14,7 @@ Model.prototype.setUserInputList = function(newUserInputList) {
 
 Model.prototype.setUserInputElements = function(newUserInputElements) {
     this.userInputElements = newUserInputElements
+    console.log('from model..', this.userInputElements.map(x => x.textContent))
 };
 
 Model.prototype.getUserInputElements = function() {

@@ -10,7 +10,6 @@ View.prototype.createElements = function(userInputList, sortDisplaySection) {
   userInputList.forEach(input => {
     const $rectangleDiv = document.createElement("div");
     $rectangleDiv.classList.add("rectangle-element");
-    $rectangleDiv.dataset.value = input;
     $rectangleDiv.textContent = input;
     $rectangleDiv.style.height = `${12 * input}px`;
     sortDisplaySection.appendChild($rectangleDiv);
@@ -56,12 +55,12 @@ View.prototype.delay = function (delayTime) {
   });
 };
 
-View.prototype.moveVisualTargetElements = function(leftTarget, rightTarget, transitionPercentage = this.TRANSITION_PERCENTAGE) {
+View.prototype.bubbleSortVisualSwap = function(leftTarget, rightTarget) {
   leftTarget.classList.add("element-moving-effect");
   rightTarget.classList.add("element-moving-effect");
 
-  leftTarget.style.transform = `translateX(${transitionPercentage}%)`;
-  rightTarget.style.transform = `translateX(-${transitionPercentage}%)`;
+  leftTarget.style.transform = `translateX(${this.TRANSITION_PERCENTAGE}%)`;
+  rightTarget.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
 };
 
 
@@ -97,20 +96,48 @@ View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
   sortDisplaySection.innerHTML = "";
 };
 
-// quick sort
 
+// merge sort
+
+
+
+// quick
 View.prototype.paintPivot = function(pivot) {
-  pivot.classList.add('pivot-element-color');
-};
+    pivot.classList.add('pivot-element-color');
+  };
+  
+  View.prototype.paintTargetElement = function(targetElement) {
+    targetElement.classList.add('target-element-color');
+  };
+  
+  View.prototype.paintBiggerElement = function(biggerElement) {
+    biggerElement.classList.add('bigger-element-color');
+  };
+  
+  View.prototype.paintSmallerElement = function(smallerElement) {
+    smallerElement.classList.add('smaller-element-color');
+  };
+  
 
-View.prototype.paintTargetElement = function(targetElement) {
-  targetElement.classList.add('target-element-color');
-};
 
-View.prototype.paintBiggerElement = function(biggerElement) {
-  biggerElement.classList.add('bigger-element-color');
-};
+ View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
+    pivotIndexElem.classList.add("element-moving-effect");
+    target.classList.add("element-moving-effect");
 
-View.prototype.paintSmallerElement = function(smallerElement) {
-  smallerElement.classList.add('smaller-element-color');
-};
+    let pivotIndexElemRect = pivotIndexElem.getBoundingClientRect()
+    let targetRect = target.getBoundingClientRect();
+
+    let rectDifference = Math.abs(targetRect.x - pivotIndexElemRect.x);
+
+    let pivotIndexElementPreStyled = getX(pivotIndexElem)
+    let targetPreStyled = getX(target)
+
+    function getX (elem) {
+        const style = window.getComputedStyle(elem);
+        const matrix = new WebKitCSSMatrix(style.transform);
+        return matrix.m41;
+    }
+
+    pivotIndexElem.style.transform = `translate(${pivotIndexElementPreStyled + rectDifference}px)`
+    target.style.transform = `translate(${targetPreStyled -rectDifference}px)`
+}
