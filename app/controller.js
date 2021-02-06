@@ -61,7 +61,6 @@ class Controller {
     const sortType = self.page;
 
     self.model.startSort(self.startVisualize.bind(self), sortType);
-    console.log(self.model.visualizeTask);
   }
 
   async startVisualize() {
