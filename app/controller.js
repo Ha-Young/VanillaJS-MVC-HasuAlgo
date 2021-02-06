@@ -3,33 +3,47 @@ function Controller(Model, View) {
   this.view = View;
 }
 
+const taskType = {
+  start: 'start',
+  compare: 'compare',
+  pivot: 'pivot',
+  swap: 'swap',
+  done: 'single item done',
+  finish: 'finish'
+};
+
+const sortingType = {
+  bubble: 'bubble',
+  quick: 'quick'
+};
+
 Controller.prototype.submitHandler = function () {
   try {
     const $inputValue = document.querySelector('.inputValue');
     const sortType = document.querySelector('select').value;
-    const numberList = modelingData($inputValue.value);
+    const numberList = convertToArray($inputValue.value);
 
     $inputValue.value = '';
     $inputValue.disabled = true;
     // checkValidation(numberList);
 
     this.view.render(numberList);
-    this.sortingStart(sortType, numberList.slice());
+    this.startSorting(sortType, numberList.slice());
     this.startVisualizing(sortType);
   } catch(err) {
     document.querySelector('.resultView').textContent = err.message;
   }
 };
 
-function modelingData(string) {
+function convertToArray(string) {
   const list = string.trim().split(',').map(elem => parseInt(elem, 10));
   return list.filter(elem => !!elem === true);
 }
 
-Controller.prototype.sortingStart = function (sortType, list) {
-  if (sortType === 'bubble') {
+Controller.prototype.startSorting = function (sortType, list) {
+  if (sortType === sortingType.bubble) {
     this.bubbleSort(sortType, list);
-  } else if (sortType === 'quick') {
+  } else if (sortType === sortingType.quick) {
     this.quickSort(0, list.length - 1, list);
   }
 };
@@ -39,23 +53,22 @@ Controller.prototype.startVisualizing = async function (sortType) {
 
   if (!task) return;
 
-  if (task.type === 'start') {
+  if (task.type === taskType.start) {
     await this.view.start();
-  } else if (task.type === 'compare') {
+  } else if (task.type === taskType.compare) {
     await this.view.compare(task.sourceIndex, task.targetIndex);
-  } else if (task.type === 'pivot') {
+  } else if (task.type === taskType.pivot) {
     await this.view.pivot(task.sourceIndex);
-  } else if (task.type === 'swap') {
+  } else if (task.type === taskType.swap) {
     await this.view.swapBubble(task.sourceIndex, task.targetIndex, task.list);
-  } else if (task.type === 'single item done') {
+  } else if (task.type === taskType.done) {
     await this.view.singleItemDone(task.sourceIndex);
-  } else if (task.type === 'finish') {
+  } else if (task.type === taskType.finish) {
     await this.view.finishSort();
   }
 
   await this.startVisualizing(sortType);
 };
-
 
 Controller.prototype.bubbleSort = function (sortType, list, length = list.length - 1) {
   let hasChanged = false;
