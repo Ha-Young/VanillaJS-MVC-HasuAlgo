@@ -1,5 +1,5 @@
-import View from './view.js'
-import Model from './model.js'
+import View from './view.js';
+import Model from './model.js';
 
 function Controller() {
   this.model = new Model;
@@ -18,9 +18,9 @@ Controller.prototype.getData = function () {
 
 Controller.prototype.sortStorage = async function(storeageArray) {
   for (let i = 0; i < storeageArray.length; i++) {
-    for (var j= 0; j <storeageArray.length - 1 -i; j++) {
+    for (let j = 0; j < storeageArray.length - 1 -i; j++) {
       if (storeageArray[j] > storeageArray[j + 1]) {
-        let swap = storeageArray[j];
+        const swap = storeageArray[j];
 
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
@@ -33,6 +33,7 @@ Controller.prototype.sortStorage = async function(storeageArray) {
   while (this.model.stampStorage.length) {
     let leftNode;
     let rightNode;
+
     for (let i = 0; i < this.view.$graphNodes.length; i++) {
       if ((this.model.stampStorage[0].leftIndex) === Number(this.view.$graphNodes[i].dataset.x)) {
         leftNode = this.view.$graphNodes[i];
@@ -53,6 +54,7 @@ Controller.prototype.sortStorage = async function(storeageArray) {
     let temp = leftNode.dataset.x;
     leftNode.dataset.x = rightNode.dataset.x;
     rightNode.dataset.x = temp;
+
     this.model.stampStorage.shift();
     }
  }
@@ -60,12 +62,14 @@ Controller.prototype.sortStorage = async function(storeageArray) {
 Controller.prototype.handleKeyUp = function(event) {
   event.stopImmediatePropagation();
 
-  if (event.value === '') return;
+  if (event.value === null) return;
 
-  if (event.key === 'Enter') { 
+  if (event.key === 'Enter') {
+    if (this.$typed.value === '') return;
+
     this.view.addChildNode(event.target.value, this.model.count);
     this.model.storage.push(Number(event.target.value));
-    this.$typed.value = null;
+    this.$typed.value = '';
   }
 }
 
@@ -75,7 +79,7 @@ Controller.prototype.handleBubbleClick = function(event) {
   const childNodesLength = this.view.$contentContainer.childNodes.length;
 
   if (childNodesLength < 5) {
-    this.view.$errorMessage.innerHTML = '입력 갯수가 너무 작습니다';
+    this.view.$errorMessage.textContent = '입력 갯수가 너무 작습니다';
     return;
   }
 
@@ -98,4 +102,4 @@ Controller.prototype.handleRestartClick = function(event) {
   this.$bubbleSortButton.style.display = 'inline';
 }
 
-export default Controller
+export default Controller;
