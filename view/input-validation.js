@@ -16,7 +16,7 @@ export default function checkIfInputValid(value) {
 
   if (inputDatas.numbers.length > 9) {
     numberInput.value = "";
-    alretBox.textContent = "MAX is 10";
+    alretBox.textContent = "MAX: 10 numbers";
     return false;
   }
 
