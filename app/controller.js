@@ -26,7 +26,7 @@ function init() {
   const $inputBox = document.getElementById('inputBox');
   const $submitButton = document.getElementById('submitButton');
   const $playButton = document.getElementById('playButton');
-  const $replayButton = document.getElementById('replayButton');
+  const $reloadButton = document.getElementById('reloadButton');
   const $fastButton = document.getElementById('fastButton');
   const $slowButton = document.getElementById('slowButton');
   const $selectBox = document.getElementById('selectBox');
@@ -80,7 +80,7 @@ function init() {
     model._setTime("slow");
   });
 
-  $replayButton.addEventListener('click', function () {
+  $reloadButton.addEventListener('click', function () {
     $submitButton.disabled = false;
     $playButton.disabled = false;
     model.isStop = true;
