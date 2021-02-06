@@ -52,9 +52,9 @@ async function divide(array) {
   let rightVal;
   let result;
 
-  await divide(left).then(e => leftVal = e);
-  await divide(right).then(e => rightVal = e);
-  await getMergeSortedArray(leftVal, rightVal).then(val => result = val);
+  await divide(left).then(response => leftVal = response);
+  await divide(right).then(response => rightVal = response);
+  await getMergeSortedArray(leftVal, rightVal).then(response => result = response);
 
   return result;
 }
