@@ -10,7 +10,7 @@ function swapNumbers(first, second) {
 }
 
 export default async function bubbleSort(array) {
-  const numbers = array;
+  const numbers = [...array];
   let isSorted = false;
 
   for (let i = 0; i < numbers.length; i++) {
