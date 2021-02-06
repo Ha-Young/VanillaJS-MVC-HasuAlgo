@@ -70,7 +70,7 @@ class Controller {
       return;
     }
 
-    await self.view.renderVisualize(self.model.visualizeTask[0]);
+    await self.view.renderVisualize(self.model.visualizeTask[0], self.page);
     await self.model.visualizeTask.shift();
 
     await self.startVisualize();

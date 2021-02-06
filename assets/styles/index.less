@@ -2,6 +2,7 @@
 @subColor: #f5d042;
 @subColor-white: #f5f6fa;
 @subColor-blue: #3742fa;
+@subColor-red: #e84118;
 @subColor-darkgray: #535c68;
 @subColor-gray: #dcdde1;
 @subColor-brightgray: #f1f2f6;
@@ -90,7 +91,6 @@ img {
   cursor: pointer;
 }
 
-// sort-space
 .sort-space {
   display: flex;
   flex-direction: column;
@@ -127,7 +127,6 @@ img {
   text-align: center;
 }
 
-// bubble sort
 .sort-buttons {
   display: flex;
   justify-content: space-between;
@@ -177,13 +176,37 @@ img {
   height: 400px;
   padding: 0 5vw;
   list-style: none;
-  background-color: #fff;
+  background-color: @subColor-white;
 }
 
 .sort-element .sort-number {
   font-weight: 900;
 }
 
-.hide {
+.sort-list-bubble {
+  align-items: flex-end;
+}
+
+.sort-element {
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.sort-element .sort-bar {
+  width: 50px;
+  margin-bottom: 10px;
+  background-color: @subColor;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sort-element .comparing {
+  background-color: @subColor-red !important;
+}
+
+.sort-element .done {
+  background-color: @subColor-blue !important;
+}
+
+.sort-element .hide {
   display: none;
 }

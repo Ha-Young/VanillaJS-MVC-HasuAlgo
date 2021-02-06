@@ -61,13 +61,13 @@ class View {
     paintType[type]();
   }
 
-  async renderVisualize({ type, sourceIndex, targetIndex }) {
+  async renderVisualize({ type, sourceIndex, targetIndex }, sortType) {
     const self = this;
     const source = gbi(`#${sourceIndex}`);
     const target = gbi(`#${targetIndex}`);
 
     self.$sortElementList = qsa(".sort-element");
-    const visualize = {
+    const visualizeBubble = {
       "START SORT": async function () {
         self.$inputForm.classList.add("hide");
         self.$shuffleButton.classList.add("hide");
@@ -117,7 +117,71 @@ class View {
       },
     };
 
-    await visualize[type]();
+    const visualizeInsertion = {
+      "START SORT": async function () {
+        self.$inputForm.classList.add("hide");
+        self.$shuffleButton.classList.add("hide");
+        self.$randomButton.classList.add("hide");
+        self.$startButton.classList.add("hide");
+        self.$resetButton.classList.add("hide");
+      },
+      "PICK SOURCE": async function () {
+        source.children[0].classList.add("source");
+        await wait(400);
+      },
+      "SWAP INSERTION": async function () {
+        const sourceCoordiX = source.getBoundingClientRect().x;
+        const targetCoordiX = target.getBoundingClientRect().x;
+        const distance = targetCoordiX - sourceCoordiX;
+        const sourceMoveFactor = ++self.moveFactor[source.id];
+        const targetMoveFactor = --self.moveFactor[target.id];
+
+        source.style.transform = `translateX(${distance * sourceMoveFactor}px)`;
+        target.style.transform = `translateX(${distance * targetMoveFactor}px)`;
+
+        await wait(600);
+
+        target.removeAttribute("id");
+        source.removeAttribute("id");
+        target.setAttribute("id", `#${sourceIndex}`);
+        source.setAttribute("id", `#${targetIndex}`);
+
+        self.moveFactor[source.id] = sourceMoveFactor;
+        self.moveFactor[target.id] = targetMoveFactor;
+
+        await wait(0);
+      },
+      "UNPAINT TARGET": async function () {
+        source.children[0].classList.remove("comparing");
+        target.children[0].classList.remove("comparing");
+        await wait(400);
+      },
+      "FINISH SORT": function () {
+        self.$inputForm.classList.remove("hide");
+        self.$resetButton.classList.remove("hide");
+      },
+    };
+
+    switch (sortType) {
+      case "bubble":
+        await visualizeBubble[type]();
+        break;
+
+      case "insertion":
+        await visualizeInsertion[type]();
+        break;
+
+      case "merge":
+        await visualizeMerge[type]();
+        break;
+
+      case "quick":
+        await visualizeQuick[type]();
+        break;
+
+      default:
+        break;
+    }
   }
 
   connectHandler(event, handler) {

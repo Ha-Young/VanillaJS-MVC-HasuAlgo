@@ -96,7 +96,7 @@ class Model {
 
       for (let j = 0; j < i; j++) {
         if (j) {
-          this.visualizeTask.push(createTask("UNCOLOR TARGET", j - 1));
+          this.visualizeTask.push(createTask("UNPAINT TARGET", j - 1));
         }
 
         this.visualizeTask.push(createTask("PICK TARGET", j));
