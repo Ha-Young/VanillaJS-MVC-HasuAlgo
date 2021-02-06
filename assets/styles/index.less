@@ -8,7 +8,6 @@
 @subColor-brightgray: #f1f2f6;
 @main-font: "Press Start 2P", cursive;
 @import (inline) "./font.css";
-@import (inline) "./bubble.css";
 
 html,
 body {
@@ -100,7 +99,7 @@ img {
   margin: 0 auto;
   padding: 20px;
   border-radius: 40px;
-  background-color: white;
+  background-color: @subColor-white;
 }
 
 .main-message {
@@ -208,5 +207,9 @@ img {
 }
 
 .sort-element .hide {
+  display: none;
+}
+
+.hide {
   display: none;
 }

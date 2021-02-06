@@ -103,7 +103,7 @@ class View {
         await wait(0);
       },
       "UNPAINT COMPARE": async function () {
-        source.children[0].classList.remove("comparing");
+        source.children[0].classList.remove("done");
         target.children[0].classList.remove("comparing");
         await wait(400);
       },
@@ -125,36 +125,80 @@ class View {
         self.$startButton.classList.add("hide");
         self.$resetButton.classList.add("hide");
       },
-      "PICK SOURCE": async function () {
-        source.children[0].classList.add("source");
-        await wait(400);
+      "PAINT SOURCE": async function () {
+        source.children[0].classList.add("comparing");
+        await wait(500);
+      },
+      "PAINT TARGET": async function () {
+        source.children[0].classList.add("done");
+        await wait(500);
       },
       "SWAP INSERTION": async function () {
         const sourceCoordiX = source.getBoundingClientRect().x;
         const targetCoordiX = target.getBoundingClientRect().x;
-        const distance = targetCoordiX - sourceCoordiX;
-        const sourceMoveFactor = ++self.moveFactor[source.id];
-        const targetMoveFactor = --self.moveFactor[target.id];
+        const betweenCount = sourceIndex - targetIndex;
+        const distance = (sourceCoordiX - targetCoordiX) / betweenCount;
+        const betweenList = [];
+        for (let i = targetIndex + 1; i < sourceIndex; i++) {
+          betweenList.push(gbi(`#${i}`));
+        }
 
-        source.style.transform = `translateX(${distance * sourceMoveFactor}px)`;
-        target.style.transform = `translateX(${distance * targetMoveFactor}px)`;
+        self.moveFactor[source.id] -= betweenCount;
+        self.moveFactor[target.id] += 1;
+        const sourceMoveFactor = self.moveFactor[source.id];
+        const targetMoveFactor = self.moveFactor[target.id];
+        const betweenMoveFactor = [];
+        for (let i = 0; i < betweenList.length; i++) {
+          self.moveFactor[betweenList[i].id] += 1;
+          betweenMoveFactor[i] = self.moveFactor[betweenList[i].id];
+        }
+
+        source.style.transform = `translateX(${
+          distance * self.moveFactor[source.id]
+        }px)`;
+        target.style.transform = `translateX(${
+          distance * self.moveFactor[target.id]
+        }px)`;
+        for (let i = 0; i < betweenList.length; i++) {
+          betweenList[i].style.transform = `translateX(${
+            distance * betweenMoveFactor[i]
+          }px)`;
+        }
 
         await wait(600);
 
-        target.removeAttribute("id");
         source.removeAttribute("id");
-        target.setAttribute("id", `#${sourceIndex}`);
+        target.removeAttribute("id");
         source.setAttribute("id", `#${targetIndex}`);
+        target.setAttribute("id", `#${++targetIndex}`);
+        for (let i = 0; i < betweenList.length; i++) {
+          betweenList[i].removeAttribute("id");
+          betweenList[i].setAttribute("id", `#${++targetIndex}`);
+        }
 
         self.moveFactor[source.id] = sourceMoveFactor;
         self.moveFactor[target.id] = targetMoveFactor;
+        for (let i = 0; i < betweenList.length; i++) {
+          self.moveFactor[betweenList[i].id] = betweenMoveFactor[i];
+        }
 
         await wait(0);
       },
       "UNPAINT TARGET": async function () {
         source.children[0].classList.remove("comparing");
-        target.children[0].classList.remove("comparing");
+        source.children[0].classList.remove("done");
         await wait(400);
+      },
+      "UNPAINT SOURCE": async function () {
+        source.children[0].classList.remove("comparing");
+        source.children[0].classList.remove("done");
+        await wait(400);
+      },
+      "PAINT ALL": async function () {
+        for (let i = 0; i < self.$sortElementList.length; i++) {
+          self.$sortElementList[i].children[0].classList.add("done");
+        }
+        await wait(200);
       },
       "FINISH SORT": function () {
         self.$inputForm.classList.remove("hide");

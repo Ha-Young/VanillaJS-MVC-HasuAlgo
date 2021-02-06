@@ -67,6 +67,7 @@ class Model {
   }
 
   bubbleSort(callback) {
+    this.visualizeTask.push(createTask(""));
     for (let i = 0; i < this.inputArray.length; i++) {
       for (let j = 0; j < this.inputArray.length - i - 1; j++) {
         this.visualizeTask.push(createTask("PAINT COMPARE", j, j + 1));
@@ -92,23 +93,26 @@ class Model {
 
   insertionSort(callback) {
     for (let i = 1; i < this.inputArray.length; i++) {
-      this.visualizeTask.push(createTask("PICK SOURCE", i));
+      this.visualizeTask.push(createTask("PAINT SOURCE", i));
 
       for (let j = 0; j < i; j++) {
-        if (j) {
-          this.visualizeTask.push(createTask("UNPAINT TARGET", j - 1));
-        }
-
-        this.visualizeTask.push(createTask("PICK TARGET", j));
+        this.visualizeTask.push(createTask("PAINT TARGET", j));
 
         if (this.inputArray[i] < this.inputArray[j]) {
           const spliced = this.inputArray.splice(i, 1);
           this.inputArray.splice(j, 0, spliced[0]);
           this.visualizeTask.push(createTask("SWAP INSERTION", i, j));
+          this.visualizeTask.push(createTask("UNPAINT TARGET", j + 1));
+          this.visualizeTask.push(createTask("UNPAINT SOURCE", j));
+          break;
         }
+
+        this.visualizeTask.push(createTask("UNPAINT TARGET", j));
       }
+      this.visualizeTask.push(createTask("UNPAINT SOURCE", i));
     }
 
+    this.visualizeTask.push(createTask("PAINT ALL"));
     this.visualizeTask.push(createTask("FINISH SORT"));
     callback();
   }
