@@ -6,10 +6,10 @@ export class View {
   constructor() {
     this.form = document.querySelector('form');
     this.submitButton = document.querySelector('.content-form-submitButton');
-    this.input = document.querySelector('input');
+    this.input = document.querySelector('.content-form-input');
     this.selector = document.querySelector('select');
     this.startButton = document.querySelector('.content-startButton');
-    this.table = document.querySelector('.content-field');
+    this.contentField = document.querySelector('.content-field');
     this.warningZone = document.querySelector('.content-warning');
   }
 
@@ -38,18 +38,18 @@ export class View {
 
       const listArray = this.nodeList.split(',').map(item => Number(item));
       const isNumbers = listArray.every(item => typeof item === 'number' && !isNaN(item));
-      const isRanged = listArray.every(item => item > MIN_NUMBER_RANGE && item < MAX_NUMBER_RANGE);
-      
+      const withinRange = listArray.every(item => item > MIN_NUMBER_RANGE && item < MAX_NUMBER_RANGE);
+
       if (listArray.length < MIN_LIST_LENGTH || listArray.length > MAX_LIST_LENGTH) {
         this.warningZone.textContent = 'Please enter number 5 to 10';
         return;
       } else if (!isNumbers) {
         this.warningZone.textContent = 'Please enter only number';
         return;
-      } else if (!isRanged) {
+      } else if (!withinRange) {
         this.warningZone.textContent = 'Please enter number in 50 to 100';
         return;
-      } 
+      }
 
       this.warningZone.textContent = '';
       this.submitButton.disabled = true;
@@ -82,12 +82,13 @@ export class View {
       newNode.style.height = `${DEFAULT_HEIGHTS * nodeLists[i]}px`;
       newNode.textContent = nodeLists[i];
 
-      this.table.appendChild(newNode);
+      this.contentField.appendChild(newNode);
     }
   }
 
-  render = async (stateInfo) => {   
-    const stateType = stateInfo.shift();
+  render = async (stateInfo) => {
+    const copiedStateInfo = stateInfo.slice();
+    const stateType = copiedStateInfo.shift();
 
     const viewCommands = {
       startSort: () => {
@@ -97,7 +98,7 @@ export class View {
         onHighlightNode(index[0]);
       },
       changeNodes: (index) => {
-        swapNodes(this.table.children, index[0], index[1]);
+        swapNodes(this.contentField.children, index[0], index[1]);
       },
       offLightNode: (index) => {
         offHighlightNode(index[0]);
@@ -111,7 +112,7 @@ export class View {
     };
 
     await delay(500);
-    await viewCommands[stateType](stateInfo);
+    await viewCommands[stateType](copiedStateInfo);
     await delay(500);
   }
 }

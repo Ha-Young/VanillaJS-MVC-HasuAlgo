@@ -8,8 +8,6 @@ export const swap = (arr, left, right) => {
 
 export const delay = (seconds = DEFAULT_SECONDS) => {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, seconds);
+    setTimeout(resolve, seconds);
   });
 };

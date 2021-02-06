@@ -2,27 +2,25 @@ import { delay } from './commonUtils';
 import { colorChart } from '../constants/themeColor';
 
 const INCREASED_UI_SECONDS = 500;
+const NODE_GAP = 50;
+const UI_DEFAULT_SECONDS = 100;
+const UI_DELAY_CONSTANT = 4;
 
 export const swapNodes = async (nodeGroup, left, right) => {
   await delay(INCREASED_UI_SECONDS);
-
-  const NODE_GAP = 50;
-
-  const UI_DEFAULT_SECONDS = 100;
-  const UI_DELAY_CONSTANT = 4;
 
   const leftNode = nodeGroup[left];
   const rightNode = nodeGroup[right];
 
   const leftNodeHeight = leftNode.style.height;
   const leftNodeValue = leftNode.textContent;
-  
+
   leftNode.classList.add('transition-effect');
   rightNode.classList.add('transition-effect');
-  
+
   rightNode.style.transform = `translateX(-${NODE_GAP * (right - left)}px)`;
   leftNode.style.transform = `translateX(${NODE_GAP * (right - left)}px)`;
-  
+
   await delay(UI_DEFAULT_SECONDS * (right - left) * UI_DELAY_CONSTANT);
 
   leftNode.classList.remove('transition-effect');

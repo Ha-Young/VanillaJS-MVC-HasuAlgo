@@ -12,13 +12,13 @@ export class Model {
     this.lists = [...this.lists, ...lists];
 
     if (this.lists.length > 10) {
-      throw Error('Input Numbers exceed 10');
+      throw new Error('Input Numbers exceed 10');
     }
 
     this.addNewNodes(this.lists);
   }
 
-  addState(state) {
+  addSortingState(state) {
     this.sortStates.push(state);
   }
 
@@ -28,9 +28,5 @@ export class Model {
 
   bindUpdateTotalStates(callback) {
     this.onUpdateTotalStates = callback;
-  }
-
-  pushNewStates(state) {
-    this.onUpdateState(state);
   }
 }
