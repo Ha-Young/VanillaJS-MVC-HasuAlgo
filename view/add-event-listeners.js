@@ -10,10 +10,14 @@ export const {
   alretBox,
   bubbleButton,
   mergeButton,
+  wholeNumberInput,
+  startForm,
+  startFormText,
 } = myElements;
 
 export function addEventListeners() {
   numberInput.addEventListener("keyup", handleKeyup);
+  wholeNumberInput.addEventListener("keyup", handleKeyup);
   bubbleButton.addEventListener("click", handleClickBubbleButton);
   mergeButton.addEventListener("click", handleClickMergeButton);
 }

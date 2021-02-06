@@ -4,6 +4,9 @@ const alretBox = document.querySelector(".alert-box");
 const bubbleButton = document.querySelector(".bubble-sort-button");
 const mergeButton = document.querySelector(".merge-sort-button");
 const numberInputContainer = document.querySelector(".numbers-container");
+const wholeNumberInput = document.querySelector(".input-all-numbers");
+const startForm = document.querySelector(".start-form");
+const startFormText = document.querySelector(".start-text")
 
 export default function getMyElements() {
   return {
@@ -13,5 +16,8 @@ export default function getMyElements() {
     bubbleButton,
     mergeButton,
     numberInputContainer,
+    wholeNumberInput,
+    startForm,
+    startFormText,
   };
 }
