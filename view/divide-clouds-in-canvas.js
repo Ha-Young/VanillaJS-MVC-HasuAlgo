@@ -3,7 +3,8 @@ import delay from "../model/delay";
 const offsets = {};
 
 export default async function divideCloudsInCanvas(left, right) {
-  await delay(700);
+  const DELAY_TIME = 700;
+  await delay(DELAY_TIME);
 
   left.forEach(item => {
     let eachLeftItem = document.querySelector(`[data-value="${item}"]`);

@@ -32,7 +32,7 @@ async function getMergeSortedArray(left, right) {
 
   swapCloudsInCanvas(result, beforeMerge);
   await delay(700);
-  
+
   return result;
 }
 
