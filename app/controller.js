@@ -4,35 +4,35 @@ function Controller(Model, View) {
 }
 
 const taskType = {
-  start: 'start',
-  compare: 'compare',
-  pivot: 'pivot',
-  move: 'move',
-  swap: 'swap',
-  done: 'single item done',
-  finish: 'finish'
+  start: "start",
+  compare: "compare",
+  pivot: "pivot",
+  move: "move",
+  swap: "swap",
+  done: "single item done",
+  finish: "finish",
 };
 
 const sortType = {
-  bubble: 'bubble',
-  quick: 'quick'
+  bubble: "bubble",
+  quick: "quick",
 };
 
 Controller.prototype.submitHandler = function () {
   try {
-    const $inputValue = document.querySelector('.inputValue');
-    const $sortType = document.querySelector('select').value;
-    const numberList = convertToArray($inputValue.value);
+    const $inputValue = document.querySelector(".inputValue");
+    const $sortType = document.querySelector("select").value;
+    const numberList = omitOverlapAndConvertToArray($inputValue.value);
 
-    $inputValue.value = '';
+    $inputValue.value = "";
     $inputValue.disabled = true;
     // checkValidation(numberList);
 
     this.view.render(numberList);
     this.startSorting($sortType, numberList.slice());
     this.startVisualizing();
-  } catch(err) {
-    document.querySelector('.resultView').textContent = err.message;
+  } catch (err) {
+    document.querySelector(".resultView").textContent = err.message;
   }
 };
 
@@ -46,7 +46,6 @@ Controller.prototype.startSorting = function ($sortType, list) {
 
 Controller.prototype.startVisualizing = async function () {
   const task = this.model.findNextTask();
-
   if (!task) return;
 
   if (task.type === taskType.start) {
@@ -58,7 +57,7 @@ Controller.prototype.startVisualizing = async function () {
   } else if (task.type === taskType.swap) {
     await this.view.swapBubble(task.sourceIndex, task.targetIndex, task.list);
   } else if (task.type === taskType.done) {
-    await this.view.singleItemDone(task.sourceIndex);
+    await this.view.done(task.sourceIndex);
   } else if (task.type === taskType.finish) {
     await this.view.finishSort();
   }
@@ -68,7 +67,7 @@ Controller.prototype.startVisualizing = async function () {
 
 Controller.prototype.bubbleSort = function (list, index) {
   let hasChanged = false;
-  const finishedIndex = index? index - 1 : list.length - 1;
+  const finishedIndex = index ? index : list.length - 1;
 
   this.model.createTask(taskType.start);
 
@@ -81,28 +80,27 @@ Controller.prototype.bubbleSort = function (list, index) {
       this.model.createTask(taskType.swap, i - 1, i, list.slice());
     }
   }
-
   this.model.createTask(taskType.done, finishedIndex);
 
   hasChanged
-    ? this.bubbleSort(list, finishedIndex)
+    ? this.bubbleSort(list, finishedIndex - 1)
     : this.model.createTask(taskType.finish);
 };
 
-Controller.prototype.quickSort = async function (start, end, list) {
-  this.model.createTask('start');
+Controller.prototype.quickSort = function (start, end, list) {
+  this.model.createTask(taskType.start);
+  const partIndex = this.partition(start, end, list);
 
-  const part2 = await this.partition(start, end, list);
-
-  if (start < part2 - 1) {
-    this.quickSort(start, part2 - 1, list);
+  if (start < partIndex - 1) {
+    this.quickSort(start, partIndex - 1, list);
   }
-  if (part2 < end) {
-    this.quickSort(part2, end, list);
+
+  if (partIndex < end) {
+    this.quickSort(partIndex, end, list);
   }
 };
 
-Controller.prototype.partition = async function (start, end, list) {
+Controller.prototype.partition = function (start, end, list) {
   const index = Math.floor((start + end) / 2);
   const pivot = list[index];
 
@@ -127,24 +125,36 @@ Controller.prototype.partition = async function (start, end, list) {
       start++;
       end--;
     }
-    
+
     return start;
   }
 };
 
 function checkValidation(list) {
-  if (!list.every(elem => !!elem === true)) {
-    throw Error('Insert Numbers...');
+  if (list.some((elem) => !!elem === true)) {
+    throw Error("Insert Numbers...");
   } else if (list.length < 5) {
-    throw Error('Need at least 5 numbers...');
+    throw Error("Need at least 5 numbers...");
   } else if (list.length > 10) {
-    throw Error('Need at most 10 numbers...');
+    throw Error("Need at most 10 numbers...");
   }
 }
 
-function convertToArray(string) {
-  const list = string.trim().split(',').map(elem => parseInt(elem, 10));
-  return list.filter(elem => !!elem === true);
+function omitOverlapAndConvertToArray(string) {
+  const list = string
+    .trim()
+    .split(",")
+    .map((elem) => parseInt(elem, 10))
+    .filter((elem) => elem === 0 || !isNaN(elem));
+  const list2 = [];
+
+  for (let i = 0; i < list.length; i++) {
+    if (!list2.includes(list[i])) {
+      list2.push(list[i]);
+    }
+  }
+
+  return list2;
 }
 
 export default Controller;
