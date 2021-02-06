@@ -118,7 +118,7 @@ View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
   const pivotIndexElementPreStyled = getX(pivotIndexElem);
   const targetPreStyled = getX(target);
 
-  function getX (elem) {
+  function getX(elem) {
     const style = window.getComputedStyle(elem);
     const matrix = new WebKitCSSMatrix(style.transform);
     return matrix.m41;

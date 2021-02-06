@@ -14,7 +14,7 @@ export default function Controller(model, view) {
 
   this.TRANSITION_PERCENTAGE = 100;
   this.DELAY = 300;
-  this.EXTENDED_DEALY = this.DELAY * 2;
+  this.EXTENDED_DELAY = this.DELAY * 2;
   this.hasReset = false;
   this.hasStart = false;
 
@@ -127,7 +127,7 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
   }
 
   this.view.togglePivotElementColor(pivotElement, true);
-  await this.view.delay(this.EXTENDED_DEALY);
+  await this.view.delay(this.EXTENDED_DELAY);
 
   for (let i = start + 1; i <= end; i++) {
     const targetElement = userInputElements[i];
@@ -141,7 +141,7 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
     if (targetValue <= pivotValue) {
       this.view.toggleTargetElementColor(targetElement, false);
       this.view.toggleSmallerElementColor(targetElement, true);
-      await this.view.delay(this.EXTENDED_DEALY);
+      await this.view.delay(this.EXTENDED_DELAY);
 
       lookingForPivotIdx++;
       lookingForPivotPosition = userInputElements[lookingForPivotIdx];
@@ -155,7 +155,7 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
 
     this.view.toggleTargetElementColor(targetElement, false);
     this.view.toggleBiggerElementColor(targetElement, true);
-    await this.view.delay(this.EXTENDED_DEALY);
+    await this.view.delay(this.EXTENDED_DELAY);
   }
 
   await this.view.delay(this.DELAY);
@@ -183,10 +183,10 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
       this.view.toggleSmallerElementColor(element, false);
     });
 
-    await this.view.delay(this.EXTENDED_DEALY);
+    await this.view.delay(this.EXTENDED_DELAY);
     await this.quickSort(updatedUserInputElements, left, pivot-1);
 
-    await this.view.delay(this.EXTENDED_DEALY);
+    await this.view.delay(this.EXTENDED_DELAY);
     await this.quickSort(updatedUserInputElements, pivot+1, right);
   }
 };
