@@ -106,9 +106,6 @@ Controller.prototype.confirmSelectedSortOption = function() {
     case this.BUBUBLE_SORT :
       this.bubbleSort();
       break;
-    case this.MERGE_SORT :
-      this.mergeSort(sortList);
-      break;
     case this.QUICK_SORT :
       this.quickSort(sortList);
       break;
@@ -205,9 +202,8 @@ Controller.prototype.bubbleSort = async function() {
 
       await this.view.delay(this.DELAY);
 
-      this.view.toggleTargetElementColor(leftTarget, false);
-      this.view.colorTargetElement(leftTarget);
-      this.view.colorTargetElement(rightTarget);
+      this.view.toggleTargetElementColor(leftTarget, true);
+      this.view.toggleTargetElementColor(rightTarget, true);
 
       await this.view.delay(this.DELAY);
 
@@ -223,31 +219,16 @@ Controller.prototype.bubbleSort = async function() {
       }
 
       await this.view.delay(this.DELAY);
-      this.view.uncolorTargetElement(leftTarget);
-      this.view.uncolorTargetElement(rightTarget);
+      this.view.toggleTargetElementColor(leftTarget, false);
+      this.view.toggleTargetElementColor(rightTarget, false);
 
       await this.view.delay(this.DELAY);
     }
 
-    this.view.colorSortedElement(userInputElements[userInputElements.length-i-1]);
+    this.view.toggleSortedElementColor(userInputElements[userInputElements.length-i-1], true);
     await this.view.delay(this.DELAY * 2);
   }
 
   this.view.setInstructionMessage(this.$instructionMessage, this.RETRY_MESSAGE);
   this.view.toggleResetButton(this.$resetButton, true);
 };
-
-Controller.prototype.mergeSort = async function (userInputElements) {
-  if (!this.hasStart) {
-    this.taskQueue.push(this.createTask("init", userInputElements));
-    this.hasStart = true;
-  }
-}
-
-Controller.prototype.createTask = function (taskName, left, right) {
-  return {
-    taskName,
-    left,
-    right,
-  }
-}
