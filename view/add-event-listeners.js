@@ -1,6 +1,5 @@
-import { rest } from "lodash";
+import handleClickHelp from "../controller/help-handler";
 import handleKeyup from "../controller/input-keyup-handler";
-import handleClickRestart from "../controller/help-handler";
 import { handleClickBubbleButton, handleClickMergeButton } from "../controller/sort-button-handler";
 import getMyElements from "../model/get-my-elements";
 
