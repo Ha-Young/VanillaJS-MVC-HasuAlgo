@@ -1,3 +1,5 @@
+import { set } from "lodash";
+
 function View () {
   this.$errorMessage = document.querySelector('.errorMessage');
   this.$contentContainer = document.querySelector('.contentContainer');
@@ -22,30 +24,43 @@ View.prototype.addChildNode = function(value) {
   this.indexCount++;
 }
 
-View.prototype.moveGraph = function moveGraph(leftNode, rightNode) {
+View.prototype.moveGraph = function moveGraph(leftNode, rightNode) {  
   leftNode.classList.add('transition');
   rightNode.classList.add('transition');
+  leftNode.style.backgroundColor = 'blue';
+  rightNode.style.backgroundColor = 'blue';
 
-  const left = ++leftNode.dataset.count;
-  const right = --rightNode.dataset.count;
-
-  leftNode.style.transform = `translateX(${left*60}px)`;
-  rightNode.style.transform = `translateX(${right*60}px)`;
-  
-  
   return new Promise((resolve) => {
     setTimeout(() => {
+    
+      const left = ++leftNode.dataset.count;
+      const right = --rightNode.dataset.count;
+
+      leftNode.style.transform = `translateX(${left*60}px)`;
+      rightNode.style.transform = `translateX(${right*60}px)`;
+
       resolve();
     }, 1000);
   });
 }
 
-View.prototype.changeColor = function(node) {
-  return new Promise((resolve) => {
+View.prototype.removeColor = function(leftNode, rightNode) {
+  return new Promise((resovle) => {
     setTimeout(() => {
+      leftNode.style.backgroundColor = 'orange';
+      rightNode.style.backgroundColor = 'orange';
 
-      node.style.background = 'green';
-      resolve();
+      resovle();
+    }, 1000);
+  });
+}
+
+View.prototype.changeFinishColor = function(finishNode) {
+  finishNode.style.backgroundColor = 'green';
+
+  return new Promise((resovle) => {
+    setTimeout(() => {
+      resovle();
     }, 1000);
   });
 }

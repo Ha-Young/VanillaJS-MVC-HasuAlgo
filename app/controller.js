@@ -28,7 +28,7 @@ Controller.prototype.sortStorage = async function(storeageArray) {
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = swap;
 
-        this.model.stampStorage.push(this.model.getStamp(j, j + 1));
+        stampStorage.push(this.model.getStamp(j, j + 1, i));
       }
     }
   }
@@ -47,12 +47,12 @@ Controller.prototype.sortStorage = async function(storeageArray) {
       }
     }
 
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        this.view.moveGraph(leftNode, rightNode);
-        resolve();  
-      }, 1000);
-    });
+    await this.view.moveGraph(leftNode, rightNode);
+    await this.view.removeColor(leftNode, rightNode);
+
+    if (stampStorage[1].finishIndex > stampStorage[0].finishIndex) {
+      await this.view.changeFinishColor(leftNode);
+    }
 
     let temp = leftNode.dataset.x;
     leftNode.dataset.x = rightNode.dataset.x;

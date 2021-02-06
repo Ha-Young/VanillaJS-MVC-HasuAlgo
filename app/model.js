@@ -4,10 +4,11 @@ function Model() {
   this.stampStorage = [];
 }
 
-Model.prototype.getStamp = function(leftIndex, rightIndex) {
+Model.prototype.getStamp = function(leftIndex, rightIndex, finishIndex) {
   return {
     leftIndex,
-    rightIndex
+    rightIndex,
+    finishIndex
   }
 }
 
