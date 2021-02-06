@@ -39,15 +39,15 @@ class View {
     }
   }
 
-  renderInput(type, parameter) {
+  paintInput(type, parameter) {
     const self = this;
-    const renderType = {
+    const paintType = {
       "DRAW LIST": function () {
         self.$resetButton.classList.remove("hide");
 
         self.paintBar(parameter);
       },
-      RESET: function () {
+      "RESET LIST": function () {
         self.$sortContainer.innerHTML = "";
         self.$startButton.classList.remove("hide");
         self.$shuffleButton.classList.remove("hide");
@@ -58,7 +58,7 @@ class View {
       },
     };
 
-    renderType[type]();
+    paintType[type]();
   }
 
   async renderVisualize({ type, sourceIndex, targetIndex }) {
@@ -68,7 +68,7 @@ class View {
 
     self.$sortElementList = qsa(".sort-element");
     const visualize = {
-      START: async function () {
+      "START SORT": async function () {
         self.$inputForm.classList.add("hide");
         self.$shuffleButton.classList.add("hide");
         self.$randomButton.classList.add("hide");
@@ -80,7 +80,7 @@ class View {
         target.children[0].classList.add("comparing");
         await wait(400);
       },
-      SWAP: async function () {
+      "SWAP BUBBLE": async function () {
         const sourceCoordiX = source.getBoundingClientRect().x;
         const targetCoordiX = target.getBoundingClientRect().x;
         const distance = targetCoordiX - sourceCoordiX;
@@ -111,7 +111,7 @@ class View {
         source.children[0].classList.add("done");
         await wait(400);
       },
-      FINISH: function () {
+      "FINISH SORT": function () {
         self.$inputForm.classList.remove("hide");
         self.$resetButton.classList.remove("hide");
       },
@@ -183,7 +183,7 @@ class View {
 			<div class="sort-bar"></div>
 			<span class="sort-number">${list[i]}</span>
       `;
-      li.children[0].style.height = `${(list[i] / maxNumber) * 320}px`;
+      li.children[0].style.height = `${(list[i] / maxNumber) * 380}px`;
 
       this.$sortContainer.appendChild(li);
       this.moveFactor[`#${i}`] = 0;

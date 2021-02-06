@@ -11,10 +11,12 @@ class Sort {
   }
 
   setView() {
-    this.controller.setView(document.location.hash);
-    this.model = new Model();
+    const route = document.location.hash.split("/")[1];
+    const page = route || "";
+
+    this.controller.setView(page);
     this.view = new View();
-    this.controller = new Controller(this.model, this.view);
+    this.controller = new Controller(this.model, this.view, page);
   }
 
   removeLocationHash() {

@@ -1,9 +1,10 @@
 class Controller {
-  constructor(model, view) {
+  constructor(model, view, page) {
     const self = this;
 
     self.model = model;
     self.view = view;
+    self.page = page;
 
     self.view.connectHandler("addNumber", function (input) {
       self.addNumber(input);
@@ -26,12 +27,11 @@ class Controller {
     });
   }
 
-  setView(locationHash) {
+  setView(page) {
     const self = this;
-    const route = locationHash.split("/")[1];
-    const page = route || "";
 
-    self.sortStyle = page;
+    self.model.visualizeTask = [];
+    self.model.inputArray = [];
     self.view.setSortStyle(page);
   }
 
@@ -52,25 +52,27 @@ class Controller {
     }
 
     self.model.addNumber(newNumber, function (newList) {
-      self.view.renderInput("DRAW LIST", newList);
+      self.view.paintInput("DRAW LIST", newList);
     });
   }
 
   startSort() {
     const self = this;
+    const sortType = self.page;
 
-    self.model.startSort(self.startVisualize.bind(self));
+    self.model.startSort(self.startVisualize.bind(self), sortType);
+    console.log(self.model.visualizeTask);
   }
 
   async startVisualize() {
     const self = this;
 
-    if (!self.model.taskQueue.length) {
+    if (!self.model.visualizeTask.length) {
       return;
     }
 
-    await self.view.renderVisualize(self.model.taskQueue[0]);
-    await self.model.taskQueue.shift();
+    await self.view.renderVisualize(self.model.visualizeTask[0]);
+    await self.model.visualizeTask.shift();
 
     await self.startVisualize();
   }
@@ -79,7 +81,7 @@ class Controller {
     const self = this;
 
     self.model.shuffleNumber((shuffledArray) => {
-      self.view.renderInput("DRAW LIST", shuffledArray);
+      self.view.paintInput("DRAW LIST", shuffledArray);
     });
   }
 
@@ -91,7 +93,7 @@ class Controller {
     }
 
     self.model.setRandom((updatedList) => {
-      self.view.renderInput("DRAW LIST", updatedList);
+      self.view.paintInput("DRAW LIST", updatedList);
     });
   }
 
@@ -99,7 +101,7 @@ class Controller {
     const self = this;
 
     self.model.resetList(() => {
-      self.view.renderInput("RESET");
+      self.view.paintInput("RESET LIST");
     });
   }
 }
