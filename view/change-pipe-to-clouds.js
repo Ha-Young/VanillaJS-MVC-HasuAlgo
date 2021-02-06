@@ -1,17 +1,16 @@
 import getMyElements from "../model/get-my-elements";
 import { inputDatas } from "../model/user-input-data";
 
-const { canvas } = getMyElements();
+const { sortingBoard } = getMyElements();
 
-export default function changeBarToCircle() {
-
+export default function changePipeToClouds() {
   inputDatas.nodes.forEach(eachNode => {
     eachNode.classList.add("mergeChart");
     eachNode.style.height = "100px";
     eachNode.style.width = "100px";
   });
 
-  canvas.classList.add("merge-container");
+  sortingBoard.classList.add("merge-container");
 
   const pipes = document.querySelectorAll(".pipe");
 

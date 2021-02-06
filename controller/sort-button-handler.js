@@ -2,7 +2,7 @@ import bubbleSort from "../model/bubble-sort";
 import mergeSort from "../model/merge-sort";
 import { inputDatas } from "../model/user-input-data";
 import { alretBox } from "../view/add-event-listeners";
-import changeBarToCircle from "../view/change-pipe-to-clouds";
+import changePipeToClouds from "../view/change-pipe-to-clouds";
 
 const { numbers } = inputDatas;
 
@@ -19,7 +19,7 @@ export function handleClickMergeButton() {
     return;
   }
 
-  changeBarToCircle();
+  changePipeToClouds();
   mergeSort(numbers);
 }
 

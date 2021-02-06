@@ -1,5 +1,5 @@
 import { inputDatas } from "../model/user-input-data";
-import { canvas } from "./add-event-listeners";
+import { sortingBoard } from "./add-event-listeners";
 import stopMarioMoving from "./stop-mario-moving";
 
 const { numbers, nodes } = inputDatas;
@@ -18,6 +18,6 @@ export default function createNewNumberBar(inputValue) {
   
   newNumberBar.appendChild(numberTextBox);
   newNumberBar.dataset.value = inputValue;
-  canvas.appendChild(newNumberBar);
+  sortingBoard.appendChild(newNumberBar);
   nodes.push(newNumberBar);
 }

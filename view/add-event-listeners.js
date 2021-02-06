@@ -5,7 +5,7 @@ import getMyElements from "../model/get-my-elements";
 const myElements = getMyElements();
 
 export const {
-  canvas,
+  sortingBoard,
   numberInput,
   alretBox,
   bubbleButton,
