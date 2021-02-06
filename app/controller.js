@@ -84,6 +84,11 @@ function init() {
     $submitButton.disabled = false;
     $playButton.disabled = false;
     model.isStop = true;
+
+    setTimeout(() => {
+      model._resetBoard();
+      view._clearInputText();
+    }, 250);
   });
 }
 

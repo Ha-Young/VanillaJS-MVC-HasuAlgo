@@ -1,4 +1,5 @@
 export default function View() {
+  this.$inputBox = document.getElementById('inputBox');
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
 }
@@ -59,4 +60,8 @@ View.prototype._getTargetTranslateX = function (target) {
 
 View.prototype._showText = function (text) {
   this.$commentBox.textContent = text;
+}
+
+View.prototype._clearInputText = function () {
+  this.$inputBox.value = '';
 }
