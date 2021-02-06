@@ -10,15 +10,6 @@
   z-index: 1;
 }
 
-@keyframes play {
-  100% { background-position: -284px; }
-}
-
-@keyframes run {
-  from { left: -200px;}
-  to { left: 100%;}
-}
-
 .pipe {
   background : url(../images/green-pipe.png);
   background-size: cover;
@@ -144,6 +135,15 @@
 .cloud:nth-child(1){
   top: 490px;
   animation: wind 50s both infinite linear reverse;
+}
+
+@keyframes play {
+  100% { background-position: -284px; }
+}
+
+@keyframes run {
+  from { left: -200px;}
+  to { left: 100%;}
 }
 
 @keyframes wind{

@@ -1,7 +1,7 @@
 import { delay } from "../model/delay";
 import divideNumbersInCanvas from "../view/divide-numbers-in-canvas";
 
-function swapMergedItems(changed, origin) {
+function x(changed, origin) {
   origin.forEach((each, index) => {
     const eachNode = document.querySelector(`[data-value="${each}"]`);
     const newIndex = changed.findIndex(item => item === each);

@@ -2,20 +2,54 @@ html, body {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background-color: #548CFF;
 }
 
 *, *:before, *:after {
   box-sizing: border-box;
 }
 
+.nintendo {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: #E0CDB2;
+}
+
+.nintendo-header {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.nintendo-footer {
+  font-size: 1.5rem;
+  font-family: 'Rubik', sans-serif;
+  color: rgb(48, 47, 47);
+  margin-top: 2rem;
+  border: 0.2em solid rgb(48, 48, 48);
+  border-radius: 50px;
+  padding-top : 0.3rem;
+  padding-left : 0.8rem;
+  padding-right: 0.8rem;
+}
 .app {
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  height: 80%;
+  background-color: #548CFF;
+  height: 70%;
+  width: 60%;
   position: relative;
+  border-top: 1rem solid black;
+  border-bottom: 1rem solid black;
+  border-left: 1.5rem solid black;
+  border-right: 1.5rem solid black;
+  border-radius: 8px;
+  box-shadow: 0 0 0 0.5rem #8C0616;
 }
 
 .starter-container {
