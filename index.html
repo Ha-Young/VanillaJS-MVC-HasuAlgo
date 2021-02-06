@@ -8,7 +8,10 @@
   <title>바닐라코딩</title>
 </head>
 <body>
-  <header>Visualize Sorting Algorithms</header>
+  <header>
+    <h1 class="title">Visualize Sorting Algorithms</h1>
+    <button id="sidebarButton" class="sidebar-button"><img src="./assets/images/sidebar.png" alt="sidebar"></button>
+  </header>
   <section class="content">
     <div id="toolBar" class="tool-bar">
       <button id="playButton"><img src="./assets/images/play.png" alt="play"></button>
@@ -23,8 +26,24 @@
         <option value="quick">quickSort</option>
       </select>
     </div>
-    <input id="inputBox" class="input-box" type="text" placeholder="정렬할 숫자들을 입력하세요.">
-    <button id="submitButton" class="submit-button">요소 배치</button>
+
+    <article id="sideDisplay" class="side-diplay hidden">
+      <pre>
+        <h3>visualize soring page</h3>
+        === Precautions === 
+
+        Please enter 5 or more and 10 or less
+
+        Lets sort by numbers only. 
+        0 is not for sorting
+
+        If the price is different, 
+        it may not be visible.
+      </pre>
+    </article>
+
+    <input id="inputBox" class="input-box" type="text" placeholder="Enter the numbers to sort">
+    <button id="submitButton" class="submit-button">Number placement</button>
     <div id="commentBox" class="comment-box"></div>
     <article id="sortBox" class="sort-box"></article>
   </section>

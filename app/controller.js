@@ -30,10 +30,15 @@ function init() {
   const $fastButton = document.getElementById('fastButton');
   const $slowButton = document.getElementById('slowButton');
   const $selectBox = document.getElementById('selectBox');
+  const $sidebarButton = document.getElementById('sidebarButton');
+  const $sideDisplay = document.getElementById('sideDisplay');
 
   const selectOptions = {
     bubbleSort: 'bubbleSort',
     quickSort: 'quickSort'
+  };
+  const styleClassName = {
+    hidden: 'hidden'
   };
 
   let sortingList;
@@ -95,6 +100,10 @@ function init() {
       model._resetBoard();
       view._clearText();
     }, 250);
+  });
+
+  $sidebarButton.addEventListener('click', function () {
+    view._changeBlockStyle(styleClassName['hidden'], [$sideDisplay]);
   });
 }
 

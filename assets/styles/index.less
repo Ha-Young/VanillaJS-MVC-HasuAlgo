@@ -13,8 +13,28 @@ html, body {
 header {
   padding: 30px;
   color: #fff;
-  font-size: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+header .title {
+  display: inline;
+  font-size: 1.5rem;
+}
+
+header .sidebar-button {
+  float: right;
+  width: 40px;
+  height: 40px;
+  background: none;
+  text-align: center;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+header .sidebar-button img {
+  width: 35px;
+  height: 35px;
 }
 
 .content {
@@ -75,6 +95,29 @@ header {
   border-radius: 5px;
   outline: none;
   cursor: pointer;
+}
+
+.side-diplay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  height: 300px;
+  margin: 0;
+  padding: 0;
+  background-color: #f1c40f;
+  text-align: center;
+  color: black;
+  font-size: 0.8rem;
+  border-radius: 15px;
+}
+
+.side-diplay pre {
+  margin-right: 15px;
+}
+
+.side-diplay h3 {
+  margin-left: 15px;
 }
 
 .input-box {
@@ -155,4 +198,8 @@ header {
 
 .transition {
   transition: 0.3s all linear;
+}
+
+.hidden {
+  display: none;
 }

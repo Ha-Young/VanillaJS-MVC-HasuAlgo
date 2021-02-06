@@ -1,12 +1,12 @@
 import { swapInView, changeViewStyle, showViewText } from './controller.js';
 
 export default function Model() {
-  this.START_COMMENT = '정렬 시작';
-  this.DURING_COMMENT = '정렬 중'
-  this.ENDING_COMMENT = '다 끝났습니다';
-  this.CORRECT_VALUE_COMMENT = '정렬할 준비가 되었습니다 시작 버튼을 눌러주세요';
-  this.OUT_OF_RANGE_ERROR_COMMENT = '5개 이상 10개 이하의 값을 입력하세요';
-  this.INPUT_TYPE_ERROR_COMMENT = '정렬은 숫자로만 합시다. 0은 정렬 대상이 아닙니다.';
+  this.START_COMMENT = 'Start sorting';
+  this.DURING_COMMENT = 'Sorting'
+  this.ENDING_COMMENT = 'Its done!';
+  this.CORRECT_VALUE_COMMENT = 'You are ready to sort, press the start button';
+  this.OUT_OF_RANGE_ERROR_COMMENT = 'Please enter 5 or more and 10 or less';
+  this.INPUT_TYPE_ERROR_COMMENT = 'Lets sort by numbers only. 0 is not for sorting';
   this.LIMIT_LOW_TIME = 2500;
   this.LIMIT_HIGH_TIME = 300;
   this.TIME_INTERVAL = 200;
