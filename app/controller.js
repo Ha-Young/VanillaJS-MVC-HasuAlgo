@@ -45,7 +45,7 @@ export class Controller {
         break;
       }
       default: {
-        break;
+        console.warn('Please check sort type');
       }
     }
   }
