@@ -57,7 +57,7 @@ export default class View {
 
     if (inputArray.some(element => parseInt(element.trim(), 10) >= 500
       || parseInt(element.trim(), 10) <= 0)) {
-      window.alert("Available Range: 0 < Integer < 500");
+      window.alert("Available Range: 0 < Integer <= 500");
       return false;
     }
 
