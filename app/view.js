@@ -4,7 +4,7 @@ import MYAPP from './myapp';
 export default class View {
   renderGraphs(modelStorage, sortedGraphs) {
     const graphTable = MYAPP.table.graph;
-    graphTable.innerHTML = null;
+    this.clearAllGraphs(graphTable);
 
     for (let i = 0; i < modelStorage.length; i++) {
       const graphPercent = modelStorage[i];
@@ -23,6 +23,12 @@ export default class View {
         }
       }
       graphTable.appendChild($graph);
+    }
+  }
+
+  clearAllGraphs(table) {
+    while (table.firstChild) {
+      table.removeChild(table.firstChild);
     }
   }
 
