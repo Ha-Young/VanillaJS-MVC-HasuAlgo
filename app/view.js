@@ -2,6 +2,7 @@ function View () {
   this.$errorMessage = document.querySelector('.errorMessage');
   this.$contentContainer = document.querySelector('.contentContainer');
   this.indexCount = 0;
+  this.paintTime = 700;
 }
 
 View.prototype.addChildNode = function(value) {
@@ -30,7 +31,7 @@ View.prototype.changeColor = function(leftNode, rightNode) {
       rightNode.style.backgroundColor = 'gray';
     
       resolve();
-    }, 700);
+    }, this.paintTime);
   });
 }
 
@@ -47,7 +48,7 @@ View.prototype.moveGraph = function(leftNode, rightNode) {
       rightNode.style.transform = `translateX(${right*60}px)`;
 
       resolve();
-    }, 700);
+    }, this.paintTime);
   });
 }
 
@@ -58,7 +59,7 @@ View.prototype.removeColor = function(leftNode, rightNode) {
       rightNode.style.backgroundColor = 'orange';
 
       resovle();
-    }, 700);
+    }, this.paintTime);
   });
 }
 
@@ -68,7 +69,7 @@ View.prototype.finishColor = function(finishNode) {
       finishNode.style.backgroundColor = 'green';
 
       resovle();
-    }, 700);
+    }, this.paintTime);
   });
 }
 

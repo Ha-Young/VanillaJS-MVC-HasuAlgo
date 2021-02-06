@@ -32,10 +32,8 @@ Controller.prototype.sortStorage = async function(storeageArray) {
 
         stampStorage.push(this.model.getStamp('change', j, j + 1));
       }
-
       stampStorage.push(this.model.getStamp('finishCompare', j, j + 1))
     }
-
     stampStorage.push(this.model.getStamp('end', j, j + 1));
   }
 
