@@ -15,7 +15,7 @@ export default function handleKeyup(e) {
 
   const inputValue = Number(numberInput.value);
 
-  if(!checkIfInputValid(inputValue)) {
+  if (!checkIfInputValid(inputValue)) {
     return;
   }
 
