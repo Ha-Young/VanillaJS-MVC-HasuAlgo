@@ -5,47 +5,44 @@ export default class Controller {
     this.model = model;
     this.view = view;
     this.selectedType = null;
-  }
-
-  connectEventListener() {
+    this.isStartBtnClicked = false;
   }
 
   run() {
-    let isStartBtnClicked = false;
     this.checkSortType();
     MYAPP.button.start.addEventListener('click', async () => {
-      const isUserSelectType = this.selectedType;
-      const isUserPutValue = MYAPP.table.input.value;
-      const modelStorage = this.model.get();
-
-      if (isStartBtnClicked) {
-        this.view.renderErrorMsg('Already clicked!');
-        throw new Error('Already clicked!');
-      }
-
-      if (!isUserSelectType) {
-        this.view.renderErrorMsg('Select sort type first!');
-        throw new Error('Select sort type first');
-      }
-
-      if (!isUserPutValue) {
-        this.view.renderErrorMsg('Please insert value!');
-        throw new Error('Please insert value');
-      }
-
+      this.handleUserError();
       this.init();
 
-      if (this.checkSortType() === 'BUBBLE') {
+      if (this.selectedType === 'BUBBLE') {
         this.bubbleSort();
       }
 
-      if (this.checkSortType() === 'QUICK') {
-        await this.quickSort(modelStorage);
+      if (this.selectedType === 'QUICK') {
+        await this.quickSort();
         this.view.renderAllColor(MYAPP.table.graph);
       }
-
-      isStartBtnClicked = true;
+      this.isStartBtnClicked = true;
     });
+  }
+
+  handleUserError() {
+    const isUserSelectType = this.selectedType;
+    const isUserPutValue = MYAPP.table.input.value;
+    if (this.isStartBtnClicked) {
+      this.view.renderErrorMsg('Already clicked!');
+      throw new Error('Already clicked!');
+    }
+
+    if (!isUserSelectType) {
+      this.view.renderErrorMsg('Select sort type first!');
+      throw new Error('Select sort type first');
+    }
+
+    if (!isUserPutValue) {
+      this.view.renderErrorMsg('Please insert value!');
+      throw new Error('Please insert value');
+    }
   }
 
   checkSortType() {
@@ -111,7 +108,7 @@ export default class Controller {
     }
   }
 
-  async quickSort(array, left = 0, right = this.model.get().length - 1) {
+  async quickSort(array = this.model.get(), left = 0, right = this.model.get().length - 1) {
     const localStorage = this.model.get();
     const mid = Math.floor((left + right) / 2);
     const pivot = localStorage[mid];

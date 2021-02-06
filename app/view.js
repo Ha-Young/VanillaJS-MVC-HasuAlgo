@@ -13,7 +13,7 @@ export default class View {
       $graph.style.width = '10%';
       $graph.style.height = `${graphPercent}%`;
       $graph.dataset.id = modelStorage[i];
-      $graph.textContent = `${graphPercent}`;
+      $graph.textContent = graphPercent;
 
       if (sortedGraphs) {
         for (const sortedValue of sortedGraphs) {
