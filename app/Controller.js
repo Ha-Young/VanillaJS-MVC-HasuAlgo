@@ -205,6 +205,7 @@ Controller.prototype.bubbleSort = async function() {
 
       await this.view.delay(this.DELAY);
 
+      this.view.toggleTargetElementColor(leftTarget, false);
       this.view.colorTargetElement(leftTarget);
       this.view.colorTargetElement(rightTarget);
 
