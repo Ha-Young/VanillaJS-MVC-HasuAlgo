@@ -16,7 +16,7 @@ View.prototype.addChildNode = function(value) {
   this.$div.setAttribute('data-X', this.indexCount);
   this.$div.setAttribute('data-count', 0);
   this.$div.classList.add('graphNode');
-  this.$div.style.height = value + 3 + 'px';
+  this.$div.style.height = `${value + 3}px`;
   this.$contentContainer.appendChild(this.$div);
   this.$graphNodes = document.getElementsByClassName('graphNode');
   this.indexCount++;
