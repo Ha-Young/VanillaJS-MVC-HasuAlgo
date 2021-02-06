@@ -9,6 +9,7 @@ export default function Model() {
   this.LIMIT_LOW_TIME = 2500;
   this.LIMIT_HIGH_TIME = 300;
   this.TIME_INTERVAL = 200;
+  this.DELAY = 1000;
 
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
@@ -16,7 +17,6 @@ export default function Model() {
   this.sortChildren = this.$sortBox.children;
   this.sortingList = [];
   this.isStop = false;
-  this.delay = 1000;
   this.styleClassName = {
     select: 'selected',
     finish: 'finish'
@@ -63,7 +63,7 @@ Model.prototype._getQuickSortIndex = async function (array, start, end) {
       array[start] = array[end];
       array[end] = swapValue;
 
-      await swapInView(this.sortChildren[start], this.sortChildren[end], array, this.delay);
+      await swapInView(this.sortChildren[start], this.sortChildren[end], array, this.DELAY);
 
 			start = start + 1;
 			end = end - 1;
@@ -89,7 +89,7 @@ Model.prototype._bubbleSort = async function () {
       await new Promise(resolve => {
         setTimeout(() => {
           resolve();
-        }, this.delay);
+        }, this.DELAY);
       });
 
       if (this.sortingList[j] > this.sortingList[j + 1]) {
@@ -97,7 +97,7 @@ Model.prototype._bubbleSort = async function () {
         this.sortingList[j] = this.sortingList[j + 1];
         this.sortingList[j + 1] = swapValue;
 
-        await swapInView(this.sortChildren[j + 1], this.sortChildren[j], this.sortingList, this.delay);
+        await swapInView(this.sortChildren[j + 1], this.sortChildren[j], this.sortingList, this.DELAY);
       } else {
         changeViewStyle(this.styleClassName['select'], this.sortChildren[j], this.sortChildren[j + 1]);
       }
@@ -112,18 +112,18 @@ Model.prototype._bubbleSort = async function () {
 };
 
 Model.prototype._setFaster = function () {
-  this.delay -= this.TIME_INTERVAL;
+  this.DELAY -= this.TIME_INTERVAL;
 
-  if (this.delay < this.LIMIT_HIGH_TIME) {
-    this.delay = this.LIMIT_HIGH_TIME;
+  if (this.DELAY < this.LIMIT_HIGH_TIME) {
+    this.DELAY = this.LIMIT_HIGH_TIME;
   }
 };
 
 Model.prototype._setSlower = function () {
-  this.delay += this.TIME_INTERVAL;
+  this.DELAY += this.TIME_INTERVAL;
 
-  if (this.delay > this.LIMIT_LOW_TIME) {
-    this.delay = this.LIMIT_LOW_TIME;
+  if (this.DELAY > this.LIMIT_LOW_TIME) {
+    this.DELAY = this.LIMIT_LOW_TIME;
   }
 };
 

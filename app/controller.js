@@ -34,7 +34,7 @@ function init() {
   const selectOptions = {
     bubbleSort: 'bubbleSort',
     quickSort: 'quickSort'
-  }
+  };
 
   let sortingList;
   let sortingMethod;
