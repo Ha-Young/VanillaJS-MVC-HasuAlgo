@@ -2,10 +2,13 @@ export default function View() {
   this.$inputBox = document.getElementById('inputBox');
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
+  this.canPaint = true;
 }
 
 View.prototype._createBlock = function (sortList) {
   const highestValue = Math.max(...sortList);
+
+  this.canPaint = true;
 
   for (let i = 0; i < sortList.length; i++) {
     const $block = document.createElement('div');
@@ -42,7 +45,10 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
         this.$sortBox.removeChild(this.$sortBox.firstChild);
       }
 
-      this._createBlock(swappedArray);
+      if (this.canPaint) {
+        this._createBlock(swappedArray);
+      }
+
       resolve();
     }, delay);
   });

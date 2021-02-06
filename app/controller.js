@@ -73,17 +73,18 @@ function init() {
   });
 
   $fastButton.addEventListener('click', function () {
-    model._setTime("fast");
+    model._setFaster();
   });
 
   $slowButton.addEventListener('click', function () {
-    model._setTime("slow");
+    model._setSlower();
   });
 
   $reloadButton.addEventListener('click', function () {
     $submitButton.disabled = false;
     $playButton.disabled = false;
     model.isStop = true;
+    view.canPaint = false;
 
     setTimeout(() => {
       model._resetBoard();

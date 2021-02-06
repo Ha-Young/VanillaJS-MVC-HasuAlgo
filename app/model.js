@@ -6,6 +6,10 @@ export default function Model() {
   this.CORRECT_VALUE_COMMENT = '정렬할 준비가 되었습니다 시작 버튼을 눌러주세요';
   this.OUT_OF_RANGE_ERROR_COMMENT = '5개 이상 10개 이하의 값을 입력하세요';
   this.INPUT_TYPE_ERROR_COMMENT = '정렬은 숫자로만 합시다';
+  this.LIMIT_LOW_TIME = 2500;
+  this.LIMIT_HIGH_TIME = 300;
+  this.TIME_INTERVAL = 200;
+
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
   this.sortChildren = this.$sortBox.children;
@@ -20,7 +24,7 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
   changeViewStyle('select', this.sortChildren[start], this.sortChildren[end]);
 
   if (start >= end) {
-    return; 
+    return;
   }
 
   if (this.isStop) {
@@ -78,11 +82,7 @@ Model.prototype._bubbleSort = async function () {
 
       changeViewStyle('selected', this.sortChildren[j], this.sortChildren[j + 1]);
 
-      await new Promise(resolve => {
-        setTimeout(() => {
-          resolve();
-        }, this.delay);
-      });
+      this._delay();
 
       if (this.sortingList[j] > this.sortingList[j + 1]) {
         swapValue = this.sortingList[j];
@@ -103,27 +103,28 @@ Model.prototype._bubbleSort = async function () {
   showViewText(this.ENDING_COMMENT);
 }
 
-Model.prototype._setTime = function (standard) {
-  const LIMIT_LOW_TIME = 1500;
-  const LIMIT_HIGH_TIME = 300;
-  const TIME_INTERVAL = 200;
+Model.prototype._setFaster = function () {
+  this.delay -= this.TIME_INTERVAL;
 
-  if (standard === 'slow') {
-    if (this.delay > LIMIT_LOW_TIME) {
-      this.delay = LIMIT_LOW_TIME;
-      return;
-    }
-
-    this.delay += TIME_INTERVAL;
-    return;
+  if (this.delay < this.LIMIT_HIGH_TIME) {
+    this.delay = this.LIMIT_HIGH_TIME;
   }
+}
 
-  if (this.delay < LIMIT_HIGH_TIME) {
-    this.delay = LIMIT_HIGH_TIME;
-    return;
+Model.prototype._setSlower = function () {
+  this.delay += this.TIME_INTERVAL;
+
+  if (this.delay > this.LIMIT_LOW_TIME) {
+    this.delay = this.LIMIT_LOW_TIME;
   }
+}
 
-  this.delay -= TIME_INTERVAL;
+Model.prototype._delay = function () {
+  new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, this.delay);
+  });
 }
 
 Model.prototype._checkValue = function (string) {
