@@ -1,4 +1,4 @@
-import { _, numberInput } from "./add-event-listeners";
+import { numberInput } from "./add-event-listeners";
 
 export default function resetInputTexts() {
   numberInput.value = "";
