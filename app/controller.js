@@ -17,6 +17,9 @@ Controller.prototype.getData = function () {
 }
 
 Controller.prototype.sortStorage = async function(storeageArray) {
+  const stampStorage = this.model.stampStorage;
+  const graphNodes = this.view.$graphNodes;
+
   for (let i = 0; i < storeageArray.length; i++) {
     for (let j = 0; j < storeageArray.length - 1 -i; j++) {
       if (storeageArray[j] > storeageArray[j + 1]) {
@@ -30,17 +33,17 @@ Controller.prototype.sortStorage = async function(storeageArray) {
     }
   }
 
-  while (this.model.stampStorage.length) {
+  while (stampStorage.length) {
     let leftNode;
     let rightNode;
 
     for (let i = 0; i < this.view.$graphNodes.length; i++) {
-      if ((this.model.stampStorage[0].leftIndex) === Number(this.view.$graphNodes[i].dataset.x)) {
-        leftNode = this.view.$graphNodes[i];
+      if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) {
+        leftNode = graphNodes[i];
       }
 
-      if ((this.model.stampStorage[0].rightIndex) === Number(this.view.$graphNodes[i].dataset.x)) {
-        rightNode = this.view.$graphNodes[i];
+      if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) {
+        rightNode = graphNodes[i];
       }
     }
 
