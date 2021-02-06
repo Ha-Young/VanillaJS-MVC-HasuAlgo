@@ -1,19 +1,6 @@
 import { delay } from "../model/delay";
 import divideNumbersInCanvas from "../view/divide-numbers-in-canvas";
-
-function x(changed, origin) {
-  origin.forEach((each, index) => {
-    const eachNode = document.querySelector(`[data-value="${each}"]`);
-    const newIndex = changed.findIndex(item => item === each);
-    const indexGap = index - newIndex;
-
-    const nodeCssMatrix = new WebKitCSSMatrix(getComputedStyle(eachNode).transform);
-    const positionX = nodeCssMatrix.m41;
-    const positionY = nodeCssMatrix.m42;
-
-    eachNode.style.transform = `translate(${-indexGap * 100 + positionX}px, ${positionY + 50 }px)`;
-  })
-}
+import swapCloudsInCanvas from "../view/swap-clouds-in-canvas";
 
 async function getMergeSorted(left, right) {
   let origin = [].concat(left, right);
@@ -42,7 +29,7 @@ async function getMergeSorted(left, right) {
     result = result.concat(rightNumber);
   }
 
-  swapMergedItems(result, origin);
+  swapCloudsInCanvas(result, origin);
   await delay(700);
   return result;
 }
