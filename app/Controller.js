@@ -21,7 +21,7 @@ export default function Controller(model, view) {
   this.MERGE_SORT = "merge-sort";
   this.QUICK_SORT = "quick-sort";
 
-  this.INITIAL_MESSAGE = "Please type any 5-10 numbers between 0 to 50 seperating with comma";
+  this.INITIAL_MESSAGE = "Please type any 5-10 numbers between 0 to 30 seperating with comma";
   this.PROPER_NUMBER_MESSAGE = "Please type proper 5-10 numbers";
   this.PROPER_FORMAT_MESSAGE = "Please type numbers with correct format ex) 1, 2, 3";
   this.PROPER_RANGE_MESSAGE = "Please type numbers between 1 to 30";

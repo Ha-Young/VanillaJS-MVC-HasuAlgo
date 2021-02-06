@@ -82,33 +82,32 @@ View.prototype.bubbleSortSwapTargetElements = function(leftTarget, rightTarget, 
 };
 
 View.prototype.colorTargetElement = function(targetElement) {
-    targetElement.classList.add('target-element-color');
+  targetElement.classList.add('target-element-color');
 };
 
 View.prototype.uncolorBiggerElement = function(biggerElement) {
-    biggerElement.classList.remove('bigger-element-color');
+  biggerElement.classList.remove('bigger-element-color');
 };
 
 View.prototype.uncolorSmallerElement = function(smallerElement) {
-    smallerElement.classList.remove('smaller-element-color');
+  smallerElement.classList.remove('smaller-element-color');
 };
 
 View.prototype.colorSortedElement = function(sortedElement) {
-    sortedElement.classList.add("sorted-element-color");
-  };
+  sortedElement.classList.add("sorted-element-color");
+};
 
 View.prototype.colorPivotElement = function(pivotElement) {
   pivotElement.classList.add('pivot-element-color');
 };
 
 View.prototype.uncolorPivotElement = function(pivotElement) {
-    pivotElement.classList.remove('pivot-element-color');
-  };
+  pivotElement.classList.remove('pivot-element-color');
+};
 
 View.prototype.uncolorTargetElement = function(targetElement) {
   targetElement.classList.remove("target-element-color");
 };
-
 
 View.prototype.resetUserInputElement = function(userInput) {
   userInput.removeAttribute(this.DISABLED_CLASSNAME);
@@ -119,41 +118,39 @@ View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
   sortDisplaySection.innerHTML = "";
 };
 
-// quick
 View.prototype.colorPivotElement = function(pivot) {
-    pivot.classList.add('pivot-element-color');
-  };
-  
-  View.prototype.colorTargetElement = function(targetElement) {
-    targetElement.classList.add('target-element-color');
-  };
-  
-  View.prototype.colorBiggerElement = function(biggerElement) {
-    biggerElement.classList.add('bigger-element-color');
-  };
-  
-  View.prototype.colorSmallerElement = function(smallerElement) {
-    smallerElement.classList.add('smaller-element-color');
-  };
+  pivot.classList.add('pivot-element-color');
+};
 
- View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
-    pivotIndexElem.classList.add(this.ELEMENT_MOVING_EFFECT);
-    target.classList.add(this.ELEMENT_MOVING_EFFECT);
+View.prototype.colorTargetElement = function(targetElement) {
+  targetElement.classList.add('target-element-color');
+};
 
-    let pivotIndexElemRect = pivotIndexElem.getBoundingClientRect();
-    let targetRect = target.getBoundingClientRect();
+View.prototype.colorBiggerElement = function(biggerElement) {
+  biggerElement.classList.add('bigger-element-color');
+};
 
-    let rectDifference = Math.abs(targetRect.x - pivotIndexElemRect.x);
+View.prototype.colorSmallerElement = function(smallerElement) {
+  smallerElement.classList.add('smaller-element-color');
+};
 
-    let pivotIndexElementPreStyled = getX(pivotIndexElem);
-    let targetPreStyled = getX(target);
+View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
+  pivotIndexElem.classList.add(this.ELEMENT_MOVING_EFFECT);
+  target.classList.add(this.ELEMENT_MOVING_EFFECT);
 
-    function getX (elem) {
-      const style = window.getComputedStyle(elem);
-      const matrix = new WebKitCSSMatrix(style.transform);
-      return matrix.m41;
-    }
+  let pivotIndexElemRect = pivotIndexElem.getBoundingClientRect();
+  let targetRect = target.getBoundingClientRect();
 
-    pivotIndexElem.style.transform = `translate(${pivotIndexElementPreStyled + rectDifference}px)`
-    target.style.transform = `translate(${targetPreStyled-rectDifference}px)`
+  let rectDifference = Math.abs(targetRect.x - pivotIndexElemRect.x);
+  let pivotIndexElementPreStyled = getX(pivotIndexElem);
+  let targetPreStyled = getX(target);
+
+  function getX (elem) {
+    const style = window.getComputedStyle(elem);
+    const matrix = new WebKitCSSMatrix(style.transform);
+    return matrix.m41;
+  }
+
+  pivotIndexElem.style.transform = `translate(${pivotIndexElementPreStyled + rectDifference}px)`
+  target.style.transform = `translate(${targetPreStyled-rectDifference}px)`
 }
