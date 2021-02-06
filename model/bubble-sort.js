@@ -1,4 +1,4 @@
-import { delay } from "../model/delay";
+import delay from "../model/delay";
 import swapNumbersInCanvas from "../view/swap-pipes-in-canvas";
 
 function swapNumbers(first, second) {

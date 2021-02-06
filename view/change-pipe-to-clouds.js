@@ -8,6 +8,9 @@ export default function changeBarToCircle() {
   const pipes = document.querySelectorAll(".pipe");
 
   pipes.forEach(pipe => {
-    pipe.classList.add("number-cloud")
+    pipe.classList.add("number-cloud");
   });
+
+  const clouds = document.querySelector(".clouds-container");
+  clouds.style.cssText = "visibility: hidden";
 }

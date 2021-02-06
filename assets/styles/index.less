@@ -18,23 +18,26 @@ html, body {
   width: 100%;
   background-color: #E0CDB2;
   z-index: 1;
+  box-shadow: inset 0px 0px 122px 21px rgba(160,147,127,0.95);
 }
 
 .nintendo-header {
-  font-size: 2.5rem;
+  font-size: 2rem;
+  font-weight: bolder;
   margin-bottom: 1rem;
 }
 
 .nintendo-footer {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-family: 'Rubik', sans-serif;
   color: rgb(48, 47, 47);
+  background-color: #cab9a1;
   margin-top: 2rem;
-  border: 0.2em solid rgb(48, 48, 48);
-  border-radius: 50px;
   padding-top : 0.3rem;
   padding-left : 0.8rem;
   padding-right: 0.8rem;
+  border: 0.2em solid rgb(48, 48, 48);
+  border-radius: 50px;
 }
 
 .app {
@@ -54,14 +57,17 @@ html, body {
   box-shadow: 0 0 0 0.5rem #8C0616;
 }
 
-.starter-container {
+.input-container {
+  height: 220px;
+  max-width: 220px;
+  right: 5%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-evenly;
   position: absolute;
-  right: 5%;
+  font-family: 'Press Start 2P', cursive;
 }
+
 .main-container {
   width: 100%;
   height: 100%;
@@ -90,7 +96,7 @@ html, body {
   justify-content: space-around;
 }
 
-.footer {
+.app-footer {
   height: 7%;
   width: 100%;
 }
@@ -104,5 +110,4 @@ html, body {
   justify-content: center;
   position: absolute;
   z-index: 1;
-  // top: -40px;
 }

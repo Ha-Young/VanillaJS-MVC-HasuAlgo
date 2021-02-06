@@ -9,7 +9,8 @@
     "start": "parcel index.html"
   },
   "dependencies": {
-    "lodash": "4.17.11"
+    "lodash": "4.17.11",
+    "nes.css": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",

@@ -1,9 +1,9 @@
-import { delay } from "../model/delay";
+import delay from "../model/delay";
 import divideNumbersInCanvas from "../view/divide-numbers-in-canvas";
 import swapCloudsInCanvas from "../view/swap-clouds-in-canvas";
 
-async function getMergeSorted(left, right) {
-  let origin = [].concat(left, right);
+async function getMergeSortedArray(left, right) {
+  let origin = [...left, ...right];
   let result = [];
   let leftArr = left;
   let rightArr = right;
@@ -52,7 +52,7 @@ async function divide(array) {
 
   await divide(left).then(e => leftVal = e);
   await divide(right).then(e => rightVal = e);
-  await getMergeSorted(leftVal, rightVal).then(val => result = val);
+  await getMergeSortedArray(leftVal, rightVal).then(val => result = val);
 
   return result;
 }

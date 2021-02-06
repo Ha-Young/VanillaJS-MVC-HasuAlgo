@@ -1,3 +1,5 @@
+import delay from "../model/delay";
+
 const offsets = {};
 
 export default async function divideNumbersInCanvas(left, right) {

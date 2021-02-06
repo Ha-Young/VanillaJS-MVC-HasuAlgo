@@ -7,7 +7,8 @@
   <script src="https://kit.fontawesome.com/5fab680b0a.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./node_modules/nes.css/css/nes.min.css">
 </head>
 <body>
   <div class="nintendo">
@@ -44,7 +45,7 @@
       </section>
       <div class="mario">
       </div>
-      <footer class="footer">
+      <footer class="app-footer">
         <div class="ground">
         </div>
         <img class="bush" src="https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/BushSingle.gif" height="55px;">
@@ -52,19 +53,14 @@
         <img class="bush" src="https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/BushSingle.gif" height="55px;">
       </footer>
     </section>
-    <div class="starter-container">
-      <div class="input-container">
-        <input class="number-input" max="110" maxlength="3">
-      </div>
+    <div class="input-container">
+      <label for="dark_field" style="color:rgb(78, 78, 78);">numbers</label>
+      <input id="dark_field" class="number-input nes-input is-dark" max="110" maxlength="3">
       <div class="alert-box"></div>
-      <div class="bubble-sort-button sort-button">
-        Go Bubble
-      </div>
-      <div class="merge-sort-button sort-button">
-        Go Merge
-      </div>
+      <button type="button" class="bubble-sort-button nes-btn is-primary">BUBBLE SORT</button>
+      <button type="button" class="merge-sort-button nes-btn is-success">MERGE SORT</button>
     </div>
-    <footer class="nintendo-footer">Minwoodoo</footer>
+    <footer class="nintendo-footer">Minwoodoo©️</footer>
   </div>
   <script src="./app/index.js"></script>
 </body>
