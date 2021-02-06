@@ -83,9 +83,17 @@ View.prototype.bubbleSortSwapTargetElements = function(leftTarget, rightTarget, 
 
 View.prototype.colorTargetElement = function(targetElement) {
     targetElement.classList.add('target-element-color');
-  };
+};
 
-View.prototype.colorSortedElement = function(sortedElement) { //fix
+View.prototype.uncolorBiggerElement = function(biggerElement) {
+    biggerElement.classList.remove('bigger-element-color');
+};
+
+View.prototype.uncolorSmallerElement = function(smallerElement) {
+    smallerElement.classList.remove('smaller-element-color');
+};
+
+View.prototype.colorSortedElement = function(sortedElement) {
     sortedElement.classList.add("sorted-element-color");
   };
 
@@ -93,18 +101,13 @@ View.prototype.colorPivotElement = function(pivotElement) {
   pivotElement.classList.add('pivot-element-color');
 };
 
-
+View.prototype.uncolorPivotElement = function(pivotElement) {
+    pivotElement.classList.remove('pivot-element-color');
+  };
 
 View.prototype.uncolorTargetElement = function(targetElement) {
   targetElement.classList.remove("target-element-color");
 };
-
-
-View.prototype.removeTransitionEffect = function(targetElement) {
-  targetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
-}
-
-
 
 
 View.prototype.resetUserInputElement = function(userInput) {
@@ -115,11 +118,6 @@ View.prototype.resetUserInputElement = function(userInput) {
 View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
   sortDisplaySection.innerHTML = "";
 };
-
-
-// merge sort
-
-
 
 // quick
 View.prototype.colorPivotElement = function(pivot) {
@@ -137,27 +135,25 @@ View.prototype.colorPivotElement = function(pivot) {
   View.prototype.colorSmallerElement = function(smallerElement) {
     smallerElement.classList.add('smaller-element-color');
   };
-  
-
 
  View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
-    pivotIndexElem.classList.add("element-moving-effect");
-    target.classList.add("element-moving-effect");
+    pivotIndexElem.classList.add(this.ELEMENT_MOVING_EFFECT);
+    target.classList.add(this.ELEMENT_MOVING_EFFECT);
 
-    let pivotIndexElemRect = pivotIndexElem.getBoundingClientRect()
+    let pivotIndexElemRect = pivotIndexElem.getBoundingClientRect();
     let targetRect = target.getBoundingClientRect();
 
     let rectDifference = Math.abs(targetRect.x - pivotIndexElemRect.x);
 
-    let pivotIndexElementPreStyled = getX(pivotIndexElem)
-    let targetPreStyled = getX(target)
+    let pivotIndexElementPreStyled = getX(pivotIndexElem);
+    let targetPreStyled = getX(target);
 
     function getX (elem) {
-        const style = window.getComputedStyle(elem);
-        const matrix = new WebKitCSSMatrix(style.transform);
-        return matrix.m41;
+      const style = window.getComputedStyle(elem);
+      const matrix = new WebKitCSSMatrix(style.transform);
+      return matrix.m41;
     }
 
     pivotIndexElem.style.transform = `translate(${pivotIndexElementPreStyled + rectDifference}px)`
-    target.style.transform = `translate(${targetPreStyled -rectDifference}px)`
+    target.style.transform = `translate(${targetPreStyled-rectDifference}px)`
 }
