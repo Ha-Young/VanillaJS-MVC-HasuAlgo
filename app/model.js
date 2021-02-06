@@ -1,11 +1,11 @@
 function Model() {
   this.storage = [];
-  this.indexCount = 0;
   this.stampStorage = [];
 }
 
-Model.prototype.getStamp = function(leftIndex, rightIndex, finishIndex) {
+Model.prototype.getStamp = function(stampType,leftIndex, rightIndex, finishIndex) {
   return {
+    stampType,
     leftIndex,
     rightIndex,
     finishIndex

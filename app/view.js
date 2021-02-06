@@ -1,5 +1,3 @@
-import { set } from "lodash";
-
 function View () {
   this.$errorMessage = document.querySelector('.errorMessage');
   this.$contentContainer = document.querySelector('.contentContainer');
@@ -18,24 +16,33 @@ View.prototype.addChildNode = function(value) {
   this.$div.setAttribute('data-X', this.indexCount);
   this.$div.setAttribute('data-count', 0);
   this.$div.classList.add('graphNode');
+  this.$div.classList.add('transition');
   this.$div.style.height = `${value + 3}px`;
   this.$contentContainer.appendChild(this.$div);
   this.$graphNodes = document.getElementsByClassName('graphNode');
   this.indexCount++;
 }
 
-View.prototype.moveGraph = function moveGraph(leftNode, rightNode) {  
-  leftNode.classList.add('transition');
-  rightNode.classList.add('transition');
-  leftNode.style.backgroundColor = 'blue';
-  rightNode.style.backgroundColor = 'blue';
+View.prototype.changeColor = function(leftNode, rightNode) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      leftNode.style.backgroundColor = 'blue';
+      rightNode.style.backgroundColor = 'blue';
+    
+      resolve();
+    }, 1000);
+  });
+}
 
+View.prototype.moveGraph = function(leftNode, rightNode) {  
   return new Promise((resolve) => {
     setTimeout(() => {
     
       const left = ++leftNode.dataset.count;
       const right = --rightNode.dataset.count;
 
+      leftNode.style.backgroundColor = 'blue';
+      rightNode.style.backgroundColor = 'blue';
       leftNode.style.transform = `translateX(${left*60}px)`;
       rightNode.style.transform = `translateX(${right*60}px)`;
 
@@ -55,11 +62,11 @@ View.prototype.removeColor = function(leftNode, rightNode) {
   });
 }
 
-View.prototype.changeFinishColor = function(finishNode) {
-  finishNode.style.backgroundColor = 'green';
-
+View.prototype.finishColor = function(finishNode) {
   return new Promise((resovle) => {
     setTimeout(() => {
+      finishNode.style.backgroundColor = 'green';
+
       resovle();
     }, 1000);
   });
