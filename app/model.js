@@ -5,7 +5,7 @@ export default function Model() {
   this.ENDING_COMMENT = '다 끝났습니다';
   this.CORRECT_VALUE_COMMENT = '정렬할 준비가 되었습니다 시작 버튼을 눌러주세요';
   this.OUT_OF_RANGE_ERROR_COMMENT = '5개 이상 10개 이하의 값을 입력하세요';
-  this.INPUT_TYPE_ERROR_COMMENT = '정렬은 숫자로만 합시다. 0은 정렬 대상이 이닙니다.';
+  this.INPUT_TYPE_ERROR_COMMENT = '정렬은 숫자로만 합시다. 0은 정렬 대상이 아닙니다.';
   this.LIMIT_LOW_TIME = 2500;
   this.LIMIT_HIGH_TIME = 300;
   this.TIME_INTERVAL = 200;

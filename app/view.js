@@ -9,7 +9,8 @@ export default function View() {
   this.styleClassName = {
     transition: 'transition',
     select: 'selected',
-    none: 'none'
+    none: 'none',
+    block: 'block'
   };
 }
 
@@ -22,7 +23,7 @@ View.prototype._createBlock = function (sortList) {
     const $block = document.createElement('div');
     const $label = document.createElement('b');
 
-    $block.classList.add('block');
+    $block.classList.add(this.styleClassName['block']);
 
     $block.style.height = `${sortList[i] / highestValue * this.HEIGHT_PERCENT}%`;
     $label.textContent = `${sortList[i]}`;
