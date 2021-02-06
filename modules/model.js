@@ -56,19 +56,19 @@ export default class Model {
     callback(this.data);
   }
 
-  bubbleSort = async ({ pickBlocks, swapBlocks, releaseBlocks, decideSorted,
+  bubbleSort = async ({ changePickedBlocksColor, swapBlocks, revertBlocksColor, decideSorted,
     disableInputs, enableInputs }) => {
     disableInputs();
 
     for (let i = 0; i < this.numberArray.length; i++) {
       for (let j = 0; j < this.numberArray.length - i - 1; j++) {
-        await pickBlocks(j, j + 1);
+        await changePickedBlocksColor(j, j + 1);
 
         if (this.numberArray[j] > this.numberArray[j + 1]) {
           await this._swap(j, j + 1, swapBlocks);
         }
 
-        await releaseBlocks(j, j + 1);
+        await revertBlocksColor(j, j + 1);
       }
 
       await decideSorted(this.numberArray.length - i - 1);
@@ -95,33 +95,44 @@ export default class Model {
     if (low === this.numberArray.length - 1) view.enableInputs();
   }
 
-  _partition = async (low, high, { pickPivot, pickBlocks,
-    swapBlocks, releaseBlocks, decideSorted }) => {
+  _partition = async (low, high, { changePivotBlockColor, changePickedBlocksColor,
+    swapBlocks, revertBlocksColor, decideSorted }) => {
     const pivot = this.numberArray[high];
     let i;
     let index = low;
 
-    await pickPivot(high);
+    await changePivotBlockColor(high);
 
     for (i = low; i < high; i++) {
-      let areEqualBlocks = (i === index || this.numberArray[i] >= pivot) ? true : false;
+      let areEqualBlocks = (i === index || this.numberArray[i] >= pivot)
 
-      await pickBlocks(i, index, areEqualBlocks);
+      await changePickedBlocksColor(i, index, areEqualBlocks);
 
       if (this.numberArray[i] < pivot) {
         await this._swap(index, i, swapBlocks);
         index++;
       }
 
-      await releaseBlocks(i, index - 1, areEqualBlocks);
+      await revertBlocksColor(i, index - 1, areEqualBlocks);
     }
 
     await this._swap(index, high, swapBlocks);
-    await releaseBlocks(high, index);
+    await revertBlocksColor(high, index);
     await decideSorted(index);
 
     return index;
   }
+
+
+  // mergeSort() {
+  //   this.mergeSort();
+  //   this._merge();
+  //   this._merge();
+  // }
+
+  // _merge() {
+
+  // }
 
   _setStandard = (maxNum, maxHeight) => {
     if (maxNum > maxHeight) {

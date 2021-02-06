@@ -31,17 +31,15 @@ export default class View {
         this.$startButton.addEventListener("click", (event) => {
           handler();
         });
+        break;
+      default:
+        console.log("default");
     }
   }
 
   checkBlocksSorted = () => {
-    const $blocks = document.querySelectorAll(".number-block");
-
-    for (const $block of $blocks) {
-      if (!$block.classList.contains("sorted")) return false;
-    }
-
-    return true;
+    const $blocks = [...document.querySelectorAll(".number-block")];
+    return $blocks.every($block => $block.classList.contains("sorted"));
   }
 
   isValid = (input) => {
@@ -95,11 +93,11 @@ export default class View {
     const $blockI = document.querySelectorAll(".number-block")[i];
     const $blockJ = document.querySelectorAll(".number-block")[j];
     const $siblingI = $blockI.nextSibling === $blockJ ? $blockI : $blockI.nextSibling;
-    const transformI = getComputedStyle($blockI).getPropertyValue("transform");
-    const transformJ = getComputedStyle($blockJ).getPropertyValue("transform");
+    const transformPropertyI = getComputedStyle($blockI).getPropertyValue("transform");
+    const transformPropertyJ = getComputedStyle($blockJ).getPropertyValue("transform");
 
-    $blockI.style.transform = transformJ;
-    $blockJ.style.transform = transformI;
+    $blockI.style.transform = transformPropertyJ;
+    $blockJ.style.transform = transformPropertyI;
 
     await this._wait(100);
 
@@ -109,7 +107,7 @@ export default class View {
     await this._wait(100);
   }
 
-  pickBlocks = async (i, j, areEqualBlocks = false) => {
+  changePickedBlocksColor = async (i, j, areEqualBlocks = false) => {
     if (!areEqualBlocks) {
       const $blockRight = document.querySelectorAll(".number-block")[j];
       $blockRight.classList.add("picked");
@@ -121,7 +119,7 @@ export default class View {
     await this._wait(200);
   }
 
-  releaseBlocks = async (i, j, areEqualBlocks = false) => {
+  revertBlocksColor = async (i, j, areEqualBlocks = false) => {
     if (!areEqualBlocks) this._removeColor(j);
 
     this._removeColor(i);
@@ -135,7 +133,7 @@ export default class View {
 
   }
 
-  pickPivot = async (i, blockState = "pivot") => {
+  changePivotBlockColor = async (i, blockState = "pivot") => {
     const $block = document.querySelectorAll(".number-block")[i];
     $block.classList.add(blockState);
     await this._wait(200);
@@ -152,12 +150,11 @@ export default class View {
     }
   }
 
-  _wait(t) {
+  _wait(delay) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve();
-      }, t);
+      }, delay);
     })
   }
-
 }

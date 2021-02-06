@@ -12,6 +12,7 @@ export default class Controller {
     this.view = View;
 
     this.view.bind("formSubmit", (selection, input) => {
+      console.log(this);
       this.setInitialState(selection, input);
     });
 
