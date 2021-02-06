@@ -65,8 +65,8 @@ class View {
     const self = this;
     const source = gbi(`#${sourceIndex}`);
     const target = gbi(`#${targetIndex}`);
-
     self.$sortElementList = qsa(".sort-element");
+
     const visualizeBubble = {
       "START SORT": async function () {
         self.$inputForm.classList.add("hide");
@@ -103,7 +103,7 @@ class View {
         await wait(0);
       },
       "UNPAINT COMPARE": async function () {
-        source.children[0].classList.remove("done");
+        source.children[0].classList.remove("comparing");
         target.children[0].classList.remove("comparing");
         await wait(400);
       },
@@ -127,11 +127,11 @@ class View {
       },
       "PAINT SOURCE": async function () {
         source.children[0].classList.add("comparing");
-        await wait(500);
+        await wait(400);
       },
       "PAINT TARGET": async function () {
         source.children[0].classList.add("done");
-        await wait(500);
+        await wait(400);
       },
       "SWAP INSERTION": async function () {
         const sourceCoordiX = source.getBoundingClientRect().x;
@@ -187,18 +187,46 @@ class View {
       "UNPAINT TARGET": async function () {
         source.children[0].classList.remove("comparing");
         source.children[0].classList.remove("done");
-        await wait(400);
+        await wait(200);
       },
       "UNPAINT SOURCE": async function () {
         source.children[0].classList.remove("comparing");
         source.children[0].classList.remove("done");
-        await wait(400);
+        await wait(200);
       },
       "PAINT ALL": async function () {
         for (let i = 0; i < self.$sortElementList.length; i++) {
           self.$sortElementList[i].children[0].classList.add("done");
         }
-        await wait(200);
+        await wait(0);
+      },
+      "FINISH SORT": function () {
+        self.$inputForm.classList.remove("hide");
+        self.$resetButton.classList.remove("hide");
+      },
+    };
+
+    const visualizeMerge = {
+      "START SORT": async function () {
+        self.$inputForm.classList.add("hide");
+        self.$shuffleButton.classList.add("hide");
+        self.$randomButton.classList.add("hide");
+        self.$startButton.classList.add("hide");
+        self.$resetButton.classList.add("hide");
+      },
+      "FINISH SORT": function () {
+        self.$inputForm.classList.remove("hide");
+        self.$resetButton.classList.remove("hide");
+      },
+    };
+
+    const visualizeQuick = {
+      "START SORT": async function () {
+        self.$inputForm.classList.add("hide");
+        self.$shuffleButton.classList.add("hide");
+        self.$randomButton.classList.add("hide");
+        self.$startButton.classList.add("hide");
+        self.$resetButton.classList.add("hide");
       },
       "FINISH SORT": function () {
         self.$inputForm.classList.remove("hide");

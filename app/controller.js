@@ -30,8 +30,7 @@ class Controller {
   setView(page) {
     const self = this;
 
-    self.model.visualizeTask = [];
-    self.model.inputArray = [];
+    self.model.initialize();
     self.view.setSortStyle(page);
   }
 
@@ -48,6 +47,13 @@ class Controller {
       .filter((num) => !isNaN(num));
 
     if (!newNumber.length) {
+      return;
+    }
+
+    if (self.page === "merge") {
+      self.model.addNumber(newNumber, function (newList) {
+        self.view.paintInput("DRAW BOX", newList);
+      });
       return;
     }
 

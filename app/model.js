@@ -2,8 +2,11 @@ class Model {
   constructor() {
     this.inputArray = [];
     this.visualizeTask = [];
-    this.mergeTemp = [];
-    this.quickTemp = [];
+  }
+
+  initialize() {
+    this.inputArray = [];
+    this.visualizeTask = [];
   }
 
   addNumber(array, callback) {
@@ -67,7 +70,6 @@ class Model {
   }
 
   bubbleSort(callback) {
-    this.visualizeTask.push(createTask(""));
     for (let i = 0; i < this.inputArray.length; i++) {
       for (let j = 0; j < this.inputArray.length - i - 1; j++) {
         this.visualizeTask.push(createTask("PAINT COMPARE", j, j + 1));
