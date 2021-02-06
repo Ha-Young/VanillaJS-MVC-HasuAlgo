@@ -7,6 +7,8 @@ export default function Model() {
   this.CORRECT_VALUE_COMMENT = 'If you selected sorting mode, press the start button';
   this.OUT_OF_RANGE_ERROR_COMMENT = 'Please enter 5 or more and 10 or less';
   this.INPUT_TYPE_ERROR_COMMENT = 'Lets sort by numbers only. 0 is not for sorting';
+  this.LOW_LIMIT_LENGTH = 5;
+  this.HIGH_LIMIT_LENGTH = 10;
   this.LIMIT_LOW_TIME = 2500;
   this.LIMIT_HIGH_TIME = 300;
   this.TIME_INTERVAL = 200;
@@ -38,7 +40,7 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
     return;
   }
 
-  const borderIndex = await this._getQuickSortIndex(this.sortingList, start, end);
+  const borderIndex = await this._divideConquerElements(this.sortingList, start, end);
 
 	await this._quickSort(start, borderIndex - 1);
   await this._quickSort(borderIndex, end);
@@ -46,16 +48,16 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
 	return this.sortingList;
 };
 
-Model.prototype._getQuickSortIndex = async function (array, start, end) {
+Model.prototype._divideConquerElements = async function (array, start, end) {
   const pivotIndex = Math.floor((start + end) / 2);
   const pivotValue = array[pivotIndex];
 
   showViewText(this.DURING_COMMENT);
 
-	while (start <= end) {
+	while (end >= start) {
     changeViewStyle(this.styleClassName.PIVOK, this.sortChildren[pivotIndex]);
 
-		while (array[start] < pivotValue) {
+		while (pivotValue > array[start]) {
       start = start + 1;
     }
 
@@ -63,7 +65,7 @@ Model.prototype._getQuickSortIndex = async function (array, start, end) {
       end = end - 1;
     }
 
-		if (start <= end) {
+		if (end >= start) {
       let swapValue = array[start];
 
       array[start] = array[end];
@@ -122,7 +124,7 @@ Model.prototype._bubbleSort = async function () {
 Model.prototype._setFaster = function () {
   this.DELAY -= this.TIME_INTERVAL;
 
-  if (this.DELAY < this.LIMIT_HIGH_TIME) {
+  if (this.LIMIT_HIGH_TIME > this.DELAY) {
     this.DELAY = this.LIMIT_HIGH_TIME;
   }
 };
@@ -138,13 +140,13 @@ Model.prototype._setSlower = function () {
 Model.prototype._checkValue = function (string) {
   const stringList = string.split(',');
 
-  if (stringList.length < 5 || stringList.length > 10) {
+  if (this.LOW_LIMIT_LENGTH > stringList.length || stringList.length > this.HIGH_LIMIT_LENGTH) {
     showViewText(this.OUT_OF_RANGE_ERROR_COMMENT);
     return;
   }
 
   for (let i = 0; i < stringList.length; i++) {
-    if (isNaN(Number(stringList[i])) || Number(stringList[i]) <= 0) {
+    if (isNaN(Number(stringList[i])) || 0 >= Number(stringList[i])) {
       showViewText(this.INPUT_TYPE_ERROR_COMMENT);
 
       this.sortingList = [];
