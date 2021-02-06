@@ -130,7 +130,7 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
     const targetElement = userInputElements[i];
 
     this.view.toggleTargetElementColor(targetElement, true);
-    await this.view.delay(this.DEALY);
+    await this.view.delay(this.EXTENDED_DELAY);
 
     const pivotValue = Number(pivotElement.textContent);
     const targetValue = Number(targetElement.textContent);
