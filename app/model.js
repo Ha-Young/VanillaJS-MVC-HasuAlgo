@@ -16,12 +16,15 @@ export default function Model() {
   this.sortingList = [];
   this.isStop = false;
   this.delay = 1000;
+  this.styleClassName = {
+    select : 'selected'
+  };
 }
 
 Model.prototype._quickSort = async function (start = 0, end = this.sortingList.length - 1) {
   showViewText(this.START_COMMENT);
 
-  changeViewStyle('select', this.sortChildren[start], this.sortChildren[end]);
+  changeViewStyle(this.styleClassName['select'], this.sortChildren[start], this.sortChildren[end]);
 
   if (start >= end) {
     return;
@@ -80,9 +83,13 @@ Model.prototype._bubbleSort = async function () {
         return;
       }
 
-      changeViewStyle('selected', this.sortChildren[j], this.sortChildren[j + 1]);
+      changeViewStyle(this.styleClassName['select'], this.sortChildren[j], this.sortChildren[j + 1]);
 
-      this._delay();
+      await new Promise(resolve => {
+        setTimeout(() => {
+          resolve();
+        }, this.delay);
+      });
 
       if (this.sortingList[j] > this.sortingList[j + 1]) {
         swapValue = this.sortingList[j];
@@ -91,7 +98,7 @@ Model.prototype._bubbleSort = async function () {
 
         await swapInView(this.sortChildren[j + 1], this.sortChildren[j], this.sortingList, this.delay);
       } else {
-        changeViewStyle('selected', this.sortChildren[j], this.sortChildren[j + 1]);
+        changeViewStyle(this.styleClassName['select'], this.sortChildren[j], this.sortChildren[j + 1]);
       }
     }
 
@@ -117,14 +124,6 @@ Model.prototype._setSlower = function () {
   if (this.delay > this.LIMIT_LOW_TIME) {
     this.delay = this.LIMIT_LOW_TIME;
   }
-}
-
-Model.prototype._delay = function () {
-  new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, this.delay);
-  });
 }
 
 Model.prototype._checkValue = function (string) {

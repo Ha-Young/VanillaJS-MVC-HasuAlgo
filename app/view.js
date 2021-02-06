@@ -3,6 +3,11 @@ export default function View() {
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
   this.canPaint = true;
+  this.styleClassName = {
+    transition : 'transition',
+    select : 'selected',
+    none: 'none'
+  };
 }
 
 View.prototype._createBlock = function (sortList) {
@@ -29,17 +34,17 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
     const rightElementLocationX = this._getTargetTranslateX(rightElement);
     const leftElementLocationX = this._getTargetTranslateX(leftElement);
 
-    this._changeBlockStyle('transition', [rightElement, leftElement]);
-    this._changeBlockStyle('selected', [rightElement, leftElement]);
+    this._changeBlockStyle(this.styleClassName['transition'], [rightElement, leftElement]);
+    this._changeBlockStyle(this.styleClassName['select'], [rightElement, leftElement]);
 
     rightElement.style.transform = `translateX(${leftElementLocationX - rightElementLocationX}px)`;
     leftElement.style.transform = `translateX(${rightElementLocationX - leftElementLocationX}px)`;
 
     setTimeout(() => {
-      rightElement.style.transform = 'none';
-      leftElement.style.transform = 'none';
+      rightElement.style.transform = this.styleClassName['none'];
+      leftElement.style.transform = this.styleClassName['none'];
       
-      this._changeBlockStyle('selected', [rightElement, leftElement]);
+      this._changeBlockStyle(this.styleClassName['select'], [rightElement, leftElement]);
 
       while (this.$sortBox.hasChildNodes()) {
         this.$sortBox.removeChild(this.$sortBox.firstChild);
