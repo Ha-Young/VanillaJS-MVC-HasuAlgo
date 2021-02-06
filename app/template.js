@@ -1,7 +1,7 @@
 export const Template = function () {
-  this.defaultTemplate = `<h1 class="main-message">Choose Sort Style</h1>`;
+  this.default = `<h1 class="main-message">Choose Sort Style</h1>`;
 
-  this.bubbleTemplate = `<section class="sort-buttons">
+  this.bubble = `<section class="sort-buttons">
     <div class="sort-options">
       <button class="shuffle-button option-button">SHUFFLE</button>
       <button class="random-button option-button">SET RANDOM</button>
@@ -13,7 +13,7 @@ export const Template = function () {
   </section>
   <ul class="sort-list"></ul>`;
 
-  this.insertionTemplate = `<section class="sort-buttons">
+  this.insertion = `<section class="sort-buttons">
   <div class="sort-options">
     <button class="shuffle-button option-button">SHUFFLE</button>
     <button class="random-button option-button">SET RANDOM</button>
@@ -25,9 +25,9 @@ export const Template = function () {
 </section>
 <ul class="sort-list"></ul>`;
 
-  this.mergeTemplate = `<h1 class="main-alert">Merge coming soon</h1>
+  this.merge = `<h1 class="main-alert">Merge coming soon</h1>
   <h2 class="sub-alert">How about Bubble Sort?</h2>`;
 
-  this.quickTemplate = `<h1 class="main-alert">Quick coming soon</h1>
+  this.quick = `<h1 class="main-alert">Quick coming soon</h1>
   <h2 class="sub-alert">How about Bubble Sort?</h2>`;
 };
