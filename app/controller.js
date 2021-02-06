@@ -22,7 +22,7 @@ Controller.prototype.sortStorage = async function(storeageArray) {
 
   for (var i = 0; i < storeageArray.length; i++) {
     for (var j = 0; j < storeageArray.length - 1 - i; j++) {
-      stampStorage.push(this.model.getStamp('start', j, j + 1, i));
+      stampStorage.push(this.model.getStamp('start', j, j + 1));
 
       if (storeageArray[j] > storeageArray[j + 1]) {
         const temp = storeageArray[j];
@@ -30,34 +30,46 @@ Controller.prototype.sortStorage = async function(storeageArray) {
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = temp;
 
-        stampStorage.push(this.model.getStamp('change', j, j + 1, i));
+        stampStorage.push(this.model.getStamp('change', j, j + 1));
       }
+
+      stampStorage.push(this.model.getStamp('finishCompare', j, j + 1))
     }
 
-    stampStorage.push(this.model.getStamp('end', j, j + 1, i));
+    stampStorage.push(this.model.getStamp('end', j, j + 1));
   }
-  
+
   while (stampStorage.length) {
-    if (stampStorage[0].stampType === 'start') {
       let leftNode;
       let rightNode;
 
-      while (stampStorage[0].stampType === 'start') {
+      if (stampStorage[0].stampType === 'start') {
         for (let i = 0; i < graphNodes.length; i++) {
           if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
     
           if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
         }
-  
+
         await this.view.changeColor(leftNode, rightNode);
-  
+
         stampStorage.shift();
         continue;
       }
-    }
+
+      if (stampStorage[0].stampType === 'finishCompare') {
+        for (let i = 0; i < graphNodes.length; i++) {
+          if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
+    
+          if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
+        }
+
+        await this.view.removeColor(leftNode, rightNode);
+
+        stampStorage.shift();
+        continue;
+      }
   
-    if (stampStorage[0].stampType === 'change') {
-      while (stampStorage[0].stampType === 'change') {
+      if (stampStorage[0].stampType === 'change') {
         let leftNode;
         let rightNode;
     
@@ -77,23 +89,18 @@ Controller.prototype.sortStorage = async function(storeageArray) {
         stampStorage.shift();
         continue;
         }
-      }
   
-      if (stampStorage[0].stampType === 'end') {
-        let leftNode;
-
         while (stampStorage[0].stampType === 'end') {
           for (let i = 0; i < graphNodes.length; i++) {
             if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
           }
-          
+
           await this.view.finishColor(leftNode);
           
           stampStorage.shift();
           continue;
         }
       }
-    }
  }
 
 Controller.prototype.handleKeyUp = function(event) {
