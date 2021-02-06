@@ -1,4 +1,4 @@
-import { alretBox, numberInput } from "./add-event-listeners";
+import { _, numberInput } from "./add-event-listeners";
 
 export default function resetInputTexts() {
   numberInput.value = "";
