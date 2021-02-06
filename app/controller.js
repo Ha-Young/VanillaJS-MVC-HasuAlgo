@@ -73,18 +73,18 @@ export default class Controller {
   async bubbleSort() {
     const graphTable = MYAPP.table.graph;
     const graph = MYAPP.table.graph.children;
-    const numberGraphs = MYAPP.table.graph.children.length;
+    const graphTableLength = MYAPP.table.graph.children.length;
     const modelStorage = this.model.get();
 
-    for (let i = 0; i < numberGraphs; i++) {
-      const outerLoopEnd = numberGraphs - 1;
-      for (let j = 0; j < numberGraphs - 1 - i; j++) {
+    for (let i = 0; i < graphTableLength; i++) {
+      const outerLoopEnd = graphTableLength - 1;
+      for (let j = 0; j < graphTableLength - 1 - i; j++) {
         const left = graph[j];
         const right = graph[j + 1];
         const leftValue = Number(left.dataset.id);
         const rightValue = Number(right.dataset.id);
         const sortedGraphs = this.model.getSortedGraph();
-        const innerLoopEnd = numberGraphs - 2 - i;
+        const innerLoopEnd = graphTableLength - 2 - i;
 
         this.view.clearAllColor(graphTable);
         this.view.renderCurrentColor(left, right);
@@ -98,7 +98,7 @@ export default class Controller {
         }
 
         if (j === innerLoopEnd) {
-          const sortedGraph = graph[numberGraphs - i - 1];
+          const sortedGraph = graph[graphTableLength - i - 1];
           const sortedGraphValue = Number(sortedGraph.dataset.id);
 
           this.model.setSortedGraph(sortedGraphValue);
