@@ -3,33 +3,34 @@ import divideCloudsInCanvas from "../view/divide-clouds-in-canvas";
 import swapCloudsInCanvas from "../view/swap-clouds-in-canvas";
 
 async function getMergeSortedArray(left, right) {
-  let origin = [...left, ...right];
+  let beforeMerge = [...left, ...right];
   let result = [];
-  let leftArr = left;
-  let rightArr = right;
-  let leftNumber = leftArr ? leftArr.shift() : null;
-  let rightNumber = right ? right.shift() : null;
+  let leftArray = Array.from(left);
+  let rightArray = Array.from(right);
+  let numberFromLeft = leftArray ? leftArray.shift() : null;
+  let numberFromRight = rightArray ? rightArray.shift() : null;
 
-  while (leftNumber && rightNumber) {
-    if (leftNumber > rightNumber) {
-      result.push(rightNumber);
-      rightNumber = rightArr.shift();
+  while (numberFromLeft && numberFromRight) {
+    if (numberFromLeft > numberFromRight) {
+      result.push(numberFromRight);
+      numberFromRight = rightArray.shift();
     } else {
-      result.push(leftNumber);
-      leftNumber = leftArr.shift();
+      result.push(numberFromLeft);
+      numberFromLeft = leftArray.shift();
     }
   }
   
-  if (leftNumber) {
-    result.push(leftNumber)
-    result = result.concat(leftArr);
+  if (numberFromLeft) {
+    result.push(numberFromLeft)
+    result = result.concat(leftArray);
   }
-  if (rightNumber) {
-    result.push(rightNumber);
-    result = result.concat(rightNumber);
+  
+  if (numberFromRight) {
+    result.push(numberFromRight);
+    result = result.concat(numberFromRight);
   }
 
-  swapCloudsInCanvas(result, origin);
+  swapCloudsInCanvas(result, beforeMerge);
   await delay(700);
   return result;
 }
