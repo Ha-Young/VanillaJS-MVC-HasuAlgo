@@ -40,67 +40,59 @@ Controller.prototype.sortStorage = async function(storeageArray) {
   }
 
   while (stampStorage.length) {
-      let leftNode;
-      let rightNode;
+    let leftNode;
+    let rightNode;
 
-      if (stampStorage[0].stampType === 'start') {
+    switch (stampStorage[0].stampType) {
+      case 'start': 
         for (let i = 0; i < graphNodes.length; i++) {
           if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-    
           if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
-        }
+          }
 
-        await this.view.changeColor(leftNode, rightNode);
+          await this.view.changeColor(leftNode, rightNode);
 
-        stampStorage.shift();
-        continue;
-      }
+          stampStorage.shift();
+          break;
 
-      if (stampStorage[0].stampType === 'finishCompare') {
+      case 'finishCompare':
         for (let i = 0; i < graphNodes.length; i++) {
           if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-    
           if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
         }
 
         await this.view.removeColor(leftNode, rightNode);
 
         stampStorage.shift();
-        continue;
-      }
-  
-      if (stampStorage[0].stampType === 'change') {
-        let leftNode;
-        let rightNode;
-    
+        break;
+
+      case 'change':
         for (let i = 0; i < graphNodes.length; i++) {
           if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-    
           if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
         }
-  
+
         await this.view.moveGraph(leftNode, rightNode);
         await this.view.removeColor(leftNode, rightNode);
-     
+      
         let temp = leftNode.dataset.x;
         leftNode.dataset.x = rightNode.dataset.x;
         rightNode.dataset.x = temp;
-    
-        stampStorage.shift();
-        continue;
-        }
-  
-        while (stampStorage[0].stampType === 'end') {
-          for (let i = 0; i < graphNodes.length; i++) {
-            if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-          }
 
-          await this.view.finishColor(leftNode);
-          
-          stampStorage.shift();
-          continue;
+        stampStorage.shift();
+        break;
+
+      case 'end':
+        for (let i = 0; i < graphNodes.length; i++) {
+          if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
         }
+
+        await this.view.finishColor(leftNode);
+        
+        stampStorage.shift();
+        break;
       }
+    }
  }
 
 Controller.prototype.handleKeyUp = function(event) {

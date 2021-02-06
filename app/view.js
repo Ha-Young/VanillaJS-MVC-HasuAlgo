@@ -30,7 +30,7 @@ View.prototype.changeColor = function(leftNode, rightNode) {
       rightNode.style.backgroundColor = 'gray';
     
       resolve();
-    }, 1000);
+    }, 700);
   });
 }
 
@@ -47,7 +47,7 @@ View.prototype.moveGraph = function(leftNode, rightNode) {
       rightNode.style.transform = `translateX(${right*60}px)`;
 
       resolve();
-    }, 1000);
+    }, 700);
   });
 }
 
@@ -58,7 +58,7 @@ View.prototype.removeColor = function(leftNode, rightNode) {
       rightNode.style.backgroundColor = 'orange';
 
       resovle();
-    }, 1000);
+    }, 700);
   });
 }
 
@@ -68,7 +68,7 @@ View.prototype.finishColor = function(finishNode) {
       finishNode.style.backgroundColor = 'green';
 
       resovle();
-    }, 1000);
+    }, 700);
   });
 }
 
