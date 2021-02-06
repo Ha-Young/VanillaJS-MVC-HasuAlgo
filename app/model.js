@@ -1,28 +1,20 @@
-import MYAPP from './myapp';
+import MYAPP from "./myapp";
 
 export default class Model {
   constructor() {
     const _localStorage = [];
     const _sortedGraphStorage = [];
 
-    this.set = string => {
-      const splitted = string.split(',');
-      for (const elem of splitted) {
-        _localStorage.push(Number(elem));
-      }
-      this.checkInput();
-    };
-
     this.get = () => _localStorage;
 
-    this.getValue = index => _localStorage[index];
+    this.getValue = (index) => _localStorage[index];
 
     this.checkInput = () => {
-      if (!_localStorage.every(elem => elem < 100)) {
-        throw new Error('number is too high');
+      if (!_localStorage.every((elem) => elem < 100)) {
+        throw new Error("number is too high");
       }
       if (_localStorage.length > 8) {
-        throw new Error('too many numbers');
+        throw new Error("too many numbers");
       }
     };
 
@@ -32,7 +24,7 @@ export default class Model {
       _localStorage[RightValue] = temps;
     };
 
-    this.setSortedGraph = sortedGraph => {
+    this.setSortedGraph = (sortedGraph) => {
       _sortedGraphStorage.push(sortedGraph);
     };
 
@@ -43,4 +35,12 @@ export default class Model {
     const graphTable = MYAPP.table.graph;
     graphTable.insertBefore(right, left);
   }
+
+  set(string) => {
+    const splitted = string.split(",");
+    for (const elem of splitted) {
+      _localStorage.push(Number(elem));
+    }
+    this.checkInput();
+  };
 }

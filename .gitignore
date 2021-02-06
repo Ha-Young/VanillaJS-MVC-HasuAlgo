@@ -9,7 +9,10 @@ dist/
 node_modules/
 bower_components/
 .cache
+.vscode
 
 ## Files
 result.xml
 npm-debug.log
+eslintrc.json
+

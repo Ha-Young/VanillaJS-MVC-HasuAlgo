@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   display: grid;
   place-items: center;
   width: 100vw;
@@ -39,7 +40,6 @@ h2 {
 .header {
   display: flex;
   justify-content: space-between;
-  flex-direction: row;
   align-items: flex-start;
   height: 30%;
   color: white;
@@ -57,11 +57,11 @@ h2 {
 
 .header-title-second {
   font-size: 30px;
-  color: #D8A8ED;
+  color: #d8a8ed;
 }
 
 .header-title-description {
-  color: #7FCDCE;
+  color: #7fcdce;
 }
 
 .sort-type-btn {
@@ -83,13 +83,13 @@ h2 {
 
 .sort-type-btn:hover {
   width: 60px;
-  background-color: #7FCDCE;
+  background-color: #7fcdce;
 }
 
 .sort-type-btn:focus {
-  outline:none;
+  outline: none;
   width: 80px;
-  background-color: #7FCDCE;
+  background-color: #7fcdce;
 }
 
 .header-form {
@@ -113,14 +113,14 @@ h2 {
   color: white;
 }
 
-.header-form-user-input-btn { 
+.header-form-user-input-btn {
   border-radius: 5px;
   background: transparent;
   color: white;
   margin-bottom: 20px;
   margin-right: 10px;
 } :focus {
-  outline:none;
+  outline: none;
 }
 
 .header-form-error-msg-table {
@@ -144,11 +144,11 @@ h2 {
 }
 
 .current-graph {
-  background-color: #7FCDCE;
+  background-color: #7fcdce;
 }
 
 .sorted-graph {
-  background-color: #D8A8ED;
+  background-color: #d8a8ed;
 }
 
 .pivot-graph {
@@ -161,6 +161,10 @@ h2 {
 }
 
 @keyframes learn {
-  from {opacity: 0;}
-  to {opacity: 1;}
- }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

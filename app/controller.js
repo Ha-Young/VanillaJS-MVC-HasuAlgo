@@ -30,13 +30,13 @@ export default class Controller {
         throw new Error('Please insert value');
       }
 
+      this.init();
+
       if (this.checkSortType() === 'BUBBLE') {
-        this.init();
         this.bubbleSort();
       }
 
       if (this.checkSortType() === 'QUICK') {
-        this.init();
         await this.quickSort(localStorage);
         this.view.renderAllColor(MYAPP.table.graph);
       }
@@ -129,15 +129,14 @@ export default class Controller {
     const graphTable = MYAPP.table.graph;
 
     this.view.clearAllColor(graphTable);
-    console.log(`array: ${array}, left: ${left}, leftValue: ${array[left]}, pivot: ${pivot}, right:${right},rightValue: ${array[right]}`)
-    while (left <= right) { //left 포인터가 right를 넘는 순간 left 포인터를 리턴
-      while (array[left] < pivot) {  // 왼쪽에 있는 숫자들 중에서 pivot보다 큰 숫자 찾을때까지
+    while (left <= right) {
+      while (array[left] < pivot) {
         left++;
       }
-      while (array[right] > pivot) {  // 오른쪽에 있는 숫자들 중에서 pivot보다 작은 숫자 찾을때까지
+      while (array[right] > pivot) {
         right--;
       }
-      if (left <= right) {  // 왼쪽 오른쪽 바꿈
+      if (left <= right) {
         this.view.renderPivotColor(graph[mid]);
         this.view.renderCurrentColor(graph[left], graph[right]);
         await this.wait(1000);
