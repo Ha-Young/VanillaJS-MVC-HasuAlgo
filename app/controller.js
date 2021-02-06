@@ -23,6 +23,11 @@ async function swapInView(rightElement, leftElement, swapList, delay) {
 }
 
 function init() {
+  const SELECT_COMMNET = 'Please select sorting mode';
+  const BUBBLESORT_COMMENT = 'Bubble sort';
+  const QUICKSORT_COMMENT = 'Quick sort';
+  const UNSELECT_COMMENT = 'You must be select the sorting mode';
+
   const $inputBox = document.getElementById('inputBox');
   const $submitButton = document.getElementById('submitButton');
   const $playButton = document.getElementById('playButton');
@@ -35,7 +40,8 @@ function init() {
 
   const selectOptions = {
     bubbleSort: 'bubbleSort',
-    quickSort: 'quickSort'
+    quickSort: 'quickSort',
+    none: 'none'
   };
   const styleClassName = {
     hidden: 'hidden'
@@ -58,14 +64,22 @@ function init() {
 
   $selectBox.addEventListener('change', function () {
     if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions['bubbleSort']) {
+      view._showText(BUBBLESORT_COMMENT);
+
       sortingMethod = selectOptions['bubbleSort'];
       return;
     }
 
     if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions['quickSort']) {
+      view._showText(QUICKSORT_COMMENT);
+
       sortingMethod = selectOptions['quickSort'];
       return;
     }
+
+    view._showText(UNSELECT_COMMENT);
+
+    sortingMethod = selectOptions['none'];
   });
 
   $playButton.addEventListener('click', function () {
@@ -74,11 +88,17 @@ function init() {
 
       if (sortingMethod === 'bubbleSort') {
         model._bubbleSort();
+        return;
       }
 
       if (sortingMethod === 'quickSort') {
         model._quickSort();
+        return;
       }
+
+      view._showText(SELECT_COMMNET);
+
+      $playButton.disabled = false;
     }
   });
 
