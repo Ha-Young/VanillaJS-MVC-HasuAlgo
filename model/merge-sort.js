@@ -54,6 +54,7 @@ async function divide(array) {
 
   await divide(left).then(response => leftVal = response);
   await divide(right).then(response => rightVal = response);
+  
   await getMergeSortedArray(leftVal, rightVal).then(response => result = response);
 
   return result;
