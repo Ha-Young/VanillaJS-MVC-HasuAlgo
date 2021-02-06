@@ -18,8 +18,8 @@ function showViewText(text) {
   view._showText(text);
 }
 
-async function swapInView(smallValue, largeValue, swapList, delay) {
-  await view._swapElements(smallValue, largeValue, swapList, delay);
+async function swapInView(rightElement, leftElement, swapList, delay) {
+  await view._swapElements(rightElement, leftElement, swapList, delay);
 }
 
 function init() {
@@ -30,6 +30,11 @@ function init() {
   const $fastButton = document.getElementById('fastButton');
   const $slowButton = document.getElementById('slowButton');
   const $selectBox = document.getElementById('selectBox');
+
+  const selectOptions = {
+    bubbleSort: 'bubbleSort',
+    quickSort: 'quickSort'
+  }
 
   let sortingList;
   let sortingMethod;
@@ -47,13 +52,13 @@ function init() {
   });
 
   $selectBox.addEventListener('change', function () {
-    if ($selectBox.options[$selectBox.selectedIndex].text === 'bubble sort') {
-      sortingMethod = 'bubbleSort';
+    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions['bubbleSort']) {
+      sortingMethod = selectOptions['bubbleSort'];
       return;
     }
 
-    if ($selectBox.options[$selectBox.selectedIndex].text === 'quick sort') {
-      sortingMethod = 'quickSort';
+    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions['quickSort']) {
+      sortingMethod = selectOptions['quickSort'];
       return;
     }
   });
@@ -83,9 +88,9 @@ function init() {
   $reloadButton.addEventListener('click', function () {
     $submitButton.disabled = false;
     $playButton.disabled = false;
-    model.isStop = true;
     view.canPaint = false;
-
+    model.isStop = true;
+    
     setTimeout(() => {
       model._resetBoard();
       view._clearText();

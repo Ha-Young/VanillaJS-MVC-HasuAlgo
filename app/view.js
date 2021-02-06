@@ -1,7 +1,10 @@
 export default function View() {
+  this.HEIGHT_PERCENT = 90;
+
   this.$inputBox = document.getElementById('inputBox');
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
+
   this.canPaint = true;
   this.styleClassName = {
     transition: 'transition',
@@ -20,14 +23,15 @@ View.prototype._createBlock = function (sortList) {
     const $label = document.createElement('b');
 
     $block.classList.add('block');
-    $block.style.height = `${sortList[i] / highestValue * 90}%`;
+
+    $block.style.height = `${sortList[i] / highestValue * this.HEIGHT_PERCENT}%`;
     $label.textContent = `${sortList[i]}`;
-    $label.style.height = `${sortList[i] / highestValue * 90}%`;
+    $label.style.height = `${sortList[i] / highestValue * this.HEIGHT_PERCENT}%`;
 
     $block.appendChild($label);
     this.$sortBox.appendChild($block);
   }
-}
+};
 
 View.prototype._swapElements = function (rightElement, leftElement, swappedArray, delay) {
   return new Promise(resolve => {
@@ -57,22 +61,22 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
       resolve();
     }, delay);
   });
-}
+};
 
 View.prototype._changeBlockStyle = function (className, elementList) {
   for (let i = 0; i < elementList.length; i++) {
     elementList[i].classList.toggle(className);
   }
-}
+};
 
 View.prototype._getTargetTranslateX = function (target) {
   return target.getBoundingClientRect().x;
-}
+};
 
 View.prototype._showText = function (text) {
   this.$commentBox.textContent = text;
-}
+};
 
 View.prototype._clearText = function () {
   this.$inputBox.value = '';
-}
+};

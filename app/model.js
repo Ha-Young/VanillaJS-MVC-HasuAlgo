@@ -5,13 +5,14 @@ export default function Model() {
   this.ENDING_COMMENT = '다 끝났습니다';
   this.CORRECT_VALUE_COMMENT = '정렬할 준비가 되었습니다 시작 버튼을 눌러주세요';
   this.OUT_OF_RANGE_ERROR_COMMENT = '5개 이상 10개 이하의 값을 입력하세요';
-  this.INPUT_TYPE_ERROR_COMMENT = '정렬은 숫자로만 합시다';
+  this.INPUT_TYPE_ERROR_COMMENT = '정렬은 숫자로만 합시다. 0은 정렬 대상이 이닙니다.';
   this.LIMIT_LOW_TIME = 2500;
   this.LIMIT_HIGH_TIME = 300;
   this.TIME_INTERVAL = 200;
 
   this.$sortBox = document.getElementById('sortBox');
   this.$commentBox = document.getElementById('commentBox');
+
   this.sortChildren = this.$sortBox.children;
   this.sortingList = [];
   this.isStop = false;
@@ -41,7 +42,7 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
   await this._quickSort(borderIndex, end);
 
 	return this.sortingList;
-}
+};
 
 Model.prototype._getQuickSortIndex = async function (array, start, end) {
   const pivotIndex = Math.floor((start + end) / 2);
@@ -70,7 +71,7 @@ Model.prototype._getQuickSortIndex = async function (array, start, end) {
 	}
 
 	return start;
-}
+};
 
 Model.prototype._bubbleSort = async function () {
   let swapValue;
@@ -108,7 +109,7 @@ Model.prototype._bubbleSort = async function () {
   }
 
   showViewText(this.ENDING_COMMENT);
-}
+};
 
 Model.prototype._setFaster = function () {
   this.delay -= this.TIME_INTERVAL;
@@ -116,7 +117,7 @@ Model.prototype._setFaster = function () {
   if (this.delay < this.LIMIT_HIGH_TIME) {
     this.delay = this.LIMIT_HIGH_TIME;
   }
-}
+};
 
 Model.prototype._setSlower = function () {
   this.delay += this.TIME_INTERVAL;
@@ -124,7 +125,7 @@ Model.prototype._setSlower = function () {
   if (this.delay > this.LIMIT_LOW_TIME) {
     this.delay = this.LIMIT_LOW_TIME;
   }
-}
+};
 
 Model.prototype._checkValue = function (string) {
   const stringList = string.split(',');
@@ -148,7 +149,7 @@ Model.prototype._checkValue = function (string) {
   }
   
   return this.sortingList;
-}
+};
 
 Model.prototype._resetBoard = function () {
   while (this.$sortBox.hasChildNodes()) {
@@ -161,4 +162,4 @@ Model.prototype._resetBoard = function () {
   showViewText('');
 
   return;
-}
+};
