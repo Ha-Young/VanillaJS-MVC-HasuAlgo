@@ -73,23 +73,25 @@ function init() {
   });
 
   $selectBox.addEventListener('change', function () {
-    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions.BUBBLE_SORT) {
-      view._showText(BUBBLESORT_COMMENT);
+    switch ($selectBox.options[$selectBox.selectedIndex].text) {
+      case selectOptions.BUBBLE_SORT:
+        view._showText(BUBBLESORT_COMMENT);
 
-      sortingMethod = selectOptions.BUBBLE_SORT;
-      return;
+        sortingMethod = selectOptions.BUBBLE_SORT;
+        break;
+
+      case selectOptions.QUICK_SORT:
+        view._showText(QUICKSORT_COMMENT);
+
+        sortingMethod = selectOptions.QUICK_SORT;
+        break;
+
+      default:
+        view._showText(UNSELECT_COMMENT);
+
+        sortingMethod = selectOptions.NONE;
+        break;
     }
-
-    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions.QUICK_SORT) {
-      view._showText(QUICKSORT_COMMENT);
-
-      sortingMethod = selectOptions.QUICK_SORT;
-      return;
-    }
-
-    view._showText(UNSELECT_COMMENT);
-
-    sortingMethod = selectOptions.NONE;
   });
 
   $playButton.addEventListener('click', function () {
