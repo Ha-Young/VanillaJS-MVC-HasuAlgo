@@ -1,7 +1,7 @@
 import bubbleSort from "../model/bubble-sort";
 import mergeSort from "../model/merge-sort";
 import { inputDatas } from "../model/user-input-data";
-import changeBarToCircle from "../view/change-bar-to-circle";
+import changeBarToCircle from "../view/change-pipe-to-clouds";
 
 const { numbers, nodes } = inputDatas;
 

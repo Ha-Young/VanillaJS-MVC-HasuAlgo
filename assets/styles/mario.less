@@ -1,10 +1,10 @@
 .mario {
   position: absolute;
-  width: 71px;
+  width: 70px;
   height: 72px;
   background: url('https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/mariowalking/result.png');    
   left: 10px;
-  bottom: 10%;
+  bottom: 6%;
   animation: play 0.8s steps(4) infinite, 7s both infinite linear;
   animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
   z-index: 1;
@@ -16,7 +16,6 @@
   background-repeat: no-repeat;
   height: 200px;
   width: 50px;
-  margin-left: 100px;
 }
 
 .ground { 
@@ -28,7 +27,8 @@
 
 .top-right-blocks {
   position: absolute;
-  right: 0;
+  right: 0.3%;
+  top: 10%;
 }
 
 .brick {
@@ -43,7 +43,7 @@
 
 .pipe {
   position: relative;
-  width: 50px;
+  width: 40px;
   background:#74bf2e;
   border:1px solid #502946;
   border-bottom: unset;
@@ -58,15 +58,16 @@
              inset -6px 0px 1px #78C32A ,
              inset -8px 0px 1px #4D7E22 ;
   margin-top:auto;
+  margin-left: 30px;
 }
 
 .pipe:after {
-  width:72px;
+  width:52px;
   height:40px;
   content:'';
   background: #74bf2e;
   position: absolute;
-  margin: -10px 0px 0px -11px;
+  margin: -10px 0px 0px -7px;
   box-shadow:inset 3px 0px 2px #9AE75B ,
              inset 5px 0px 1px #F3FC85 ,
              inset 8px 0px 2px #9AE75B ,
@@ -79,7 +80,7 @@
   border:1px solid #502946;
 }
 
-.clouds-background {
+.clouds-container {
   position: absolute;
   background-repeat: no-repeat;
   background-size: 110vh;
@@ -89,16 +90,10 @@
   // animation: wind 8s both infinite linear;
 }
 
-@keyframes wind{
-  from { left: -300px; }
-  to { left: 100%; }
-}
-
 .bush{
   position: absolute;
   left: 100px;
-  bottom: 100px;
-  z-index: 0;
+  bottom: 6%;
 }
 
 .bush:nth-child(1){
@@ -110,43 +105,45 @@
 }
 
 .bush:nth-child(3){
-  left: 1500px;;   
+  left: 400px;;   
 }
 
-.clouds-background {
+.clouds-container {
   position: relative;
 }
 
 .cloud {
   position: absolute;
-  height: 100px;
+  height: 80px;
+  z-index: -2;
+}
+
+.cloud:nth-child(1){
+  top: 390px;
+  animation: wind 50s both infinite linear reverse;
 }
 
 .cloud:nth-child(2){
-  top: 200px; 
-  animation: wind 30s both infinite linear reverse;
+  top: 200px;
+  animation: wind 30s both infinite linear;
 }
 
 .cloud:nth-child(3){
   top: 30px;
-  animation: wind 80s both infinite linear reverse;
+  animation: wind 100s both infinite linear reverse;
 }
 
-.cloud:nth-child(1){
-  top: 490px;
-  animation: wind 50s both infinite linear reverse;
-}
 
 @keyframes play {
   100% { background-position: -284px; }
 }
 
 @keyframes run {
-  from { left: -200px;}
-  to { left: 100%;}
+  from { left: 0px;}
+  to { left: 93%;}
 }
 
 @keyframes wind{
-  from { left: -300px; }
-  to { left: 100%; }
+  from { right: -500px; }
+  to { right: 200px; }
 }
