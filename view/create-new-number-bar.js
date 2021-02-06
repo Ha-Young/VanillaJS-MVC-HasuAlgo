@@ -1,9 +1,11 @@
 import { inputDatas } from "../model/user-input-data";
 import { canvas } from "./add-event-listeners";
+import stopMarioMoving from "./stop-mario-moving";
 
 const { numbers, nodes } = inputDatas;
 
 export default function createNewNumberBar(inputValue) {
+  stopMarioMoving();
   const newNumberBar = document.createElement("div");
 
   newNumberBar.style.order = numbers.length;

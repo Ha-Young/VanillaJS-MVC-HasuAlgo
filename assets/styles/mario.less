@@ -5,8 +5,7 @@
   background: url('https://raw.githubusercontent.com/LantareCode/random-this-and-thats/master/CSS/SuperMario-Animation/images/mariowalking/result.png');    
   left: 10px;
   bottom: 6%;
-  animation: play 0.8s steps(4) infinite, 7s both infinite linear;
-  animation: play 0.8s steps(4) infinite, run 7s both infinite linear;
+  animation: runMario 0.8s steps(4) infinite, move 7s both infinite linear;
   z-index: 1;
 }
 
@@ -133,16 +132,24 @@
 }
 
 
-@keyframes play {
-  100% { background-position: -284px; }
+@keyframes runMario {
+  100% {
+    background-position: -284px; 
+  }
 }
 
-@keyframes run {
-  from { left: 0px;}
-  to { left: 93%;}
+@keyframes move {
+  from {
+    left: 0px;
+  } to {
+    left: 93%;
+  }
 }
 
-@keyframes wind{
-  from { right: -500px; }
-  to { right: 200px; }
+@keyframes wind {
+  from { 
+    right: -500px; 
+  } to {
+    right: 200px;
+  }
 }

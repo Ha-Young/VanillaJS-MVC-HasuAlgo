@@ -14,5 +14,5 @@ export default function getMyElements() {
     bubbleButton,
     mergeButton,
     numberInputContainer,
-  }
+  };
 }
