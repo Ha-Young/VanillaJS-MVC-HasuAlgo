@@ -1,6 +1,5 @@
-// import { nodes, numbers, boxes } from "../model/user-input-data";
 import { inputDatas } from "../model/user-input-data";
-import { alretBox, canvas, numberInput } from "../view/add-event-listeners";
+import { numberInput } from "../view/add-event-listeners";
 import createNewNumberBar from "../view/create-new-number-bar";
 import checkIfInputValid from "../view/input-validation";
 import resetInputTexts from "../view/reset-input-texts";

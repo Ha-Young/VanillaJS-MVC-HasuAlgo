@@ -1,4 +1,3 @@
-
 const canvas = document.querySelector(".sorting-canvas");
 const numberInput = document.querySelector(".number-input");
 const alretBox = document.querySelector(".alert-box");

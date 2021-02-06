@@ -21,17 +21,18 @@ async function getMergeSortedArray(left, right) {
   }
   
   if (numberFromLeft) {
-    result.push(numberFromLeft)
-    result = result.concat(leftArray);
+    result.push(numberFromLeft);
+    result.push(...leftArray);
   }
   
   if (numberFromRight) {
     result.push(numberFromRight);
-    result = result.concat(numberFromRight);
+    result.push(...rightArray);
   }
 
   swapCloudsInCanvas(result, beforeMerge);
   await delay(700);
+  
   return result;
 }
 
