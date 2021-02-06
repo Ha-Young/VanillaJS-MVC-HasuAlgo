@@ -64,9 +64,6 @@ export default function Model () {
         const b = inputtedNums[j + 1];
 
         if (a > b) {
-          const before = Array.from(inputtedNums);
-          const after = Array.from(inputtedNums);
-          this.swapItems(after, j, j + 1);
           this.swapItems(inputtedNums, j, j + 1);
 
           sortSteps.push({
@@ -75,8 +72,6 @@ export default function Model () {
             b: b,
             indexA: j,
             indexB: j + 1,
-            beforeSwap: JSON.stringify(before),
-            afterSwap: JSON.stringify(after),
           });
         }
         else {
@@ -105,12 +100,8 @@ export default function Model () {
     while (currentIndex < end) {
       const shouldSwap = inputtedNums[currentIndex] < pivotValue;
 
-      const before = Array.from(inputtedNums);
-      const after = Array.from(inputtedNums);
-
       if (shouldSwap) {
         this.swapItems(inputtedNums, currentIndex, nextPivotIndex);
-        this.swapItems(after, currentIndex, nextPivotIndex);
       }
 
       sortSteps.push(
@@ -121,12 +112,8 @@ export default function Model () {
           pivotIndex,
           nextPivotIndex,
           currentIndex,
-          nextPivotIndexValue: inputtedNums[nextPivotIndex],
-          currentIndexValue: inputtedNums[currentIndex],
           shouldSwap,
           isEnd: false,
-          beforeSwap: JSON.stringify(before),
-          afterSwap: JSON.stringify(after),
         }
       );
 
@@ -137,10 +124,7 @@ export default function Model () {
       currentIndex++;
     }
 
-    const before = Array.from(inputtedNums);
-    const after = Array.from(inputtedNums);
     this.swapItems(inputtedNums, pivotIndex, nextPivotIndex);
-    this.swapItems(after, pivotIndex, nextPivotIndex);
     sortSteps.push(
       {
         start,
@@ -149,12 +133,8 @@ export default function Model () {
         pivotIndex,
         nextPivotIndex,
         currentIndex,
-        nextPivotIndexValue: inputtedNums[nextPivotIndex],
-        currentIndexValue: inputtedNums[currentIndex],
         shouldSwap: true,
         isEnd: true,
-        beforeSwap: JSON.stringify(before),
-        afterSwap: JSON.stringify(after),
       }
     );
 
