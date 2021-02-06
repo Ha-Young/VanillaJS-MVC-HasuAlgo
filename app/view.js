@@ -2,22 +2,22 @@ import { transform } from 'lodash';
 import MYAPP from './myapp';
 
 export default class View {
-  renderGraphs(localStorage, sortedGraphs) {
+  renderGraphs(modelStorage, sortedGraphs) {
     const graphTable = MYAPP.table.graph;
     graphTable.innerHTML = null;
 
-    for (let i = 0; i < localStorage.length; i++) {
-      const graphPercent = localStorage[i];
+    for (let i = 0; i < modelStorage.length; i++) {
+      const graphPercent = modelStorage[i];
       const $graph = document.createElement('div');
       $graph.classList.add('graph-item');
       $graph.style.width = '10%';
       $graph.style.height = `${graphPercent}%`;
-      $graph.dataset.id = localStorage[i];
+      $graph.dataset.id = modelStorage[i];
       $graph.textContent = `${graphPercent}`;
 
       if (sortedGraphs) {
         for (const sortedValue of sortedGraphs) {
-          if (localStorage[i] === sortedValue) {
+          if (modelStorage[i] === sortedValue) {
             $graph.classList.add('sorted-graph');
           }
         }
@@ -27,6 +27,7 @@ export default class View {
   }
 
   renderFirstGraphColor(graphs) {
+    console.log(graphs);
     graphs[0].classList.add('sorted-graph');
   }
 

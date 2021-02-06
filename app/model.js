@@ -1,34 +1,17 @@
-import MYAPP from "./myapp";
+import MYAPP from './myapp';
 
 export default class Model {
   constructor() {
-    const _localStorage = [];
-    const _sortedGraphStorage = [];
+    this.storage = [];
+    this.sortedGraphStorage = [];
+  }
 
-    this.get = () => _localStorage;
+  get() {
+    return this.storage;
+  }
 
-    this.getValue = (index) => _localStorage[index];
-
-    this.checkInput = () => {
-      if (!_localStorage.every((elem) => elem < 100)) {
-        throw new Error("number is too high");
-      }
-      if (_localStorage.length > 8) {
-        throw new Error("too many numbers");
-      }
-    };
-
-    this.swapIndex = (leftValue, RightValue) => {
-      const temps = _localStorage[leftValue];
-      _localStorage[leftValue] = _localStorage[RightValue];
-      _localStorage[RightValue] = temps;
-    };
-
-    this.setSortedGraph = (sortedGraph) => {
-      _sortedGraphStorage.push(sortedGraph);
-    };
-
-    this.getSortedGraph = () => _sortedGraphStorage;
+  getValue(index) {
+    return this.storage[index];
   }
 
   swap(left, right) {
@@ -36,11 +19,37 @@ export default class Model {
     graphTable.insertBefore(right, left);
   }
 
-  set(string) => {
-    const splitted = string.split(",");
+  set(string) {
+    const splitted = string.split(',');
     for (const elem of splitted) {
-      _localStorage.push(Number(elem));
+      this.storage.push(Number(elem));
     }
     this.checkInput();
-  };
+  }
+
+  checkInput() {
+    const inputNumberLengthLimit = 11;
+    const inputNumberLImit = 100;
+
+    if (!this.storage.every(elem => elem < inputNumberLImit)) {
+      throw new Error('number is too high');
+    }
+    if (this.storage.length > inputNumberLengthLimit) {
+      throw new Error('too many numbers');
+    }
+  }
+
+  swapIndex(leftValue, RightValue) {
+    const temps = this.storage[leftValue];
+    this.storage[leftValue] = this.storage[RightValue];
+    this.storage[RightValue] = temps;
+  }
+
+  setSortedGraph(sortedGraph) {
+    this.sortedGraphStorage.push(sortedGraph);
+  }
+
+  getSortedGraph() {
+    return this.sortedGraphStorage;
+  }
 }

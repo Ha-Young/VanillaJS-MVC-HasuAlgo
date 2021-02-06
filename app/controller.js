@@ -7,13 +7,16 @@ export default class Controller {
     this.selectedType = null;
   }
 
+  connectEventListener() {
+  }
+
   run() {
     let isStartBtnClicked = false;
     this.checkSortType();
     MYAPP.button.start.addEventListener('click', async () => {
       const isUserSelectType = this.selectedType;
       const isUserPutValue = MYAPP.table.input.value;
-      const localStorage = this.model.get();
+      const modelStorage = this.model.get();
 
       if (isStartBtnClicked) {
         this.view.renderErrorMsg('Already clicked!');
@@ -37,7 +40,7 @@ export default class Controller {
       }
 
       if (this.checkSortType() === 'QUICK') {
-        await this.quickSort(localStorage);
+        await this.quickSort(modelStorage);
         this.view.renderAllColor(MYAPP.table.graph);
       }
 
@@ -61,17 +64,17 @@ export default class Controller {
 
   init() {
     const userInputValue = MYAPP.table.input.value;
-    const localStorage = this.model.get();
+    const modelStorage = this.model.get();
 
     this.model.set(userInputValue);
-    this.view.renderGraphs(localStorage);
+    this.view.renderGraphs(modelStorage);
   }
 
   async bubbleSort() {
     const graphTable = MYAPP.table.graph;
     const graph = MYAPP.table.graph.children;
     const numberGraphs = MYAPP.table.graph.children.length;
-    const localStorage = this.model.get();
+    const modelStorage = this.model.get();
 
     for (let i = 0; i < numberGraphs; i++) {
       const outerLoopEnd = numberGraphs - 1;
@@ -91,7 +94,7 @@ export default class Controller {
           this.view.renderSwapAnimation(left, right);
           await this.wait(1000);
           this.model.swapIndex(j, j + 1);
-          this.view.renderGraphs(localStorage, sortedGraphs);
+          this.view.renderGraphs(modelStorage, sortedGraphs);
         }
 
         if (j === innerLoopEnd) {
@@ -99,7 +102,7 @@ export default class Controller {
           const sortedGraphValue = Number(sortedGraph.dataset.id);
 
           this.model.setSortedGraph(sortedGraphValue);
-          this.view.renderGraphs(localStorage, sortedGraphs);
+          this.view.renderGraphs(modelStorage, sortedGraphs);
         }
       }
       if (i === outerLoopEnd) {
