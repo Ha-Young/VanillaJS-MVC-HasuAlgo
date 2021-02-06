@@ -10,49 +10,40 @@ export default function View() {
 
   this.VIEW_PORT_HEIGHT = 270;
 
-  View.prototype.getElem = function (elemName, selectAll = false) {
-    if (!selectAll && this[elemName]) {
-      return this[elemName];
+  const checkIfIsElementNode = function (...$targets) {
+    return $targets.every(
+      ($target) => {
+        if (Array.isArray($target)) {
+          return $target.every(($targetItem) => $targetItem.nodeType === Node.ELEMENT_NODE);
+        }
+
+        return $target.nodeType === Node.ELEMENT_NODE;
+      }
+    );
+  };
+
+  const getElem = (function (elemName) {
+    const result = this[elemName];
+    
+    if (checkIfIsElementNode(result)) {
+      return result;
     }
 
-    if (!selectAll) {
-      return document.querySelector(elemName);
-    }
+    return null;
+  }).bind(this);
 
-    return document.querySelectorAll(elemName);
-  };
-
-  View.prototype.activateEvent = function (eventTarget, event, handler) {
-    if (!typeof handler === "function") {
-      throw new Error("The handler argument is not a function.");
-    }
-
-    const $eventTarget = this.getElem(eventTarget);
-
-    $eventTarget.addEventListener(event, handler);
-  };
-
-  View.prototype.getInputtedValue = function () {
-    return [this.$mainInput.value, this.$selectSortType.value];
-  };
-
-  View.prototype.clearElem = function (target) {
-    const $target = this.getElem(target);
-
-    $target.innerHTML = "";
-  };
-
-  View.prototype.updateMessage = function (message) {
-    this.$messageBox.textContent = message;
-  };
-
-  View.prototype.createElement = function (template) {
+  const createElement = (function (template) {
     const $newElem = document.createElement("template");
     $newElem.innerHTML = template;
     return $newElem.content.firstChild;
-  };
+  }).bind(this);
 
-  View.prototype.render = function ($parentNode, $target) {
+  const render = (function ($parentNode, $target) {
+    if (!checkIfIsElementNode($parentNode, $target)) {
+      console.error($parentNode, $target);
+      throw new Error("$parentNode or $target is not an ElementNode.");
+    }
+
     if (Array.isArray($target)) {
       for (const $targetItem of $target) {
         $parentNode.append($targetItem);
@@ -62,6 +53,30 @@ export default function View() {
     }
 
     $parentNode.append($target);
+  }).bind(this);
+
+  View.prototype.activateEvent = function (eventTarget, event, handler) {
+    if (!typeof handler === "function") {
+      throw new Error("The handler argument is not a function.");
+    }
+
+    const $eventTarget = getElem(eventTarget);
+
+    $eventTarget.addEventListener(event, handler);
+  };
+
+  View.prototype.getInputtedValue = function () {
+    return [this.$mainInput.value, this.$selectSortType.value];
+  };
+
+  View.prototype.clearElem = function (target) {
+    const $target = getElem(target);
+
+    $target.innerHTML = "";
+  };
+
+  View.prototype.updateMessage = function (message) {
+    this.$messageBox.textContent = message;
   };
 
   View.prototype.createHighlighterElem = function (num) {
@@ -71,21 +86,21 @@ export default function View() {
       const template =
         `<div class="highlighter" data-idx="${i}"></div>`;
 
-      $highlighters.push(this.createElement(template));
+      $highlighters.push(createElement(template));
     }
 
     this.$highlighters = $highlighters;
-    this.render(this.$highlighterBox, $highlighters);
+    render(this.$highlighterBox, $highlighters);
   };
 
   View.prototype.createRangeHighlighterElem = function () {
     const template =
       `<div class="range-highlighter"></div>`;
 
-    this.$rangeHighlighter = this.createElement(template);
+    this.$rangeHighlighter = createElement(template);
     this.addClassName(this.$rangeHighlighter, "range-highlighter");
 
-    this.render(this.$highlighterBox, this.$rangeHighlighter);
+    render(this.$highlighterBox, this.$rangeHighlighter);
   };
 
   View.prototype.createBarElem = function (refinedNums) {
@@ -97,7 +112,7 @@ export default function View() {
             <div class="number">${num.num}</div>
           </div>`;
 
-        const $barBox = this.createElement(template);
+        const $barBox = createElement(template);
 
         const barHeight = (() => {
           const height =  Math.round(this.VIEW_PORT_HEIGHT * (num.percentage / 100));
@@ -117,11 +132,31 @@ export default function View() {
 
     this.$barBoxes = $barBoxes;
 
-    this.render(this.$viewPort, $barBoxes)
+    render(this.$viewPort, $barBoxes)
+  };
+
+  View.prototype.createPivotHighlighterElem = function () {
+    const template =
+      `<div class="pivot-highlighter"></div>`;
+
+    const $pivotHighlighter = createElement(template);
+    this.$pivotHighlighter = $pivotHighlighter;
+
+    render(this.$highlighterBox, $pivotHighlighter);
+  };
+
+  View.prototype.createUpArrow = function () {
+    const template =
+      `<div class="arrow"><i class="arrow-up"></i></div>`;
+
+    const $upArrow = createElement(template);
+    this.$upArrow = $upArrow;
+
+    render(this.$highlighterBox, $upArrow);
   };
 
   View.prototype.getElemDomRect = function(target) {
-    const $target = this.getElem(target);
+    const $target = getElem(target);
 
     if (Array.isArray($target)) {
       return $target.map(
@@ -138,6 +173,11 @@ export default function View() {
   };
 
   View.prototype.moveElem = function ($target, destinationPostion, skipX = false, skipY = false, offsetX = 0, offsetY = 0) {
+    if (!checkIfIsElementNode($target)) {
+      console.error($target);
+      throw new Error("$target is not an ElementNode.");
+    }
+    
     const targetMatrix = new WebKitCSSMatrix(getComputedStyle($target).transform);
     
     const currentPosition = $target.getBoundingClientRect();
@@ -155,6 +195,11 @@ export default function View() {
   };
 
   View.prototype.swapElem = function ($a, $b, indexA, indexB, elemPositions, skipX = false, skipY = false) {
+    if (!checkIfIsElementNode($a, $b)) {
+      console.error($a, $b);
+      throw new Error("$a or $b is not an ElementNode.");
+    }
+    
     const destinationA = elemPositions[indexB];
     const destinationB = elemPositions[indexA];
 
@@ -163,6 +208,11 @@ export default function View() {
   };
 
   View.prototype.addClassName = function ($target, className) {
+    if (!checkIfIsElementNode($target)) {
+      console.error($target);
+      throw new Error("$target is not an ElementNode.");
+    }
+
     if (typeof className !== "string") {
       throw new Error("The className argument is not a string");
     }
@@ -198,27 +248,12 @@ export default function View() {
     $arrow.children[0].style.borderColor = color;
   };
 
-  View.prototype.createPivotHighlighterElem = function () {
-    const template =
-      `<div class="pivot-highlighter"></div>`;
-
-    const $pivotHighlighter = this.createElement(template);
-    this.$pivotHighlighter = $pivotHighlighter;
-
-    this.render(this.$highlighterBox, $pivotHighlighter);
-  };
-
-  View.prototype.createUpArrow = function () {
-    const template =
-      `<div class="arrow"><i class="arrow-up"></i></div>`;
-
-    const $upArrow = this.createElement(template);
-    this.$upArrow = $upArrow;
-
-    this.render(this.$highlighterBox, $upArrow);
-  };
-
   View.prototype.moveAndLengthenHighlighter = function ($highlighter, start, end, barPositions) {
+    if (!checkIfIsElementNode($highlighter)) {
+      console.error($highlighter);
+      throw new Error("$highlighter is not an ElementNode.");
+    }
+    
     const startPosition = barPositions[start];
     const endPosition = barPositions[end];
     const PADDING = 10;
@@ -236,19 +271,24 @@ export default function View() {
     $highlighter.style.width = `${distance + barWidth + PADDING * 3}px`;
   };
 
-  View.prototype.waitTime = function (waitingTime) {
+  View.prototype.wait = function (time) {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(true);
-      }, waitingTime);
+      }, time);
     });
   };
 
   View.prototype.addJumpAnimation = async function ($elem) {
+    if (!checkIfIsElementNode($elem)) {
+      console.error($elem);
+      throw new Error("$elem is not an ElementNode.");
+    }
+
     this.moveElem($elem,null, true, false, 0, -50);
-    await this.waitTime(500);
+    await this.wait(500);
     this.moveElem($elem,null, true, false, 0, 50);
-    await this.waitTime(500);
+    await this.wait(500);
   };
 
   View.prototype.progressBubbleSortAnimation = async function (sortSteps, barPositions) {
@@ -270,7 +310,7 @@ export default function View() {
 
       this.moveElem($highlighterA ,highlighterADestination, false, true);
       this.moveElem($highlighterB ,highlighterBDestination, false, true);
-      await this.waitTime(500);
+      await this.wait(500);
 
 
       if (step.shouldSwap) {
@@ -279,7 +319,7 @@ export default function View() {
 
         [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
         this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
-        await this.waitTime(500);
+        await this.wait(500);
       }
     }
 
@@ -298,7 +338,7 @@ export default function View() {
     this.moveElem($nextPivotIndexHighlighter, barPositions[0], false, true);
     this.moveElem($pivotHighlighter, barPositions[barPositions.length - 1], false, true, -14, 0);
     this.moveAndLengthenHighlighter($rangeHighlighter, 0, barPositions.length - 1, barPositions);
-    await this.waitTime(500);
+    await this.wait(500);
 
     for (const [i, step] of sortSteps.entries()) {
       const pivotIndex = step.pivotIndex;
@@ -311,7 +351,7 @@ export default function View() {
       this.moveElem($nextPivotIndexHighlighter, barPositions[nextPivotIndex], false, true);
       this.moveElem($pivotHighlighter, barPositions[pivotIndex], false, true, -14, 0);
       this.moveElem($currentIndexHighlighter, barPositions[currentIndex], false, true);
-      await this.waitTime(500);
+      await this.wait(500);
 
       if (shouldSwap) {
         if (isEnd) {
@@ -319,9 +359,9 @@ export default function View() {
         } else {
           this.changeArrowColor($currentIndexHighlighter, "#ff9191");
         }
-        await this.waitTime(500);
+        await this.wait(500);
         this.addClassName($nextPivotIndexHighlighter, "quick-should-swap");
-        await this.waitTime(500);
+        await this.wait(500);
 
         const [indexA, indexB] = (() => {
           if (isEnd) {
@@ -338,7 +378,7 @@ export default function View() {
           const $barBoxB = this.$barBoxes[indexB];
           [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
           this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
-          await this.waitTime(500);
+          await this.wait(500);
         }
 
         this.changeArrowColor($currentIndexHighlighter, "black");
@@ -348,10 +388,10 @@ export default function View() {
         if (sortSteps[i + 1] && !isEnd) {
           const nextNextPivotIndex = sortSteps[i + 1].nextPivotIndex;
           this.moveElem($nextPivotIndexHighlighter, barPositions[nextNextPivotIndex], false, true);
-          await this.waitTime(500);
+          await this.wait(500);
         }
       } else {
-        await this.waitTime(500);
+        await this.wait(500);
       }
     }
   };

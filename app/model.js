@@ -15,10 +15,10 @@ export default function Model () {
       };
     }
 
-    if (!inputtedNums.every((num, i) => num < 1000)) {
+    if (!inputtedNums.every((num) => num > 0 && num < 1000)) {
       return {
         isComplete: false,
-        message: "Please input numbers less than 1000",
+        message: "Please input numbers greater than 0 and less than 1000",
       };
     }
 
