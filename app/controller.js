@@ -23,12 +23,14 @@ export class Controller {
   }
 
   onUpdateTotalStates = async (states) => {
-    for (let i = 0; i < states.length; i++) {
-      if (!states[i]) {
+    while ((states.length)) {
+      const state = states.shift();
+
+      if (!state) {
         throw new Error ('States have error!');
       }
 
-      await this.view.render(states[i]);
+      await this.view.render(state);
     }
   }
 
@@ -40,6 +42,9 @@ export class Controller {
       }
       case 'quick-sort': {
         this.quickSort();
+        break;
+      }
+      default: {
         break;
       }
     }
