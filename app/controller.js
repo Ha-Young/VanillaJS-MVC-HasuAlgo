@@ -96,19 +96,21 @@ function init() {
     if (sortingList) {
       $playButton.disabled = true;
 
-      if (sortingMethod === 'bubbleSort') {
-        model._bubbleSort();
-        return;
+      switch (sortingMethod) {
+        case 'bubbleSort':
+          model._bubbleSort();
+          break;
+
+        case 'quickSort':
+          model._quickSort();
+          break;
+
+        default:
+          view._showText(SELECT_COMMNET);
+
+          $playButton.disabled = false;
+          break;
       }
-
-      if (sortingMethod === 'quickSort') {
-        model._quickSort();
-        return;
-      }
-
-      view._showText(SELECT_COMMNET);
-
-      $playButton.disabled = false;
     }
   });
 

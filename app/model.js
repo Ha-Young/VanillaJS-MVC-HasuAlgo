@@ -38,7 +38,7 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
     return;
   }
 
-  let borderIndex = await this._getQuickSortIndex(this.sortingList, start, end);
+  const borderIndex = await this._getQuickSortIndex(this.sortingList, start, end);
 
 	await this._quickSort(start, borderIndex - 1);
   await this._quickSort(borderIndex, end);
