@@ -19,16 +19,16 @@ export default function Model() {
   this.sortingList = [];
   this.isStop = false;
   this.styleClassName = {
-    select: 'selected',
-    finish: 'finish',
-    pivok: 'pivok'
+    SELECT: 'selected',
+    FINISH: 'finish',
+    PIVOK: 'pivok'
   };
 }
 
 Model.prototype._quickSort = async function (start = 0, end = this.sortingList.length - 1) {
   showViewText(this.START_COMMENT);
 
-  changeViewStyle(this.styleClassName['select'], this.sortChildren[start], this.sortChildren[end]);
+  changeViewStyle(this.styleClassName.SELECT, this.sortChildren[start], this.sortChildren[end]);
 
   if (start >= end) {
     return;
@@ -53,7 +53,7 @@ Model.prototype._getQuickSortIndex = async function (array, start, end) {
   showViewText(this.DURING_COMMENT);
 
 	while (start <= end) {
-    changeViewStyle(this.styleClassName['pivok'], this.sortChildren[pivotIndex]);
+    changeViewStyle(this.styleClassName.PIVOK, this.sortChildren[pivotIndex]);
 
 		while (array[start] < pivotValue) {
       start = start + 1;
@@ -92,7 +92,7 @@ Model.prototype._bubbleSort = async function () {
         return;
       }
 
-      changeViewStyle(this.styleClassName['select'], this.sortChildren[j], this.sortChildren[j + 1]);
+      changeViewStyle(this.styleClassName.SELECT, this.sortChildren[j], this.sortChildren[j + 1]);
 
       await new Promise(resolve => {
         setTimeout(() => {
@@ -107,7 +107,7 @@ Model.prototype._bubbleSort = async function () {
 
         await swapInView(this.sortChildren[j + 1], this.sortChildren[j], this.sortingList, this.DELAY);
       } else {
-        changeViewStyle(this.styleClassName['select'], this.sortChildren[j], this.sortChildren[j + 1]);
+        changeViewStyle(this.styleClassName.SELECT, this.sortChildren[j], this.sortChildren[j + 1]);
       }
     }
 

@@ -1,11 +1,6 @@
-// Load application styles
 import '../assets/styles/index.less';
 import View from './view.js';
 import Model from './model.js';
-
-// ================================
-// START YOUR APP HERE
-// ================================
 
 const view = new View();
 const model = new Model();
@@ -41,12 +36,12 @@ function init() {
   const $userGuide = document.getElementById('userGuide');
 
   const selectOptions = {
-    bubbleSort: 'bubbleSort',
-    quickSort: 'quickSort',
-    none: 'none'
+    BUBBLE_SORT: 'bubbleSort',
+    QUICK_SORT: 'quickSort',
+    NONE: 'none'
   };
   const styleClassName = {
-    hidden: 'hidden'
+    HIDDEN: 'hidden'
   };
 
   let sortingList;
@@ -78,23 +73,23 @@ function init() {
   });
 
   $selectBox.addEventListener('change', function () {
-    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions['bubbleSort']) {
+    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions.BUBBLE_SORT) {
       view._showText(BUBBLESORT_COMMENT);
 
-      sortingMethod = selectOptions['bubbleSort'];
+      sortingMethod = selectOptions.BUBBLE_SORT;
       return;
     }
 
-    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions['quickSort']) {
+    if ($selectBox.options[$selectBox.selectedIndex].text === selectOptions.QUICK_SORT) {
       view._showText(QUICKSORT_COMMENT);
 
-      sortingMethod = selectOptions['quickSort'];
+      sortingMethod = selectOptions.QUICK_SORT;
       return;
     }
 
     view._showText(UNSELECT_COMMENT);
 
-    sortingMethod = selectOptions['none'];
+    sortingMethod = selectOptions.NONE;
   });
 
   $playButton.addEventListener('click', function () {
@@ -138,11 +133,11 @@ function init() {
   });
 
   $sidebarButton.addEventListener('click', function () {
-    view._changeBlockStyle(styleClassName['hidden'], [$sideDisplay]);
+    view._changeBlockStyle(styleClassName.HIDDEN, [$sideDisplay]);
   });
 
   $guideButton.addEventListener('click', function () {
-    view._changeBlockStyle(styleClassName.hidden, [$userGuide]);
+    view._changeBlockStyle(styleClassName.HIDDEN, [$userGuide]);
   });
 
   document.addEventListener('click', clickEffect);

@@ -7,10 +7,10 @@ export default function View() {
 
   this.canPaint = true;
   this.styleClassName = {
-    transition: 'transition',
-    select: 'selected',
-    none: 'none',
-    block: 'block'
+    TRANSITION: 'transition',
+    SELECT: 'selected',
+    NONE: 'none',
+    BLOCK: 'block'
   };
 }
 
@@ -23,7 +23,7 @@ View.prototype._createBlock = function (sortList) {
     const $block = document.createElement('div');
     const $label = document.createElement('b');
 
-    $block.classList.add(this.styleClassName['block']);
+    $block.classList.add(this.styleClassName.BLOCK);
 
     $block.style.height = `${sortList[i] / highestValue * this.HEIGHT_PERCENT}%`;
     $label.textContent = `${sortList[i]}`;
@@ -39,17 +39,17 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
     const rightElementLocationX = this._getTargetTranslateX(rightElement);
     const leftElementLocationX = this._getTargetTranslateX(leftElement);
 
-    this._changeBlockStyle(this.styleClassName['transition'], [rightElement, leftElement]);
-    this._changeBlockStyle(this.styleClassName['select'], [rightElement, leftElement]);
+    this._changeBlockStyle(this.styleClassName.TRANSITION, [rightElement, leftElement]);
+    this._changeBlockStyle(this.styleClassName.SELECT, [rightElement, leftElement]);
 
     rightElement.style.transform = `translateX(${leftElementLocationX - rightElementLocationX}px)`;
     leftElement.style.transform = `translateX(${rightElementLocationX - leftElementLocationX}px)`;
 
     setTimeout(() => {
-      rightElement.style.transform = this.styleClassName['none'];
-      leftElement.style.transform = this.styleClassName['none'];
+      rightElement.style.transform = this.styleClassName.NONE;
+      leftElement.style.transform = this.styleClassName.NONE;
 
-      this._changeBlockStyle(this.styleClassName['select'], [rightElement, leftElement]);
+      this._changeBlockStyle(this.styleClassName.SELECT, [rightElement, leftElement]);
 
       while (this.$sortBox.hasChildNodes()) {
         this.$sortBox.removeChild(this.$sortBox.firstChild);
