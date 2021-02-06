@@ -25,7 +25,7 @@ export default function Control(model, view) {
 
     this.model.set("refinedNums", refinedNums.value);
     this.model.set("sortType", sortType);
-    this.view.updateMessage("Sort Start!");
+    this.view.updateMessage("Sort start!");
     this.drawGraph();
   };
 
@@ -85,5 +85,6 @@ export default function Control(model, view) {
     }
 
     this.model.set("state", { isPlaying: false });
+    this.view.updateMessage("Sort complete!");
   };
 }
