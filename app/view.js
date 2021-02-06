@@ -26,8 +26,8 @@ View.prototype.addChildNode = function(value) {
 View.prototype.changeColor = function(leftNode, rightNode) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      leftNode.style.backgroundColor = 'blue';
-      rightNode.style.backgroundColor = 'blue';
+      leftNode.style.backgroundColor = 'gray';
+      rightNode.style.backgroundColor = 'gray';
     
       resolve();
     }, 1000);
@@ -41,8 +41,8 @@ View.prototype.moveGraph = function(leftNode, rightNode) {
       const left = ++leftNode.dataset.count;
       const right = --rightNode.dataset.count;
 
-      leftNode.style.backgroundColor = 'blue';
-      rightNode.style.backgroundColor = 'blue';
+      leftNode.style.backgroundColor = 'gray';
+      rightNode.style.backgroundColor = 'gray';
       leftNode.style.transform = `translateX(${left*60}px)`;
       rightNode.style.transform = `translateX(${right*60}px)`;
 

@@ -21,14 +21,14 @@ Controller.prototype.sortStorage = async function(storeageArray) {
   const graphNodes = this.view.$graphNodes;
 
   for (var i = 0; i < storeageArray.length; i++) {
-    for (var j = 0; j < storeageArray.length - 1 -i; j++) {
+    for (var j = 0; j < storeageArray.length - 1 - i; j++) {
       stampStorage.push(this.model.getStamp('start', j, j + 1, i));
 
       if (storeageArray[j] > storeageArray[j + 1]) {
-        const swap = storeageArray[j];
+        const temp = storeageArray[j];
 
         storeageArray[j] = storeageArray[j + 1];
-        storeageArray[j + 1] = swap;
+        storeageArray[j + 1] = temp;
 
         stampStorage.push(this.model.getStamp('change', j, j + 1, i));
       }
@@ -98,8 +98,6 @@ Controller.prototype.sortStorage = async function(storeageArray) {
 
 Controller.prototype.handleKeyUp = function(event) {
   event.stopImmediatePropagation();
-
-  if (event.value === null) return;
 
   if (event.key === 'Enter') {
     if (this.$typed.value === '') return;
