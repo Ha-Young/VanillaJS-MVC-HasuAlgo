@@ -199,7 +199,7 @@ export default function View() {
     $target.style.transform = `translate(${xMovingValue}px, ${yMovingValue}px)`;
   };
 
-  View.prototype.swapElem = function ($a, $b, indexA, indexB, elemPositions, skipX = false, skipY = false) {
+  View.prototype.swapElems = function ($a, $b, indexA, indexB, elemPositions, skipX = false, skipY = false) {
     if (!checkIfIsElementNode($a, $b)) {
       console.error($a, $b);
       throw new Error("$a or $b is not an ElementNode.");
@@ -213,11 +213,6 @@ export default function View() {
   };
 
   View.prototype.moveAndLengthenHighlighter = function ($highlighter, start, end, barPositions) {
-    if (!checkIfIsElementNode($highlighter)) {
-      console.error($highlighter);
-      throw new Error("$highlighter is not an ElementNode.");
-    }
-
     const startPosition = barPositions[start];
     const endPosition = barPositions[end];
     const PADDING = 10;
@@ -235,6 +230,13 @@ export default function View() {
     this.moveElem($highlighter, startPosition, false, true, PADDING * 1.5 * -1);
 
     $highlighter.style.width = `${distance + barWidth + PADDING * 2}px`;
+  };
+
+  View.prototype.makeElemJump = async function ($target) {
+    this.moveElem($target,null, true, false, 0, -50);
+    await this.wait(500);
+    this.moveElem($target,null, true, false, 0, 50);
+    await this.wait(500);
   };
 
   View.prototype.addClassName = function ($target, className) {
@@ -286,18 +288,6 @@ export default function View() {
     });
   };
 
-  View.prototype.addJumpAnimation = async function ($elem) {
-    if (!checkIfIsElementNode($elem)) {
-      console.error($elem);
-      throw new Error("$elem is not an ElementNode.");
-    }
-
-    this.moveElem($elem,null, true, false, 0, -50);
-    await this.wait(500);
-    this.moveElem($elem,null, true, false, 0, 50);
-    await this.wait(500);
-  };
-
   View.prototype.progressBubbleSortAnimation = async function (sortSteps, barPositions) {
     const $highlighterA = this.$highlighters[0];
     const $highlighterB = this.$highlighters[1];
@@ -323,7 +313,7 @@ export default function View() {
         const $barBoxB = this.$barBoxes[indexB];
 
         [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
-        this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
+        this.swapElems($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
         await this.wait(500);
       }
     }
@@ -408,12 +398,12 @@ export default function View() {
     })();
 
     if (indexA === indexB) {
-      await this.addJumpAnimation(this.$barBoxes[indexA]);
+      await this.makeElemJump(this.$barBoxes[indexA]);
     } else {
       const $barBoxA = this.$barBoxes[indexA];
       const $barBoxB = this.$barBoxes[indexB];
       [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
-      this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
+      this.swapElems($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
       await this.wait(500);
     }
   };
