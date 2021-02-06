@@ -3,7 +3,7 @@ import Model from './Model';
 import Controller from './Controller';
 import View from './View';
 
-export function setTmeplate(template) {
+export function setTemplate(template) {
   document.querySelector(".sorting-algorithms").innerHTML = template;
 }
 
