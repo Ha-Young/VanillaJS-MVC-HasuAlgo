@@ -50,4 +50,4 @@ View.prototype.changeColor = function(node) {
   });
 }
 
-export  default View;
+export default View;
