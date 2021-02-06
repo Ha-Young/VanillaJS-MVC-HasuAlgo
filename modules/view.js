@@ -33,7 +33,7 @@ export default class View {
         });
         break;
       default:
-        console.log("default");
+        console.log("------");
     }
   }
 
@@ -55,7 +55,7 @@ export default class View {
       return false;
     }
 
-    if (inputArray.some(element => parseInt(element.trim(), 10) >= 500
+    if (inputArray.some(element => parseInt(element.trim(), 10) > 500
       || parseInt(element.trim(), 10) <= 0)) {
       window.alert("Available Range: 0 < Integer <= 500");
       return false;

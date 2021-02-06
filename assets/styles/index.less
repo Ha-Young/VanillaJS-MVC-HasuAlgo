@@ -7,6 +7,9 @@ html, body {
 }
 
 body {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
   text-align: center;
 }
 
@@ -17,6 +20,7 @@ h1 {
 .inputs-container {
   border: 1px solid black;
   border-radius: 10px;
+  width: 800px;
 }
 
 .inputs-container * {
@@ -24,7 +28,7 @@ h1 {
 }
 
 .content {
-  margin: 100px auto;
+  margin: 20px auto;
   padding: 10px;
   display: flex;
   text-align: center;
@@ -32,17 +36,16 @@ h1 {
   position: relative;
   border: 1px solid black;
   border-radius: 10px;
-  width: 90vw;
-  height: 60vh;
+  width: 800px;
+  height: 800px;
 }
 
 .number-block {
   margin: 10px;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 30%;
   width: 28px;
-  max-height: 57vh;
+  max-height: 600px;
   transition: all 0.1s ease-in-out;
 }
 
