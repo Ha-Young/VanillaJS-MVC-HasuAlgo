@@ -7,6 +7,7 @@ html, body {
 
 *, *:before, *:after {
   box-sizing: inherit;
+  font-family: 'Abril Fatface', cursive;
 }
 
 header {
@@ -40,14 +41,27 @@ header {
   margin: 2px;
   margin-top: 10px;
   padding: 0;
-  border: none;
+  border: 3px solid white;
   outline: none;
   cursor: pointer;
 }
 
+.tool-bar button:hover {
+  border: 3px solid transparent;
+  border-image: linear-gradient(
+    to bottom right,
+  #b827fc 0%, 
+  #2c90fc 25%,
+  #b8fd33 50%, 
+  #fec837 75%, 
+  #fd1892 100%
+  );
+  border-image-slice: 1;
+}
+
 .tool-bar button img {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
 }
 
 .select-box {
@@ -140,5 +154,5 @@ header {
 }
 
 .transition {
-  transition: 0.8s all linear;
+  transition: 0.3s all linear;
 }

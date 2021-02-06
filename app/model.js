@@ -2,6 +2,7 @@ import { swapInView, changeViewStyle, showViewText } from './controller.js';
 
 export default function Model() {
   this.START_COMMENT = '정렬 시작';
+  this.DURING_COMMENT = '정렬 중'
   this.ENDING_COMMENT = '다 끝났습니다';
   this.CORRECT_VALUE_COMMENT = '정렬할 준비가 되었습니다 시작 버튼을 눌러주세요';
   this.OUT_OF_RANGE_ERROR_COMMENT = '5개 이상 10개 이하의 값을 입력하세요';
@@ -79,6 +80,8 @@ Model.prototype._bubbleSort = async function () {
   showViewText(this.START_COMMENT);
 
   for (let i = 0; i < this.sortChildren.length; i++) {
+    showViewText(this.DURING_COMMENT);
+
     for (let j = 0; j < this.sortChildren.length - 1 - i; j++) {
       if (this.isStop) {
         return;
