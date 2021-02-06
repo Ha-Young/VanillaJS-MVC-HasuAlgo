@@ -347,7 +347,7 @@ export default function View() {
     this.moveAndLengthenHighlighter($rangeHighlighter, 0, barPositions.length - 1, barPositions);
 
     await this.wait(500);
-  }
+  };
 
   View.prototype.moveElemsInOneStepForQuickSort = async function ($elemsForQuickSort, barPositions, step) {
     const {
@@ -361,8 +361,6 @@ export default function View() {
       pivotIndex, 
       currentIndex, 
       nextPivotIndex, 
-      shouldSwap, 
-      isEnd, 
     } = step;
 
     this.moveAndLengthenHighlighter($rangeHighlighter, step.start, step.end, barPositions);
@@ -370,14 +368,74 @@ export default function View() {
     this.moveElem($pivotHighlighter, barPositions[pivotIndex], false, true, -14, 0);
     this.moveElem($currentIndexHighlighter, barPositions[currentIndex], false, true);
     await this.wait(500);
-  }
+  };
+
+  View.prototype.changeElemsColorForQuickSort = async function ($elemsForQuickSort, step) {
+    const {
+      $currentIndexHighlighter,
+      $nextPivotIndexHighlighter,
+      $pivotHighlighter
+    } = $elemsForQuickSort;
+
+    const { 
+      isEnd, 
+    } = step;
+
+    if (isEnd) {
+      this.addClassName($pivotHighlighter, "quick-should-swap");
+    } else {
+      this.changeArrowColor($currentIndexHighlighter, "#ff9191");
+    }
+    await this.wait(500);
+    this.addClassName($nextPivotIndexHighlighter, "quick-should-swap");
+    await this.wait(500);
+  };
+
+  View.prototype.swapElemsForQuickSort = async function (barPositions, step) {
+    const { 
+      pivotIndex, 
+      currentIndex, 
+      nextPivotIndex, 
+      isEnd,
+    } = step;
+
+    const [indexA, indexB] = (() => {
+      if (isEnd) {
+        return [ pivotIndex, nextPivotIndex];
+      } else {
+        return [currentIndex, nextPivotIndex];
+      }
+    })();
+
+    if (indexA === indexB) {
+      await this.addJumpAnimation(this.$barBoxes[indexA]);
+    } else {
+      const $barBoxA = this.$barBoxes[indexA];
+      const $barBoxB = this.$barBoxes[indexB];
+      [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
+      this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
+      await this.wait(500);
+    }
+  };
+
+  View.prototype.initElemsColorForQuickSort = async function ($elemsForQuickSort) {
+    const {
+      $currentIndexHighlighter,
+      $nextPivotIndexHighlighter,
+      $pivotHighlighter
+    } = $elemsForQuickSort;
+
+    this.changeArrowColor($currentIndexHighlighter, "black");
+    this.removeClassName($nextPivotIndexHighlighter, "quick-should-swap");
+    this.removeClassName($pivotHighlighter, "quick-should-swap");
+  };
+
+  View.prototype.moveNextPivotHighlighter = async function ($nextPivotIndexHighlighter, barPositions, targetIndex) {
+    this.moveElem($nextPivotIndexHighlighter, barPositions[targetIndex], false, true);
+    await this.wait(500);
+  };
 
   View.prototype.progressQuickSortAnimation = async function (sortSteps, barPositions) {
-    const $currentIndexHighlighter = this.$upArrow;
-    const $nextPivotIndexHighlighter = this.$highlighters[0];
-    const $rangeHighlighter = this.$rangeHighlighter;
-    const $pivotHighlighter = this.$pivotHighlighter;
-
     const $elemsForQuickSort = {
       $currentIndexHighlighter: this.$upArrow,
       $nextPivotIndexHighlighter: this.$highlighters[0],
@@ -388,46 +446,17 @@ export default function View() {
     await this.initElemsForQuickSort($elemsForQuickSort, barPositions);
 
     for (const [i, step] of sortSteps.entries()) {
-      const { pivotIndex, currentIndex, nextPivotIndex, shouldSwap, isEnd, } = step;
+      await this.moveElemsInOneStepForQuickSort($elemsForQuickSort, barPositions, step);
 
-      this.moveElemsInOneStepForQuickSort($elemsForQuickSort, barPositions, step);
+      if (step.shouldSwap) {
+        await this.changeElemsColorForQuickSort($elemsForQuickSort, step);
+        await this.swapElemsForQuickSort(barPositions, step);
 
-      if (shouldSwap) {
-        if (isEnd) {
-          this.addClassName($pivotHighlighter, "quick-should-swap");
-        } else {
-          this.changeArrowColor($currentIndexHighlighter, "#ff9191");
-        }
-        await this.wait(500);
-        this.addClassName($nextPivotIndexHighlighter, "quick-should-swap");
-        await this.wait(500);
+        this.initElemsColorForQuickSort($elemsForQuickSort);
 
-        const [indexA, indexB] = (() => {
-          if (isEnd) {
-            return [ pivotIndex, nextPivotIndex];
-          } else {
-            return [currentIndex, nextPivotIndex];
-          }
-        })();
-
-        if (indexA === indexB) {
-          await this.addJumpAnimation(this.$barBoxes[indexA]);
-        } else {
-          const $barBoxA = this.$barBoxes[indexA];
-          const $barBoxB = this.$barBoxes[indexB];
-          [this.$barBoxes[indexA], this.$barBoxes[indexB]] = [this.$barBoxes[indexB], this.$barBoxes[indexA]];
-          this.swapElem($barBoxA, $barBoxB, indexA, indexB, barPositions, false, true);
-          await this.wait(500);
-        }
-
-        this.changeArrowColor($currentIndexHighlighter, "black");
-        this.removeClassName($nextPivotIndexHighlighter, "quick-should-swap");
-        this.removeClassName($pivotHighlighter, "quick-should-swap");
-
-        if (sortSteps[i + 1] && !isEnd) {
-          const nextNextPivotIndex = sortSteps[i + 1].nextPivotIndex;
-          this.moveElem($nextPivotIndexHighlighter, barPositions[nextNextPivotIndex], false, true);
-          await this.wait(500);
+        if (sortSteps[i + 1] && !step.isEnd) {
+          const nextStepNextPivotIndex = sortSteps[i + 1].nextPivotIndex;
+          await this.moveNextPivotHighlighter($elemsForQuickSort.$nextPivotIndexHighlighter, barPositions, nextStepNextPivotIndex);
         }
       } else {
         await this.wait(500);
