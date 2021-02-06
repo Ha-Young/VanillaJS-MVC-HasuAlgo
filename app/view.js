@@ -420,7 +420,7 @@ export default function View() {
     this.removeClassName($pivotHighlighter, "quick-should-swap");
   };
 
-  View.prototype.moveNextPivotHighlighter = async function ($nextPivotIndexHighlighter, barPositions, targetIndex) {
+  View.prototype.moveNextPivotHighlighterForQuickSort = async function ($nextPivotIndexHighlighter, barPositions, targetIndex) {
     this.moveElem($nextPivotIndexHighlighter, barPositions[targetIndex], false, true);
     await this.wait(500);
   };
@@ -446,7 +446,7 @@ export default function View() {
 
         if (sortSteps[i + 1] && !step.isEnd) {
           const nextStepNextPivotIndex = sortSteps[i + 1].nextPivotIndex;
-          await this.moveNextPivotHighlighter($elemsForQuickSort.$nextPivotIndexHighlighter, barPositions, nextStepNextPivotIndex);
+          await this.moveNextPivotHighlighterForQuickSort($elemsForQuickSort.$nextPivotIndexHighlighter, barPositions, nextStepNextPivotIndex);
         }
       } else {
         await this.wait(500);
