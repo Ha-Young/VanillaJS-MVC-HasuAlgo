@@ -17,7 +17,8 @@ export default function Model() {
   this.isStop = false;
   this.delay = 1000;
   this.styleClassName = {
-    select : 'selected'
+    select: 'selected',
+    finish: 'finish'
   };
 }
 
@@ -45,7 +46,6 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
 Model.prototype._getQuickSortIndex = async function (array, start, end) {
   const pivotIndex = Math.floor((start + end) / 2);
   const pivotValue = array[pivotIndex];
-
 
 	while (start <= end) {
 		while (array[start] < pivotValue) {

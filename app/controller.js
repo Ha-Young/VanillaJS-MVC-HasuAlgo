@@ -88,7 +88,7 @@ function init() {
 
     setTimeout(() => {
       model._resetBoard();
-      view._clearInputText();
+      view._clearText();
     }, 250);
   });
 }

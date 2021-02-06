@@ -4,8 +4,8 @@ export default function View() {
   this.$commentBox = document.getElementById('commentBox');
   this.canPaint = true;
   this.styleClassName = {
-    transition : 'transition',
-    select : 'selected',
+    transition: 'transition',
+    select: 'selected',
     none: 'none'
   };
 }
@@ -73,6 +73,6 @@ View.prototype._showText = function (text) {
   this.$commentBox.textContent = text;
 }
 
-View.prototype._clearInputText = function () {
+View.prototype._clearText = function () {
   this.$inputBox.value = '';
 }
