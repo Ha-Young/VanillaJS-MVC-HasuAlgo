@@ -1,4 +1,4 @@
-export default function swapNumbersInCanvas(first, second, index) {
+export default function swapPipesInCanvas(first, second, index) {
   let nodesOfFirstValue = Array.from(document.querySelectorAll(`[data-value="${first}"]`)); 
   let nodesOfSecondValue = Array.from(document.querySelectorAll(`[data-value="${second}"]`));
 

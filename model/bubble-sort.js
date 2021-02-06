@@ -1,5 +1,5 @@
 import delay from "../model/delay";
-import swapNumbersInCanvas from "../view/swap-pipes-in-canvas";
+import swapPipesInCanvas from "../view/swap-pipes-in-canvas";
 
 function swapNumbers(first, second) {
   const temp = first;
@@ -22,7 +22,7 @@ export default async function bubbleSort(array) {
 
     for (let j = 0; j < numbers.length - 1; j++) {
       if (numbers[j] > numbers[j + 1]) {
-        swapNumbersInCanvas(numbers[j], numbers[j + 1], j);
+        swapPipesInCanvas(numbers[j], numbers[j + 1], j);
         
         const { first, second } = swapNumbers(numbers[j], numbers[j + 1]);
         numbers[j] = first;
