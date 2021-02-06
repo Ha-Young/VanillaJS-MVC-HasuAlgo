@@ -20,7 +20,8 @@ export default function Model() {
   this.isStop = false;
   this.styleClassName = {
     select: 'selected',
-    finish: 'finish'
+    finish: 'finish',
+    pivok: 'pivok'
   };
 }
 
@@ -49,7 +50,11 @@ Model.prototype._getQuickSortIndex = async function (array, start, end) {
   const pivotIndex = Math.floor((start + end) / 2);
   const pivotValue = array[pivotIndex];
 
+  showViewText(this.DURING_COMMENT);
+
 	while (start <= end) {
+    changeViewStyle(this.styleClassName['pivok'], this.sortChildren[pivotIndex]);
+
 		while (array[start] < pivotValue) {
       start = start + 1;
     }
@@ -145,12 +150,12 @@ Model.prototype._checkValue = function (string) {
       this.sortingList = [];
       return;
     }
-    
+
     showViewText(this.CORRECT_VALUE_COMMENT);
 
     this.sortingList.push(Number(stringList[i]));
   }
-  
+
   return this.sortingList;
 };
 

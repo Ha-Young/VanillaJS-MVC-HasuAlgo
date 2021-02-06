@@ -37,6 +37,8 @@ function init() {
   const $selectBox = document.getElementById('selectBox');
   const $sidebarButton = document.getElementById('sidebarButton');
   const $sideDisplay = document.getElementById('sideDisplay');
+  const $guideButton = document.getElementById('guideButton');
+  const $userGuide = document.getElementById('userGuide');
 
   const selectOptions = {
     bubbleSort: 'bubbleSort',
@@ -49,6 +51,19 @@ function init() {
 
   let sortingList;
   let sortingMethod;
+
+  function clickEffect(event) {
+    const divElement = document.createElement("div");
+
+    divElement.className = "clickEffect";
+    divElement.style.top = event.clientY + "px";
+    divElement.style.left = event.clientX + "px";
+    document.body.appendChild(divElement);
+
+    divElement.addEventListener('animationend',function () {
+      divElement.parentElement.removeChild(divElement);
+    }.bind(this));
+  }
 
   $submitButton.addEventListener('click', function () {
     const inputValue = $inputBox.value;
@@ -115,7 +130,7 @@ function init() {
     $playButton.disabled = false;
     view.canPaint = false;
     model.isStop = true;
-    
+
     setTimeout(() => {
       model._resetBoard();
       view._clearText();
@@ -125,6 +140,12 @@ function init() {
   $sidebarButton.addEventListener('click', function () {
     view._changeBlockStyle(styleClassName['hidden'], [$sideDisplay]);
   });
+
+  $guideButton.addEventListener('click', function () {
+    view._changeBlockStyle(styleClassName.hidden, [$userGuide]);
+  });
+
+  document.addEventListener('click', clickEffect);
 }
 
 init();

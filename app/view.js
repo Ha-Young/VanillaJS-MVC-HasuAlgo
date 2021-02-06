@@ -48,7 +48,7 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
     setTimeout(() => {
       rightElement.style.transform = this.styleClassName['none'];
       leftElement.style.transform = this.styleClassName['none'];
-      
+
       this._changeBlockStyle(this.styleClassName['select'], [rightElement, leftElement]);
 
       while (this.$sortBox.hasChildNodes()) {
