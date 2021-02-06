@@ -12,10 +12,10 @@ Model.prototype.setUserInputList = function(newUserInputList) {
   this.userInputList = newUserInputList;
 }
 
-Model.prototype.setUserInputElements = function(newUserInputElements) {
-  this.userInputElements = newUserInputElements;
-};
-
 Model.prototype.getUserInputElements = function() {
   return this.userInputElements;
 };
+
+Model.prototype.setUserInputElements = function(newUserInputElements) {
+    this.userInputElements = newUserInputElements;
+  };

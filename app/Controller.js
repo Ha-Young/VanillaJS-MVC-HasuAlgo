@@ -30,8 +30,6 @@ export default function Controller(model, view) {
   this.SORTING_MESSAGE = "SORTING....";
   this.RETRY_MESSAGE = "Click the RESET button to retry!";
 
-  this.ELEMENT_MOVING_EFFECT = "element-moving-effect";
-
   this.taskQueue = [];
 }
 
@@ -60,6 +58,7 @@ Controller.prototype.init = function() {
   this.$resetButton.addEventListener("click", (e) => {
     e.preventDefault();
     this.model.setUserInputList([]);
+    this.model.setUserInputElements([]);
 
     this.view.resetUserInputElement(this.$userInput);
     this.view.resetSortDisplaySection(this.$sortDisplaySection);
@@ -111,6 +110,9 @@ Controller.prototype.confirmSelectedSortOption = function() {
       break;
   }
 };
+
+// this.view.setInstructionMessage(this.$instructionMessage, this.RETRY_MESSAGE);
+// this.view.toggleResetButton(this.$resetButton, true);
 
 Controller.prototype.placingPivotIdx = async function(quickSortElementsList, start, end) {
   const userInputElements = quickSortElementsList;
