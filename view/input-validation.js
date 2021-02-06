@@ -1,3 +1,4 @@
+import { inputDatas } from "../model/user-input-data";
 import { alretBox, numberInput } from "./add-event-listeners";
 
 export default function checkIfInputValid(value) {
@@ -9,7 +10,13 @@ export default function checkIfInputValid(value) {
   
   if (value > 100) {
     numberInput.value = "";
-    alretBox.textContent = "MAX is 90";
+    alretBox.textContent = "No larger than 90";
+    return false;
+  }
+
+  if (inputDatas.numbers.length > 9) {
+    numberInput.value = "";
+    alretBox.textContent = "MAX is 10";
     return false;
   }
 
