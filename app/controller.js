@@ -7,7 +7,7 @@ class Controller {
     self.page = page;
 
     self.view.connectHandler("addNumber", function (input) {
-      self.addNumbeControl(input);
+      self.addNumberControl(input);
     });
 
     self.view.connectHandler("startSort", function () {
