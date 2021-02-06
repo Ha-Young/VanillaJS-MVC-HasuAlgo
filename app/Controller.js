@@ -111,9 +111,6 @@ Controller.prototype.confirmSelectedSortOption = function() {
   }
 };
 
-// this.view.setInstructionMessage(this.$instructionMessage, this.RETRY_MESSAGE);
-// this.view.toggleResetButton(this.$resetButton, true);
-
 Controller.prototype.placingPivotIdx = async function(quickSortElementsList, start, end) {
   const userInputElements = quickSortElementsList;
   const pivotElement = userInputElements[start];
