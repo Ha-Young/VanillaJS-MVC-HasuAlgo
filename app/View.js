@@ -4,6 +4,11 @@ export default function View () {
   this.DISABLED_CLASSNAME = "disabled";
   this.TRANSFORM_NONE = "none";
   this.PLACEHOLDER_TEXT = "Type here..."
+
+  this.ELEMENT_MOVING_EFFECT = "element-moving-effect";
+  this.TARGET_ELEMENT_COLOR = "target-element-color";
+  this.BIGGER_ELEMENT_COLOR = "bigger-element-color";
+  this.SMALLER_ELEMENT_COLOR = "smaller-element-color";
 }
 
 View.prototype.createElements = function(userInputList, sortDisplaySection) {
@@ -17,19 +22,23 @@ View.prototype.createElements = function(userInputList, sortDisplaySection) {
 };
 
 View.prototype.toggleSubmitButton = function(submitButton, toggle) {
-  toggle ? submitButton.classList.remove(this.HIDDEN_CLASSNAME) : submitButton.classList.add(this.HIDDEN_CLASSNAME);
+  toggle ? submitButton.classList.remove(this.HIDDEN_CLASSNAME)
+  : submitButton.classList.add(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.toggleStartButton = function(startButton, toggle) {
-  toggle ? startButton.classList.remove(this.HIDDEN_CLASSNAME) : startButton.classList.add(this.HIDDEN_CLASSNAME);
+  toggle ? startButton.classList.remove(this.HIDDEN_CLASSNAME)
+  : startButton.classList.add(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.toggleResetButton = function(resetButton, toggle) {
-  toggle ? resetButton.classList.remove(this.HIDDEN_CLASSNAME) : resetButton.classList.add(this.HIDDEN_CLASSNAME);
+  toggle ? resetButton.classList.remove(this.HIDDEN_CLASSNAME)
+  : resetButton.classList.add(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.toggleSortSelector = function(sortSelector, toggle) {
-  toggle ? sortSelector.classList.add(this.HIDDEN_CLASSNAME) : sortSelector.classList.remove(this.HIDDEN_CLASSNAME);
+  toggle ? sortSelector.classList.add(this.HIDDEN_CLASSNAME)
+  : sortSelector.classList.remove(this.HIDDEN_CLASSNAME);
 };
 
 View.prototype.setInstructionMessage = function(instructionMessageElement, settingMessage) {
@@ -63,8 +72,7 @@ View.prototype.bubbleSortVisualSwap = function(leftTarget, rightTarget) {
   rightTarget.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
 };
 
-
-View.prototype.swapTargetElements = function(leftTarget, rightTarget, targetParent) {
+View.prototype.bubbleSortSwapTargetElements = function(leftTarget, rightTarget, targetParent) {
   leftTarget.classList.remove("element-moving-effect");
   rightTarget.classList.remove("element-moving-effect");
   leftTarget.style.transform = this.TRANSFORM_NONE;
@@ -73,19 +81,31 @@ View.prototype.swapTargetElements = function(leftTarget, rightTarget, targetPare
   targetParent.insertBefore(rightTarget, leftTarget);
 };
 
-View.prototype.colorTargetElements = function (leftTarget, rightTarget) {
-  leftTarget.classList.add("target-element-color");
-  rightTarget.classList.add("target-element-color");
+View.prototype.colorTargetElement = function(targetElement) {
+    targetElement.classList.add('target-element-color');
+  };
+
+View.prototype.colorSortedElement = function(sortedElement) { //fix
+    sortedElement.classList.add("sorted-element-color");
+  };
+
+View.prototype.colorPivotElement = function(pivotElement) {
+  pivotElement.classList.add('pivot-element-color');
 };
 
-View.prototype.uncolorTargetElements = function(leftTarget, rightTarget) {
-  leftTarget.classList.remove("target-element-color");
-  rightTarget.classList.remove("target-element-color");
+
+
+View.prototype.uncolorTargetElement = function(targetElement) {
+  targetElement.classList.remove("target-element-color");
 };
 
-View.prototype.colorSortedElements = function(sortedElement) {
-  sortedElement.classList.add("sorted-element-color");
-};
+
+View.prototype.removeTransitionEffect = function(targetElement) {
+  targetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
+}
+
+
+
 
 View.prototype.resetUserInputElement = function(userInput) {
   userInput.removeAttribute(this.DISABLED_CLASSNAME);
@@ -102,19 +122,19 @@ View.prototype.resetSortDisplaySection = function(sortDisplaySection) {
 
 
 // quick
-View.prototype.paintPivot = function(pivot) {
+View.prototype.colorPivotElement = function(pivot) {
     pivot.classList.add('pivot-element-color');
   };
   
-  View.prototype.paintTargetElement = function(targetElement) {
+  View.prototype.colorTargetElement = function(targetElement) {
     targetElement.classList.add('target-element-color');
   };
   
-  View.prototype.paintBiggerElement = function(biggerElement) {
+  View.prototype.colorBiggerElement = function(biggerElement) {
     biggerElement.classList.add('bigger-element-color');
   };
   
-  View.prototype.paintSmallerElement = function(smallerElement) {
+  View.prototype.colorSmallerElement = function(smallerElement) {
     smallerElement.classList.add('smaller-element-color');
   };
   

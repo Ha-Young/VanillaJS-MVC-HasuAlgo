@@ -97,98 +97,88 @@ Controller.prototype.validateUserInput = function() {
 
 Controller.prototype.confirmSelectedSortOption = function() {
   const userInputElements = this.$sortDisplaySection.children;
+  const sortList = Array.from(userInputElements);
 
   switch (this.$sortSelector.value) {
     case this.BUBUBLE_SORT :
       this.bubbleSort();
       break;
     case this.MERGE_SORT :
-      const mergeRectanglesList = Array.from(userInputElements);
-      this.mergeSort(mergeRectanglesList);
+      this.mergeSort(sortList);
       break;
     case this.QUICK_SORT :
-      const quickSortRectanglesList = Array.from(userInputElements);
-      this.quickSort(quickSortRectanglesList);
+      this.quickSort(sortList);
       break;
   }
 };
 
-Controller.prototype.placingPivotIdx = async function(quickSortRectanglesList, start, end) {
-  const userInputElements = quickSortRectanglesList;
-
+Controller.prototype.placingPivotIdx = async function(quickSortElementsList, start, end) {
+  const userInputElements = quickSortElementsList;
+  const pivotElement = userInputElements[start];
   let lookingForPivotIdx = start;
-  let pivot = userInputElements[start];
-
-  let lookingForPivotPosition;
+  let lookingForPivotPosition = null;
 
   function quickSortElementsSwap (userInputElements, lookingForPivotIdx, i) {
-    userInputElements[i].classList.remove("element-moving-effect");
-    userInputElements[lookingForPivotIdx].classList.remove("element-moving-effect");
+    this.view.removeTransitionEffect(userInputElements[i])
+    this.view.removeTransitionEffect(userInputElements[lookingForPivotIdx])
 
-    return [userInputElements[lookingForPivotIdx], userInputElements[i]] = [userInputElements[i], userInputElements[lookingForPivotIdx]];
+    return [userInputElements[lookingForPivotIdx], userInputElements[i]]
+      = [userInputElements[i], userInputElements[lookingForPivotIdx]];
   }
 
-  this.view.paintPivot(pivot);
-  await this.view.delay(500);
+  this.view.colorPivotElement(pivotElement);
+  await this.view.delay(this.DELAY);
 
   for (let i = start + 1; i <= end; i++) {
-    let target = userInputElements[i];
+    const targetElement = userInputElements[i];
 
-    this.view.paintTargetElement(target);
-    await this.view.delay(500);
+    this.view.colorTargetElement(targetElement);
+    await this.view.delay(this.DELAY);
 
-    let pivotValue = Number(pivot.textContent);
-    let targetValue = Number(target.textContent);
+    const pivotValue = Number(pivotElement.textContent);
+    const targetValue = Number(targetElement.textContent);
 
     if (targetValue <= pivotValue) {
-      target.classList.remove('target-element-color');
-      this.view.paintSmallerElement(target);
-      await this.view.delay(500);
+      targetElement.classList.remove(this.TARGET_ELEMENT_COLOR);
+      this.view.colorSmallerElement(targetElement);
+      await this.view.delay(this.DELAY);
 
       lookingForPivotIdx++;
       lookingForPivotPosition = userInputElements[lookingForPivotIdx];
 
-      this.view.quickSortVisualSwap(lookingForPivotPosition, target);
-      await this.view.delay(500);
+      this.view.quickSortVisualSwap(lookingForPivotPosition, targetElement);
+      await this.view.delay(this.DELAY);
 
       quickSortElementsSwap(userInputElements, lookingForPivotIdx, i);
-
-      console.log('swapped?', userInputElements.map(x => x.textContent))
-
-      await this.view.delay(500)
+      await this.view.delay(this.DELAY);
     }
 
-    target.classList.remove('target-element-color')
-    this.view.paintBiggerElement(target);
-    await this.view.delay(500);
+    targetElement.classList.remove(this.TARGET_ELEMENT_COLOR);
+    this.view.colorBiggerElement(targetElement);
+    await this.view.delay(this.DELAY);
   }
-  await this.view.delay(500)
+
+  await this.view.delay(this.DELAY);
   this.view.quickSortVisualSwap(pivot, userInputElements[lookingForPivotIdx]);
-  await this.view.delay(500)
+  await this.view.delay(this.DELAY);
   quickSortElementsSwap(userInputElements, lookingForPivotIdx, start);
 
   this.model.setUserInputElements(userInputElements);
-  await this.view.delay(this.DELAY)
+  await this.view.delay(this.DELAY);
 
-  console.log('swapped?', userInputElements.map(x => x.textContent))
-  console.log('final pivotidx', lookingForPivotIdx);
-
-  await this.view.delay(this.DELAY)
-
-return lookingForPivotIdx;
+  return lookingForPivotIdx;
 }
 
 Controller.prototype.quickSort = async function(userInputElements, left = 0, right = userInputElements.length-1) {
-    if (left <= right) {
+  if (left <= right) {
     const pivot = await this.placingPivotIdx(userInputElements, left, right);
-
-    userInputElements[pivot].style.backgroundColor = "#e55039"
-
     const updatedUserInputElements = this.model.getUserInputElements();
 
-    userInputElements.map(x => {
-        x.classList.remove('bigger-element-color')
-        x.classList.remove('smaller-element-color')
+    this.view.colorSortedElement(userInputElements[pivot]);
+
+    userInputElements.map(element => {
+      element.classList.remove('bigger-element-color')
+      element.classList.remove('smaller-element-color')
     })
 
     await this.view.delay(500);
@@ -214,7 +204,11 @@ Controller.prototype.bubbleSort = async function() {
       const rightTarget = userInputElements[j+1];
 
       await this.view.delay(this.DELAY);
-      this.view.colorTargetElements(leftTarget, rightTarget);
+
+      this.view.colorTargetElement(leftTarget);
+      this.view.colorTargetElement(rightTarget);
+
+      await this.view.delay(this.DELAY);
 
       const leftValue = Number(leftTarget.textContent);
       const rightValue = Number(rightTarget.textContent);
@@ -224,16 +218,17 @@ Controller.prototype.bubbleSort = async function() {
         this.view.bubbleSortVisualSwap(leftTarget, rightTarget);
 
         await this.view.delay(this.DELAY);
-        this.view.swapTargetElements(leftTarget, rightTarget, this.$sortDisplaySection);
+        this.view.bubbleSortSwapTargetElements(leftTarget, rightTarget, this.$sortDisplaySection);
       }
 
       await this.view.delay(this.DELAY);
-      this.view.uncolorTargetElements(leftTarget, rightTarget);
+      this.view.uncolorTargetElement(leftTarget);
+      this.view.uncolorTargetElement(rightTarget);
 
       await this.view.delay(this.DELAY);
     }
 
-    this.view.colorSortedElements(userInputElements[userInputElements.length-i-1]);
+    this.view.colorSortedElement(userInputElements[userInputElements.length-i-1]);
     await this.view.delay(this.DELAY * 3);
   }
 
