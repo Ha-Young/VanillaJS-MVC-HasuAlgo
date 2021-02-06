@@ -36,7 +36,7 @@ function getinputValue (event) {
   }
 
   for (let i = 0; i < numbers.length; i++) {
-    paintDiv(numbers[i]);
+    paintDiv(numbers[i], i);
   }
 
   bubbleSort(numbers);

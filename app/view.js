@@ -11,21 +11,19 @@ export function showWarning () {
 export function paintDiv (input) {
   const div = document.createElement("div");
   div.textContent = input;
-  div.style.height = `${input * 100}px`;
+  div.style.height = `${input * 30}px`;
   div.classList.add("item");
   main.appendChild(div);
 }
 
-export function swapView(j, frontValue, backValue) {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
+export function swapView(j) {
+   return new Promise(function (resolve) {
+     setTimeout(function () {
       const elements = main.querySelectorAll(".item");
 
-      elements[j].textContent = backValue;
-      elements[j + 1].textContent = frontValue;
+      main.insertBefore(elements[j + 1], elements[j]);
 
       resolve();
     }, 700);
   });
-}
-
+ }
