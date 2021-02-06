@@ -8,7 +8,8 @@ export default function View() {
   this.$highlighterBox = document.querySelector(".highlighter-box");
   this.$messageBox = document.querySelector(".message-box");
 
-  this.VIEW_PORT_HEIGHT = 270;
+  this.NUMBER_SPACE_HEIGHT = 30;
+  this.BAR_MAX_HEIGHT = this.$viewPort.clientHeight - this.NUMBER_SPACE_HEIGHT;
 
   const checkIfIsElementNode = function (...$targets) {
     return $targets.every(
@@ -22,7 +23,7 @@ export default function View() {
     );
   };
 
-  const getElem = (function (elemName) {
+  const getElement = (function (elemName) {
     const result = this[elemName];
     
     if (checkIfIsElementNode(result)) {
@@ -60,7 +61,7 @@ export default function View() {
       throw new Error("The handler argument is not a function.");
     }
 
-    const $eventTarget = getElem(eventTarget);
+    const $eventTarget = getElement(eventTarget);
 
     $eventTarget.addEventListener(event, handler);
   };
@@ -70,7 +71,7 @@ export default function View() {
   };
 
   View.prototype.clearElem = function (target) {
-    const $target = getElem(target);
+    const $target = getElement(target);
 
     $target.innerHTML = "";
   };
@@ -115,7 +116,7 @@ export default function View() {
         const $barBox = createElement(template);
 
         const barHeight = (() => {
-          const height =  Math.round(this.VIEW_PORT_HEIGHT * (num.percentage / 100));
+          const height =  Math.round(this.BAR_MAX_HEIGHT * (num.percentage / 100));
           if (!height) {
             return 1;
           }
@@ -156,7 +157,7 @@ export default function View() {
   };
 
   View.prototype.getElemDomRect = function(target) {
-    const $target = getElem(target);
+    const $target = getElement(target);
 
     if (Array.isArray($target)) {
       return $target.map(
@@ -253,22 +254,24 @@ export default function View() {
       console.error($highlighter);
       throw new Error("$highlighter is not an ElementNode.");
     }
-    
+
     const startPosition = barPositions[start];
     const endPosition = barPositions[end];
     const PADDING = 10;
 
+    const BAR_ELEM_INDEX = 0;
+
     const barWidth =
       parseInt(
         getComputedStyle(
-          this.$barBoxes[0].children[1])
+          this.$barBoxes[end].children[BAR_ELEM_INDEX])
         .width.replace("px",""),
       10);
 
     const distance = endPosition.x - startPosition.x;
     this.moveElem($highlighter, startPosition, false, true, PADDING * 1.5 * -1);
 
-    $highlighter.style.width = `${distance + barWidth + PADDING * 3}px`;
+    $highlighter.style.width = `${distance + barWidth + PADDING * 2}px`;
   };
 
   View.prototype.wait = function (time) {
