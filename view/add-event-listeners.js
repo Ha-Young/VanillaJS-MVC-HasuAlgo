@@ -1,4 +1,6 @@
+import { rest } from "lodash";
 import handleKeyup from "../controller/input-keyup-handler";
+import handleClickRestart from "../controller/help-handler";
 import { handleClickBubbleButton, handleClickMergeButton } from "../controller/sort-button-handler";
 import getMyElements from "../model/get-my-elements";
 
@@ -13,6 +15,7 @@ export const {
   wholeNumberInput,
   startForm,
   startFormText,
+  helpButton,
 } = myElements;
 
 export function addEventListeners() {
@@ -20,4 +23,5 @@ export function addEventListeners() {
   wholeNumberInput.addEventListener("keyup", handleKeyup);
   bubbleButton.addEventListener("click", handleClickBubbleButton);
   mergeButton.addEventListener("click", handleClickMergeButton);
+  helpButton.addEventListener("click", handleClickHelp);
 }

@@ -6,7 +6,8 @@ const mergeButton = document.querySelector(".merge-sort-button");
 const numberInputContainer = document.querySelector(".numbers-container");
 const wholeNumberInput = document.querySelector(".input-all-numbers");
 const startForm = document.querySelector(".start-form");
-const startFormText = document.querySelector(".start-text")
+const startFormText = document.querySelector(".start-text");
+const helpButton = document.querySelector(".help-button");
 
 export default function getMyElements() {
   return {
@@ -19,5 +20,6 @@ export default function getMyElements() {
     wholeNumberInput,
     startForm,
     startFormText,
+    helpButton,
   };
 }

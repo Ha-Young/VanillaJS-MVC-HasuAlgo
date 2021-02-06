@@ -1,6 +1,6 @@
 import { inputDatas } from "../model/user-input-data";
 import { bubbleButton, mergeButton, numberInput, wholeNumberInput, startFormText } from "../view/add-event-listeners";
-import createNewNumberBar from "../view/create-new-number-bar";
+import createNewNumberPipe from "../view/create-new-number-pipe";
 import displayMessage from "../view/display-message";
 import resetInputTexts from "../view/reset-input-texts";
 import visibilityToggler from "../view/visibility";
@@ -50,7 +50,7 @@ export default function handleKeyup(e) {
 
     filteredNumbers.forEach(each => {
       numbers.push(each)
-      createNewNumberBar(each);
+      createNewNumberPipe(each);
     });
     
     resetInputTexts();
@@ -68,5 +68,5 @@ export default function handleKeyup(e) {
 
   numbers.push(inputValue);
   resetInputTexts();
-  createNewNumberBar(inputValue);
+  createNewNumberPipe(inputValue);
 }

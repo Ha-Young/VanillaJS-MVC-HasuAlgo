@@ -4,7 +4,7 @@ import stopMarioMoving from "./stop-mario-moving";
 
 const { numbers, nodes } = inputDatas;
 
-export default function createNewNumberBar(inputValue) {
+export default function createNewNumberPipe(inputValue) {
   stopMarioMoving();
   const newNumberBar = document.createElement("div");
 
