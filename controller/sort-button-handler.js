@@ -6,7 +6,19 @@ import changeBarToCircle from "../view/change-pipe-to-clouds";
 
 const { numbers, nodes } = inputDatas;
 
+export function checkValidationForSort() {
+  if (inputDatas.numbers.length < 5) {
+    alretBox.textContent = "MIN: 5 numbers";
+    return false;
+  }
+  return true;
+}
+
 export function handleClickMergeButton() {
+  if (!checkValidationForSort()) {
+    return;
+  }
+
   nodes.forEach(e => {
     e.classList.add("mergeChart");
     e.style.height = "100px";
@@ -18,8 +30,7 @@ export function handleClickMergeButton() {
 }
 
 export function handleClickBubbleButton() {
-  if (inputDatas.numbers.length < 5) {
-    alretBox.textContent = "MIN: 5 numbers";
+  if (!checkValidationForSort()) {
     return;
   }
 
