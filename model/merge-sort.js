@@ -1,5 +1,5 @@
 import delay from "../model/delay";
-import divideNumbersInCanvas from "../view/divide-numbers-in-canvas";
+import divideCloudsInCanvas from "../view/divide-clouds-in-canvas";
 import swapCloudsInCanvas from "../view/swap-clouds-in-canvas";
 
 async function getMergeSortedArray(left, right) {
@@ -43,7 +43,7 @@ async function divide(array) {
   const mid = left.length / 2;
   const right = left.splice(mid);
 
-  divideNumbersInCanvas(left, right);
+  divideCloudsInCanvas(left, right);
   await delay(700);
 
   let leftVal;

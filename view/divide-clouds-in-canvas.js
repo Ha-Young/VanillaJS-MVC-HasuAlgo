@@ -2,7 +2,7 @@ import delay from "../model/delay";
 
 const offsets = {};
 
-export default async function divideNumbersInCanvas(left, right) {
+export default async function divideCloudsInCanvas(left, right) {
   await delay(700);
 
   left.forEach(item => {
