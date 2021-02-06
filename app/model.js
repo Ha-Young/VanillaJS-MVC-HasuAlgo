@@ -2,9 +2,9 @@ import { swapInView, changeViewStyle, showViewText } from './controller.js';
 
 export default function Model() {
   this.START_COMMENT = 'Start sorting';
-  this.DURING_COMMENT = 'Sorting'
+  this.DURING_COMMENT = 'Sorting';
   this.ENDING_COMMENT = 'Its done!';
-  this.CORRECT_VALUE_COMMENT = 'You are ready to sort, press the start button';
+  this.CORRECT_VALUE_COMMENT = 'If you selected sorting mode, press the start button';
   this.OUT_OF_RANGE_ERROR_COMMENT = 'Please enter 5 or more and 10 or less';
   this.INPUT_TYPE_ERROR_COMMENT = 'Lets sort by numbers only. 0 is not for sorting';
   this.LIMIT_LOW_TIME = 2500;
