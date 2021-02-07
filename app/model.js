@@ -160,9 +160,7 @@ Model.prototype._checkValue = function (string) {
 };
 
 Model.prototype._resetBoard = function () {
-  while (this.$sortBox.hasChildNodes()) {
-    this.$sortBox.removeChild(this.$sortBox.firstChild);
-  }
+  this.$sortBox.textContent = '';
 
   this.sortingList = [];
   this.isStop = false;
