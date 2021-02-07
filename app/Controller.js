@@ -85,25 +85,25 @@ Controller.prototype.init = function() {
 };
 
 Controller.prototype.validateUserInput = function() {
-  const userInputList = this.$userInput.value.split(',').map(Number);
+  const userInputNumbers = this.$userInput.value.split(',').map(Number);
 
-  if (userInputList.length < 5 || userInputList.length > 10) {
+  if (userInputNumbers.length < 5 || userInputNumbers.length > 10) {
     this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.PROPER_NUMBER_MESSAGE);
     return false;
   }
 
-  if (userInputList.some(input => isNaN(input) || input === 0)) {
+  if (userInputNumbers.some(input => isNaN(input) || input === 0)) {
     this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.PROPER_FORMAT_MESSAGE);
     return false;
   }
 
-  if (userInputList.some(input => input > 30 || input <= 0)) {
+  if (userInputNumbers.some(input => input > 30 || input <= 0)) {
     this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.PROPER_RANGE_MESSAGE);
     return false;
   }
 
-  this.model.setUserInputList(userInputList);
-  this.view.createElements(userInputList, this.$sortDisplaySection);
+  this.model.setUserInputList(userInputNumbers);
+  this.view.createElements(userInputNumbers, this.$sortDisplaySection);
   this.view.setInstructionMessageAfterSubmit(this.$userInput, this.$instructionMessage, this.messageTypes.AFTER_SUBMIT_MESSAGE);
 
   return true;
