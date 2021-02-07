@@ -9,11 +9,11 @@ export default function View () {
 
 View.prototype.createElements = function(userInputList, sortDisplaySection) {
   userInputList.forEach(input => {
-    const $rectangleDiv = document.createElement("div");
-    $rectangleDiv.classList.add("rectangle-element");
-    $rectangleDiv.textContent = input;
-    $rectangleDiv.style.height = `${12 * input}px`;
-    sortDisplaySection.appendChild($rectangleDiv);
+    const $rectangleBarElement = document.createElement("div");
+    $rectangleBarElement.classList.add("rectangle-element");
+    $rectangleBarElement.textContent = input;
+    $rectangleBarElement.style.height = `${12 * input}px`;
+    sortDisplaySection.appendChild($rectangleBarElement);
   });
 };
 
@@ -52,7 +52,7 @@ View.prototype.bubbleSortVisualSwap = function(leftTargetElement, rightTargetEle
   rightTargetElement.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
 };
 
-View.prototype.bubbleSortSwapTargetElements = function(leftTargetElement, rightTargetElement, targetParent) {
+View.prototype.bubbleSortTargetElementsSwap = function(leftTargetElement, rightTargetElement, targetParent) {
   leftTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
   rightTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
   leftTargetElement.style.transform = this.TRANSFORM_NONE;

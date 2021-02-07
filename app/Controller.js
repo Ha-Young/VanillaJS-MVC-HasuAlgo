@@ -121,6 +121,27 @@ Controller.prototype.confirmSelectedSortOption = function() {
   }
 };
 
+Controller.prototype.quickSort = async function(userInputElements, left = 0, right = userInputElements.length-1) {
+  if (left <= right) {
+    const pivot = await this.placingPivotIdx(userInputElements, left, right);
+    const updatedUserInputElements = this.model.getUserInputElements();
+
+    this.view.toggleElement(userInputElements[pivot], this.viewTypes.PIVOT_ELEMENT_COLOR, false);
+    this.view.toggleElement(userInputElements[pivot], this.viewTypes.SORTED_ELEMENT_COLOR, true);
+
+    userInputElements.map(element => {
+      this.view.toggleElement(element, this.viewTypes.BIGGER_ELEMENT_COLOR, false);
+      this.view.toggleElement(element, this.viewTypes.SMALLER_ELEMENT_COLOR, false);
+    });
+
+    await this.view.delay(this.EXTENDED_DELAY);
+    await this.quickSort(updatedUserInputElements, left, pivot-1);
+
+    await this.view.delay(this.EXTENDED_DELAY);
+    await this.quickSort(updatedUserInputElements, pivot+1, right);
+  }
+};
+
 Controller.prototype.placingPivotIdx = async function(quickSortElementsList, start, end) {
   const userInputElements = quickSortElementsList;
   const pivotElement = userInputElements[start];
@@ -176,27 +197,6 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
   return lookingForPivotIdx;
 }
 
-Controller.prototype.quickSort = async function(userInputElements, left = 0, right = userInputElements.length-1) {
-  if (left <= right) {
-    const pivot = await this.placingPivotIdx(userInputElements, left, right);
-    const updatedUserInputElements = this.model.getUserInputElements();
-
-    this.view.toggleElement(userInputElements[pivot], this.viewTypes.PIVOT_ELEMENT_COLOR, false);
-    this.view.toggleElement(userInputElements[pivot], this.viewTypes.SORTED_ELEMENT_COLOR, true);
-
-    userInputElements.map(element => {
-      this.view.toggleElement(element, this.viewTypes.BIGGER_ELEMENT_COLOR, false);
-      this.view.toggleElement(element, this.viewTypes.SMALLER_ELEMENT_COLOR, false);
-    });
-
-    await this.view.delay(this.EXTENDED_DELAY);
-    await this.quickSort(updatedUserInputElements, left, pivot-1);
-
-    await this.view.delay(this.EXTENDED_DELAY);
-    await this.quickSort(updatedUserInputElements, pivot+1, right);
-  }
-};
-
 Controller.prototype.bubbleSort = async function(inputElements) {
   const userInputElements = inputElements;
 
@@ -224,7 +224,7 @@ Controller.prototype.bubbleSort = async function(inputElements) {
         this.view.bubbleSortVisualSwap(leftTarget, rightTarget);
 
         await this.view.delay(this.DELAY);
-        this.view.bubbleSortSwapTargetElements(leftTarget, rightTarget, this.$sortDisplaySection);
+        this.view.bubbleSortTargetElementsSwap(leftTarget, rightTarget, this.$sortDisplaySection);
       }
 
       await this.view.delay(this.DELAY);
