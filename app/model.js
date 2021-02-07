@@ -24,19 +24,6 @@ export default class Model {
     for (const elem of splitted) {
       this.storage.push(Number(elem));
     }
-    this.checkInput();
-  }
-
-  checkInput() {
-    const inputNumberLengthLimit = 11;
-    const inputNumberLImit = 100;
-
-    if (!this.storage.every(elem => elem < inputNumberLImit)) {
-      throw new Error('number is too high');
-    }
-    if (this.storage.length > inputNumberLengthLimit) {
-      throw new Error('too many numbers');
-    }
   }
 
   swapIndex(leftValue, RightValue) {

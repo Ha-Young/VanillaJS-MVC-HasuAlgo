@@ -67,15 +67,18 @@ export default class View {
     );
   }
 
-  changeButtonState(selectedType) {
-    if (selectedType === 'BUBBLE') {
-      MYAPP.button.bubbleSort.style.backgroundColor = '#7FCDCE';
-      MYAPP.button.bubbleSort.style.width = '80px';
+  changeButtonState(btn) {
+    const quickSortBtn = MYAPP.button.quickSort;
+    const bubbleSortBtn = MYAPP.button.bubbleSort;
+
+    if (btn === 'BUBBLE') {
+      bubbleSortBtn.style.backgroundColor = '#7FCDCE';
+      bubbleSortBtn.style.width = '80px';
     }
 
-    if (selectedType === 'QUICK') {
-      MYAPP.button.quickSort.style.backgroundColor = '#7FCDCE';
-      MYAPP.button.quickSort.style.width = '80px';
+    if (btn === 'QUICK') {
+      quickSortBtn.style.backgroundColor = '#7FCDCE';
+      quickSortBtn.style.width = '80px';
     }
   }
 
@@ -83,8 +86,8 @@ export default class View {
     pivot.classList.add('pivot-graph');
   }
 
-  renderErrorMsg(reason) {
-    MYAPP.table.error.textContent = reason;
+  renderErrorMsg(message) {
+    MYAPP.table.error.textContent = message;
     MYAPP.table.error.classList.add('fadeIn');
   }
 }

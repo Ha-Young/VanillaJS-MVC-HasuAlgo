@@ -5,53 +5,46 @@ export default class Controller {
     this.model = model;
     this.view = view;
     this.selectedType = null;
-    this.isStartBtnClicked = false;
   }
 
   run() {
-    MYAPP.button.start.addEventListener('click', async () => {
-      this.handleUserError();
+    MYAPP.button.start.addEventListener('click', function onclickStart() {
       this.init();
+      this.handleValidationError();
+      this.runSelectedSort();
 
-      if (this.selectedType === 'BUBBLE') {
-        this.bubbleSort();
-      }
+      MYAPP.button.start.removeEventListener('click', onclickStart);
+    }.bind(this));
 
-      if (this.selectedType === 'QUICK') {
-        await this.quickSort();
-        this.view.renderAllColor(MYAPP.table.graph);
-      }
-      this.isStartBtnClicked = true;
-    });
-
-    MYAPP.table.button.addEventListener('click', (ev) => {
-      if (ev.target.textContent === 'Bubble') {
-        this.selectedType = 'BUBBLE';
-      }
-
-      if (ev.target.textContent === 'Quick') {
-        this.selectedType = 'QUICK';
-      }
+    MYAPP.table.button.addEventListener('click', function onclickButton(e) {
+      this.selectedType = e.target.textContent.toUpperCase();
       this.view.changeButtonState(this.selectedType);
-    });
+
+      MYAPP.table.button.removeEventListener('click', onclickButton);
+    }.bind(this));
   }
 
-  handleUserError() {
+  handleValidationError() {
     const isUserSelectType = this.selectedType;
     const isUserPutValue = MYAPP.table.input.value;
+    const maxNumberLengthLimit = 11;
+    const maxNumberLImit = 100;
+    const isNumbersValidate = this.model.storage.every(elem => elem < maxNumberLImit);
+
     if (this.isStartBtnClicked) {
       this.view.renderErrorMsg('Already clicked!');
-      throw new Error('Already clicked!');
     }
-
     if (!isUserSelectType) {
       this.view.renderErrorMsg('Select sort type first!');
-      throw new Error('Select sort type first');
     }
-
     if (!isUserPutValue) {
       this.view.renderErrorMsg('Please insert value!');
-      throw new Error('Please insert value');
+    }
+    if (!isNumbersValidate) {
+      this.view.renderErrorMsg('number is too high');
+    }
+    if (this.model.storage.length > maxNumberLengthLimit) {
+      this.view.renderErrorMsg('too many numbers');
     }
   }
 
@@ -59,8 +52,23 @@ export default class Controller {
     const userInputValue = MYAPP.table.input.value;
     const modelStorage = this.model.get();
 
+    if (!userInputValue) {
+      return;
+    }
+
     this.model.set(userInputValue);
     this.view.renderGraphs(modelStorage);
+  }
+
+  async runSelectedSort() {
+    if (this.selectedType === 'BUBBLE') {
+      this.bubbleSort();
+    }
+
+    if (this.selectedType === 'QUICK') {
+      await this.quickSort();
+      this.view.renderAllColor(MYAPP.table.graph);
+    }
   }
 
   async bubbleSort() {

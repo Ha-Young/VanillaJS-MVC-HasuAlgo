@@ -156,15 +156,19 @@ h2 {
 }
 
 .fadeIn {
-  animation-name: learn;
-  animation-duration: 1s;
+  animation-name: fade;
+  animation-duration: 2s;
+  animation-fill-mode: none;
 }
 
-@keyframes learn {
-  from {
+@keyframes fade {
+  0% {
     opacity: 0;
   }
-  to {
+  30%{
     opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
