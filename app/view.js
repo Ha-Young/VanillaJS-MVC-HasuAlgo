@@ -52,32 +52,37 @@ function createView() {
         div.className = "block";
         div.style.backgroundColor = "white";
         div.style.height = `${storage[0][i] * 8}%`;
-        div.style.transform = `translateX(${i * 10}%)`;
         div.textContent = storage[0][i];
         $container.appendChild(div);
       }
     },
 
-    swap: function (prevNode, nextNode) {
+   swap: function (list, leftIndex, rightIndex) {
 
-      return new Promise( resolve => {
-        const prevNodeStyle = window.getComputedStyle(prevNode);
-        const nextNodeStyle = window.getComputedStyle(nextNode);
+    return new Promise(resolve => {
+        setTimeout(() => {
+          
+          if (leftIndex !== rightIndex) {
+            if (leftIndex === 0 && rightIndex === 1) {
+              list[leftIndex].after(list[rightIndex]);
+              list[rightIndex].after(list[leftIndex]);
+            }
 
-        const prevNodeTransform = prevNodeStyle.getPropertyValue("transform");
-        const nextNodeTransform = nextNodeStyle.getPropertyValue("transform");
+            if (leftIndex === 0 && rightIndex !== 1) {
+              list[leftIndex].after(list[rightIndex]);
+              list[rightIndex - 1].after(list[leftIndex]);
+            }
 
-        prevNode.style.transform = nextNodeTransform;
-        nextNode.style.transform = prevNodeTransform;
-
-        window.requestAnimationFrame(() => {
-          setTimeout(() => {
-            $container.insertBefore(nextNode, prevNode);
-            resolve();
-          }, 100);
-        });
-      });
-    },
+            if (leftIndex !== 0) {
+              list[rightIndex - 1].after(list[leftIndex]);
+              list[leftIndex - 1].after(list[rightIndex]);
+            }
+          }
+        
+          resolve();
+        }, 100);
+    });
+  },
 
     visualize: async function (taskElementList) {
       let blockList = document.querySelectorAll(".block");
@@ -86,14 +91,16 @@ function createView() {
         if (taskElement.type === "COMPARE") {
           await view.visualizeComparedBlock(blockList, taskElement.leftIndex, taskElement.rightIndex);
         } else if (taskElement.type === "SWAP") {
-          await view.swap(blockList[taskElement.leftIndex], blockList[taskElement.rightIndex]);
+          await view.swap(blockList, taskElement.leftIndex, taskElement.rightIndex);
           blockList = document.querySelectorAll(".block");
         } else if (taskElement.type === "SWAP_DONE") {
           await view.visualizeSwapDoneBlock(blockList, taskElement.leftIndex, taskElement.rightIndex);
         } else if (taskElement.type === "SINGLE_DONE") {
           await view.visualizeSingleDoneBlock(blockList, taskElement.leftIndex);
-        } else if (taskElement.type === "FINISH") {
+        } else if (taskElement.type === "FINISHED") {
           await view.visualizeFinishedBlock(blockList);
+        } else if (taskElement.type === "PICK_PIVOT") {
+          await view.visualizePivotBlock(blockList, taskElement.rightIndex);
         }
       }
     },
@@ -119,6 +126,12 @@ function createView() {
     visualizeFinishedBlock: async function (list) {
       await controller.delay();
       view.backgroundColorChange.addColorLastBlock(list);
+      await controller.delay();
+    },
+
+    visualizePivotBlock: async function (list, high) {
+      await controller.delay();
+      list[high].style.backgroundColor = "red";
       await controller.delay();
     }
   };
