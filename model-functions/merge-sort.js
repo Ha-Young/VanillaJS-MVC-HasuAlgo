@@ -1,6 +1,6 @@
-import delay from "../model/delay";
-import divideCloudsInCanvas from "../view/divide-clouds-in-canvas";
-import swapCloudsInCanvas from "../view/swap-clouds-in-canvas";
+import delay from "../model-functions/delay";
+import divideCloudsInCanvas from "../view-functions/divide-clouds-in-canvas";
+import swapCloudsInCanvas from "../view-functions/swap-clouds-in-canvas";
 
 async function getMergeSortedArray(left, right) {
   let beforeMerge = [...left, ...right];

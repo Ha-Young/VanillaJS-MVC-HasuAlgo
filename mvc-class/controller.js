@@ -1,0 +1,48 @@
+import getFilteredNumbers from "../controller-functions/input-keyup-handler";
+
+export default class Controller {
+  constructor(model, view) {
+    this.model = model;
+    this.view = view;
+
+    this.eventHandlers = {
+      handleInput: (e) => {
+        const key = e.key;
+
+        if (key !== "Enter") {
+          return false;
+        }
+
+        const inputValues = getFilteredNumbers(this.view);
+        const [ isvalid, message ] = this.model.checkIfInputValid(inputValues);
+
+        if (!isvalid) {
+          this.view.displayMessage("alertBox", message);
+          return;
+        }
+
+        this.model.addNewNumber(inputValues);
+        this.view.marioWorld.stopMarioMoving();
+        this.view.paintInput.createNewNumberPipe(inputValues);
+
+        this.view.displayMessage("startForm", "Select a button");
+        this.view.toggleVisibility("bubbleButton");
+        this.view.toggleVisibility("mergeButton");
+        this.view.toggleVisibility("wholeNumberInput");
+      },
+      handleClickBubbleButton: () => {
+        this.model.runBubbleSort();
+        this.view.toggleVisibility("startForm");
+      }, 
+      handleClickMergeButton: () => {
+        this.model.runMergeSort();
+        this.view.toggleVisibility("startForm");
+        this.view.sortAnimation.merge.changePipeToClouds();
+      },
+      handleClickHelp: () => {
+        this.view.displayHelpMessage();
+      },
+    }
+    this.view.addEventListeners(this.eventHandlers);
+  }
+}

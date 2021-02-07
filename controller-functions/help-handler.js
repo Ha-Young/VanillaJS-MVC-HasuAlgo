@@ -1,6 +1,4 @@
-import { alretBox } from "../view/add-event-listeners";
-
-export default function handleClickHelp() {
+export default function getHelpMessage() {
   const randomNumber = Math.floor(Math.random() * 3);
   
   const messages = {
@@ -8,6 +6,5 @@ export default function handleClickHelp() {
     1: "numbers better under 100.",
     2: "better submit lesser than 8 numbers for merge sort."
   }
-
-  alretBox.textContent = messages[randomNumber];
+  return messages[randomNumber];
 }

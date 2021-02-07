@@ -1,6 +1,5 @@
-import { numberInput, wholeNumberInput } from "./add-event-listeners";
-
 export default function resetInputTexts() {
+  const { numberInput, wholeNumberInput } = this;
   numberInput.value = "";
   numberInput.placeholder = "";
   wholeNumberInput.value = "";
