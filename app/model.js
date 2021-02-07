@@ -97,9 +97,7 @@ Model.prototype._bubbleSort = async function () {
       changeViewStyle(this.styleClassName.SELECT, this.sortChildren[j], this.sortChildren[j + 1]);
 
       await new Promise(resolve => {
-        setTimeout(() => {
-          resolve();
-        }, this.DELAY);
+        setTimeout(resolve, this.DELAY);
       });
 
       if (this.sortingList[j] > this.sortingList[j + 1]) {
