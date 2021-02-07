@@ -14,12 +14,4 @@ function App() {
   this.controller = new Controller(this.model, this.view);
 }
 
-const app = new App();
-
-const $form = document.querySelector('form');
-$form.addEventListener('submit', submitHandler);
-
-function submitHandler(event) {
-  event.preventDefault();
-  app.controller.submitHandler();
-}
+new App();

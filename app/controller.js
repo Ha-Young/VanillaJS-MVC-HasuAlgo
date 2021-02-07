@@ -1,6 +1,8 @@
 function Controller(Model, View) {
   this.model = Model;
   this.view = View;
+  const $form = document.querySelector('form');
+  $form.addEventListener('submit', this.submitHandler.bind(this));
 }
 
 const taskType = {
@@ -19,15 +21,17 @@ const sortType = {
   quick: 'quick',
 };
 
-Controller.prototype.submitHandler = function () {
+Controller.prototype.submitHandler = function (event) {
   try {
+    event.preventDefault();
+
     const $inputValue = document.querySelector('.inputValue');
     const $sortType = document.querySelector('select').value;
     const numberList = omitOverlapAndConvertToArray($inputValue.value);
 
     $inputValue.value = '';
     $inputValue.disabled = true;
-    // checkValidation(numberList);
+    checkValidation(numberList);
 
     this.view.render(numberList);
     this.startSorting($sortType, numberList.slice());
@@ -39,6 +43,7 @@ Controller.prototype.submitHandler = function () {
 
 Controller.prototype.startSorting = function ($sortType, list) {
   if ($sortType === sortType.bubble) {
+    this.model.createTask(taskType.start);
     this.bubbleSort(list);
   } else if ($sortType === sortType.quick) {
     this.quickSort(list);
@@ -47,7 +52,7 @@ Controller.prototype.startSorting = function ($sortType, list) {
 
 Controller.prototype.startVisualizing = async function () {
   const task = this.model.findNextTask();
-  console.log(task);
+
   if (!task) return;
 
   if (task.type === taskType.start) {
@@ -75,8 +80,6 @@ Controller.prototype.bubbleSort = function (list, index) {
   let hasChanged = false;
   const finishedIndex = index ? index : list.length - 1;
 
-  this.model.createTask(taskType.start);
-
   for (let i = 1; i < list.length; i++) {
     this.model.createTask(taskType.compare, i - 1, i);
 
@@ -86,6 +89,7 @@ Controller.prototype.bubbleSort = function (list, index) {
       this.model.createTask(taskType.swapBubble, i - 1, i, list.slice());
     }
   }
+
   this.model.createTask(taskType.done, finishedIndex);
 
   hasChanged
@@ -94,7 +98,6 @@ Controller.prototype.bubbleSort = function (list, index) {
 };
 
 Controller.prototype.quickSort = function (list) {
-
   this.model.createTask(taskType.start);
 
   this.recurseQs(0, list.length - 1, list);
@@ -147,9 +150,7 @@ Controller.prototype.partition = function (start, end, list) {
 };
 
 function checkValidation(list) {
-  if (list.some((elem) => !!elem === true)) {
-    throw Error('Insert Numbers...');
-  } else if (list.length < 5) {
+  if (list.length < 5) {
     throw Error('Need at least 5 numbers...');
   } else if (list.length > 10) {
     throw Error('Need at most 10 numbers...');
@@ -157,20 +158,11 @@ function checkValidation(list) {
 }
 
 function omitOverlapAndConvertToArray(string) {
-  const list = string
-    .trim()
-    .split(',')
+  const list = string.trim().split(',')
     .map((elem) => parseInt(elem, 10))
     .filter((elem) => elem === 0 || !isNaN(elem));
-  const list2 = [];
 
-  for (let i = 0; i < list.length; i++) {
-    if (!list2.includes(list[i])) {
-      list2.push(list[i]);
-    }
-  }
-
-  return list2;
+  return list;
 }
 
 export default Controller;

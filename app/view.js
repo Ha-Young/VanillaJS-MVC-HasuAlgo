@@ -28,7 +28,6 @@ View.prototype.reRender = function (list) {
 
   list.forEach(number => {
     const div = $items.find(item => item.innerText === String(number));
-    // debugger;
     div.classList.remove(this.COMPARE, this.CHANGE);
     div.style.transform = 'none';
     tempStorage.appendChild(div);
@@ -49,6 +48,7 @@ View.prototype.pivot = async function (index) {
     item.classList.remove(this.PIVOT);
     if (index === i) item.classList.add(this.PIVOT);
   });
+
   await makeInterval();
 };
 
@@ -75,7 +75,6 @@ View.prototype.swapBubble = async function (left, right, list) {
   $items[left].style.transform = `translateX(${differ}px)`;
   $items[right].style.transform = `translateX(-${differ}px)`;
   await makeInterval();
-
   this.reRender(list);
 };
 
@@ -117,7 +116,6 @@ View.prototype.swapQuick = async function (left, right, list) {
   $items[left].style.transform = `translateX(${differ}px)`;
   $items[right].style.transform = `translateX(-${differ}px)`;
   await makeInterval();
-
   this.reRender(list);
 };
 
@@ -132,9 +130,7 @@ View.prototype.getCurrentElement = function (index) {
 View.prototype.getCurrentList = function () {
   const $items = this.getCurrentDOM();
   const currentList = [];
-
   $items.forEach(item => currentList.push(item.innerText));
-
   return currentList;
 };
 
