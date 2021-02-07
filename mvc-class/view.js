@@ -1,4 +1,3 @@
-import { divide } from "lodash";
 import getHelpMessage from "../controller-functions/help-handler";
 import getMyElements from "../model-functions/get-my-elements";
 import changePipeToClouds from "../view-functions/change-pipe-to-clouds";
