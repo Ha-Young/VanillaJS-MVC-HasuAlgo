@@ -9,8 +9,8 @@ export default function Model() {
   this.INPUT_TYPE_ERROR_COMMENT = 'Lets sort by numbers only. 0 is not for sorting';
   this.LOW_LIMIT_LENGTH = 5;
   this.HIGH_LIMIT_LENGTH = 10;
-  this.LIMIT_LOW_TIME = 2500;
-  this.LIMIT_HIGH_TIME = 300;
+  this.LIMIT_LOWEST_TIME = 2500;
+  this.LIMIT_MAXIMUM_TIME = 300;
   this.TIME_INTERVAL = 200;
   this.DELAY = 1000;
 
@@ -40,10 +40,10 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
     return;
   }
 
-  const borderIndex = await this._divideConquerQuickSortElements(this.sortingList, start, end);
+  const ReferenceIndex = await this._divideConquerQuickSortElements(this.sortingList, start, end);
 
-	await this._quickSort(start, borderIndex - 1);
-  await this._quickSort(borderIndex, end);
+	await this._quickSort(start, ReferenceIndex - 1);
+  await this._quickSort(ReferenceIndex, end);
 
 	return this.sortingList;
 };
@@ -166,6 +166,4 @@ Model.prototype._resetBoard = function () {
   this.isStop = false;
 
   showViewText('');
-
-  return;
 };
