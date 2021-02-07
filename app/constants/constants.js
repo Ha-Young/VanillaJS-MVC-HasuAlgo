@@ -7,7 +7,7 @@ export const colorChart = {
 export const sortType = {
   BUBBLE_SORT: 'bubble-sort',
   QUICK_SORT: 'quick-sort',
-}
+};
 
 export const uiState = {
   START_SORT: 'startSort',
@@ -16,4 +16,4 @@ export const uiState = {
   CHECK_SORTED_NODES: 'checkSortedNode',
   OFF_LIGHT_NODE: 'offLightNode',
   FINISH_ALL_SORT: 'finishAllSort',
-}
+};
