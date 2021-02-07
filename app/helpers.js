@@ -1,5 +1,5 @@
 export function pause(pauseTime) {
-  return new Promise((resolve) => setTimeout(() => resolve(), pauseTime));
+  return new Promise((resolve) => setTimeout(resolve, pauseTime));
 }
 
 export function swap(array, index1, index2) {

@@ -1,9 +1,16 @@
 @import (css) url('https://fonts.googleapis.com/css2?family=Changa:wght@300&display=swap');
 @import (css) url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 
+@screen-color: #004B87;
+@default-item-color: #FFCD00;
+@selected-item-color: #ff5e57;
+@sorted-item-color: #20bf6b;
+@current-range-color: #0fbcf9;
+@warning-color: #c0392b;
+
 html, body {
   box-sizing: border-box;
-  background-color: #004B87;
+  background-color: @screen-color;
 }
 
 *, *:before, *:after {
@@ -11,11 +18,11 @@ html, body {
 }
 
 h1 {
-  color: #FFCD00;
+  color: @default-item-color;
   font-family: 'Changa', sans-serif;
 }
 
-p {
+span {
   margin: auto;
   font-family: 'Nanum Gothic', sans-serif;
   font-weight: 800;
@@ -57,7 +64,7 @@ img {
 }
 
 .set-placeholder::placeholder {
-  color: red;
+  color: @warning-color;
   font-weight: 800;
 }
 
@@ -65,7 +72,7 @@ button {
   font-weight: 800;
   font-family: 'Changa', sans-serif;
   border-radius: 5px;
-  background:#FFCD00;
+  background: @default-item-color;
   height: 50px;
   font-size: 1.3em;
   padding:0 1.3em;
@@ -86,7 +93,7 @@ button {
   margin: auto;
   border: solid;
   border-radius: 10px;
-  border-color: #FFCD00;
+  border-color: @default-item-color;
 }
 
 .sort-list {
@@ -99,24 +106,24 @@ button {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   text-align: center;
-  background-color: #FFCD00;
+  background-color: @default-item-color;
 }
 
 .quick-group {
-  background-color: #0fbcf9;
+  background-color: @current-range-color;
 }
 
 .sorted {
-  background-color: #20bf6b;
+  background-color: @sorted-item-color;
 }
 
 .selected {
-  background-color:  #ff5e57;
+  background-color: @selected-item-color;
 }
 
 #errorMsg {
   height: 10px;
-  color: red;
+  color: @warning-color;
   font-size: 20px;
   vertical-align: center;
 }

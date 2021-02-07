@@ -1,22 +1,22 @@
 export default class Model {
   constructor() {
     this._storage = [];
-    this._selectedAlgorithm = '';
+    this._selectedSortType = '';
   }
 
   setStorage(data) {
     this._storage = data;
   }
 
-  setAlgorithm(algorithm) {
-    this._selectedAlgorithm = algorithm;
+  setSortType(sortType) {
+    this._selectedSortType = sortType;
   }
 
   getStorage() {
     return this._storage;
   }
 
-  getAlgorithm() {
-    return this._selectedAlgorithm;
+  getSortType() {
+    return this._selectedSortType;
   }
 }

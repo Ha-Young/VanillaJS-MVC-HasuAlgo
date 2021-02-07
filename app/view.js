@@ -1,11 +1,12 @@
-import {pause} from './helpers';
+import { pause } from './helpers';
+import { params } from './constants';
 
 export default class View {
   constructor() {
     this.$inputBox = document.querySelector('#input-box');
     this.$inputBtn = document.querySelector("#input-btn");
-    this.$bubbleBtn = document.querySelector('#bubble-btn');
-    this.$quickBtn = document.querySelector('#quick-btn');
+    this.$bubbleBtn = document.querySelector('#bubbleSort');
+    this.$quickBtn = document.querySelector('#quickSort');
     this.$executeBtn = document.querySelector('#execute-btn');
     this.$sortingWindow = document.querySelector('.sorting-window');
     this.$inputButtonText = document.querySelector('#input-btn-text');
@@ -87,7 +88,7 @@ export default class View {
 
     this.bindInputBtnEventHandler(inputBtnEventHandler);
     this.bindExecuteBtnEventHandler(executeBtnEventHandler);
-    this.bindSetAlgorithmBtnEventHandler(setAlgorithmBtnEventHandler);
+    this.bindSetSortTypeBtnEventHandler(setAlgorithmBtnEventHandler);
   }
 
   async changeClass(pauseTime, type, className, ...indexList) {
@@ -108,6 +109,7 @@ export default class View {
     await pause(pauseTime);
 
     this.changeOrder(movingIndex, movingIndex + 2);
+    return;
   }
 
   async switchQuickItemsWithAnimation(pauseTime, startIndex, endIndex) {
@@ -140,7 +142,7 @@ export default class View {
     this.$inputBtn.addEventListener('click', handler);
   }
 
-  bindSetAlgorithmBtnEventHandler(handler) {
+  bindSetSortTypeBtnEventHandler(handler) {
     this.$bubbleBtn.addEventListener('click', handler);
     this.$quickBtn.addEventListener('click', handler);
   }
@@ -148,4 +150,29 @@ export default class View {
   bindExecuteBtnEventHandler(handler) {
     this.$executeBtn.addEventListener('click', handler);
   }
+
+  async visualizeBubbleSort(visualizeQueue) {
+    const PAUSE_TIME = 500;
+
+    for (const job of visualizeQueue) {
+      switch (job.type) {
+        case params.selected:
+          await this.changeClass(PAUSE_TIME, params.add, params.selected, job.innerIndex, job.innerIndex + 1);
+          break;
+        case params.swap:
+          await this.switchItemsWithAnimation(PAUSE_TIME, job.innerIndex);
+          break;
+        case params.deselected:
+          await this.changeClass(PAUSE_TIME, params.remove, params.selected, job.innerIndex, job.innerIndex + 1);
+          break;
+        case params.sorted:
+          await this.changeClass(PAUSE_TIME, params.add, params.sorted, job.outerIndex);
+          break;
+        case params.done:
+          await this.changeClass(PAUSE_TIME, params.add, params.sorted, ...job.outerIndex);
+          break;
+      }
+    }
+  }
 }
+
