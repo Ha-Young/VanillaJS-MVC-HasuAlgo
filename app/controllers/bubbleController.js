@@ -21,14 +21,12 @@ BubbleController.prototype.sort = async function() {
         );
         
         await this.view.swap(j, j + 1, false);
-        
       } else {
         await this.view.swap(j, j + 1, true);
         
         await new Promise(resolve =>
           setTimeout(resolve, SWAP_DELAY)
         );
-        
       }
     }
     this.view.paintDone(i);

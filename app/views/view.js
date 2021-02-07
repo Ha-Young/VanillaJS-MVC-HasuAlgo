@@ -1,4 +1,11 @@
 export const View = function(bubbleView) {
+  this.$changeBubble = document.querySelector('.change-bubble');
+  this.$changeMerge = document.querySelector('.change-merge');
+  this.$userInput = document.querySelector('.user-input');
+  this.$start = document.querySelector('.start');
+  this.$random = document.querySelector('.random');
+  this.$delete = document.querySelector('.delete');
+  this.$clear = document.querySelector('.clear');
   this.$title = document.querySelector('.title');
   this.$inform = document.querySelector('.inform');
   this.$visual = document.querySelector('.visual');
@@ -25,7 +32,7 @@ View.prototype.create = function(v, n) {
 
   if (n > 5) {
     $boxs.forEach(item => {
-      item.style.left = `${235 - (n - 5) * 25}px`
+      item.style.left = `${235 - (n - 5) * 25}px`;
     });
   }
 };
@@ -35,7 +42,7 @@ View.prototype.delete = function(n) {
   
   if (n > 5) {
     $boxs.forEach(item => {
-      item.style.left = `${235 - (n - 5) * 25}px`
+      item.style.left = `${235 - (n - 5) * 25}px`;
     });
   }
 

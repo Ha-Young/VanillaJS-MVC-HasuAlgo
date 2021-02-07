@@ -40,10 +40,10 @@ BubbleView.prototype.swap = async function(prev, back, isEqual) {
     const transformB = styleB.getPropertyValue('transform');
     
     const AmatrixValues = transformA.match(/matrix.*\((.+)\)/)[1].split(', ')
-    const Ax = AmatrixValues[4]
+    const Ax = AmatrixValues[4];
 
     const BmatrixValues = transformB.match(/matrix.*\((.+)\)/)[1].split(', ')
-    const Bx = BmatrixValues[4]
+    const Bx = BmatrixValues[4];
     
     $boxs[prev].style.transform = `matrix(1, 0, 0, 1, ${Ax}, 0)`;
     $boxs[back].style.transform = `matrix(1, 0, 0, 1, ${Bx}, 0)`;
@@ -67,10 +67,10 @@ BubbleView.prototype.swapUp = function(prev, back) {
   const transformB = styleB.getPropertyValue('transform');
     
   const AmatrixValues = transformA.match(/matrix.*\((.+)\)/)[1].split(', ')
-  const Ax = AmatrixValues[4]
+  const Ax = AmatrixValues[4];
 
   const BmatrixValues = transformB.match(/matrix.*\((.+)\)/)[1].split(', ')
-  const Bx = BmatrixValues[4]
+  const Bx = BmatrixValues[4];
     
   $boxs[prev].style.transform = `matrix(1, 0, 0, 1, ${Bx}, -20)`;
   $boxs[back].style.transform = `matrix(1, 0, 0, 1, ${Ax}, -20)`;

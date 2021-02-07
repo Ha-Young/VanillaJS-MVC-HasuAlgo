@@ -1,11 +1,11 @@
 export const Controller = function(model, view, bubbleController) {
-  this.$changeBubble = document.querySelector('.change-bubble');
-  this.$changeMerge = document.querySelector('.change-merge');
-  this.$userInput = document.querySelector('.user-input');
-  this.$start = document.querySelector('.start');
-  this.$random = document.querySelector('.random');
-  this.$delete = document.querySelector('.delete');
-  this.$clear = document.querySelector('.clear');
+  this.$changeBubble = view.$changeBubble;
+  this.$changeMerge = view.$changeMerge;
+  this.$userInput = view.$userInput;
+  this.$start = view.$start;
+  this.$random = view.$random;
+  this.$delete = view.$delete;
+  this.$clear = view.$clear;
 
   this.model = model;
   this.view = view;
@@ -16,14 +16,14 @@ Controller.prototype.create = function(e) {
   const value = this.$userInput.value;
 
   if (e.key === 'Enter' && value !== '') {
-    if (this.model.size() > 9) {
+    if (this.model.size() >= 10) {
       alert("10개 이상의 수는 비교 할 수 없습니다..")
       this.$userInput.value = '';
 
       return;
     }
 
-    if (!this.filterType(value)) {
+    if (!this.checkType(value)) {
       alert('숫자만 입력 가능합니다!');
       this.$userInput.value = '';
 
@@ -38,8 +38,9 @@ Controller.prototype.create = function(e) {
   }
 };
 
-Controller.prototype.filterType = function(input) {
-  let filtering = [...input];
+Controller.prototype.checkType = function(input) {
+  const filtering = [...input];
+  console.log(filtering);
   let isNumber = true;
   
   filtering.forEach(n => {
@@ -52,7 +53,7 @@ Controller.prototype.filterType = function(input) {
 };
 
 Controller.prototype.delete = function() {
-  if (!this.model.size()) {
+  if (this.model.size() === 0) {
     this.$userInput.value = '';
     
     return;
@@ -69,7 +70,7 @@ Controller.prototype.clear = function() {
 };
 
 Controller.prototype.start = function() {
-  if (this.model.size() < 5) {
+  if (5 > this.model.size()) {
     alert("정렬할 수를 5개 이상 만들어주세요! (10개는 넘으면 안돼요;;)");
     
     return;
@@ -79,7 +80,7 @@ Controller.prototype.start = function() {
   this.sort();
 };
 
-Controller.prototype.random = function() {
+Controller.prototype.makeRandom = function() {
   this.clear();
 
   function makeRandomNumber(min, max) {
@@ -101,16 +102,16 @@ Controller.prototype.changeBubble = function() {
     this.clear();
   };
 
-  Controller.prototype.changeMerge = function() {
-    this.view.changeMerge();
-    this.clear();
-  };
+Controller.prototype.changeMerge = function() {
+  this.view.changeMerge();
+  this.clear();
+};
   
 Controller.prototype.events = function() {
   this.$changeBubble.addEventListener('click', this.changeBubble.bind(this));
   this.$changeMerge.addEventListener('click', this.changeMerge.bind(this));
   this.$userInput.addEventListener('keyup', this.create.bind(this));
-  this.$random.addEventListener('click', this.random.bind(this));
+  this.$random.addEventListener('click', this.makeRandom.bind(this));
   this.$delete.addEventListener('click', this.delete.bind(this));
   this.$start.addEventListener('click', this.start.bind(this));
   this.$clear.addEventListener('click', this.clear.bind(this));
