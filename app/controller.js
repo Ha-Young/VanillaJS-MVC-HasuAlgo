@@ -4,27 +4,28 @@ function Controller(Model, View) {
 }
 
 const taskType = {
-  start: "start",
-  compare: "compare",
-  pivot: "pivot",
-  move: "move",
-  swap: "swap",
-  done: "single item done",
-  finish: "finish",
+  start: 'start',
+  compare: 'compare',
+  pivot: 'pivot',
+  move: 'move',
+  swapBubble: 'swapBubble',
+  swapQuick: 'swapQuick',
+  done: 'single item done',
+  finish: 'finish',
 };
 
 const sortType = {
-  bubble: "bubble",
-  quick: "quick",
+  bubble: 'bubble',
+  quick: 'quick',
 };
 
 Controller.prototype.submitHandler = function () {
   try {
-    const $inputValue = document.querySelector(".inputValue");
-    const $sortType = document.querySelector("select").value;
+    const $inputValue = document.querySelector('.inputValue');
+    const $sortType = document.querySelector('select').value;
     const numberList = omitOverlapAndConvertToArray($inputValue.value);
 
-    $inputValue.value = "";
+    $inputValue.value = '';
     $inputValue.disabled = true;
     // checkValidation(numberList);
 
@@ -32,7 +33,7 @@ Controller.prototype.submitHandler = function () {
     this.startSorting($sortType, numberList.slice());
     this.startVisualizing();
   } catch (err) {
-    document.querySelector(".resultView").textContent = err.message;
+    document.querySelector('.resultView').textContent = err.message;
   }
 };
 
@@ -46,6 +47,7 @@ Controller.prototype.startSorting = function ($sortType, list) {
 
 Controller.prototype.startVisualizing = async function () {
   const task = this.model.findNextTask();
+  console.log(task);
   if (!task) return;
 
   if (task.type === taskType.start) {
@@ -54,8 +56,12 @@ Controller.prototype.startVisualizing = async function () {
     await this.view.compare(task.sourceIndex, task.targetIndex);
   } else if (task.type === taskType.pivot) {
     await this.view.pivot(task.sourceIndex);
-  } else if (task.type === taskType.swap) {
+  } else if (task.type === taskType.move) {
+    await this.view.move(task.sourceIndex, task.targetIndex);
+  } else if (task.type === taskType.swapBubble) {
     await this.view.swapBubble(task.sourceIndex, task.targetIndex, task.list);
+  } else if (task.type === taskType.swapQuick) {
+    await this.view.swapQuick(task.sourceIndex, task.targetIndex, task.list);
   } else if (task.type === taskType.done) {
     await this.view.done(task.sourceIndex);
   } else if (task.type === taskType.finish) {
@@ -77,7 +83,7 @@ Controller.prototype.bubbleSort = function (list, index) {
     if (list[i - 1] > list[i]) {
       hasChanged = true;
       [list[i - 1], list[i]] = [list[i], list[i - 1]];
-      this.model.createTask(taskType.swap, i - 1, i, list.slice());
+      this.model.createTask(taskType.swapBubble, i - 1, i, list.slice());
     }
   }
   this.model.createTask(taskType.done, finishedIndex);
@@ -88,7 +94,6 @@ Controller.prototype.bubbleSort = function (list, index) {
 };
 
 Controller.prototype.quickSort = function (start, end, list) {
-  this.model.createTask(taskType.start);
   const partIndex = this.partition(start, end, list);
 
   if (start < partIndex - 1) {
@@ -98,6 +103,8 @@ Controller.prototype.quickSort = function (start, end, list) {
   if (partIndex < end) {
     this.quickSort(partIndex, end, list);
   }
+
+  this.model.createTask(taskType.finish);
 };
 
 Controller.prototype.partition = function (start, end, list) {
@@ -106,7 +113,7 @@ Controller.prototype.partition = function (start, end, list) {
 
   this.model.createTask(taskType.pivot, index);
 
-  while (start < end) {
+  while (start <= end) {
     this.model.createTask(taskType.compare, start, end);
 
     while (list[start] < pivot) {
@@ -121,29 +128,29 @@ Controller.prototype.partition = function (start, end, list) {
 
     if (start <= end) {
       [list[start], list[end]] = [list[end], list[start]];
-      this.model.createTask(taskType.swap, start, end, list.slice());
+      this.model.createTask(taskType.swapQuick, start, end, list.slice());
       start++;
       end--;
     }
-
-    return start;
   }
+
+  return start;
 };
 
 function checkValidation(list) {
   if (list.some((elem) => !!elem === true)) {
-    throw Error("Insert Numbers...");
+    throw Error('Insert Numbers...');
   } else if (list.length < 5) {
-    throw Error("Need at least 5 numbers...");
+    throw Error('Need at least 5 numbers...');
   } else if (list.length > 10) {
-    throw Error("Need at most 10 numbers...");
+    throw Error('Need at most 10 numbers...');
   }
 }
 
 function omitOverlapAndConvertToArray(string) {
   const list = string
     .trim()
-    .split(",")
+    .split(',')
     .map((elem) => parseInt(elem, 10))
     .filter((elem) => elem === 0 || !isNaN(elem));
   const list2 = [];

@@ -4,7 +4,7 @@
 @done: rgb(99, 121, 141);
 @item: rgb(85, 106, 165);
 @border: rgb(192, 212, 216) solid 0.3vw;
-@move: rgb(193, 206, 163);
+@move: rgb(224, 156, 100);
 
 @flex-center: {
   display: flex;
@@ -38,7 +38,7 @@ html, body {
   height: 30vh;
   padding: 5vw;
   color: @item;
-  .sortItems {
+  div {
     @flex-center();
     margin: auto 2vw;
     width: 50px;
@@ -53,10 +53,10 @@ html, body {
   border: @border;
 }
 
-.compare {
-  color: @compare;
-  font-weight: bolder;
-}
+// .compare {
+//   color: @compare;
+//   font-weight: bolder;
+// }
 
 .pivot {
   background-color: @pivot;
@@ -67,7 +67,7 @@ html, body {
   background-color: @done;
 }
 
-.move {
+.compare {
   background-color: @move;
 }
 
