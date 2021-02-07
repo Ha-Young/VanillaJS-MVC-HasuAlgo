@@ -41,7 +41,7 @@ Controller.prototype.startSorting = function ($sortType, list) {
   if ($sortType === sortType.bubble) {
     this.bubbleSort(list);
   } else if ($sortType === sortType.quick) {
-    this.quickSort(0, list.length - 1, list);
+    this.quickSort(list);
   }
 };
 
@@ -93,18 +93,25 @@ Controller.prototype.bubbleSort = function (list, index) {
     : this.model.createTask(taskType.finish);
 };
 
-Controller.prototype.quickSort = function (start, end, list) {
+Controller.prototype.quickSort = function (list) {
+
+  this.model.createTask(taskType.start);
+
+  this.recurseQs(0, list.length - 1, list);
+
+  this.model.createTask(taskType.finish);
+};
+
+Controller.prototype.recurseQs = function (start, end, list) {
   const partIndex = this.partition(start, end, list);
 
   if (start < partIndex - 1) {
-    this.quickSort(start, partIndex - 1, list);
+    this.recurseQs(start, partIndex - 1, list);
   }
 
   if (partIndex < end) {
-    this.quickSort(partIndex, end, list);
+    this.recurseQs(partIndex, end, list);
   }
-
-  this.model.createTask(taskType.finish);
 };
 
 Controller.prototype.partition = function (start, end, list) {
@@ -128,7 +135,9 @@ Controller.prototype.partition = function (start, end, list) {
 
     if (start <= end) {
       [list[start], list[end]] = [list[end], list[start]];
-      this.model.createTask(taskType.swapQuick, start, end, list.slice());
+      if (start !== end) {
+        this.model.createTask(taskType.swapQuick, start, end, list.slice());
+      }
       start++;
       end--;
     }
