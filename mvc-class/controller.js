@@ -1,4 +1,4 @@
-import getFilteredNumbers from "../controller-functions/input-keyup-handler";
+import getFilteredNumbers from "../controller-functions/get-filtered-numbers";
 
 export default class Controller {
   constructor(model, view) {
