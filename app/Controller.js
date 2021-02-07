@@ -8,7 +8,6 @@ export default function Controller(model, view) {
   this.$submitButton = document.querySelector(".submit-button");
   this.$startButton = document.querySelector(".start-button");
   this.$resetButton = document.querySelector(".reset-button");
-
   this.$sortDisplaySection = document.querySelector(".sort-display-section");
   this.$instructionMessage = document.querySelector(".instruction-message");
 
