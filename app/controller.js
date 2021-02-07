@@ -48,15 +48,15 @@ function init() {
   let sortingMethod;
 
   function clickEffect(event) {
-    const divElement = document.createElement("div");
+    const clickElement = document.createElement("div");
 
-    divElement.className = "clickEffect";
-    divElement.style.top = event.clientY + "px";
-    divElement.style.left = event.clientX + "px";
-    document.body.appendChild(divElement);
+    clickElement.className = "clickEffect";
+    clickElement.style.top = event.clientY + "px";
+    clickElement.style.left = event.clientX + "px";
+    document.body.appendChild(clickElement);
 
-    divElement.addEventListener('animationend',function () {
-      divElement.parentElement.removeChild(divElement);
+    clickElement.addEventListener('animationend', function () {
+      clickElement.parentElement.removeChild(clickElement);
     }.bind(this));
   }
 
