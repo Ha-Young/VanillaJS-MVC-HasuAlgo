@@ -114,7 +114,7 @@ function createView() {
             await view.visualizePivotBlock(blockList, taskElement.rightIndex);
             break;
           default:
-            throw new Error ("Invalid type");
+            throw new Error("Invalid type");
         }
       }
     },
