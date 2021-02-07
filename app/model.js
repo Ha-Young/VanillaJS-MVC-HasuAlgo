@@ -3,12 +3,11 @@ function Model() {
   this.stampStorage = [];
 }
 
-Model.prototype.getStamp = function(stampType,leftIndex, rightIndex, finishIndex) {
+Model.prototype.getStamp = function(stampType,leftIndex, rightIndex) {
   const stamp = {
     stampType,
     leftIndex,
     rightIndex,
-    finishIndex
   }
 
   this.stampStorage.push(stamp);

@@ -1,6 +1,7 @@
 function View () {
   this.$errorMessage = document.querySelector('.errorMessage');
   this.$contentContainer = document.querySelector('.contentContainer');
+  this.$contentContainer.textContent = null;
   this.indexCount = 0;
   this.paintTime = 700;
 }
@@ -8,17 +9,12 @@ function View () {
 View.prototype.addChildNode = function(value) {
   this.$div = document.createElement('div');
 
-  if (this.$contentContainer.childNodes.length > 10) {
-    this.$errorMessage.innerHTML = "입력 갯수를 초과하셨습니다"
-    return;
-  }
-
   this.$div.innerHTML = value;
   this.$div.setAttribute('data-X', this.indexCount);
   this.$div.setAttribute('data-count', 0);
   this.$div.classList.add('graphNode');
   this.$div.classList.add('transition');
-  this.$div.style.height = `${value + 3}px`;
+  this.$div.style.height = `${value * 2.5}vh`;
   this.$contentContainer.appendChild(this.$div);
   this.$graphNodes = document.getElementsByClassName('graphNode');
   this.indexCount++;
@@ -27,6 +23,7 @@ View.prototype.addChildNode = function(value) {
 View.prototype.changeColor = function(leftNode, rightNode) {
   return new Promise((resolve) => {
     setTimeout(() => {
+      console.log(leftNode,rightNode);
       leftNode.style.backgroundColor = 'gray';
       rightNode.style.backgroundColor = 'gray';
 

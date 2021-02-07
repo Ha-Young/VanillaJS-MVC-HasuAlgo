@@ -43,7 +43,7 @@ Controller.prototype.sortStorage = async function(storeageArray) {
     const firstStamp = stampStorage[0];
     const moveValue = (600 / graphNodes.length);
 
-    switch (stampStorage[0].stampType) {
+    switch (firstStamp.stampType) {
       case 'start':
 
         leftNode = this.findLeftNode(graphNodes, firstStamp);
@@ -109,11 +109,11 @@ Controller.prototype.handleKeyUp = function(event) {
   if (event.key === 'Enter') {
     if (this.$typed.value === '') return;
 
-    if (this.$typed.value < 0 || this.$typed.value > 100) return;
+    if (this.$typed.value < 1 || this.$typed.value > 100) return;
 
-    this.view.addChildNode(event.target.value, this.model.count);
+    this.view.addChildNode(event.target.value);
     this.model.storage.push(Number(event.target.value));
-    this.$typed.value = '';
+    this.$typed.value = null;
   }
 }
 
@@ -127,7 +127,13 @@ Controller.prototype.handleBubbleClick = function(event) {
     return;
   }
 
-  this.view.$errorMessage.innerHTML = '';
+  if (childNodesLength > 10) {
+    console.log(childNodesLength)
+    this.view.$errorMessage.textContent = "입력 갯수를 초과하셨습니다"
+    return;
+  }
+
+  this.view.$errorMessage.innerHTML = null;
   this.$bubbleSortButton.style.display = 'none';
 
   this.sortStorage(this.model.storage);
@@ -144,6 +150,7 @@ Controller.prototype.handleRestartClick = function(event) {
     this.view.$contentContainer.removeChild(this.view.$contentContainer.firstChild);
   }
 
+  this.view.$contentContainer.textContent = null;
   this.$bubbleSortButton.style.display = 'inline';
 }
 
