@@ -36,7 +36,7 @@ function createController() {
   
       const numberList = convertNumber();
   
-      if (numberList.length > 4 && numberList.length < 10) {
+      if (numberList.length > 4 && numberList.length < 11) {
         controller.addList(numberList);
         if (isBubbleSortTurn) {
           controller.bubbleSort();
@@ -62,7 +62,7 @@ function createController() {
   
       const numberList = convertNumber();
   
-      if (numberList.length > 4 && numberList.length < 10) {
+      if (numberList.length > 4 && numberList.length < 11) {
         controller.addList(numberList);
   
         if (isQuickSortTurn) {
