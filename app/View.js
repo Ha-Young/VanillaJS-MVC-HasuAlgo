@@ -25,24 +25,19 @@ View.prototype.toggleElement = function(element, viewType, toggle) {
   toggle ? element.classList.add(viewType) : element.classList.remove(viewType);
 };
 
-View.prototype.setInstructionMessage = function(
-  instructionMessageElement, settingMessage
-) {
-    instructionMessageElement.textContent = settingMessage;
+View.prototype.setInstructionMessage = function(instructionMessageElement, settingMessage) {
+  instructionMessageElement.textContent = settingMessage;
 };
 
-View.prototype.setInstructionMessageAfterSubmit = function(
-  userInput, instructionMessageElement, settingMessage
-) {
-    userInput.value = "";
-    instructionMessageElement.textContent = settingMessage;
+View.prototype.setInstructionMessageAfterSubmit = function(userInput, instructionMessageElement, settingMessage) {
+  userInput.value = "";
+  instructionMessageElement.textContent = settingMessage;
 };
 
-View.prototype.hideSortSelectorAfterInputValidation = function(
-  userInput, sortSelector, validatedUserInput) {
-    sortSelector.classList.add(this.HIDDEN_CLASSNAME);
-    userInput.placeholder = validatedUserInput;
-    userInput.disabled = this.DISABLED_CLASSNAME;
+View.prototype.hideSortSelectorAfterInputValidation = function(userInput, sortSelector, validatedUserInput) {
+  sortSelector.classList.add(this.HIDDEN_CLASSNAME);
+  userInput.placeholder = validatedUserInput;
+  userInput.disabled = this.DISABLED_CLASSNAME;
 };
 
 View.prototype.delay = function (delayTime) {
@@ -58,14 +53,12 @@ View.prototype.bubbleSortVisualSwap = function(leftTargetElement, rightTargetEle
   rightTargetElement.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
 };
 
-View.prototype.bubbleSortTargetElementsSwap = function(
-  leftTargetElement, rightTargetElement, targetParent
-) {
-    leftTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
-    rightTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
-    leftTargetElement.style.transform = this.TRANSFORM_NONE;
-    rightTargetElement.style.transform = this.TRANSFORM_NONE;
-    targetParent.insertBefore(rightTargetElement, leftTargetElement);
+View.prototype.bubbleSortTargetElementsSwap = function(leftTargetElement, rightTargetElement, targetParent) {
+  leftTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
+  rightTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
+  leftTargetElement.style.transform = this.TRANSFORM_NONE;
+  rightTargetElement.style.transform = this.TRANSFORM_NONE;
+  targetParent.insertBefore(rightTargetElement, leftTargetElement);
 };
 
 View.prototype.quickSortVisualSwap = function(pivotIndexElement, targetElement) {
@@ -76,10 +69,10 @@ View.prototype.quickSortVisualSwap = function(pivotIndexElement, targetElement) 
   const targetRect = targetElement.getBoundingClientRect();
 
   const rectDifference = Math.abs(targetRect.x - pivotIndexElemRect.x);
-  const pivotIndexElementPreStyled = getX(pivotIndexElement);
-  const targetPreStyled = getX(targetElement);
+  const pivotIndexElementPreStyled = getXOffset(pivotIndexElement);
+  const targetPreStyled = getXOffset(targetElement);
 
-  function getX(elem) {
+  function getXOffset(elem) {
     const style = window.getComputedStyle(elem);
     const matrix = new WebKitCSSMatrix(style.transform);
     return matrix.m41;
