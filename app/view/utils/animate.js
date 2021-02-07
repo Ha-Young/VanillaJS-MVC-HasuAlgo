@@ -1,13 +1,20 @@
 export function fromToTranslatePosition(element, from, to, duration) {
-  const start = new Date().getTime();
+  let start = null;
 
-  const timer = setInterval(function() {
-    const time = new Date().getTime() - start;
+  function animationStep(timeStamp) {
+    if (!start) start = timeStamp;
+
+    const time = timeStamp - start;
     const mx = easeInOutQuart(time, from.x, to.x - from.x, duration);
     const my = easeInOutQuart(time, from.y, to.y - from.y, duration);
     element.setAttribute('transform', `translate(${mx}, ${my})`);
-    if (time >= duration) clearInterval(timer);
-  }, 1000 / 60);
+
+    if (time < duration) {
+      window.requestAnimationFrame(animationStep);
+    }
+  }
+
+  window.requestAnimationFrame(animationStep);
 }
 
 // factory function for create position object
