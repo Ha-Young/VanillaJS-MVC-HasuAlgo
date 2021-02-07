@@ -67,10 +67,12 @@ class Controller {
     const self = this;
     const sortType = self.page;
 
-    self.model.startSort(self.startVisualize.bind(self), sortType);
+    self.model.startSort(() => {
+      self.startVisualizeControl();
+    }, sortType);
   }
 
-  async startVisualize() {
+  async startVisualizeControl() {
     const self = this;
 
     if (!self.model.visualizeTask.length) {
@@ -80,7 +82,7 @@ class Controller {
     await self.view.renderVisualize(self.model.visualizeTask[0], self.page);
     await self.model.visualizeTask.shift();
 
-    await self.startVisualize();
+    await self.startVisualizeControl();
   }
 
   shuffleNumberControl() {
