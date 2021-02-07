@@ -10,7 +10,7 @@ export class View {
     this.selector = document.querySelector('select');
     this.startButton = document.querySelector('.content-startButton');
     this.contentField = document.querySelector('.content-field');
-    this.warningZone = document.querySelector('.content-warning');
+    this.contentWarning = document.querySelector('.content-warning');
   }
 
   get nodeList() {
@@ -26,7 +26,7 @@ export class View {
       event.preventDefault();
 
       if (!this.nodeList) {
-        this.warningZone.textContent = 'Please enter numbers';
+        this.contentWarning.textContent = 'Please enter numbers';
         return;
       }
 
@@ -41,17 +41,17 @@ export class View {
       const withinRange = listArray.every(item => item > MIN_NUMBER_RANGE && item < MAX_NUMBER_RANGE);
 
       if (listArray.length < MIN_LIST_LENGTH || listArray.length > MAX_LIST_LENGTH) {
-        this.warningZone.textContent = 'Please enter number 5 to 10';
+        this.contentWarning.textContent = 'Please enter number 5 to 10';
         return;
       } else if (!isNumbers) {
-        this.warningZone.textContent = 'Please enter only number';
+        this.contentWarning.textContent = 'Please enter only number';
         return;
       } else if (!withinRange) {
-        this.warningZone.textContent = 'Please enter number in 50 to 100';
+        this.contentWarning.textContent = 'Please enter number in 50 to 100';
         return;
       }
 
-      this.warningZone.textContent = '';
+      this.contentWarning.textContent = '';
       this.submitButton.disabled = true;
 
       handler(listArray);
@@ -62,11 +62,11 @@ export class View {
   bindStartSort(handler) {
     this.startButton.addEventListener('click', () => {
       if (this.selector.value === '') {
-        this.warningZone.textContent = 'Please choose sort type';
+        this.contentWarning.textContent = 'Please choose sort type';
         return;
       }
 
-      this.warningZone.textContent = '';
+      this.contentWarning.textContent = '';
       handler();
       this.startButton.disabled = true;
     });
