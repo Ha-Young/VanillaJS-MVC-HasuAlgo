@@ -97,6 +97,8 @@ function init() {
   $playButton.addEventListener('click', function () {
     if (sortingList) {
       $playButton.disabled = true;
+      $inputBox.disabled = true;
+      $selectBox.disabled = true;
 
       switch (sortingMethod) {
         case 'bubbleSort':
@@ -127,6 +129,8 @@ function init() {
   $reloadButton.addEventListener('click', function () {
     $submitButton.disabled = false;
     $playButton.disabled = false;
+    $inputBox.disabled = false;
+    $selectBox.disabled = false;
     view.canPaint = false;
     model.isStop = true;
 
