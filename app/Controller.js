@@ -109,14 +109,14 @@ Controller.prototype.validateUserInput = function() {
 
 Controller.prototype.confirmSelectedSortOption = function() {
   const userInputElements = this.$sortDisplaySection.children;
-  const sortList = Array.from(userInputElements);
+  const userInputList = Array.from(userInputElements);
 
   switch (this.$sortSelector.value) {
     case this.sortTypes.BUBUBLE_SORT :
       this.bubbleSort(userInputElements);
       break;
     case this.sortTypes.QUICK_SORT :
-      this.quickSort(sortList);
+      this.quickSort(userInputList);
       break;
   }
 };
