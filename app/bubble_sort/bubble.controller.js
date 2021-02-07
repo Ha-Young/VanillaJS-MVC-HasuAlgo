@@ -50,12 +50,13 @@ BubbleController.prototype.startSort = async function (dataSet) {
 
     if (dataSet[status.index] > dataSet[status.index + 1]) {
       await this.view.swap(status.index, status.index + 1, this.wait, DELAY);
+
       this.model.swap(status.index, status.index + 1);
       status.isSwaped = true;
     }
+    status.index++;
 
     await this.view.paintGraphs(dataSet, status.fixedIndices, this.wait, DELAY);
-    status.index++;
 
     const isEndOfLoop = status.index === (dataSet.length - status.fixedIndices.length - 1);
 
