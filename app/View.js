@@ -8,13 +8,17 @@ export default function View () {
 }
 
 View.prototype.createElements = function(userInputList, sortDisplaySection) {
+  const fragment = new DocumentFragment();
+
   userInputList.forEach(input => {
     const $rectangleBarElement = document.createElement("div");
-    $rectangleBarElement.classList.add("rectangle-element");
-    $rectangleBarElement.textContent = input;
-    $rectangleBarElement.style.height = `${12 * input}px`;
-    sortDisplaySection.appendChild($rectangleBarElement);
+      $rectangleBarElement.classList.add("rectangle-element");
+      $rectangleBarElement.textContent = input;
+      $rectangleBarElement.style.height = `${12 * input}px`;
+      fragment.appendChild($rectangleBarElement);
   });
+
+  sortDisplaySection.appendChild(fragment);
 };
 
 View.prototype.toggleElement = function (element, viewType, toggle) {
