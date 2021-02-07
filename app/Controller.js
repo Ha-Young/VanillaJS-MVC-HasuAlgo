@@ -15,23 +15,23 @@ export default function Controller(model, view) {
   this.DELAY = 300;
   this.EXTENDED_DELAY = this.DELAY * 2;
   this.hasReset = false;
-  this.hasStart = false;
 
-  this.BUBUBLE_SORT = "bubble-sort";
-  this.MERGE_SORT = "merge-sort";
-  this.QUICK_SORT = "quick-sort";
+  this.sortTypes = {
+    BUBUBLE_SORT : "bubble-sort",
+    QUICK_SORT : "quick-sort",
+  }
 
-  this.INITIAL_MESSAGE = "Please type any 5-10 numbers between 0 to 30 seperating with comma";
-  this.PROPER_NUMBER_MESSAGE = "Please type proper 5-10 numbers";
-  this.PROPER_FORMAT_MESSAGE = "Please type numbers with correct format ex) 1, 2, 3";
-  this.PROPER_RANGE_MESSAGE = "Please type numbers between 1 to 30";
-  this.AFTER_SUBMIT_MESSAGE = "Numbers are submitted, click the start button to start";
-  this.SORTING_MESSAGE = "SORTING....";
-  this.RETRY_MESSAGE = "Click the RESET button to retry!";
+  this.messageTypes = {
+    INITIAL_MESSAGE : "Please type any 5-10 numbers between 0 to 30 seperating with comma",
+    PROPER_NUMBER_MESSAGE : "Please type proper 5-10 numbers",
+    PROPER_FORMAT_MESSAGE : "Please type numbers with correct format ex) 1, 2, 3",
+    PROPER_RANGE_MESSAGE : "Please type numbers between 1 to 30",
+    AFTER_SUBMIT_MESSAGE : "Numbers are submitted, click the start button to start",
+    SORTING_MESSAGE : "SORTING....",
+    RETRY_MESSAGE : "Click the RESET button to retry!",
+  }
 
-  this.taskQueue = [];
-
-  this.ViewTypes = {
+  this.viewTypes = {
     HIDDEN_CLASSNAME : "hidden",
     DISABLED_CLASSNAME : "disabled",
     TRANSFORM_NONE : "none",
@@ -56,14 +56,14 @@ Controller.prototype.init = function() {
 
     const validatedUserInput = this.model.getUserInputList();
     this.view.hideSortSelectorAfterInputValidation(this.$userInput, this.$sortSelector, validatedUserInput);
-    this.view.toggleElement(this.$submitButton, this.ViewTypes.HIDDEN_CLASSNAME, true);
-    this.view.toggleElement(this.$startButton, this.ViewTypes.HIDDEN_CLASSNAME, false);
+    this.view.toggleElement(this.$submitButton, this.viewTypes.HIDDEN_CLASSNAME, true);
+    this.view.toggleElement(this.$startButton, this.viewTypes.HIDDEN_CLASSNAME, false);
   });
 
   this.$startButton.addEventListener("click", (e) => {
     e.preventDefault();
     this.confirmSelectedSortOption();
-    this.view.toggleElement(this.$startButton, this.ViewTypes.HIDDEN_CLASSNAME, true);
+    this.view.toggleElement(this.$startButton, this.viewTypes.HIDDEN_CLASSNAME, true);
     this.view.setInstructionMessage(this.$instructionMessage, this.SORTING_MESSAGE);
   });
 
@@ -75,9 +75,9 @@ Controller.prototype.init = function() {
     this.view.resetUserInputElement(this.$userInput);
     this.view.resetSortDisplaySection(this.$sortDisplaySection);
 
-    this.view.toggleElement(this.$resetButton, this.ViewTypes.HIDDEN_CLASSNAME, true);
-    this.view.toggleElement(this.$submitButton, this.ViewTypes.HIDDEN_CLASSNAME, false);
-    this.view.toggleElement(this.$sortSelector, this.ViewTypes.HIDDEN_CLASSNAME, false);
+    this.view.toggleElement(this.$resetButton, this.viewTypes.HIDDEN_CLASSNAME, true);
+    this.view.toggleElement(this.$submitButton, this.viewTypes.HIDDEN_CLASSNAME, false);
+    this.view.toggleElement(this.$sortSelector, this.viewTypes.HIDDEN_CLASSNAME, false);
     this.view.setInstructionMessage(this.$instructionMessage, this.INITIAL_MESSAGE);
   });
 };
@@ -86,23 +86,23 @@ Controller.prototype.validateUserInput = function() {
   const userInputList = this.$userInput.value.split(',').map(Number);
 
   if (userInputList.length < 5 || userInputList.length > 10) {
-    this.view.setInstructionMessage(this.$instructionMessage, this.PROPER_NUMBER_MESSAGE);
+    this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.PROPER_NUMBER_MESSAGE);
     return false;
   }
 
   if (userInputList.some(input => isNaN(input) || input === 0)) {
-    this.view.setInstructionMessage(this.$instructionMessage, this.PROPER_FORMAT_MESSAGE);
+    this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.PROPER_FORMAT_MESSAGE);
     return false;
   }
 
   if (userInputList.some(input => input > 30 || input <= 0)) {
-    this.view.setInstructionMessage(this.$instructionMessage, this.PROPER_RANGE_MESSAGE);
+    this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.PROPER_RANGE_MESSAGE);
     return false;
   }
 
   this.model.setUserInputList(userInputList);
   this.view.createElements(userInputList, this.$sortDisplaySection);
-  this.view.setInstructionMessageAfterSubmit(this.$userInput, this.$instructionMessage, this.AFTER_SUBMIT_MESSAGE);
+  this.view.setInstructionMessageAfterSubmit(this.$userInput, this.$instructionMessage, this.messageTypes.AFTER_SUBMIT_MESSAGE);
 
   return true;
 };
@@ -112,10 +112,10 @@ Controller.prototype.confirmSelectedSortOption = function() {
   const sortList = Array.from(userInputElements);
 
   switch (this.$sortSelector.value) {
-    case this.BUBUBLE_SORT :
+    case this.sortTypes.BUBUBLE_SORT :
       this.bubbleSort(userInputElements);
       break;
-    case this.QUICK_SORT :
+    case this.sortTypes.QUICK_SORT :
       this.quickSort(sortList);
       break;
   }
@@ -132,21 +132,21 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
     = [userInputElements[i], userInputElements[lookingForPivotIdx]];
   }
 
-  this.view.toggleElement(pivotElement, this.ViewTypes.PIVOT_ELEMENT_COLOR, true);
+  this.view.toggleElement(pivotElement, this.viewTypes.PIVOT_ELEMENT_COLOR, true);
   await this.view.delay(this.EXTENDED_DELAY);
 
   for (let i = start + 1; i <= end; i++) {
     const targetElement = userInputElements[i];
 
-    this.view.toggleElement(targetElement, this.ViewTypes.TARGET_ELEMENT_COLOR, true);
+    this.view.toggleElement(targetElement, this.viewTypes.TARGET_ELEMENT_COLOR, true);
     await this.view.delay(this.EXTENDED_DELAY);
 
     const pivotValue = Number(pivotElement.textContent);
     const targetValue = Number(targetElement.textContent);
 
     if (targetValue <= pivotValue) {
-      this.view.toggleElement(targetElement, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
-      this.view.toggleElement(targetElement, this.ViewTypes.SMALLER_ELEMENT_COLOR, true);
+      this.view.toggleElement(targetElement, this.viewTypes.TARGET_ELEMENT_COLOR, false);
+      this.view.toggleElement(targetElement, this.viewTypes.SMALLER_ELEMENT_COLOR, true);
       await this.view.delay(this.EXTENDED_DELAY);
 
       lookingForPivotIdx++;
@@ -159,8 +159,8 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
       await this.view.delay(this.DELAY);
     }
 
-    this.view.toggleElement(targetElement, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
-    this.view.toggleElement(targetElement, this.ViewTypes.BIGGER_ELEMENT_COLOR, true);
+    this.view.toggleElement(targetElement, this.viewTypes.TARGET_ELEMENT_COLOR, false);
+    this.view.toggleElement(targetElement, this.viewTypes.BIGGER_ELEMENT_COLOR, true);
     await this.view.delay(this.EXTENDED_DELAY);
   }
 
@@ -181,12 +181,12 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
     const pivot = await this.placingPivotIdx(userInputElements, left, right);
     const updatedUserInputElements = this.model.getUserInputElements();
 
-    this.view.toggleElement(userInputElements[pivot], this.ViewTypes.PIVOT_ELEMENT_COLOR, false);
-    this.view.toggleElement(userInputElements[pivot], this.ViewTypes.SORTED_ELEMENT_COLOR, true);
+    this.view.toggleElement(userInputElements[pivot], this.viewTypes.PIVOT_ELEMENT_COLOR, false);
+    this.view.toggleElement(userInputElements[pivot], this.viewTypes.SORTED_ELEMENT_COLOR, true);
 
     userInputElements.map(element => {
-      this.view.toggleElement(element, this.ViewTypes.BIGGER_ELEMENT_COLOR, false);
-      this.view.toggleElement(element, this.ViewTypes.SMALLER_ELEMENT_COLOR, false);
+      this.view.toggleElement(element, this.viewTypes.BIGGER_ELEMENT_COLOR, false);
+      this.view.toggleElement(element, this.viewTypes.SMALLER_ELEMENT_COLOR, false);
     });
 
     await this.view.delay(this.EXTENDED_DELAY);
@@ -211,8 +211,8 @@ Controller.prototype.bubbleSort = async function(inputElements) {
 
       await this.view.delay(this.DELAY);
 
-      this.view.toggleElement(leftTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, true);
-      this.view.toggleElement(rightTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, true);
+      this.view.toggleElement(leftTarget, this.viewTypes.TARGET_ELEMENT_COLOR, true);
+      this.view.toggleElement(rightTarget, this.viewTypes.TARGET_ELEMENT_COLOR, true);
 
       await this.view.delay(this.DELAY);
 
@@ -228,17 +228,16 @@ Controller.prototype.bubbleSort = async function(inputElements) {
       }
 
       await this.view.delay(this.DELAY);
-      this.view.toggleElement(leftTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
-      this.view.toggleElement(rightTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
+      this.view.toggleElement(leftTarget, this.viewTypes.TARGET_ELEMENT_COLOR, false);
+      this.view.toggleElement(rightTarget, this.viewTypes.TARGET_ELEMENT_COLOR, false);
 
       await this.view.delay(this.DELAY);
     }
 
-    this.view.toggleElement(userInputElements[userInputElements.length-i-1], this.ViewTypes.SORTED_ELEMENT_COLOR, true);
+    this.view.toggleElement(userInputElements[userInputElements.length-i-1], this.viewTypes.SORTED_ELEMENT_COLOR, true);
     await this.view.delay(this.DELAY * 2);
   }
 
-  this.view.setInstructionMessage(this.$instructionMessage, this.RETRY_MESSAGE);
-  this.view.toggleElement(this.$resetButton, this.ViewTypes.HIDDEN_CLASSNAME, false);
-  //this.view.toggleResetButton(this.$resetButton, true);
+  this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.RETRY_MESSAGE);
+  this.view.toggleElement(this.$resetButton, this.viewTypes.HIDDEN_CLASSNAME, false);
 };
