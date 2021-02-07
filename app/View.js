@@ -3,7 +3,7 @@ export default function View () {
   this.HIDDEN_CLASSNAME = "hidden";
   this.DISABLED_CLASSNAME = "disabled";
   this.TRANSFORM_NONE = "none";
-  this.PLACEHOLDER_TEXT = "Type here..."
+  this.PLACEHOLDER_TEXT = "Type here...";
 
   this.ELEMENT_MOVING_EFFECT = "element-moving-effect";
   this.TARGET_ELEMENT_COLOR = "target-element-color";
@@ -22,6 +22,11 @@ View.prototype.createElements = function(userInputList, sortDisplaySection) {
     sortDisplaySection.appendChild($rectangleDiv);
   });
 };
+
+View.prototype.toggleElement = function (element, viewType, toggle) {
+  toggle ? element.classList.add(viewType) : element.classList.remove(viewType);
+}
+
 
 View.prototype.toggleSubmitButton = function(submitButton, toggle) {
   toggle ? submitButton.classList.remove(this.HIDDEN_CLASSNAME)
@@ -42,31 +47,6 @@ View.prototype.toggleSortSelector = function(sortSelector, toggle) {
   toggle ? sortSelector.classList.add(this.HIDDEN_CLASSNAME)
   : sortSelector.classList.remove(this.HIDDEN_CLASSNAME);
 };
-
-View.prototype.toggleTargetElementColor = function(targetElement, toggle) {
-  toggle ? targetElement.classList.add(this.TARGET_ELEMENT_COLOR)
-  : targetElement.classList.remove(this.TARGET_ELEMENT_COLOR);
-}
-
-View.prototype.toggleBiggerElementColor = function(biggerElement, toggle) {
-  toggle ? biggerElement.classList.add(this.BIGGER_ELEMENT_COLOR)
-  : biggerElement.classList.remove(this.BIGGER_ELEMENT_COLOR);
-}
-
-View.prototype.toggleSmallerElementColor = function(smallerElement, toggle) {
-  toggle ? smallerElement.classList.add(this.SMALLER_ELEMENT_COLOR)
-  : smallerElement.classList.remove(this.SMALLER_ELEMENT_COLOR);
-}
-
-View.prototype.toggleSortedElementColor = function(sortedElement, toggle) {
-  toggle ? sortedElement.classList.add(this.SORTED_ELEMENT_COLOR)
-  : sortedElement.classList.remove(this.SORTED_ELEMENT_COLOR);
-}
-
-View.prototype.togglePivotElementColor = function(pivotElement, toggle) {
-  toggle ? pivotElement.classList.add(this.PIVOT_ELEMENT_COLOR)
-  : pivotElement.classList.remove(this.PIVOT_ELEMENT_COLOR);
-}
 
 View.prototype.setInstructionMessage = function(instructionMessageElement, settingMessage) {
   instructionMessageElement.textContent = settingMessage;

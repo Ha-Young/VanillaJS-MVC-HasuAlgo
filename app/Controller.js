@@ -30,6 +30,19 @@ export default function Controller(model, view) {
   this.RETRY_MESSAGE = "Click the RESET button to retry!";
 
   this.taskQueue = [];
+
+  this.ViewTypes = {
+    HIDDEN_CLASSNAME : "hidden",
+    DISABLED_CLASSNAME : "disabled",
+    TRANSFORM_NONE : "none",
+    PLACEHOLDER_TEXT : "Type here...",
+    ELEMENT_MOVING_EFFECT : "element-moving-effect",
+    TARGET_ELEMENT_COLOR : "target-element-color",
+    BIGGER_ELEMENT_COLOR : "bigger-element-color",
+    SMALLER_ELEMENT_COLOR : "smaller-element-color",
+    SORTED_ELEMENT_COLOR : "sorted-element-color",
+    PIVOT_ELEMENT_COLOR : "pivot-element-color",
+  }
 }
 
 Controller.prototype.init = function() {
@@ -121,21 +134,21 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
     = [userInputElements[i], userInputElements[lookingForPivotIdx]];
   }
 
-  this.view.togglePivotElementColor(pivotElement, true);
+  this.view.toggleElement(pivotElement, this.ViewTypes.PIVOT_ELEMENT_COLOR, true);
   await this.view.delay(this.EXTENDED_DELAY);
 
   for (let i = start + 1; i <= end; i++) {
     const targetElement = userInputElements[i];
 
-    this.view.toggleTargetElementColor(targetElement, true);
+    this.view.toggleElement(targetElement, this.ViewTypes.TARGET_ELEMENT_COLOR, true);
     await this.view.delay(this.EXTENDED_DELAY);
 
     const pivotValue = Number(pivotElement.textContent);
     const targetValue = Number(targetElement.textContent);
 
     if (targetValue <= pivotValue) {
-      this.view.toggleTargetElementColor(targetElement, false);
-      this.view.toggleSmallerElementColor(targetElement, true);
+      this.view.toggleElement(targetElement, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
+      this.view.toggleElement(targetElement, this.ViewTypes.SMALLER_ELEMENT_COLOR, true);
       await this.view.delay(this.EXTENDED_DELAY);
 
       lookingForPivotIdx++;
@@ -148,8 +161,8 @@ Controller.prototype.placingPivotIdx = async function(quickSortElementsList, sta
       await this.view.delay(this.DELAY);
     }
 
-    this.view.toggleTargetElementColor(targetElement, false);
-    this.view.toggleBiggerElementColor(targetElement, true);
+    this.view.toggleElement(targetElement, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
+    this.view.toggleElement(targetElement, this.ViewTypes.BIGGER_ELEMENT_COLOR, true);
     await this.view.delay(this.EXTENDED_DELAY);
   }
 
@@ -170,12 +183,12 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
     const pivot = await this.placingPivotIdx(userInputElements, left, right);
     const updatedUserInputElements = this.model.getUserInputElements();
 
-    this.view.togglePivotElementColor(userInputElements[pivot], false);
-    this.view.toggleSortedElementColor(userInputElements[pivot], true);
+    this.view.toggleElement(userInputElements[pivot], this.ViewTypes.PIVOT_ELEMENT_COLOR, false);
+    this.view.toggleElement(userInputElements[pivot], this.ViewTypes.SORTED_ELEMENT_COLOR, true);
 
     userInputElements.map(element => {
-      this.view.toggleBiggerElementColor(element, false);
-      this.view.toggleSmallerElementColor(element, false);
+      this.view.toggleElement(element, this.ViewTypes.BIGGER_ELEMENT_COLOR, false);
+      this.view.toggleElement(element, this.ViewTypes.SMALLER_ELEMENT_COLOR, false);
     });
 
     await this.view.delay(this.EXTENDED_DELAY);
@@ -200,8 +213,8 @@ Controller.prototype.bubbleSort = async function(inputElements) {
 
       await this.view.delay(this.DELAY);
 
-      this.view.toggleTargetElementColor(leftTarget, true);
-      this.view.toggleTargetElementColor(rightTarget, true);
+      this.view.toggleElement(leftTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, true);
+      this.view.toggleElement(rightTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, true);
 
       await this.view.delay(this.DELAY);
 
@@ -217,13 +230,13 @@ Controller.prototype.bubbleSort = async function(inputElements) {
       }
 
       await this.view.delay(this.DELAY);
-      this.view.toggleTargetElementColor(leftTarget, false);
-      this.view.toggleTargetElementColor(rightTarget, false);
+      this.view.toggleElement(leftTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
+      this.view.toggleElement(rightTarget, this.ViewTypes.TARGET_ELEMENT_COLOR, false);
 
       await this.view.delay(this.DELAY);
     }
 
-    this.view.toggleSortedElementColor(userInputElements[userInputElements.length-i-1], true);
+    this.view.toggleElement(userInputElements[userInputElements.length-i-1], this.ViewTypes.SORTED_ELEMENT_COLOR, true);
     await this.view.delay(this.DELAY * 2);
   }
 
