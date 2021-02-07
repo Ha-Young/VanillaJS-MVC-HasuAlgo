@@ -12,19 +12,6 @@ import swapPipesInCanvas from "../view-functions/swap-pipes-in-canvas";
 export default class View {
   constructor() {
     this.domElements = getMyElements();
-
-    this.paintInput = {
-      createNewNumberPipe: (numbers) => {
-        createNewNumberPipe.call(this.domElements, numbers);
-      },
-      resetInputTexts: () => {
-        resetInputTexts.call(this.domElements);
-      }
-    };
-
-    this.marioWorld = {
-      stopMarioMoving,
-    };
   }
 
   addEventListeners(handlers) {
@@ -34,6 +21,14 @@ export default class View {
     this.domElements.bubbleButton.addEventListener("click", handleClickBubbleButton);
     this.domElements.mergeButton.addEventListener("click", handleClickMergeButton);
     this.domElements.helpButton.addEventListener("click", handleClickHelp);
+  }
+
+  createNewNumberPipe(numbers) {
+    createNewNumberPipe.call(this.domElements, numbers);
+  }
+
+  resetInputTexts() {
+    resetInputTexts.call(this.domElements);
   }
 
   toggleVisibility(element) {
@@ -63,5 +58,9 @@ export default class View {
 
   divideCloudsInCanvas(left, right) {
     return divideCloudsInCanvas(left, right);
+  }
+
+  stopMarioMoving() {
+    return stopMarioMoving();
   }
 }

@@ -16,8 +16,8 @@ export default function handleInput(e) {
   }
 
   this.model.addNewNumber(inputValues);
-  this.view.marioWorld.stopMarioMoving();
-  this.view.paintInput.createNewNumberPipe(inputValues);
+  this.view.stopMarioMoving();
+  this.view.createNewNumberPipe(inputValues);
 
   this.view.displayMessage("startForm", "Select a button");
   this.view.toggleVisibility("bubbleButton");
