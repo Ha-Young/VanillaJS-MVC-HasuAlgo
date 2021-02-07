@@ -1,5 +1,6 @@
-import '../assets/styles/index.less';
-import {controller} from './controller.js';
+import "../assets/styles/index.less";
+import {controller} from "./controller.js";
+import {palette} from "./color.js";
 
 function createView() {
   const $message = document.querySelector(".message");
@@ -20,21 +21,25 @@ function createView() {
 
     backgroundColorChange: {
       addColorComparedBlock: function (prevNode, nextNode) {
-        prevNode.style.backgroundColor = "#f0e6fc";
-        nextNode.style.backgroundColor = "#f0e6fc";
+        prevNode.style.backgroundColor = palette.PALE_PURPPLE;
+        nextNode.style.backgroundColor = palette.PALE_PURPPLE;
       },
 
       addColorSwapDoneBlock: function (prevNode, nextNode) {
-        prevNode.style.backgroundColor = "white";
-        nextNode.style.backgroundColor = "white";
+        prevNode.style.backgroundColor = palette.WHITE;
+        nextNode.style.backgroundColor = palette.WHITE;
       },
 
       addColorSingleDoneBlock: function (list, i) {
-        list[list.length - i - 1].style.backgroundColor = "#f9fac0";
+        list[list.length - i - 1].style.backgroundColor = palette.PALE_YELLOW;
       },
 
       addColorLastBlock: function (list) {
-        list[0].style.backgroundColor = "#f9fac0";
+        list[0].style.backgroundColor = palette.PALE_YELLOW;
+      },
+
+      addColorPivotBlock: function (list, high) {
+        list[high].style.backgroundColor = palette.RED;
       }
     },
 
@@ -50,39 +55,39 @@ function createView() {
       for (let i = 0; i < storage[0].length; i++) {
         const div = document.createElement("div");
         div.className = "block";
-        div.style.backgroundColor = "white";
+        div.style.backgroundColor = palette.WHITE;
         div.style.height = `${storage[0][i] * 8}%`;
         div.textContent = storage[0][i];
         $container.appendChild(div);
       }
     },
 
-   swap: function (list, leftIndex, rightIndex) {
+    swap: function (list, leftIndex, rightIndex) {  
 
-    return new Promise(resolve => {
-        setTimeout(() => {
-          
+      return new Promise(resolve => {
+         setTimeout(() => {  
+
           if (leftIndex !== rightIndex) {
             if (leftIndex === 0 && rightIndex === 1) {
               list[leftIndex].after(list[rightIndex]);
               list[rightIndex].after(list[leftIndex]);
-            }
+            }  
 
             if (leftIndex === 0 && rightIndex !== 1) {
               list[leftIndex].after(list[rightIndex]);
               list[rightIndex - 1].after(list[leftIndex]);
-            }
+            }  
 
             if (leftIndex !== 0) {
               list[rightIndex - 1].after(list[leftIndex]);
               list[leftIndex - 1].after(list[rightIndex]);
             }
           }
-        
+         
           resolve();
         }, 100);
-    });
-  },
+      });
+    },
 
     visualize: async function (taskElementList) {
       let blockList = document.querySelectorAll(".block");
@@ -131,7 +136,7 @@ function createView() {
 
     visualizePivotBlock: async function (list, high) {
       await controller.delay();
-      list[high].style.backgroundColor = "red";
+      view.addColorPivotBlock.addColorPivotBlock(list, high);
       await controller.delay();
     }
   };
