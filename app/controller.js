@@ -15,7 +15,7 @@ function createController() {
 
     for (const item of inputValueList) {
       if (isNaN(item)) {
-        setTimeout(view.warningMessage.inputNumber, 300);
+        view.warningMessage.inputNumber();
         setTimeout(view.warningMessage.removeMessage, 1000);
         return;
       }
