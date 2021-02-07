@@ -36,7 +36,7 @@ export default class Model {
     bubbleSort(this.numbers);
   } 
 
-  async runMergeSort() {
+  runMergeSort() {
     mergeSort(this.numbers);
   }
 
