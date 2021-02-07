@@ -23,7 +23,7 @@ View.prototype.createElements = function(userInputList, sortDisplaySection) {
 
 View.prototype.toggleElement = function(element, viewType, toggle) {
   toggle ? element.classList.add(viewType) : element.classList.remove(viewType);
-}
+};
 
 View.prototype.setInstructionMessage = function(
   instructionMessageElement, settingMessage
