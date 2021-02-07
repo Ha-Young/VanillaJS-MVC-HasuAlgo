@@ -48,11 +48,11 @@ function init() {
   let sortingMethod;
 
   function clickEffect(event) {
-    const clickElement = document.createElement("div");
+    const clickElement = document.createElement('div');
 
-    clickElement.className = "clickEffect";
-    clickElement.style.top = event.clientY + "px";
-    clickElement.style.left = event.clientX + "px";
+    clickElement.className = 'clickEffect';
+    clickElement.style.top = event.clientY + 'px';
+    clickElement.style.left = event.clientX + 'px';
     document.body.appendChild(clickElement);
 
     clickElement.addEventListener('animationend', function () {

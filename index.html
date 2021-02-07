@@ -47,15 +47,15 @@
 
   <header>
     <h1 class="title">Visualize Sorting Algorithms</h1>
-    <button id="sidebarButton" class="sidebar-button"><img src="./assets/images/sidebar.png" alt="sidebar"></button>
+    <button id="sidebarButton" class="sidebar-button" type="button"><img src="./assets/images/sidebar.png" alt="sidebar"></button>
   </header>
   <section class="content">
     <div id="toolBar" class="tool-bar">
-      <button id="playButton"><img src="./assets/images/play.png" alt="play"></button>
-      <button id="pauseButton"><img src="./assets/images/pause.png" alt="pause"></button>
-      <button id="reloadButton"><img src="./assets/images/reload.png" alt="reload"></button>
-      <button id="fastButton"><img src="./assets/images/fast.png" alt="fast"></button>
-      <button id="slowButton"><img src="./assets/images/slow.png" alt="slow"></button>
+      <button id="playButton" type="button"><img src="./assets/images/play.png" alt="play"></button>
+      <button id="pauseButton" type="button"><img src="./assets/images/pause.png" alt="pause"></button>
+      <button id="reloadButton" type="reset"><img src="./assets/images/reload.png" alt="reload"></button>
+      <button id="fastButton" type="button"><img src="./assets/images/fast.png" alt="fast"></button>
+      <button id="slowButton" type="button"><img src="./assets/images/slow.png" alt="slow"></button>
 
       <select id="selectBox" class="select-box" name="sorting">
         <option value="none">=== select ===</option>
@@ -80,12 +80,12 @@
     </article>
 
     <input id="inputBox" class="input-box" type="text" placeholder="Enter the numbers to sort">
-    <button id="submitButton" class="submit-button">Number placement</button>
+    <button id="submitButton" class="submit-button" type="button">Number placement</button>
     <div id="commentBox" class="comment-box"></div>
     <article id="sortBox" class="sort-box"></article>
   </section>
 
-  <button id="guideButton" class="guide-button"><img src="./assets/images/guide.png" alt="guide"></button>
+  <button id="guideButton" class="guide-button" type="button"><img src="./assets/images/guide.png" alt="guide"></button>
   <script src="./app/controller.js"></script>
 </body>
 </html>
