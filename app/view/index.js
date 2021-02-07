@@ -21,6 +21,7 @@ export default class View {
     this.$vizCanvas = qs("#viz-canvas");
     this.$sortBtn = qs(".sort-btn");
     this.$randomBtn = qs(".random-btn");
+    this.$infoMsg = qs(".info-msg");
   }
 
   bindOnClickSortTypeBtns(handler) {
@@ -66,6 +67,20 @@ export default class View {
 
   writeRandomNum(randomNumbers) {
     this.$inputNumbers.value = randomNumbers;
+  }
+
+  setErrorMsg(error) {
+    this.$infoMsg.textContent = error;
+    this.$infoMsg.className = 'info-msg error';
+  }
+
+  setInfoMsg(info) {
+    this.$infoMsg.textContent = info;
+    this.$infoMsg.className = 'info-msg info';
+  }
+
+  initInfoMsg() {
+    this.$infoMsg.textContent = '';
   }
 
   // SortItem 관련 (SVG)
