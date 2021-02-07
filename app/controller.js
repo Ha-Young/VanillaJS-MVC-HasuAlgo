@@ -9,14 +9,14 @@ export default class Controller {
   }
 
   run() {
-    MYAPP.button.start.addEventListener('click', () => {
+    MYAPP.button.start.addEventListener('click', async () => {
       this.handleUserError();
       this.init();
-  
+
       if (this.selectedType === 'BUBBLE') {
         this.bubbleSort();
       }
-  
+
       if (this.selectedType === 'QUICK') {
         await this.quickSort();
         this.view.renderAllColor(MYAPP.table.graph);
@@ -28,11 +28,11 @@ export default class Controller {
       if (ev.target.textContent === 'Bubble') {
         this.selectedType = 'BUBBLE';
       }
+
       if (ev.target.textContent === 'Quick') {
         this.selectedType = 'QUICK';
       }
       this.view.changeButtonState(this.selectedType);
-      return this.selectedType;
     });
   }
 

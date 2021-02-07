@@ -1,4 +1,3 @@
-import { transform } from 'lodash';
 import MYAPP from './myapp';
 
 export default class View {
@@ -33,7 +32,6 @@ export default class View {
   }
 
   renderFirstGraphColor(graphs) {
-    console.log(graphs);
     graphs[0].classList.add('sorted-graph');
   }
 
