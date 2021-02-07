@@ -1,10 +1,10 @@
-import '../assets/styles/reset.less';
-import '../assets/styles/mario.less';
-import '../assets/styles/sort.less';
-import '../assets/styles/index.less';
-import Controller from '../mvc-class/controller';
-import Model from '../mvc-class/model';
-import View from '../mvc-class/view';
+import "../assets/styles/reset.less";
+import "../assets/styles/mario.less";
+import "../assets/styles/sort.less";
+import "../assets/styles/index.less";
+import Controller from "../mvc-class/controller";
+import Model from "../mvc-class/model";
+import View from "../mvc-class/view";
 
 
 // ================================
