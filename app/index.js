@@ -12,4 +12,5 @@ const view = new View();
  * @type {Controller}
  */
 const controller = new Controller(model, view);
+
 controller.setStartView();
