@@ -103,7 +103,7 @@ Controller.prototype.confirmSelectedSortOption = function() {
 
   switch (this.$sortSelector.value) {
     case this.BUBUBLE_SORT :
-      this.bubbleSort();
+      this.bubbleSort(userInputElements);
       break;
     case this.QUICK_SORT :
       this.quickSort(sortList);
@@ -187,8 +187,8 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
   }
 };
 
-Controller.prototype.bubbleSort = async function() {
-  const userInputElements = this.$sortDisplaySection.children;
+Controller.prototype.bubbleSort = async function(inputElements) {
+  const userInputElements = inputElements;
 
   for (let i = 0; i < userInputElements.length; i++) {
     for (let j = 0; j < userInputElements.length-1-i; j++) {

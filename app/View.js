@@ -91,32 +91,32 @@ View.prototype.delay = function (delayTime) {
   });
 };
 
-View.prototype.bubbleSortVisualSwap = function(leftTarget, rightTarget) {
-  leftTarget.classList.add(this.ELEMENT_MOVING_EFFECT);
-  rightTarget.classList.add(this.ELEMENT_MOVING_EFFECT);
+View.prototype.bubbleSortVisualSwap = function(leftTargetElement, rightTargetElement) {
+  leftTargetElement.classList.add(this.ELEMENT_MOVING_EFFECT);
+  rightTargetElement.classList.add(this.ELEMENT_MOVING_EFFECT);
 
-  leftTarget.style.transform = `translateX(${this.TRANSITION_PERCENTAGE}%)`;
-  rightTarget.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
+  leftTargetElement.style.transform = `translateX(${this.TRANSITION_PERCENTAGE}%)`;
+  rightTargetElement.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
 };
 
-View.prototype.bubbleSortSwapTargetElements = function(leftTarget, rightTarget, targetParent) {
-  leftTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
-  rightTarget.classList.remove(this.ELEMENT_MOVING_EFFECT);
-  leftTarget.style.transform = this.TRANSFORM_NONE;
-  rightTarget.style.transform = this.TRANSFORM_NONE;
-  targetParent.insertBefore(rightTarget, leftTarget);
+View.prototype.bubbleSortSwapTargetElements = function(leftTargetElement, rightTargetElement, targetParent) {
+  leftTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
+  rightTargetElement.classList.remove(this.ELEMENT_MOVING_EFFECT);
+  leftTargetElement.style.transform = this.TRANSFORM_NONE;
+  rightTargetElement.style.transform = this.TRANSFORM_NONE;
+  targetParent.insertBefore(rightTargetElement, leftTargetElement);
 };
 
-View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
-  pivotIndexElem.classList.add(this.ELEMENT_MOVING_EFFECT);
-  target.classList.add(this.ELEMENT_MOVING_EFFECT);
+View.prototype.quickSortVisualSwap = function(pivotIndexElement, targetElement) {
+  pivotIndexElement.classList.add(this.ELEMENT_MOVING_EFFECT);
+  targetElement.classList.add(this.ELEMENT_MOVING_EFFECT);
 
-  const pivotIndexElemRect = pivotIndexElem.getBoundingClientRect();
-  const targetRect = target.getBoundingClientRect();
+  const pivotIndexElemRect = pivotIndexElement.getBoundingClientRect();
+  const targetRect = targetElement.getBoundingClientRect();
 
   const rectDifference = Math.abs(targetRect.x - pivotIndexElemRect.x);
-  const pivotIndexElementPreStyled = getX(pivotIndexElem);
-  const targetPreStyled = getX(target);
+  const pivotIndexElementPreStyled = getX(pivotIndexElement);
+  const targetPreStyled = getX(targetElement);
 
   function getX(elem) {
     const style = window.getComputedStyle(elem);
@@ -124,8 +124,8 @@ View.prototype.quickSortVisualSwap = function(pivotIndexElem, target) {
     return matrix.m41;
   }
 
-  pivotIndexElem.style.transform = `translate(${pivotIndexElementPreStyled+rectDifference}px)`;
-  target.style.transform = `translate(${targetPreStyled-rectDifference}px)`;
+  pivotIndexElement.style.transform = `translate(${pivotIndexElementPreStyled+rectDifference}px)`;
+  targetElement.style.transform = `translate(${targetPreStyled-rectDifference}px)`;
 }
 
 View.prototype.resetUserInputElement = function(userInput) {

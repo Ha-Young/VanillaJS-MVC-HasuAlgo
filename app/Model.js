@@ -17,5 +17,5 @@ Model.prototype.getUserInputElements = function() {
 };
 
 Model.prototype.setUserInputElements = function(newUserInputElements) {
-    this.userInputElements = newUserInputElements;
-  };
+  this.userInputElements = newUserInputElements;
+};
