@@ -6,13 +6,11 @@ function Controller(model, view) {
   self.view = view;
 
   self.bindHandleSubmit = self.handleSubmit.bind(self);
-  self.bindHandlePrintNumbers = self.handlePrintNumbers.bind(self);
   self.bindHandlePaintSortItems = self.handlePaintSortItems.bind(self);
   self.bindHandleStartSort = self.handleStartSort.bind(self);
   self.bindResetSort = self.resetSort.bind(this);
 
   self.view.$sortForm.addEventListener("submit", self.bindHandleSubmit);
-  self.view.$sortForm.addEventListener("submit", self.bindHandlePrintNumbers);
   self.view.$paintButton.addEventListener("click", self.bindHandlePaintSortItems);
 }
 
@@ -20,11 +18,6 @@ Controller.prototype.handleSubmit = function (event) {
   event.preventDefault();
 
   this.model.getSortList(this.view.$sortInput.value);
-};
-
-Controller.prototype.handlePrintNumbers = function (event) {
-  event.preventDefault();
-
   this.view.printNumbers(this.model.sortList);
   this.view.$resetButton.addEventListener("click", this.bindResetSort);
 };
@@ -36,6 +29,8 @@ Controller.prototype.handlePaintSortItems = function () {
     alert("min 5 number!!");
     return;
   }
+
+  this.view.$sortForm.style.visibility = "hidden";
 
   this.view.paintSortItems(this.model.sortList);
   this.view.makeSelectorDisable();
@@ -66,7 +61,7 @@ Controller.prototype.handleStartSort = function () {
 Controller.prototype.ascendingSortTwoItem = async function(left, right, index) {
   if (right.classList.contains("sorted")) {
     left.classList.add("sorted");
-    return Promise.resolve();
+    return;
   }
 
   const self = this;
@@ -77,7 +72,7 @@ Controller.prototype.ascendingSortTwoItem = async function(left, right, index) {
   right.classList.add(self.view.classList.sort);
 
   if (Number(left.textContent) > Number(right.textContent)) {
-    await self.view.chageSortItemPosition(left, right);
+    await self.view.changeSortItemPosition(left, right);
 
     self.model.changeListOrder(index, index + 1);
 
@@ -106,12 +101,13 @@ Controller.prototype.ascendingSortTwoItem = async function(left, right, index) {
 Controller.prototype.bubbleSort = async function () {
   const item = this.view.$allItem;
 
-  for (let i = item.length; i > 0; i--) {
+  for (let i = 1; i < item.length + 1; i++) {
     for (let j = 0; j < item.length - 1; j++) {
         await this.ascendingSortTwoItem.call(this, item[j], item[j + 1], j);
     }
+
     await this.view.setDelay(0);
-    item[i - 1].classList.add("sorted");
+    item[item.length - i].classList.add("sorted");
   }
 };
 
@@ -123,7 +119,6 @@ Controller.prototype.resetSort = function () {
   this.view.changeTemplate(this.view.viewBox, initialTemplate());
 
   this.view.$sortForm.addEventListener("submit", this.bindHandleSubmit);
-  this.view.$sortForm.addEventListener("submit", this.bindHandlePrintNumbers);
   this.view.$paintButton.addEventListener("click", this.bindHandlePaintSortItems);
   //reset후, input을 submit하면 refresh되는 에러가 있습니다.
 };
@@ -169,7 +164,7 @@ Controller.prototype.sliceItems = function (items) {
     this.sliceItems(left);
   }
 
-  if (left.textContent > right.textContent) {
+  if (Number(left.textContent) > Number(right.textContent), 0) {
     this.ascendingSortTwoItem(left, right);
   }
 

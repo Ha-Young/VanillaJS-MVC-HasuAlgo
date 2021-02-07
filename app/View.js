@@ -108,7 +108,7 @@ View.prototype.paintSortItems = function (sortList) {
   }
 };
 
-View.prototype.chageSortItemPosition = async function (left, right) {
+View.prototype.changeSortItemPosition = async function (left, right) {
   const self = this;
   const itemList = [left, right];
 
