@@ -40,7 +40,7 @@ export default class View {
   }
 
   displayHelpMessage() {
-    this.domElements.alretBox.textContent = getHelpMessage();
+    this.domElements.alertBox.textContent = getHelpMessage();
   }
 
   swapPipesInCanvas(first, second, index) {

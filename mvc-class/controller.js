@@ -1,4 +1,4 @@
-import handleInput from "../controller-functions/handle-input";
+import handleInput from "../controller-functions/input-handler";
 import bubbleSort from "../controller-functions/bubble-sort";
 import mergeSort from "../controller-functions/merge-sort";
 
@@ -13,8 +13,8 @@ export default class Controller {
       },
       handleClickBubbleButton: () => {
         this.runBubbleSort();
-        this.view.toggleVisibility("bubbleButton");
         this.view.toggleVisibility("mergeButton");
+        this.view.toggleVisibility("bubbleButton");
       }, 
       handleClickMergeButton: () => {
         this.runMergeSort();
@@ -26,6 +26,7 @@ export default class Controller {
         this.view.displayHelpMessage();
       },
     }
+
     this.view.addEventListeners(this.eventHandlers);
   }
 

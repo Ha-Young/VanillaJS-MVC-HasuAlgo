@@ -1,8 +1,7 @@
 export default class Model {
   constructor() {
     this.numbers = [];
-    this.nodesOfNumbers = [];
-
+    
     this.errors = {
       inputNotEnough: "At least 5 inputs needed",
       inputOverLimit: "Upto 10 numbers allowed",

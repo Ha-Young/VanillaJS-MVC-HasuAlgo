@@ -1,4 +1,3 @@
-// Load application styles
 import '../assets/styles/reset.less';
 import '../assets/styles/mario.less';
 import '../assets/styles/sort.less';
@@ -13,3 +12,4 @@ import View from '../mvc-class/view';
 // ================================
 
 const app = new Controller(new Model(), new View());
+
