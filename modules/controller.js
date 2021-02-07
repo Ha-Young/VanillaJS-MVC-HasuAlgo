@@ -10,28 +10,29 @@ export default class Controller {
   constructor(Model, View) {
     this.model = Model;
     this.view = View;
+    this.viewEvents = ["formSubmit", "startSort"];
 
-    this.view.bind("formSubmit", (selection, input) => {
+    this.view.bind(this.viewEvents[0], (selection, input) => {
       this.setInitialState(selection, input);
     });
 
-    this.view.bind("startSort", () => {
+    this.view.bind(this.viewEvents[1], () => {
       this.startAnimation();
     });
   }
 
   setInitialState = (selection, input) => {
     this.model.create(selection, input, (data) => {
-      this.view.render("clearBlocks");
-      this.view.render("generateBlocks", data);
+      this.view.render.clearBlocks();
+      this.view.render.generateBlocks(data);
     });
   }
 
   startAnimation = () => {
     if (this.view.checkBlocksSorted()) {
-      this.view.render("clearBlocks");
+      this.view.render.clearBlocks();
       this.model.reset();
-      this.view.render("generateBlocks", this.model.getData());
+      this.view.render.generateBlocks(this.model.getData());
     }
 
     const sortType = this.model.getSortType();
@@ -48,7 +49,7 @@ export default class Controller {
       case "Merge Sort":
         break;
       default:
-        console.log("------");
+        alert("Sorry for Inconvinience.\nPlease select the type of the sort.");
     }
   }
 }

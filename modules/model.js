@@ -14,13 +14,9 @@ export default class Model {
     this.data = [];
   }
 
-  getSortType = () => {
-    return this.sortType;
-  }
+  getSortType = () => this.sortType;
 
-  getData = () => {
-    return this.data;
-  }
+  getData = () => this.data;
 
   reset = () => {
     this.data = this.initialData;
@@ -56,8 +52,13 @@ export default class Model {
     callback(this.data);
   }
 
-  bubbleSort = async ({ changePickedBlocksColor, swapBlocks, revertBlocksColor, decideSorted,
-    disableInputs, enableInputs }) => {
+  bubbleSort = async ({
+    changePickedBlocksColor,
+    swapBlocks,
+    revertBlocksColor,
+    decideSorted,
+    disableInputs,
+    enableInputs }) => {
     disableInputs();
 
     for (let i = 0; i < this.numberArray.length; i++) {
@@ -95,8 +96,12 @@ export default class Model {
     if (low === this.numberArray.length - 1) view.enableInputs();
   }
 
-  _partition = async (low, high, { changePivotBlockColor, changePickedBlocksColor,
-    swapBlocks, revertBlocksColor, decideSorted }) => {
+  _partition = async (low, high, {
+    changePivotBlockColor,
+    changePickedBlocksColor,
+    swapBlocks,
+    revertBlocksColor,
+    decideSorted }) => {
     const pivot = this.numberArray[high];
     let i;
     let index = low;
@@ -106,14 +111,14 @@ export default class Model {
     for (i = low; i < high; i++) {
       let areEqualBlocks = (i === index || this.numberArray[i] >= pivot)
 
-      await changePickedBlocksColor(i, index, areEqualBlocks);
+      await changePickedBlocksColor(i, areEqualBlocks ? null : index);
 
       if (this.numberArray[i] < pivot) {
         await this._swap(index, i, swapBlocks);
         index++;
       }
 
-      await revertBlocksColor(i, index - 1, areEqualBlocks);
+      await revertBlocksColor(i, areEqualBlocks ? null : index - 1);
     }
 
     await this._swap(index, high, swapBlocks);
@@ -122,17 +127,6 @@ export default class Model {
 
     return index;
   }
-
-
-  // mergeSort() {
-  //   this.mergeSort();
-  //   this._merge();
-  //   this._merge();
-  // }
-
-  // _merge() {
-
-  // }
 
   _setStandard = (maxNum, maxHeight) => {
     if (maxNum > maxHeight) {
@@ -164,6 +158,7 @@ export default class Model {
     const temp = this.numberArray[fromIndex];
     this.numberArray[fromIndex] = this.numberArray[toIndex];
     this.numberArray[toIndex] = temp;
+
     return callback(fromIndex, toIndex);
   }
 }

@@ -9,6 +9,15 @@ export default class View {
     this.$content = document.querySelector(".content");
     this.$submitButton = document.querySelector(".submit");
     this.$startButton = document.querySelector(".start");
+
+    this.render = {
+      generateBlocks: (data) => {
+        this.$content.innerHTML = this.template.show(data).trim();
+      },
+      clearBlocks: () => {
+        this._clearContent();
+      }
+    }
   }
 
   bind = (event, handler) => {
@@ -43,22 +52,23 @@ export default class View {
   }
 
   isValid = (input) => {
-    let inputArray = input.split(",");
+    const inputArray = input.split(",");
 
     if (inputArray.length < 5 || inputArray.length > 10) {
-      window.alert("out of range");
+      alert("Please type 5 to 10 numbers.");
       return false;
     }
 
-    if (inputArray.some(element => element.trim().match(/[^0-9]-?$/g))) {
-      window.alert("Not valid");
-      return false;
-    }
-
-    if (inputArray.some(element => parseInt(element.trim(), 10) > 500
-      || parseInt(element.trim(), 10) <= 0)) {
-      window.alert("Available Range: 0 < Integer <= 500");
-      return false;
+    for (const element of inputArray) {
+      if (!element.match(/^\d+$/g)) {
+        alert("Please type ONLY natural numbers separated by comma.\n(No spacing between comma and number please)");
+        return false;
+      } else {
+        if (parseInt(element, 10) > 500 || parseInt(element, 10) <= 0) {
+          alert("Available Range: 0 < Integer <= 500");
+          return false;
+        }
+      }
     }
 
     return true;
@@ -72,19 +82,6 @@ export default class View {
   enableInputs = () => {
     this.$submitButton.disabled = false;
     this.$startButton.disabled = false;
-  }
-
-  render = (command, data) => {
-    const commands = {
-      generateBlocks: () => {
-        this.$content.innerHTML = this.template.show(data).trim();
-      },
-      clearBlocks: () => {
-        this._clearContent();
-      }
-    }
-
-    return commands[command](data);
   }
 
   swapBlocks = async (i, j) => {
@@ -107,30 +104,23 @@ export default class View {
     await this._wait(100);
   }
 
-  changePickedBlocksColor = async (i, j, areEqualBlocks = false) => {
-    if (!areEqualBlocks) {
-      const $blockRight = document.querySelectorAll(".number-block")[j];
-      $blockRight.classList.add("picked");
-    }
+  changePickedBlocksColor = async (i, j) => {
+    if (j !== null) this._addColor(j);
 
-    const $blockLeft = document.querySelectorAll(".number-block")[i];
-    $blockLeft.classList.add("picked");
-
+    this._addColor(i);
     await this._wait(200);
   }
 
-  revertBlocksColor = async (i, j, areEqualBlocks = false) => {
-    if (!areEqualBlocks) this._removeColor(j);
+  revertBlocksColor = async (i, j) => {
+    if (j !== null) this._removeColor(j);
 
     this._removeColor(i);
     await this._wait(200);
   }
 
   decideSorted = async (i) => {
-    const $block = document.querySelectorAll(".number-block")[i];
-    $block.classList.add("sorted");
+    this._addColor(i, "sorted");
     await this._wait(200);
-
   }
 
   changePivotBlockColor = async (i, blockState = "pivot") => {
@@ -139,9 +129,14 @@ export default class View {
     await this._wait(200);
   }
 
-  _removeColor = async (i) => {
+  _addColor = (i, color = "picked") => {
     const $block = document.querySelectorAll(".number-block")[i];
-    $block.classList.remove("picked");
+    $block.classList.add(color);
+  }
+
+  _removeColor = (i, color = "picked") => {
+    const $block = document.querySelectorAll(".number-block")[i];
+    $block.classList.remove(color);
   }
 
   _clearContent = () => {
