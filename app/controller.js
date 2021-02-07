@@ -1,11 +1,11 @@
 import {swapView} from "./view";
 
 export function changeStringToNumbers (string) {
-    const numbers = string.split(",").map(function(element) {
-      return parseInt(element);
-    });
+  const numbers = string.split(",").map(function(element) {
+    return parseInt(element);
+  });
 
-    return numbers;
+  return numbers;
 }
 
 export function checkNumber (numbers) {
@@ -14,18 +14,18 @@ export function checkNumber (numbers) {
   });
 }
 
-export async function bubbleSort(numbers) {
+export async function bubbleSort(numbers, domArray) {
   for (let i = 0; i < numbers.length - 1; i++) {
     for (let j = 0; j < numbers.length - 1 - i; j++) {
       if (numbers[j] > numbers[j + 1]) {
-
-        let frontValue = numbers[j];
-        let backValue = numbers[j + 1];
+        let frontIndex = j;
+        let backIndex = j + 1;
+        let temp = numbers[j];
 
         numbers[j] = numbers[j + 1];
-        numbers[j + 1] = frontValue;
+        numbers[j + 1] = temp;
 
-        await swapView(j, frontValue, backValue);
+        await swapView(frontIndex, backIndex, domArray);
       }
     }
   }

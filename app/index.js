@@ -13,6 +13,8 @@ const form = document.querySelector(".js-form");
 const select = form.querySelector("select");
 const input = form.querySelector("input");
 
+const domArray = [];
+
 function getinputValue (event) {
   event.preventDefault();
   warningSpace.textContent = "";
@@ -36,10 +38,10 @@ function getinputValue (event) {
   }
 
   for (let i = 0; i < numbers.length; i++) {
-    paintDiv(numbers[i], i);
+    domArray.push(paintDiv(numbers[i], i));
   }
 
-  bubbleSort(numbers);
+  bubbleSort(numbers, domArray);
 }
 
 function init() {
