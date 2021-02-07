@@ -47,9 +47,7 @@ View.prototype.hideSortSelectorAfterInputValidation = function(
 
 View.prototype.delay = function (delayTime) {
   return new Promise ((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, delayTime);
+    setTimeout(resolve, delayTime);
   });
 };
 
