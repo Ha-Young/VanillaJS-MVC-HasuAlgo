@@ -9,20 +9,30 @@ export default class Controller {
   }
 
   run() {
-    this.checkSortType();
-    MYAPP.button.start.addEventListener('click', async () => {
+    MYAPP.button.start.addEventListener('click', () => {
       this.handleUserError();
       this.init();
-
+  
       if (this.selectedType === 'BUBBLE') {
         this.bubbleSort();
       }
-
+  
       if (this.selectedType === 'QUICK') {
         await this.quickSort();
         this.view.renderAllColor(MYAPP.table.graph);
       }
       this.isStartBtnClicked = true;
+    });
+
+    MYAPP.table.button.addEventListener('click', (ev) => {
+      if (ev.target.textContent === 'Bubble') {
+        this.selectedType = 'BUBBLE';
+      }
+      if (ev.target.textContent === 'Quick') {
+        this.selectedType = 'QUICK';
+      }
+      this.view.changeButtonState(this.selectedType);
+      return this.selectedType;
     });
   }
 
@@ -43,20 +53,6 @@ export default class Controller {
       this.view.renderErrorMsg('Please insert value!');
       throw new Error('Please insert value');
     }
-  }
-
-  checkSortType() {
-    MYAPP.button.bubbleSort.addEventListener('click', () => {
-      this.selectedType = 'BUBBLE';
-      this.view.changeButtonState(this.selectedType);
-    });
-
-    MYAPP.button.quickSort.addEventListener('click', () => {
-      this.selectedType = 'QUICK';
-      this.view.changeButtonState(this.selectedType);
-    });
-
-    return this.selectedType;
   }
 
   init() {

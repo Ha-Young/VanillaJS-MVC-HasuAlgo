@@ -7,7 +7,8 @@ const MYAPP = {
   table: {
     graph: document.querySelector('.article'),
     input: document.querySelector('.header-form-user-input-table'),
-    error: document.querySelector('.header-form-error-msg-table')
+    error: document.querySelector('.header-form-error-msg-table'),
+    button: document.querySelector('.sort-btns')
   }
 };
 
