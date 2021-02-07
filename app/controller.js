@@ -11,7 +11,7 @@ function createController() {
   let isQuickSortTurn = false;
 
   function convertNumber() {
-    const inputValueList = $userInput.value.split(",").map( num => Number(num));
+    const inputValueList = $userInput.value.split(",").map(num => Number(num));
 
     for (const item of inputValueList) {
       if (isNaN(item)) {
