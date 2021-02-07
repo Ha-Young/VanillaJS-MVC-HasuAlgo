@@ -321,34 +321,24 @@ class View {
   }
 
   paintBox(number) {
-    const li = document.createElement("li");
+    this.$sortContainer.innerHTML = "";
+    const maxNumber = Math.max.apply(null, list);
 
-    li.setAttribute("class", "sort-element");
-    li.setAttribute("id", `#${self.$sortContainer.childElementCount}`);
-    li.innerHTML = `
-      <div class="sort-box">
-			<span class="sort-number">${number}</span>
-      </div>
+    for (let i = 0; i < list.length; i++) {
+      const li = document.createElement("li");
+
+      li.setAttribute("class", "sort-element");
+      li.setAttribute("id", `#${i}`);
+      li.innerHTML = `
+			<div class="sort-bar"></div>
+			<span class="sort-number">${list[i]}</span>
       `;
+      li.children[0].style.height = `${(list[i] / maxNumber) * 380}px`;
 
-    this.$sortContainer.appendChild(li);
-    this.moveFactor[`#${i}`] = 0;
+      this.$sortContainer.appendChild(li);
+      this.moveFactor[`#${i}`] = 0;
+    }
   }
 }
 
 export default View;
-
-// export const Template = function () {
-//   this.default = `<h1 class="main-message">Choose Sort Style</h1>`;
-
-//   this.bubble = `
-//   <ul class="sort-list"></ul>`;
-
-//   this.insertion = `
-// <ul class="sort-list"></ul>`;
-
-//   this.merge = `<ul class="sort-list"></ul>`;
-
-//   this.quick = `<h1 class="main-alert">Quick coming soon</h1>
-//   <h2 class="sub-alert">How about Bubble Sort?</h2>`;
-// };
