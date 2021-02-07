@@ -145,6 +145,8 @@ export default class View {
       case SORT_STATUS.LARGE:
         sortItemElement.classList.add(SORT_STATUS.LARGE);
         break;
+      default:
+        throw new Error('Undefined Status Type Error');
     }
   }
 
