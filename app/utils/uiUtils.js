@@ -1,5 +1,5 @@
 import { delay } from './commonUtils';
-import { colorChart } from '../constants/themeColor';
+import { colorChart } from '../constants/constants';
 
 const INCREASED_UI_SECONDS = 500;
 const NODE_GAP = 50;

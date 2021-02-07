@@ -1,6 +1,6 @@
 import { delay } from './utils/commonUtils';
 import { swapNodes, onHighlightNode, offHighlightNode, onHighlightAllNodes } from './utils/uiUtils';
-import { colorChart } from './constants/themeColor';
+import { colorChart, uiState } from './constants/constants';
 
 export class View {
   constructor() {
@@ -40,7 +40,7 @@ export class View {
       const isNumbers = listArray.every(item => typeof item === 'number' && !isNaN(item));
       const withinRange = listArray.every(item => item > MIN_NUMBER_RANGE && item < MAX_NUMBER_RANGE);
 
-      if (listArray.length < MIN_LIST_LENGTH || listArray.length > MAX_LIST_LENGTH) {
+      if (listArray.length < MIN_LIST_LENGTH || MAX_LIST_LENGTH < listArray.length) {
         this.contentWarning.textContent = 'Please enter number 5 to 10';
         return;
       } else if (!isNumbers) {
@@ -87,6 +87,8 @@ export class View {
   }
 
   render = async (stateInfo) => {
+    const DEFAULT_RENDER_DELAY = 500;
+
     const copiedStateInfo = stateInfo.slice();
     const stateType = copiedStateInfo.shift();
 
@@ -111,8 +113,11 @@ export class View {
       },
     };
 
-    await delay(500);
-    await viewCommands[stateType](copiedStateInfo);
-    await delay(500);
+    await delay(DEFAULT_RENDER_DELAY);
+
+    const fn = await viewCommands[stateType];
+    fn && fn(copiedStateInfo);
+
+    await delay(DEFAULT_RENDER_DELAY);
   }
 }

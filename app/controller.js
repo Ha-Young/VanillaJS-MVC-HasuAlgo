@@ -1,4 +1,5 @@
 import { delay, swap } from './utils/commonUtils';
+import { sortType, uiState } from './constants/constants';
 
 export class Controller {
   constructor(model, view) {
@@ -14,7 +15,7 @@ export class Controller {
     this.model.addList(numberLists);
   }
 
-  handleaddSortingState = (state) => {
+  handleAddingSortState = (state) => {
     this.model.addSortingState(state);
   }
 
@@ -36,11 +37,11 @@ export class Controller {
 
   handleStartSort = () => {
     switch (this.view.selector.value) {
-      case 'bubble-sort': {
+      case sortType.BUBBLE_SORT: {
         this.bubbleSort();
         break;
       }
-      case 'quick-sort': {
+      case sortType.QUICK_SORT: {
         this.quickSort();
         break;
       }
@@ -52,28 +53,28 @@ export class Controller {
 
   bubbleSort = () => {
     const nodeList = this.model.lists;
-    this.handleaddSortingState(['startSort']);
+    this.handleAddingSortState([uiState.START_SORT]);
 
     for (let i = 0; i < nodeList.length; i++) {
       for (let j = 0; j < nodeList.length - i - 1; j++) {
-        this.handleaddSortingState(['onLightNode', j]);
-        this.handleaddSortingState(['onLightNode', j + 1]);
+        this.handleAddingSortState([uiState.ON_LIGHT_NODE, j]);
+        this.handleAddingSortState([uiState.ON_LIGHT_NODE, j + 1]);
 
         if (nodeList[j] > nodeList[j + 1]) {
           swap(nodeList, j, j + 1);
 
-          this.handleaddSortingState(['changeNodes', j, j + 1]);
+          this.handleAddingSortState([uiState.CHANGE_NODES, j, j + 1]);
         }
 
         if ((j + 1) === nodeList.length - i - 1) {
-          this.handleaddSortingState(['checkSortedNode', j + 1]);
+          this.handleAddingSortState([uiState.CHECK_SORTED_NODES, j + 1]);
         }
 
-        this.handleaddSortingState(['offLightNode', j]);
+        this.handleAddingSortState([uiState.OFF_LIGHT_NODE, j]);
       }
     }
 
-    this.handleaddSortingState(['finishAllSort']);
+    this.handleAddingSortState([uiState.FINISH_ALL_SORT]);
     this.onUpdateTotalStates(this.model.sortStates);
   }
 
@@ -84,19 +85,19 @@ export class Controller {
       const middle = Math.floor((left + right) / 2);
       const pivot = arr[middle];
 
-      this.handleaddSortingState(['onLightNode', middle]);
+      this.handleAddingSortState([uiState.ON_LIGHT_NODE, middle]);
 
       while (left <= right) {
         while (arr[left] < pivot) {
-          this.handleaddSortingState(['onLightNode', left]);
-          this.handleaddSortingState(['offLightNode', left]);
+          this.handleAddingSortState([uiState.ON_LIGHT_NODE, left]);
+          this.handleAddingSortState([uiState.OFF_LIGHT_NODE, left]);
 
           left++;
         }
 
         while (arr[right] > pivot) {
-          this.handleaddSortingState(['onLightNode', right]);
-          this.handleaddSortingState(['offLightNode', right]);
+          this.handleAddingSortState([uiState.ON_LIGHT_NODE, right]);
+          this.handleAddingSortState([uiState.OFF_LIGHT_NODE, right]);
 
           right--;
         }
@@ -106,7 +107,7 @@ export class Controller {
         if (left <= right) {
           if (left !== right) {
             swap(arr, left, right);
-            this.handleaddSortingState(['changeNodes', left, right]);
+            this.handleAddingSortState([uiState.CHANGE_NODES, left, right]);
           }
 
           left++;
@@ -114,7 +115,7 @@ export class Controller {
         }
       }
 
-      this.handleaddSortingState(['offLightNode', middle]);
+      this.handleAddingSortState([uiState.OFF_LIGHT_NODE, middle]);
 
       return left;
     };
@@ -132,11 +133,11 @@ export class Controller {
       return arr;
     };
 
-    this.handleaddSortingState(['startSort']);
+    this.handleAddingSortState([uiState.START_SORT]);
 
     await recurseQuickSort(this.model.lists, 0, this.model.lists.length - 1);
 
-    this.handleaddSortingState(['finishAllSort']);
+    this.handleAddingSortState([uiState.FINISH_ALL_SORT]);
     this.onUpdateTotalStates(this.model.sortStates);
   }
 }
