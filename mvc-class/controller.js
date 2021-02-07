@@ -1,6 +1,6 @@
 import handleInput from "../controller-functions/handle-input";
-import bubbleSort from "../model-functions/bubble-sort";
-import mergeSort from "../model-functions/merge-sort";
+import bubbleSort from "../controller-functions/bubble-sort";
+import mergeSort from "../controller-functions/merge-sort";
 
 export default class Controller {
   constructor(model, view) {
