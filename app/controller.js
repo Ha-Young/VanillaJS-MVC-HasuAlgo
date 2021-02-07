@@ -1,10 +1,12 @@
 import {view} from "./view.js";
 import {model} from "./model.js";
+import {COMPARE, SWAP, SWAP_DONE, SINGLE_DONE, FINISHED, PICK_PIVOT} from "./constants.js";
 
 function createController() {
   const $startButton = document.querySelector(".start-button");
   const $userInput = document.querySelector(".user-input");
   const $bubbleSortButton = document.querySelector(".bubble-sort-button");
+  const $quickSortButton = document.querySelector(".quick-sort-button");
   let isBubbleSortTurn = false;
   let isQuickSortTurn = false;
 
@@ -22,34 +24,57 @@ function createController() {
     return inputValueList;
   }
 
-  $userInput.addEventListener("input", convertNumber);
-
-  $startButton.addEventListener("click", function handleInputItem() {
-    $userInput.removeEventListener("input", convertNumber);
-
-    const numberList = convertNumber();
-
-    if (numberList.length > 4 && numberList.length < 10) {
-      controller.addList(numberList);
-      if (isBubbleSortTurn) {
-        controller.bubbleSort();
-        isBubbleSortTurn = false;
-      }
-
-      if (isQuickSortTurn) {
-        controller.quickSort();
-      }
-
-      this.removeEventListener("click", handleInputItem);
-    }
-
-    view.removeInputValue();
-  });
-
   $bubbleSortButton.addEventListener("click", function () {
     view.removeContent();
 
     isBubbleSortTurn = true;
+
+    $userInput.addEventListener("input", convertNumber);
+
+    $startButton.addEventListener("click", function handleInputItem() {
+      $userInput.removeEventListener("input", convertNumber);
+  
+      const numberList = convertNumber();
+  
+      if (numberList.length > 4 && numberList.length < 10) {
+        controller.addList(numberList);
+        if (isBubbleSortTurn) {
+          controller.bubbleSort();
+          isBubbleSortTurn = false;
+        }
+  
+        this.removeEventListener("click", handleInputItem);
+      }
+  
+      view.removeInputValue();
+    });
+  });
+
+  $quickSortButton.addEventListener("click", function () {
+    view.removeContent();
+
+    isQuickSortTurn = true;
+
+    $userInput.addEventListener("input", convertNumber);
+
+    $startButton.addEventListener("click", function handleInputItem() {
+      $userInput.removeEventListener("input", convertNumber);
+  
+      const numberList = convertNumber();
+  
+      if (numberList.length > 4 && numberList.length < 10) {
+        controller.addList(numberList);
+  
+        if (isQuickSortTurn) {
+          controller.playQuickSort();
+          isQuickSortTurn = false;
+        }
+  
+        this.removeEventListener("click", handleInputItem);
+      }
+  
+      view.removeInputValue();
+    });
   });
 
   return {
@@ -69,24 +94,25 @@ function createController() {
 
       for (let i = 0; i < storage.length - 1; i++) {
         for (let j = 0; j < storage.length - i - 1; j++) {
-          taskElementList.push(controller.inputTask("COMPARE", j, j + 1));
+          taskElementList.push(controller.inputTask(COMPARE, j, j + 1));
           
           if (storage[j] > storage[j + 1]) {
             const temp = storage[j];
             storage[j] = storage[j + 1];
             storage[j + 1] = temp;
             
-            taskElementList.push(controller.inputTask("SWAP", j, j + 1));
+            taskElementList.push(controller.inputTask(SWAP, j, j + 1));
           }
 
-          taskElementList.push(controller.inputTask("SWAP_DONE", j, j + 1));
+          taskElementList.push(controller.inputTask(SWAP_DONE, j, j + 1));
         }
     
-        taskElementList.push(controller.inputTask("SINGLE_DONE", i));
+        taskElementList.push(controller.inputTask(SINGLE_DONE, i));
       }
       
-      taskElementList.push(controller.inputTask("FINISH"));
+      taskElementList.push(controller.inputTask(FINISHED));
       view.visualize(taskElementList);
+      controller.removeList(storage);
     },
 
     inputTask: function (type, leftIndex, rightIndex) {
@@ -103,37 +129,54 @@ function createController() {
       });
     },
 
-    quickSort: function (array, low, high) {
-      if (low < high) {
+    playQuickSort: function () {
+      const taskElementList = [];
+      const storage = model.storage[0];
+      let partitionIndex;
+
+      function quickSort (array, low, high) {
+        if (low >= high) return;
+
         partitionIndex = partition(array, low, high);
         
         quickSort(array, low, partitionIndex - 1);
         quickSort(array, partitionIndex + 1, high);
       }
-    },
- 
-    partition: function (array, low, high) {
-      let pivot = array[high];
-      let lowCount = low - 1;
-      
-      for (let i = low; i <= high - 1; i++) {
-        if (arr[i] < pivot) {
-          lowCount++;
-          swap(arr,lowCount, i);
+
+      quickSort(storage, 0, storage.length -1);
+
+      taskElementList.push(controller.inputTask(FINISHED));
+      view.visualize(taskElementList);
+      controller.removeList(storage);
+
+      function partition (array, low, high) {
+        const pivot = array[high];
+        taskElementList.push(controller.inputTask(PICK_PIVOT, low, high));
+        let lowCount = low - 1;
+        
+        for (let i = low; i < high; i++) {
+          if (array[i] < pivot) {
+            lowCount++;
+  
+            swapElement(array,lowCount, i);
+          }
         }
+        
+        swapElement(array, lowCount + 1, high);
+   
+        return lowCount + 1;
       }
-      
-      swap(array, lowCount + 1, high);
- 
-      return lowCount + 1;
-    },
- 
-    swap: function (array, lowCount, i) {
-      
-      if (array[lowCount] !== array[i]) {
+
+      function swapElement (array, lowCount, i) {
+
+        taskElementList.push(controller.inputTask(COMPARE, lowCount, i));
+
         const temp = array[lowCount];
         array[lowCount] = array[i];
         array[i] = temp;
+  
+        taskElementList.push(controller.inputTask(SWAP, lowCount, i));
+        taskElementList.push(controller.inputTask(SWAP_DONE, lowCount, i));
       }
     }
   };
