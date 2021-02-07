@@ -93,19 +93,28 @@ function createView() {
       let blockList = document.querySelectorAll(".block");
 
       for (const taskElement of taskElementList) {
-        if (taskElement.type === "COMPARE") {
-          await view.visualizeComparedBlock(blockList, taskElement.leftIndex, taskElement.rightIndex);
-        } else if (taskElement.type === "SWAP") {
-          await view.swap(blockList, taskElement.leftIndex, taskElement.rightIndex);
-          blockList = document.querySelectorAll(".block");
-        } else if (taskElement.type === "SWAP_DONE") {
-          await view.visualizeSwapDoneBlock(blockList, taskElement.leftIndex, taskElement.rightIndex);
-        } else if (taskElement.type === "SINGLE_DONE") {
-          await view.visualizeSingleDoneBlock(blockList, taskElement.leftIndex);
-        } else if (taskElement.type === "FINISHED") {
-          await view.visualizeFinishedBlock(blockList);
-        } else if (taskElement.type === "PICK_PIVOT") {
-          await view.visualizePivotBlock(blockList, taskElement.rightIndex);
+        switch (taskElement.type) {
+          case "COMPARE":
+            await view.visualizeComparedBlock(blockList, taskElement.leftIndex, taskElement.rightIndex);
+            break;
+          case "SWAP":
+            await view.swap(blockList, taskElement.leftIndex, taskElement.rightIndex);
+            blockList = document.querySelectorAll(".block");
+            break;
+          case "SWAP_DONE":
+            await view.visualizeSwapDoneBlock(blockList, taskElement.leftIndex, taskElement.rightIndex);
+            break;
+          case "SINGLE_DONE":
+            await view.visualizeSingleDoneBlock(blockList, taskElement.leftIndex);
+            break;
+          case "FINISHED":
+            await view.visualizeFinishedBlock(blockList);
+            break;
+          case "PICK_PIVOT":
+            await view.visualizePivotBlock(blockList, taskElement.rightIndex);
+            break;
+          default:
+            throw new Error ("Invalid type");
         }
       }
     },
