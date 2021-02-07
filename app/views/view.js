@@ -7,7 +7,7 @@ export const View = function(bubbleView) {
   this.swapUp = bubbleView.swapUp;
   this.moveLeft = bubbleView.moveLeft;
   this.paintDoing = bubbleView.paintDoing;
-  this.removePaint = bubbleView.removePaint;
+  this.paintWaiting = bubbleView.paintWaiting;
   this.paintDone = bubbleView.paintDone;
 }
 

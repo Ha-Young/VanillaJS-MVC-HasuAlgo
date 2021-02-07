@@ -3,9 +3,12 @@ export const BubbleController = function() {
 
 BubbleController.prototype.sort = async function() {
   const sorting = this.model.get();
+  const leng = this.model.size();
+  const SWAP_DELAY = 200;
+  const LOOP_DELAY = 1000;
     
-  for (let i = 0; i < this.model.size() -1; i++) {
-    for (let j = 0; j < this.model.size() -i -1; j++) {
+  for (let i = 0; i < leng -1; i++) {
+    for (let j = 0; j < leng -i -1; j++) {
       if (sorting[j] > sorting[j + 1]) {
         let temp = sorting[j];
         sorting[j] = sorting[j + 1];
@@ -14,9 +17,7 @@ BubbleController.prototype.sort = async function() {
         this.model.update(i + j, sorting);
 
         await new Promise(resolve =>
-          setTimeout(() => {
-            resolve();
-          }, 200)
+          setTimeout(resolve, SWAP_DELAY)
         );
         
         await this.view.swap(j, j + 1, false);
@@ -25,9 +26,7 @@ BubbleController.prototype.sort = async function() {
         await this.view.swap(j, j + 1, true);
         
         await new Promise(resolve =>
-          setTimeout(() => {
-            resolve();
-          }, 200)
+          setTimeout(resolve, SWAP_DELAY)
         );
         
       }
@@ -35,12 +34,10 @@ BubbleController.prototype.sort = async function() {
     this.view.paintDone(i);
     
     await new Promise(resolve =>
-      setTimeout(() => {
-        resolve();
-      }, 1000)
+      setTimeout(resolve, LOOP_DELAY)
     );
 
-    if (i === this.model.size() -2) {
+    if (i === leng -2) {
       this.view.paintDone(i + 1);
     }
   }
