@@ -64,7 +64,7 @@ Controller.prototype.init = function() {
     e.preventDefault();
     this.confirmSelectedSortOption();
     this.view.toggleElement(this.$startButton, this.viewTypes.HIDDEN_CLASSNAME, true);
-    this.view.setInstructionMessage(this.$instructionMessage, this.SORTING_MESSAGE);
+    this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.SORTING_MESSAGE);
   });
 
   this.$resetButton.addEventListener("click", (e) => {
