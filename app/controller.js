@@ -1,10 +1,10 @@
 class Controller {
-  constructor(model, view, page) {
+  constructor(model, view) {
     const self = this;
 
     self.model = model;
     self.view = view;
-    self.page = page;
+    self.page;
 
     self.view.connectHandler("addNumber", function (input) {
       self.addNumberControl(input);
@@ -27,11 +27,11 @@ class Controller {
     });
   }
 
-  setViewControl(page) {
+  setViewControl() {
     const self = this;
 
     self.model.initialize();
-    self.view.paintPage(page);
+    self.view.paintPage();
   }
 
   addNumberControl(input) {
@@ -41,23 +41,24 @@ class Controller {
       return;
     }
 
-    const newNumber = input
+    const newNumbers = input
       .split(",")
       .map((num) => parseInt(num))
       .filter((num) => !isNaN(num));
 
-    if (!newNumber.length) {
+    if (!newNumbers.length) {
       return;
     }
 
     if (self.page === "merge") {
-      self.model.setNewNumber(newNumber, function (newList) {
-        self.view.paintInput("DRAW BOX", newList);
-      });
+      for (const number of newNumbers)
+        self.model.setNewNumber(newNumbers, function () {
+          self.view.paintInput("DRAW BOX", number);
+        });
       return;
     }
 
-    self.model.setNewNumber(newNumber, function (newList) {
+    self.model.setNewNumber(newNumbers, function (newList) {
       self.view.paintInput("DRAW LIST", newList);
     });
   }

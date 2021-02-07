@@ -1,42 +1,31 @@
-import { Template } from "./template";
-
 class View {
   constructor() {
-    this.template = new Template();
     this.moveFactor = {};
 
     this.$inputForm = qs(".input-form");
     this.$inputBox = qs(".input-box");
     this.$sortSpace = qs(".sort-space");
+    this.$landingMessage = qs(".main-message");
     this.$randomButton = qs(".random-button");
     this.$shuffleButton = qs(".shuffle-button");
+    this.$buttonContainer = qs(".sort-buttons");
     this.$startButton = qs(".start-button");
     this.$resetButton = qs(".reset-button");
-    this.$alertMessage = qs(".alert-message");
-    this.$sortContainer = qs(".sort-list");
   }
 
-  paintPage(sortStyle) {
-    switch (sortStyle) {
-      case "bubble":
-        this.$sortSpace.innerHTML = this.template.bubble;
-        break;
+  paintPage() {
+    const newNode = document.createElement("ul");
+    const currentNode = qs(".sort-list");
 
-      case "insertion":
-        this.$sortSpace.innerHTML = this.template.insertion;
-        break;
-
-      case "merge":
-        this.$sortSpace.innerHTML = this.template.merge;
-        break;
-
-      case "quick":
-        this.$sortSpace.innerHTML = this.template.quick;
-        break;
-
-      default:
-        break;
+    if (currentNode) {
+      this.$sortSpace.removeChild(currentNode);
     }
+
+    this.$sortSpace.appendChild(newNode);
+    newNode.classList.add("sort-list");
+    this.$sortContainer = qs(".sort-list");
+    this.$buttonContainer.classList.remove("hide");
+    this.$landingMessage.classList.add("hide");
   }
 
   paintInput(type, parameter) {
@@ -46,6 +35,11 @@ class View {
         self.$resetButton.classList.remove("hide");
 
         self.paintBar(parameter);
+      },
+      "DRAW BOX": function () {
+        self.$resetButton.classList.remove("hide");
+
+        self.paintBox(parameter);
       },
       "RESET LIST": function () {
         self.$sortContainer.innerHTML = "";
@@ -325,6 +319,36 @@ class View {
       this.moveFactor[`#${i}`] = 0;
     }
   }
+
+  paintBox(number) {
+    const li = document.createElement("li");
+
+    li.setAttribute("class", "sort-element");
+    li.setAttribute("id", `#${self.$sortContainer.childElementCount}`);
+    li.innerHTML = `
+      <div class="sort-box">
+			<span class="sort-number">${number}</span>
+      </div>
+      `;
+
+    this.$sortContainer.appendChild(li);
+    this.moveFactor[`#${i}`] = 0;
+  }
 }
 
 export default View;
+
+// export const Template = function () {
+//   this.default = `<h1 class="main-message">Choose Sort Style</h1>`;
+
+//   this.bubble = `
+//   <ul class="sort-list"></ul>`;
+
+//   this.insertion = `
+// <ul class="sort-list"></ul>`;
+
+//   this.merge = `<ul class="sort-list"></ul>`;
+
+//   this.quick = `<h1 class="main-alert">Quick coming soon</h1>
+//   <h2 class="sub-alert">How about Bubble Sort?</h2>`;
+// };

@@ -14,9 +14,8 @@ class Sort {
     const route = document.location.hash.split("/")[1];
     const page = route || "";
 
-    this.controller.setViewControl(page);
-    this.view = new View();
-    this.controller = new Controller(this.model, this.view, page);
+    this.controller.setViewControl();
+    this.controller.page = page;
   }
 
   removeLocationHash() {
