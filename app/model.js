@@ -40,7 +40,7 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
     return;
   }
 
-  const borderIndex = await this._divideConquerElements(this.sortingList, start, end);
+  const borderIndex = await this._divideConquerQuickSortElements(this.sortingList, start, end);
 
 	await this._quickSort(start, borderIndex - 1);
   await this._quickSort(borderIndex, end);
@@ -48,7 +48,7 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
 	return this.sortingList;
 };
 
-Model.prototype._divideConquerElements = async function (array, start, end) {
+Model.prototype._divideConquerQuickSortElements = async function (array, start, end) {
   const pivotIndex = Math.floor((start + end) / 2);
   const pivotValue = array[pivotIndex];
 
