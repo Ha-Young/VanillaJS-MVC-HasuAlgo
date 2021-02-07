@@ -4,13 +4,7 @@ export default function View () {
   this.DISABLED_CLASSNAME = "disabled";
   this.TRANSFORM_NONE = "none";
   this.PLACEHOLDER_TEXT = "Type here...";
-
   this.ELEMENT_MOVING_EFFECT = "element-moving-effect";
-  this.TARGET_ELEMENT_COLOR = "target-element-color";
-  this.BIGGER_ELEMENT_COLOR = "bigger-element-color";
-  this.SMALLER_ELEMENT_COLOR = "smaller-element-color";
-  this.SORTED_ELEMENT_COLOR = "sorted-element-color";
-  this.PIVOT_ELEMENT_COLOR = "pivot-element-color";
 }
 
 View.prototype.createElements = function(userInputList, sortDisplaySection) {
@@ -26,27 +20,6 @@ View.prototype.createElements = function(userInputList, sortDisplaySection) {
 View.prototype.toggleElement = function (element, viewType, toggle) {
   toggle ? element.classList.add(viewType) : element.classList.remove(viewType);
 }
-
-
-View.prototype.toggleSubmitButton = function(submitButton, toggle) {
-  toggle ? submitButton.classList.remove(this.HIDDEN_CLASSNAME)
-  : submitButton.classList.add(this.HIDDEN_CLASSNAME);
-};
-
-View.prototype.toggleStartButton = function(startButton, toggle) {
-  toggle ? startButton.classList.remove(this.HIDDEN_CLASSNAME)
-  : startButton.classList.add(this.HIDDEN_CLASSNAME);
-};
-
-View.prototype.toggleResetButton = function(resetButton, toggle) {
-  toggle ? resetButton.classList.remove(this.HIDDEN_CLASSNAME)
-  : resetButton.classList.add(this.HIDDEN_CLASSNAME);
-};
-
-View.prototype.toggleSortSelector = function(sortSelector, toggle) {
-  toggle ? sortSelector.classList.add(this.HIDDEN_CLASSNAME)
-  : sortSelector.classList.remove(this.HIDDEN_CLASSNAME);
-};
 
 View.prototype.setInstructionMessage = function(instructionMessageElement, settingMessage) {
   instructionMessageElement.textContent = settingMessage;

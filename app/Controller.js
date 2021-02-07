@@ -56,14 +56,14 @@ Controller.prototype.init = function() {
 
     const validatedUserInput = this.model.getUserInputList();
     this.view.hideSortSelectorAfterInputValidation(this.$userInput, this.$sortSelector, validatedUserInput);
-    this.view.toggleSubmitButton(this.$submitButton, false);
-    this.view.toggleStartButton(this.$startButton, true);
+    this.view.toggleElement(this.$submitButton, this.ViewTypes.HIDDEN_CLASSNAME, true);
+    this.view.toggleElement(this.$startButton, this.ViewTypes.HIDDEN_CLASSNAME, false);
   });
 
   this.$startButton.addEventListener("click", (e) => {
     e.preventDefault();
     this.confirmSelectedSortOption();
-    this.view.toggleStartButton(this.$startButton, false);
+    this.view.toggleElement(this.$startButton, this.ViewTypes.HIDDEN_CLASSNAME, true);
     this.view.setInstructionMessage(this.$instructionMessage, this.SORTING_MESSAGE);
   });
 
@@ -75,9 +75,9 @@ Controller.prototype.init = function() {
     this.view.resetUserInputElement(this.$userInput);
     this.view.resetSortDisplaySection(this.$sortDisplaySection);
 
-    this.view.toggleResetButton(this.$resetButton, false);
-    this.view.toggleSubmitButton(this.$submitButton, true);
-    this.view.toggleSortSelector(this.$sortSelector, false);
+    this.view.toggleElement(this.$resetButton, this.ViewTypes.HIDDEN_CLASSNAME, true);
+    this.view.toggleElement(this.$submitButton, this.ViewTypes.HIDDEN_CLASSNAME, false);
+    this.view.toggleElement(this.$sortSelector, this.ViewTypes.HIDDEN_CLASSNAME, false);
     this.view.setInstructionMessage(this.$instructionMessage, this.INITIAL_MESSAGE);
   });
 };
@@ -101,8 +101,6 @@ Controller.prototype.validateUserInput = function() {
   }
 
   this.model.setUserInputList(userInputList);
-  this.view.toggleSubmitButton(this.$submitButton, true);
-  this.view.toggleStartButton(this.$startButton, false);
   this.view.createElements(userInputList, this.$sortDisplaySection);
   this.view.setInstructionMessageAfterSubmit(this.$userInput, this.$instructionMessage, this.AFTER_SUBMIT_MESSAGE);
 
@@ -241,5 +239,6 @@ Controller.prototype.bubbleSort = async function(inputElements) {
   }
 
   this.view.setInstructionMessage(this.$instructionMessage, this.RETRY_MESSAGE);
-  this.view.toggleResetButton(this.$resetButton, true);
+  this.view.toggleElement(this.$resetButton, this.ViewTypes.HIDDEN_CLASSNAME, false);
+  //this.view.toggleResetButton(this.$resetButton, true);
 };
