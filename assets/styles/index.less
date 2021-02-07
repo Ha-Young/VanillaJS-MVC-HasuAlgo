@@ -7,6 +7,7 @@
   --pivot-element-color: #079992;
   --bigger-element-color: #5758BB;
   --smaller-element-color: #4bcffa;
+  --button-background-color: #d2dae2;
 }
 
 ::placeholder {
@@ -26,8 +27,8 @@ html, body {
 }
 
 .content {
-  display: flex;
   position: relative;
+  display: flex;
   align-items: center;
   width: 100vw;
   height: 20vh;
@@ -54,8 +55,8 @@ html, body {
 }
 
 .sort-setting-wrap {
-  display: flex;
   position: relative;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
@@ -90,7 +91,7 @@ html, body {
   border-radius: 3%;
   border: none;
   outline: none;
-  color: #485460;
+  color: var(--sub-font-color);
 }
 
 .submit-button, .start-button, .reset-button {
@@ -102,7 +103,7 @@ html, body {
   border-radius: 3%;
   border: none;
   outline: none;
-  background-color: #d2dae2;
+  background-color: var(--button-background-color);
   cursor: pointer;
 }
 
@@ -115,17 +116,17 @@ html, body {
 }
 
 .sort-display-section {
+  position: relative;
   display: flex;
   justify-content: center;
-  position: relative;
   width: 100%;
   height: 60vh;
   margin-top: 10vh;
 }
 
 .rectangle-element {
-  display: flex;
   position: relative;
+  display: flex;
   width: 4%;
   height: 70%;
   margin: 0;
