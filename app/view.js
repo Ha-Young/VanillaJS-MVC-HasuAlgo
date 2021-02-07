@@ -106,6 +106,7 @@ export default class View {
     this.changeClass(null, 'add', 'move-right', movingIndex);
     this.changeClass(null, 'add', 'move-left', movingIndex + 1);
     await pause(pauseTime);
+
     this.changeOrder(movingIndex, movingIndex + 2);
   }
 
@@ -119,11 +120,12 @@ export default class View {
   }
 
   quickMoveAnimation(currentIndex, movedIndex) {
+    const DISTANCE_FOR_INDEX = 70;
     const nodeList = this.$sortingWindow.childNodes;
-    const distance = (movedIndex - currentIndex) * 70;
+    const calculatedDistance = (movedIndex - currentIndex) * DISTANCE_FOR_INDEX;
 
     nodeList[currentIndex].classList.add('move-quick');
-    nodeList[currentIndex].style.transform = `translateX(${distance}px)`;
+    nodeList[currentIndex].style.transform = `translateX(${calculatedDistance}px)`;
   }
 
   changeColorOfQuickItem(type, startIndex, endIndex) {

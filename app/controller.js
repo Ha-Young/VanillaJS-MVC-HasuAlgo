@@ -1,4 +1,4 @@
-import { pause, swap } from './helpers';
+import { swap } from './helpers';
 
 export default class Controller {
   constructor(model, view) {
@@ -7,7 +7,7 @@ export default class Controller {
     this.bubbleSortCount = 0;
     this.borderIndex = 0;
 
-    this.inputBtnEventHandler = this.addArray.bind(this);
+    this.inputBtnEventHandler = this.inputNumbers.bind(this);
     this.setAlgorithmBtnEventHandler = this.setAlgorithm.bind(this);
     this.executeBtnEventHandler = this.executeSortingAlgorithm.bind(this);
 
@@ -22,23 +22,23 @@ export default class Controller {
     this.model.setAlgorithm(selectedAlgorithm);
   }
 
-  addArray() {
-    const inputArray = this.view.$inputBox.value.split`,`.map(x => +x);
+  inputNumbers() {
+    const inputNumbers = this.view.$inputBox.value.split`,`.map(item => parseInt(item));
 
     this.view.initializeInput();
 
-    if (this.inputValidation(inputArray)) {
-      this.model.setStorage(inputArray);
-      this.drawInputArray(inputArray);
+    if (this.inputValidation(inputNumbers)) {
+      this.model.setStorage(inputNumbers);
+      this.drawInputNumbers(inputNumbers);
     }
   }
 
-  inputValidation(inputArray) {
-    const isEveryArrayItemNumber = inputArray.every((item) => {
+  inputValidation(inputNumbers) {
+    const isEveryArrayItemNumber = inputNumbers.every((item) => {
       return Number.isInteger(item);
     });
 
-    if (!(inputArray.length >= 5 && inputArray.length <= 10 && isEveryArrayItemNumber)) {
+    if (!(inputNumbers.length >= 5 && inputNumbers.length <= 10 && isEveryArrayItemNumber)) {
       this.view.displayErrorMessage('5~10개의 숫자 입력');
       return false;
     }
@@ -46,11 +46,11 @@ export default class Controller {
     return true;
   }
 
-  drawInputArray(inputArray) {
-    const orderList = inputArray.slice().sort((a, b) => (a - b));
+  drawInputNumbers(inputNumbers) {
+    const orderList = inputNumbers.slice().sort((a, b) => (a - b));
 
-    for (const item of inputArray) {
-      this.view.drawItem(item, orderList.indexOf(item), inputArray.length);
+    for (const item of inputNumbers) {
+      this.view.drawItem(item, orderList.indexOf(item), inputNumbers.length);
     }
   }
 
@@ -67,7 +67,7 @@ export default class Controller {
   }
 
   async bubbleSortAsync() {
-    const listToSort = this.model.getStorage().slice();
+    const listToSort = [...this.model.getStorage()];
     const PAUSE_TIME = 500;
     let bubbleChangeCount = 0;
 
