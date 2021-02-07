@@ -1,6 +1,6 @@
 import Model from "../model";
 import View from "../view";
-import CONSTANT, { SORT_TYPE, PIVOT_KINDS, ARROW_TYPE } from "../common/constant";
+import CONSTANT, { SORT_TYPE, PIVOT_KINDS } from "../common/constant";
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -34,7 +34,7 @@ export default class Controller {
       this.setNumsView(sortList);
       this.isReadySort = true;
     } catch (error) {
-      window.alert(error);
+      this.view.setErrorMsg(error);
     }
   }
 
@@ -53,6 +53,7 @@ export default class Controller {
   setNumsView(sortList) {
     const sortItemList = this.model.getSortItemList(sortList);
     this.view.showSortItems(sortItemList);
+    this.view.initInfoMsg();
   }
 
   setSortType(sortType) {
@@ -97,6 +98,7 @@ export default class Controller {
   }
 
   sortAccordingType(sortType) {
+    debugger;
     const sortList = [...this.model.sortList];
     let sortedListPromise;
 
@@ -111,7 +113,7 @@ export default class Controller {
     }
 
     sortedListPromise.then(() => {
-      alert("sort 완료");
+      this.view.setInfoMsg('sort 완료!');
     });
   }
 
@@ -168,12 +170,12 @@ export default class Controller {
     this.view.addArrow(index, arrowType);
   }
 
-  viewRemoveArrow(arrowType) {
-    this.view.removeArrow(arrowType);
+  viewRemoveArrow(arrowKinds) {
+    this.view.removeArrow(arrowKinds);
   }
 
-  viewArrowMoveNext(arrowType) {
-    this.view.moveArrowNext(arrowType, this.delayTimeOnChange);
+  viewArrowMoveNext(arrowKinds) {
+    this.view.moveArrowNext(arrowKinds, this.delayTimeOnChange);
   }
 
   async insertionSort(sortList) {
@@ -257,8 +259,8 @@ export default class Controller {
 
       await this.doUIWork([
         this.viewItemSortedColor.bind(this, changePivotIndex),
-        this.viewRemoveArrow.bind(this, ARROW_TYPE.LEFT),
-        this.viewRemoveArrow.bind(this, ARROW_TYPE.RIGHT),
+        this.viewRemoveArrow.bind(this, "left"),
+        this.viewRemoveArrow.bind(this, "right"),
       ]);
 
       await this.doUIWork([
@@ -272,8 +274,8 @@ export default class Controller {
         const pivot = sortList[pivotIndex];
 
         await this.doUIWork([
-          this.viewAddArrow.bind(this, leftIndex, ARROW_TYPE.LEFT),
-          this.viewAddArrow.bind(this, rightIndex, ARROW_TYPE.RIGHT),
+          this.viewAddArrow.bind(this, leftIndex, "left"),
+          this.viewAddArrow.bind(this, rightIndex, "right"),
         ]);
 
         while (leftIndex <= rightIndex) {
@@ -281,7 +283,7 @@ export default class Controller {
             if (leftIndex !== pivotIndex) {
               this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
             }
-            await this.doUIWork([this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT)]);
+            await this.doUIWork([this.viewArrowMoveNext.bind(this, "left")]);
             leftIndex++;
           }
 
@@ -295,7 +297,7 @@ export default class Controller {
             if (rightIndex !== pivotIndex) {
               this.doUIWork([this.viewItemLarge.bind(this, rightIndex)]);
             }
-            await this.doUIWork([this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT)]);
+            await this.doUIWork([this.viewArrowMoveNext.bind(this, "right")]);
             rightIndex--;
           }
 
@@ -333,8 +335,8 @@ export default class Controller {
             if (leftIndex >= rightIndex) continue;
 
             await this.doUIWork([
-              this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT),
-              this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT),
+              this.viewArrowMoveNext.bind(this, "left"),
+              this.viewArrowMoveNext.bind(this, "right"),
             ]);
           }
         }
