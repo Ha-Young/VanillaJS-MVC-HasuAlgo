@@ -1,6 +1,6 @@
 import { delay } from './utils/commonUtils';
 import { swapNodes, onHighlightNode, offHighlightNode, onHighlightAllNodes } from './utils/uiUtils';
-import { colorChart, uiState } from './constants/constants';
+import { colorChart } from './constants/constants';
 
 export class View {
   constructor() {
