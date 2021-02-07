@@ -134,7 +134,7 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
     this.view.toggleElement(userInputElements[pivot], this.viewTypes.PIVOT_ELEMENT_COLOR, false);
     this.view.toggleElement(userInputElements[pivot], this.viewTypes.SORTED_ELEMENT_COLOR, true);
 
-    userInputElements.map(element => {
+    userInputElements.map((element) => {
       this.view.toggleElement(element, this.viewTypes.BIGGER_ELEMENT_COLOR, false);
       this.view.toggleElement(element, this.viewTypes.SMALLER_ELEMENT_COLOR, false);
     });

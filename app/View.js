@@ -10,7 +10,7 @@ export default function View () {
 View.prototype.createElements = function(userInputList, sortDisplaySection) {
   const fragment = new DocumentFragment();
 
-  userInputList.forEach(input => {
+  userInputList.forEach((input) => {
     const $rectangleBarElement = document.createElement("div");
       $rectangleBarElement.classList.add("rectangle-element");
       $rectangleBarElement.textContent = input;
