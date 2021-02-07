@@ -29,7 +29,7 @@ async function getMergeSortedArray(left, right) {
   }
 
   this.view.sortAnimation.merge.swapCloudsInCanvas(result, beforeMerge);
-  await delay(700);
+  await delay();
 
   return result;
 }
@@ -44,7 +44,7 @@ async function divide(array) {
   const right = left.splice(mid);
 
   this.view.sortAnimation.merge.divideCloudsInCanvas(left, right);
-  await delay(700);
+  await delay();
 
   let leftVal;
   let rightVal;

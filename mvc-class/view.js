@@ -54,13 +54,7 @@ export default class View {
   }
 
   displayMessage(target, message){
-    if (target === "alertBox") {
-      this.domElements.alretBox.textContent = message;
-    }
-
-    if (target === "startForm") {
-      this.domElements.startFormText.textContent = message;
-    }
+    this.domElements[target].textContent = message;
   }
 
   displayHelpMessage() {

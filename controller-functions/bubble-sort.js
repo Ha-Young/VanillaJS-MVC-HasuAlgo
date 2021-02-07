@@ -27,8 +27,7 @@ export default async function bubbleSort(array) {
         numbers[j] = first;
         numbers[j + 1] = second;
         
-        const DELAY_TIME = 700;
-        await delay(DELAY_TIME);
+        await delay();
       }
     }
     
