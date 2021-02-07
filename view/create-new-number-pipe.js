@@ -7,9 +7,12 @@ const { numbers, nodes } = inputDatas;
 export default function createNewNumberPipe(inputValue) {
   stopMarioMoving();
   const newNumberBar = document.createElement("div");
+  const HEIGHT_LIMIT = 500;
+  const HEIGHT_MIN = 30;
+  const newHeight = inputValue * 5 + HEIGHT_MIN;
 
   newNumberBar.style.order = numbers.length;
-  newNumberBar.style.height = `${(inputValue * 4) + 30 + inputValue}px`;
+  newNumberBar.style.height = `${newHeight < HEIGHT_LIMIT ? newHeight : HEIGHT_LIMIT}px`;
   newNumberBar.classList.add("pipe");
   
   const numberTextBox = document.createElement("div");
