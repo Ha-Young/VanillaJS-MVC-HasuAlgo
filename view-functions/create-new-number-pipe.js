@@ -1,7 +1,3 @@
-import { inputDatas } from "../model-functions/user-input-data";
-
-const { nodes } = inputDatas;
-
 export default function createNewNumberPipe(numbers) {
   const { sortingBoard } = this;
   
@@ -23,7 +19,5 @@ export default function createNewNumberPipe(numbers) {
     newNumberPipe.appendChild(numberTextBox);
     sortingBoard.appendChild(newNumberPipe);
     newNumberPipe.dataset.value = inputValue;
-
-    nodes.push(newNumberPipe);
   });
 }

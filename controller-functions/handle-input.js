@@ -22,6 +22,6 @@ export default function handleInput(e) {
   this.view.displayMessage("startForm", "Select a button");
   this.view.toggleVisibility("bubbleButton");
   this.view.toggleVisibility("mergeButton");
-  this.view.toggleVisibility("wholeNumberInput");
+  this.view.toggleVisibility("startForm");
 }
 

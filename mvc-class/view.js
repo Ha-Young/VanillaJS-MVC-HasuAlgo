@@ -1,3 +1,4 @@
+import { divide } from "lodash";
 import getHelpMessage from "../controller-functions/help-handler";
 import getMyElements from "../model-functions/get-my-elements";
 import changePipeToClouds from "../view-functions/change-pipe-to-clouds";
@@ -19,19 +20,6 @@ export default class View {
       resetInputTexts: () => {
         resetInputTexts.call(this.domElements);
       }
-    };
-
-    this.sortAnimation = {
-      bubble: { 
-        swapPipesInCanvas,
-      },
-      merge: {
-        changePipeToClouds: () => {
-          changePipeToClouds.call(this.domElements);
-        },
-        swapCloudsInCanvas,
-        divideCloudsInCanvas,
-      },
     };
 
     this.marioWorld = {
@@ -59,5 +47,21 @@ export default class View {
 
   displayHelpMessage() {
     this.domElements.alretBox.textContent = getHelpMessage();
+  }
+
+  swapPipesInCanvas(first, second, index) {
+    return swapPipesInCanvas(first, second, index);
+  }
+
+  changePipeToClouds() {
+    return changePipeToClouds(this.domElements.sortingBoard);
+  }
+
+  swapCloudsInCanvas(result, beforeMerge) {
+    return swapCloudsInCanvas(result, beforeMerge);
+  }
+
+  divideCloudsInCanvas(left, right) {
+    return divideCloudsInCanvas(left, right);
   }
 }

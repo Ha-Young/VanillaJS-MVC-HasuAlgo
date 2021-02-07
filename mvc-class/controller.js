@@ -13,12 +13,14 @@ export default class Controller {
       },
       handleClickBubbleButton: () => {
         this.runBubbleSort();
-        this.view.toggleVisibility("startForm");
+        this.view.toggleVisibility("bubbleButton");
+        this.view.toggleVisibility("mergeButton");
       }, 
       handleClickMergeButton: () => {
         this.runMergeSort();
-        this.view.toggleVisibility("startForm");
-        this.view.sortAnimation.merge.changePipeToClouds();
+        this.view.toggleVisibility("mergeButton");
+        this.view.toggleVisibility("bubbleButton");
+        this.view.changePipeToClouds();
       },
       handleClickHelp: () => {
         this.view.displayHelpMessage();

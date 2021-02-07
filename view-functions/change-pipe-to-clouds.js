@@ -1,5 +1,4 @@
-export default function changePipeToClouds() {
-  const { sortingBoard } = this;
+export default function changePipeToClouds(sortingBoard) {
   sortingBoard.classList.add("merge-container");
   const pipes = document.querySelectorAll(".pipe");
 

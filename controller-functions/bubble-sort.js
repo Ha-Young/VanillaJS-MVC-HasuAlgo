@@ -21,7 +21,8 @@ export default async function bubbleSort(array) {
 
     for (let j = 0; j < numbers.length - 1; j++) {
       if (numbers[j] > numbers[j + 1]) {
-        this.view.sortAnimation.bubble.swapPipesInCanvas(numbers[j], numbers[j + 1], j);
+        // this.view.sortAnimation.bubble.swapPipesInCanvas(numbers[j], numbers[j + 1], j);
+        this.view.swapPipesInCanvas(numbers[j], numbers[j + 1], j);
 
         const { first, second } = swapNumbers(numbers[j], numbers[j + 1]);
         numbers[j] = first;
