@@ -28,11 +28,10 @@ export default class Controller {
   }
 
   runMergeSort() {
-    mergeSort(this.model.numbers);
+    mergeSort.call(this, this.model.numbers);
   }
   
   runBubbleSort() {
-    bubbleSort(this.model.numbers);
+    bubbleSort.call(this, this.model.numbers);
   }
-
 }

@@ -1,6 +1,4 @@
 import delay from "../model-functions/delay";
-import divideCloudsInCanvas from "../view-functions/divide-clouds-in-canvas";
-import swapCloudsInCanvas from "../view-functions/swap-clouds-in-canvas";
 
 async function getMergeSortedArray(left, right) {
   let beforeMerge = [...left, ...right];
@@ -30,7 +28,7 @@ async function getMergeSortedArray(left, right) {
     result.push(...rightArray);
   }
 
-  swapCloudsInCanvas(result, beforeMerge);
+  this.view.sortAnimation.merge.swapCloudsInCanvas(result, beforeMerge);
   await delay(700);
 
   return result;
@@ -45,21 +43,21 @@ async function divide(array) {
   const mid = left.length / 2;
   const right = left.splice(mid);
 
-  divideCloudsInCanvas(left, right);
+  this.view.sortAnimation.merge.divideCloudsInCanvas(left, right);
   await delay(700);
 
   let leftVal;
   let rightVal;
   let result;
 
-  await divide(left).then(response => leftVal = response);
-  await divide(right).then(response => rightVal = response);
+  await divide.call(this, left).then(response => leftVal = response);
+  await divide.call(this, right).then(response => rightVal = response);
   
-  await getMergeSortedArray(leftVal, rightVal).then(response => result = response);
+  await getMergeSortedArray.call(this, leftVal, rightVal).then(response => result = response);
 
   return result;
 }
 
 export default function mergeSort(array) {
-  divide(array);
+  divide.call(this, array);
 }

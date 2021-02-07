@@ -66,6 +66,4 @@ export default class View {
   displayHelpMessage() {
     this.domElements.alretBox.textContent = getHelpMessage();
   }
-
-  stopMario
 }
