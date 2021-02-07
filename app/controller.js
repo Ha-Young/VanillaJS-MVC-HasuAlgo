@@ -8,12 +8,12 @@ export default class Controller {
     this.borderIndex = 0;
 
     this.inputBtnEventHandler = this.addArray.bind(this);
-    this.setAlgorithmHandler = this.setAlgorithm.bind(this);
+    this.setAlgorithmBtnEventHandler = this.setAlgorithm.bind(this);
     this.executeBtnEventHandler = this.executeSortingAlgorithm.bind(this);
 
-    view.bindAddArray(this.inputBtnEventHandler);
-    view.bindSetAlgorithm(this.setAlgorithmHandler);
-    view.bindExecuteSortingAlgorithm(this.executeBtnEventHandler);
+    view.bindInputBtnEventHandler(this.inputBtnEventHandler);
+    view.bindSetAlgorithmBtnEventHandler(this.setAlgorithmBtnEventHandler);
+    view.bindExecuteBtnEventHandler(this.executeBtnEventHandler);
   }
 
   setAlgorithm(event) {
@@ -38,7 +38,7 @@ export default class Controller {
       return Number.isInteger(item);
     });
 
-    if (!(isEveryArrayItemNumber && (inputArray.length >= 5 && inputArray.length <= 10))) {
+    if (!(inputArray.length >= 5 && inputArray.length <= 10 && isEveryArrayItemNumber)) {
       this.view.displayErrorMessage('5~10개의 숫자 입력');
       return false;
     }
@@ -55,7 +55,7 @@ export default class Controller {
   }
 
   async executeSortingAlgorithm() {
-    this.view.deactivateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmHandler);
+    this.view.deactivateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmBtnEventHandler);
 
     if (this.model.getAlgorithm() === 'bubble') {
       await this.bubbleSortAsync();
@@ -63,22 +63,23 @@ export default class Controller {
       await this.quickSort(this.model.getStorage());
     }
 
-    this.view.activateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmHandler);
+    this.view.activateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmBtnEventHandler);
   }
 
   async bubbleSortAsync() {
-    const listToSort = this.model.getStorage();
+    const PAUSE_TIME = 500;
+    const listToSort = this.model.getStorage().slice();
     let bubbleChangeCount = 0;
 
     for (let outerIndex = listToSort.length - 1; outerIndex >= 1; outerIndex--) {
       for (let innerIndex = 0; innerIndex < outerIndex; innerIndex++) {
-        await this.view.changeClass(500, 'add', 'selected', innerIndex, innerIndex + 1);
+        await this.view.changeClass(PAUSE_TIME, 'add', 'selected', innerIndex, innerIndex + 1);
 
         if (listToSort[innerIndex] > listToSort[innerIndex + 1]) {
           swap(listToSort, innerIndex, innerIndex + 1);
           bubbleChangeCount++;
 
-          await this.view.switchItemsWithAnimation(innerIndex);
+          await this.view.switchItemsWithAnimation(PAUSE_TIME, innerIndex);
         }
 
         this.view.changeClass(null, 'remove', 'selected', innerIndex, innerIndex + 1);
@@ -97,6 +98,7 @@ export default class Controller {
     }
 
     this.view.changeClass(null, 'add', 'sorted', 0);
+    this.model.setStorage(listToSort);
     return;
   }
 
@@ -117,29 +119,30 @@ export default class Controller {
     }
   }
 
-  async partition(array, startIndex, endIndex) {
+  async partition(listToSort, startIndex, endIndex) {
     let pivotIndex = Math.floor((startIndex + endIndex) / 2);
-    const pivotValue = array[pivotIndex];
+    const pivotValue = listToSort[pivotIndex];
+    const PAUSE_TIME = 300;
 
     this.view.changeClass(null, 'add', 'sorted', pivotIndex);
 
     while (startIndex <= endIndex) {
-      await this.view.changeClass(300, 'add', 'selected', startIndex, endIndex);
+      await this.view.changeClass(PAUSE_TIME, 'add', 'selected', startIndex, endIndex);
 
-      while (array[startIndex] < pivotValue) {
-        await this.view.changeClass(300, 'remove', 'selected', startIndex);
-        await this.view.changeClass(300, 'add', 'selected', ++startIndex);
+      while (listToSort[startIndex] < pivotValue) {
+        await this.view.changeClass(PAUSE_TIME, 'remove', 'selected', startIndex);
+        await this.view.changeClass(PAUSE_TIME, 'add', 'selected', ++startIndex);
       }
 
-      while (array[endIndex] > pivotValue) {
-        await this.view.changeClass(300, 'remove', 'selected', endIndex);
-        await this.view.changeClass(300, 'add', 'selected', --endIndex);
+      while (listToSort[endIndex] > pivotValue) {
+        await this.view.changeClass(PAUSE_TIME, 'remove', 'selected', endIndex);
+        await this.view.changeClass(PAUSE_TIME, 'add', 'selected', --endIndex);
       }
 
       this.view.changeClass(null, 'remove', 'selected', startIndex, endIndex);
 
       if (startIndex <= endIndex) {
-        await this.view.changeClass(300, 'add', 'selected', startIndex, endIndex);
+        await this.view.changeClass(PAUSE_TIME, 'add', 'selected', startIndex, endIndex);
 
         if (startIndex === pivotIndex) {
           pivotIndex = endIndex;
@@ -148,12 +151,12 @@ export default class Controller {
         }
 
         if (startIndex !== endIndex) {
-          swap(array, startIndex, endIndex);
+          swap(listToSort, startIndex, endIndex);
 
-          await this.view.switchQuickItemsWithAnimation(startIndex, endIndex);
+          await this.view.switchQuickItemsWithAnimation(PAUSE_TIME, startIndex, endIndex);
         }
 
-        await this.view.changeClass(300, 'remove', 'selected', startIndex, endIndex);
+        await this.view.changeClass(PAUSE_TIME, 'remove', 'selected', startIndex, endIndex);
 
         startIndex++;
         endIndex--;
@@ -161,7 +164,7 @@ export default class Controller {
     }
 
     this.borderIndex = startIndex;
-    await this.view.changeClass(300, 'remove', 'sorted', pivotIndex);
+    await this.view.changeClass(PAUSE_TIME, 'remove', 'sorted', pivotIndex);
     return;
   }
 }

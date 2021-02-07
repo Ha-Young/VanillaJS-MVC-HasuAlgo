@@ -28,9 +28,7 @@ export default class View {
   clearSortingWindow() {
     const nodeList = this.$sortingWindow.childNodes;
 
-    for (let i = nodeList.length - 1; i >= 0; i--) {
-      nodeList[i].remove();
-    }
+    nodeList.forEach((node) => node.remove());
   }
 
   initializeInput() {
@@ -54,20 +52,20 @@ export default class View {
     this.$sortingWindow.insertBefore(nodeList[firstOrder], nodeList[secondOrder]);
   }
 
-  changeOrderQuick(left, right) {
+  changeOrderQuick(startIndex, endIndex) {
     const nodeList = this.$sortingWindow.childNodes;
-    const rightClone = nodeList[right];
+    const rightClone = nodeList[endIndex];
 
-    nodeList[left].classList.remove('move-quick');
-    nodeList[left].style.removeProperty('transform');
-    nodeList[right].classList.remove('move-quick');
-    nodeList[right].style.removeProperty('transform');
+    nodeList[startIndex].classList.remove('move-quick');
+    nodeList[startIndex].style.removeProperty('transform');
+    nodeList[endIndex].classList.remove('move-quick');
+    nodeList[endIndex].style.removeProperty('transform');
 
-    this.$sortingWindow.replaceChild(nodeList[left], nodeList[right]);
-    this.$sortingWindow.insertBefore(rightClone, nodeList[left]);
+    this.$sortingWindow.replaceChild(nodeList[startIndex], nodeList[endIndex]);
+    this.$sortingWindow.insertBefore(rightClone, nodeList[startIndex]);
   }
 
-  deactivateButtons(inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
+  deactivateButtons(inputBtnEventHandler, executeBtnEventHandler, setAlgorithmBtnEventHandler) {
     this.$inputButtonText.classList.add('none');
     this.$inputButtonLoader.classList.remove('none');
     this.$executeButtonText.classList.add('none');
@@ -75,19 +73,19 @@ export default class View {
 
     this.$inputBtn.removeEventListener('click', inputBtnEventHandler);
     this.$executeBtn.removeEventListener('click', executeBtnEventHandler);
-    this.$bubbleBtn.removeEventListener('click', setAlgorithmHandler);
-    this.$quickBtn.removeEventListener('click', setAlgorithmHandler);
+    this.$bubbleBtn.removeEventListener('click', setAlgorithmBtnEventHandler);
+    this.$quickBtn.removeEventListener('click', setAlgorithmBtnEventHandler);
   }
 
-  activateButtons(inputBtnEventHandler, executeBtnEventHandler, setAlgorithmHandler) {
+  activateButtons(inputBtnEventHandler, executeBtnEventHandler, setAlgorithmBtnEventHandler) {
     this.$inputButtonText.classList.remove('none');
     this.$inputButtonLoader.classList.add('none');
     this.$executeButtonText.classList.remove('none');
     this.$executeButtonLoader.classList.add('none');
 
-    this.bindAddArray(inputBtnEventHandler);
-    this.bindExecuteSortingAlgorithm(executeBtnEventHandler);
-    this.bindSetAlgorithm(setAlgorithmHandler);
+    this.bindInputBtnEventHandler(inputBtnEventHandler);
+    this.bindExecuteBtnEventHandler(executeBtnEventHandler);
+    this.bindSetAlgorithmBtnEventHandler(setAlgorithmBtnEventHandler);
   }
 
   async changeClass(pauseTime, type, className, ...indexList) {
@@ -102,47 +100,48 @@ export default class View {
     }
   }
 
-  async switchItemsWithAnimation(index) {
-    this.changeClass(null, 'add', 'move-right', index);
-    this.changeClass(null, 'add', 'move-left', index + 1);
-    await pause(500);
-    this.changeOrder(index, index + 2);
+  async switchItemsWithAnimation(pauseTime, movingIndex) {
+    this.changeClass(null, 'add', 'move-right', movingIndex);
+    this.changeClass(null, 'add', 'move-left', movingIndex + 1);
+    await pause(pauseTime);
+    this.changeOrder(movingIndex, movingIndex + 2);
   }
 
-  async switchQuickItemsWithAnimation(startIndex, endIndex) {
-    this.moveQuick(startIndex, endIndex);
-    this.moveQuick(endIndex, startIndex);
-    await pause(600);
+  async switchQuickItemsWithAnimation(pauseTime, startIndex, endIndex) {
+    this.quickMoveAnimation(startIndex, endIndex);
+    this.quickMoveAnimation(endIndex, startIndex);
+    await pause(pauseTime);
+
     this.changeOrderQuick(startIndex, endIndex);
-    await pause(300);
+    await pause(pauseTime);
   }
 
-  moveQuick(index, whereToGoNanADiRo) {
+  quickMoveAnimation(currentIndex, movedIndex) {
     const nodeList = this.$sortingWindow.childNodes;
-    const distance = (whereToGoNanADiRo - index) * 70;
+    const distance = (movedIndex - currentIndex) * 70;
 
-    nodeList[index].classList.add('move-quick');
-    nodeList[index].style.transform = `translateX(${distance}px)`;
+    nodeList[currentIndex].classList.add('move-quick');
+    nodeList[currentIndex].style.transform = `translateX(${distance}px)`;
   }
 
-  changeColorOfQuickItem(type, left, right) {
+  changeColorOfQuickItem(type, startIndex, endIndex) {
     const nodeList = this.$sortingWindow.childNodes;
 
-    for (let i = left; i <= right; i++) {
+    for (let i = startIndex; i <= endIndex; i++) {
       nodeList[i].classList[type]('quick-group');
     }
   }
 
-  bindAddArray(handler) {
+  bindInputBtnEventHandler(handler) {
     this.$inputBtn.addEventListener('click', handler);
   }
 
-  bindSetAlgorithm(handler) {
+  bindSetAlgorithmBtnEventHandler(handler) {
     this.$bubbleBtn.addEventListener('click', handler);
     this.$quickBtn.addEventListener('click', handler);
   }
 
-  bindExecuteSortingAlgorithm(handler) {
+  bindExecuteBtnEventHandler(handler) {
     this.$executeBtn.addEventListener('click', handler);
   }
 }
