@@ -1,4 +1,6 @@
 import handleInput from "../controller-functions/handle-input";
+import bubbleSort from "../model-functions/bubble-sort";
+import mergeSort from "../model-functions/merge-sort";
 
 export default class Controller {
   constructor(model, view) {
@@ -10,11 +12,11 @@ export default class Controller {
         handleInput.call(this, e);
       },
       handleClickBubbleButton: () => {
-        this.model.runBubbleSort();
+        this.runBubbleSort();
         this.view.toggleVisibility("startForm");
       }, 
       handleClickMergeButton: () => {
-        this.model.runMergeSort();
+        this.runMergeSort();
         this.view.toggleVisibility("startForm");
         this.view.sortAnimation.merge.changePipeToClouds();
       },
@@ -24,4 +26,13 @@ export default class Controller {
     }
     this.view.addEventListeners(this.eventHandlers);
   }
+
+  runMergeSort() {
+    mergeSort(this.model.numbers);
+  }
+  
+  runBubbleSort() {
+    bubbleSort(this.model.numbers);
+  }
+
 }

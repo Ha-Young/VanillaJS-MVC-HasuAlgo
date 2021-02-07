@@ -1,7 +1,3 @@
-import bubbleSort from "../model-functions/bubble-sort";
-import delay from "../model-functions/delay";
-import mergeSort from "../model-functions/merge-sort";
-
 export default class Model {
   constructor() {
     this.numbers = [];
@@ -29,17 +25,5 @@ export default class Model {
     array.forEach(value => {
       this.numbers.push(value);
     });
-  }
-
-  runBubbleSort() {
-    bubbleSort(this.numbers);
-  } 
-
-  runMergeSort() {
-    mergeSort(this.numbers);
-  }
-
-  runAsyncDelay(DLAY_TIME = 700) {
-    delay(DLAY_TIME);
   }
 }

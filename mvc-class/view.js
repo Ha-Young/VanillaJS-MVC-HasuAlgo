@@ -13,10 +13,10 @@ export default class View {
     this.domElements = getMyElements();
 
     this.paintInput = {
-      createNewNumberPipe : (numbers) => {
+      createNewNumberPipe: (numbers) => {
         createNewNumberPipe.call(this.domElements, numbers);
       },
-      resetInputTexts : () => {
+      resetInputTexts: () => {
         resetInputTexts.call(this.domElements);
       }
     };
@@ -66,4 +66,6 @@ export default class View {
   displayHelpMessage() {
     this.domElements.alretBox.textContent = getHelpMessage();
   }
+
+  stopMario
 }
