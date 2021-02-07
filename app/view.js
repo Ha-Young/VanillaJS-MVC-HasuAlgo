@@ -51,9 +51,7 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
 
       this._changeBlockStyle(this.styleClassName.SELECT, [rightElement, leftElement]);
 
-      while (this.$sortBox.hasChildNodes()) {
-        this.$sortBox.removeChild(this.$sortBox.firstChild);
-      }
+      this.$sortBox.textContent = '';
 
       if (this.canPaint) {
         this._createBlock(swappedArray);
