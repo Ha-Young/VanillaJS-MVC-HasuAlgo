@@ -23,7 +23,7 @@ export default class Controller {
   }
 
   addArray() {
-    const inputArray = this.view.$inputNumbers.value.split`,`.map(x => +x);
+    const inputArray = this.view.$inputBox.value.split`,`.map(x => +x);
 
     this.view.initializeInput();
 
@@ -57,9 +57,9 @@ export default class Controller {
   async executeSortingAlgorithm() {
     this.view.deactivateButtons(this.inputBtnEventHandler, this.executeBtnEventHandler, this.setAlgorithmBtnEventHandler);
 
-    if (this.model.getAlgorithm() === 'bubble') {
+    if (this.model.getAlgorithm() === 'bubble-btn') {
       await this.bubbleSortAsync();
-    } else if (this.model.getAlgorithm() === 'quick') {
+    } else if (this.model.getAlgorithm() === 'quick-btn') {
       await this.quickSort(this.model.getStorage());
     }
 
@@ -67,8 +67,8 @@ export default class Controller {
   }
 
   async bubbleSortAsync() {
-    const PAUSE_TIME = 500;
     const listToSort = this.model.getStorage().slice();
+    const PAUSE_TIME = 500;
     let bubbleChangeCount = 0;
 
     for (let outerIndex = listToSort.length - 1; outerIndex >= 1; outerIndex--) {

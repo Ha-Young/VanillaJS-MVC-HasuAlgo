@@ -2,24 +2,24 @@ import {pause} from './helpers';
 
 export default class View {
   constructor() {
-    this.$inputNumbers = document.querySelector('#input-form');
+    this.$inputBox = document.querySelector('#input-box');
     this.$inputBtn = document.querySelector("#input-btn");
-    this.$bubbleBtn = document.querySelector('#bubble');
-    this.$quickBtn = document.querySelector('#quick');
+    this.$bubbleBtn = document.querySelector('#bubble-btn');
+    this.$quickBtn = document.querySelector('#quick-btn');
     this.$executeBtn = document.querySelector('#execute-btn');
-    this.$sortingWindow = document.querySelector('.execute-window');
-    this.$inputBox = document.querySelector('#input-form');
-    this.$inputButtonText = document.querySelector('#input-text');
-    this.$executeButtonText = document.querySelector('#execute-text');
-    this.$inputButtonLoader = document.querySelector('#input-loader');
-    this.$executeButtonLoader = document.querySelector('#execute-loader');
+    this.$sortingWindow = document.querySelector('.sorting-window');
+    this.$inputButtonText = document.querySelector('#input-btn-text');
+    this.$executeButtonText = document.querySelector('#execute-btn-text');
+    this.$inputButtonLoader = document.querySelector('#input-btn-loader');
+    this.$executeButtonLoader = document.querySelector('#execute-btn-loader');
   }
 
   drawItem(value, index, length) {
     const newItem = document.createElement('div');
+    const MAX_HEIGHT = 400;
 
     newItem.classList.add('flex-item', 'sort-list');
-    newItem.style.height = `${(400 / length) * (index + 1)}px`;
+    newItem.style.height = `${(MAX_HEIGHT / length) * (index + 1)}px`;
     newItem.textContent = value;
 
     this.$sortingWindow.appendChild(newItem);
@@ -28,7 +28,9 @@ export default class View {
   clearSortingWindow() {
     const nodeList = this.$sortingWindow.childNodes;
 
-    nodeList.forEach((node) => node.remove());
+    for (let i = nodeList.length - 1; i >= 0; i--) {
+      nodeList[i].remove();
+    }
   }
 
   initializeInput() {
