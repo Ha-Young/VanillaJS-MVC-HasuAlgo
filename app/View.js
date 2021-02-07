@@ -51,7 +51,6 @@ View.prototype.delay = function (delayTime) {
 View.prototype.bubbleSortVisualSwap = function(leftTargetElement, rightTargetElement) {
   leftTargetElement.classList.add(this.ELEMENT_MOVING_EFFECT);
   rightTargetElement.classList.add(this.ELEMENT_MOVING_EFFECT);
-
   leftTargetElement.style.transform = `translateX(${this.TRANSITION_PERCENTAGE}%)`;
   rightTargetElement.style.transform = `translateX(-${this.TRANSITION_PERCENTAGE}%)`;
 };
