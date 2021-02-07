@@ -62,7 +62,7 @@ function createView() {
       }
     },
 
-    swap: function (list, leftIndex, rightIndex) {  
+    swap: function (list, leftIndex, rightIndex) {
 
       return new Promise(resolve => {
          setTimeout(() => {  
@@ -145,7 +145,7 @@ function createView() {
 
     visualizePivotBlock: async function (list, high) {
       await controller.delay();
-      view.addColorPivotBlock.addColorPivotBlock(list, high);
+      view.backgroundColorChange.addColorPivotBlock(list, high);
       await controller.delay();
     }
   };
