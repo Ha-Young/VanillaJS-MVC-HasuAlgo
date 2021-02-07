@@ -1,4 +1,3 @@
-
 export default function Model() {
   this.userInputList = [];
   this.userInputElements = [];

@@ -1,4 +1,3 @@
-// Load application styles
 import '../assets/styles/index.less';
 import Model from './Model';
 import Controller from './Controller';
