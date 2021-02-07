@@ -1,4 +1,4 @@
-import getFilteredNumbers from "../controller-functions/get-filtered-numbers";
+import handleInput from "../controller-functions/handle-input";
 
 export default class Controller {
   constructor(model, view) {
@@ -7,28 +7,7 @@ export default class Controller {
 
     this.eventHandlers = {
       handleInput: (e) => {
-        const key = e.key;
-
-        if (key !== "Enter") {
-          return false;
-        }
-
-        const inputValues = getFilteredNumbers(this.view);
-        const [ isvalid, message ] = this.model.checkIfInputValid(inputValues);
-
-        if (!isvalid) {
-          this.view.displayMessage("alertBox", message);
-          return;
-        }
-
-        this.model.addNewNumber(inputValues);
-        this.view.marioWorld.stopMarioMoving();
-        this.view.paintInput.createNewNumberPipe(inputValues);
-
-        this.view.displayMessage("startForm", "Select a button");
-        this.view.toggleVisibility("bubbleButton");
-        this.view.toggleVisibility("mergeButton");
-        this.view.toggleVisibility("wholeNumberInput");
+        handleInput.call(this, e);
       },
       handleClickBubbleButton: () => {
         this.model.runBubbleSort();
