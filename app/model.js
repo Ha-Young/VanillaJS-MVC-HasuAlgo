@@ -4,12 +4,14 @@ function Model() {
 }
 
 Model.prototype.getStamp = function(stampType,leftIndex, rightIndex, finishIndex) {
-  return {
+  const stamp = {
     stampType,
     leftIndex,
     rightIndex,
     finishIndex
   }
+
+  this.stampStorage.push(stamp);
 }
 
 export default Model;

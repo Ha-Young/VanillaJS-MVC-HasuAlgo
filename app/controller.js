@@ -22,7 +22,7 @@ Controller.prototype.sortStorage = async function(storeageArray) {
 
   for (var i = 0; i < storeageArray.length; i++) {
     for (var j = 0; j < storeageArray.length - 1 - i; j++) {
-      stampStorage.push(this.model.getStamp('start', j, j + 1));
+      this.model.getStamp('start', j, j + 1);
 
       if (storeageArray[j] > storeageArray[j + 1]) {
         const temp = storeageArray[j];
@@ -30,23 +30,24 @@ Controller.prototype.sortStorage = async function(storeageArray) {
         storeageArray[j] = storeageArray[j + 1];
         storeageArray[j + 1] = temp;
 
-        stampStorage.push(this.model.getStamp('change', j, j + 1));
+        this.model.getStamp('change', j, j + 1);
       }
-      stampStorage.push(this.model.getStamp('finishCompare', j, j + 1))
+      this.model.getStamp('finishCompare', j, j + 1)
     }
-    stampStorage.push(this.model.getStamp('end', j, j + 1));
+    this.model.getStamp('end', j, j + 1);
   }
 
   while (stampStorage.length) {
     let leftNode;
     let rightNode;
+    const firstStamp = stampStorage[0];
+    const moveValue = (600 / graphNodes.length);
 
     switch (stampStorage[0].stampType) {
-      case 'start': 
-        for (let i = 0; i < graphNodes.length; i++) {
-          if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-          if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
-          }
+      case 'start':
+
+        leftNode = this.findLeftNode(graphNodes, firstStamp);
+        rightNode = this.findRightNode(graphNodes, firstStamp);
 
           await this.view.changeColor(leftNode, rightNode);
 
@@ -54,10 +55,9 @@ Controller.prototype.sortStorage = async function(storeageArray) {
           break;
 
       case 'finishCompare':
-        for (let i = 0; i < graphNodes.length; i++) {
-          if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-          if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
-        }
+
+        leftNode = this.findLeftNode(graphNodes, firstStamp);
+        rightNode = this.findRightNode(graphNodes, firstStamp);
 
         await this.view.removeColor(leftNode, rightNode);
 
@@ -65,14 +65,13 @@ Controller.prototype.sortStorage = async function(storeageArray) {
         break;
 
       case 'change':
-        for (let i = 0; i < graphNodes.length; i++) {
-          if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-          if (stampStorage[0].rightIndex === Number(graphNodes[i].dataset.x)) rightNode = graphNodes[i];
-        }
 
-        await this.view.moveGraph(leftNode, rightNode);
+        leftNode = this.findLeftNode(graphNodes, firstStamp);
+        rightNode = this.findRightNode(graphNodes, firstStamp);
+
+        await this.view.moveGraph(leftNode, rightNode, moveValue);
         await this.view.removeColor(leftNode, rightNode);
-      
+
         let temp = leftNode.dataset.x;
         leftNode.dataset.x = rightNode.dataset.x;
         rightNode.dataset.x = temp;
@@ -81,23 +80,36 @@ Controller.prototype.sortStorage = async function(storeageArray) {
         break;
 
       case 'end':
-        for (let i = 0; i < graphNodes.length; i++) {
-          if (stampStorage[0].leftIndex === Number(graphNodes[i].dataset.x)) leftNode = graphNodes[i];
-        }
+
+        leftNode = this.findLeftNode(graphNodes, firstStamp);
 
         await this.view.finishColor(leftNode);
-        
+
         stampStorage.shift();
         break;
       }
     }
  }
 
+Controller.prototype.findLeftNode = function(nodes, stamp) {
+  for (let i = 0; i < nodes.length; i++) {
+    if (stamp.leftIndex === Number(nodes[i].dataset.x)) return nodes[i];
+  }
+}
+
+Controller.prototype.findRightNode = function(nodes, stamp) {
+  for (let i = 0; i < nodes.length; i++) {
+    if (stamp.rightIndex === Number(nodes[i].dataset.x)) return nodes[i];
+  }
+}
+
 Controller.prototype.handleKeyUp = function(event) {
   event.stopImmediatePropagation();
 
   if (event.key === 'Enter') {
     if (this.$typed.value === '') return;
+
+    if (this.$typed.value < 0 || this.$typed.value > 100) return;
 
     this.view.addChildNode(event.target.value, this.model.count);
     this.model.storage.push(Number(event.target.value));
@@ -117,7 +129,7 @@ Controller.prototype.handleBubbleClick = function(event) {
 
   this.view.$errorMessage.innerHTML = '';
   this.$bubbleSortButton.style.display = 'none';
-  
+
   this.sortStorage(this.model.storage);
 }
 

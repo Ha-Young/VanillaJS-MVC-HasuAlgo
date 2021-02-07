@@ -29,23 +29,23 @@ View.prototype.changeColor = function(leftNode, rightNode) {
     setTimeout(() => {
       leftNode.style.backgroundColor = 'gray';
       rightNode.style.backgroundColor = 'gray';
-    
+
       resolve();
     }, this.paintTime);
   });
 }
 
-View.prototype.moveGraph = function(leftNode, rightNode) {  
+View.prototype.moveGraph = function(leftNode, rightNode, moveValue) {
   return new Promise((resolve) => {
     setTimeout(() => {
-    
+
       const left = ++leftNode.dataset.count;
       const right = --rightNode.dataset.count;
 
       leftNode.style.backgroundColor = 'gray';
       rightNode.style.backgroundColor = 'gray';
-      leftNode.style.transform = `translateX(${left*60}px)`;
-      rightNode.style.transform = `translateX(${right*60}px)`;
+      leftNode.style.transform = `translateX(${left * moveValue}px)`;
+      rightNode.style.transform = `translateX(${right * moveValue}px)`;
 
       resolve();
     }, this.paintTime);
