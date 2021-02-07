@@ -55,7 +55,9 @@ Controller.prototype.init = function() {
     }
 
     const validatedUserInput = this.model.getUserInputList();
-    this.view.hideSortSelectorAfterInputValidation(this.$userInput, this.$sortSelector, validatedUserInput);
+    this.view.hideSortSelectorAfterInputValidation(this.$userInput,
+      this.$sortSelector,
+      validatedUserInput);
     this.view.toggleElement(this.$submitButton, this.viewTypes.HIDDEN_CLASSNAME, true);
     this.view.toggleElement(this.$startButton, this.viewTypes.HIDDEN_CLASSNAME, false);
   });
@@ -125,6 +127,9 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
   if (left <= right) {
     const pivot = await this.placingPivotIdx(userInputElements, left, right);
     const updatedUserInputElements = this.model.getUserInputElements();
+
+    this.view.setInstructionMessage(this.$instructionMessage, this.messageTypes.RETRY_MESSAGE);
+    this.view.toggleElement(this.$resetButton, this.viewTypes.HIDDEN_CLASSNAME, false);
 
     this.view.toggleElement(userInputElements[pivot], this.viewTypes.PIVOT_ELEMENT_COLOR, false);
     this.view.toggleElement(userInputElements[pivot], this.viewTypes.SORTED_ELEMENT_COLOR, true);
