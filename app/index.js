@@ -9,9 +9,7 @@ import View from './view';
 // ================================
 
 function App() {
-  this.model = new Model();
-  this.view = new View();
-  this.controller = new Controller(this.model, this.view);
+  this.controller = new Controller(new Model(), new View());
 }
 
 new App();

@@ -5,6 +5,7 @@
 @item: rgb(85, 106, 165);
 @border: rgb(192, 212, 216) solid 0.3vw;
 @move: rgb(224, 156, 100);
+@change: rgba(84, 125, 238, 0.705);
 
 @flex-center: {
   display: flex;
@@ -53,11 +54,6 @@ html, body {
   border: @border;
 }
 
-// .compare {
-//   color: @compare;
-//   font-weight: bolder;
-// }
-
 .pivot {
   background-color: @pivot;
 }
@@ -72,5 +68,10 @@ html, body {
 }
 
 .change {
-  background-color: blue;
+  background-color: @change;
+}
+
+@keyframes {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

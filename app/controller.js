@@ -138,9 +138,11 @@ Controller.prototype.partition = function (start, end, list) {
 
     if (start <= end) {
       [list[start], list[end]] = [list[end], list[start]];
+
       if (start !== end) {
         this.model.createTask(taskType.swapQuick, start, end, list.slice());
       }
+
       start++;
       end--;
     }

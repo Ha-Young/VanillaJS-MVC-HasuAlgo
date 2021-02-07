@@ -3,12 +3,12 @@ function View() {
   this.$resultView = document.querySelector('.resultView');
   this.$form = document.querySelector('form');
   this.$inputValue = document.querySelector('.inputValue');
-  this.COMPARE = 'compare';
-  this.PIVOT = 'pivot';
-  this.DONE = 'done';
-  this.MOVE = 'move';
-  this.CHANGE = 'change';
 }
+
+const COMPARE = 'compare';
+const PIVOT = 'pivot';
+const DONE = 'done';
+const CHANGE = 'change';
 
 View.prototype.render = function (list) {
   this.$resultView.innerHTML = '';
@@ -28,7 +28,7 @@ View.prototype.reRender = function (list) {
 
   list.forEach(number => {
     const div = $items.find(item => item.innerText === String(number));
-    div.classList.remove(this.COMPARE, this.CHANGE);
+    div.classList.remove(COMPARE, CHANGE);
     div.style.transform = 'none';
     tempStorage.appendChild(div);
   });
@@ -38,62 +38,66 @@ View.prototype.reRender = function (list) {
 
 View.prototype.start = async function () {
   this.$resultView.childNodes.forEach(item => item.classList.add('border'));
-  await makeInterval();
+  await wait();
 };
 
 View.prototype.pivot = async function (index) {
   const $items = this.getCurrentDOM();
 
   $items.forEach((item, i) => {
-    item.classList.remove(this.PIVOT);
-    if (index === i) item.classList.add(this.PIVOT);
+    item.classList.remove(PIVOT);
+    if (index === i) item.classList.add(PIVOT);
   });
 
-  await makeInterval();
+  await wait();
 };
 
 View.prototype.compare = async function (leftIndex, rightIndex) {
   const $items = this.getCurrentDOM();
 
-  if ($items[leftIndex].classList.contains(this.DONE)) {
+  if ($items[leftIndex].classList.contains(DONE)) {
     return;
   }
 
-  if ($items[rightIndex].classList.contains(this.DONE)) {
+  if ($items[rightIndex].classList.contains(DONE)) {
     return;
   }
 
-  $items[leftIndex].classList.add(this.COMPARE);
-  $items[rightIndex].classList.add(this.COMPARE);
-  await makeInterval();
+  $items[leftIndex].classList.add(COMPARE);
+  $items[rightIndex].classList.add(COMPARE);
+  await wait();
 };
 
 View.prototype.swapBubble = async function (left, right, list) {
   const $items = this.getCurrentDOM();
   const differ = $items[right].getBoundingClientRect().x - $items[left].getBoundingClientRect().x;
+  const bubbleHeight = '50px';
 
+  document.createElement('div').innerHTML = `<script>
+      less.modifyVars({ '@compare': 'blue' });
+    </script>`;
   $items[left].style.transform = `translateX(${differ}px)`;
   $items[right].style.transform = `translateX(-${differ}px)`;
-  await makeInterval();
+  await wait();
   this.reRender(list);
 };
 
 View.prototype.done = async function (index) {
   const $item = this.getCurrentElement(index);
-  $item.classList.remove(this.COMPARE, this.PIVOT);
-  $item.classList.add(this.DONE);
-  await makeInterval();
+  $item.classList.remove(COMPARE, PIVOT);
+  $item.classList.add(DONE);
+  await wait();
 };
 
 View.prototype.finishSort = async function () {
   const $items = this.getCurrentDOM();
 
   $items.forEach((item) => {
-    item.classList.remove(this.COMPARE, this.PIVOT, this.CHANGE);
-    item.classList.add(this.DONE);
+    item.classList.remove(COMPARE, PIVOT, CHANGE);
+    item.classList.add(DONE);
   });
 
-  await makeInterval();
+  await wait();
   this.showRestart();
 };
 
@@ -104,9 +108,9 @@ View.prototype.showRestart = function () {
 
 View.prototype.move = async function (index, prevIndex) {
   const $items = this.getCurrentDOM();
-  $items[index].classList.add(this.COMPARE);
-  $items[prevIndex].classList.remove(this.COMPARE);
-  await makeInterval();
+  $items[index].classList.add(COMPARE);
+  $items[prevIndex].classList.remove(COMPARE);
+  await wait();
 };
 
 View.prototype.swapQuick = async function (left, right, list) {
@@ -115,16 +119,16 @@ View.prototype.swapQuick = async function (left, right, list) {
 
   $items[left].style.transform = `translateX(${differ}px)`;
   $items[right].style.transform = `translateX(-${differ}px)`;
-  await makeInterval();
+  await wait();
   this.reRender(list);
 };
 
 View.prototype.getCurrentDOM = function () {
-  return Array.prototype.slice.call(this.$resultView.childNodes);
+  return Array.from(this.$resultView.childNodes);
 };
 
 View.prototype.getCurrentElement = function (index) {
-  return Array.prototype.slice.call(this.$resultView.childNodes)[index];
+  return Array.from(this.$resultView.childNodes)[index];
 };
 
 View.prototype.getCurrentList = function () {
@@ -134,7 +138,7 @@ View.prototype.getCurrentList = function () {
   return currentList;
 };
 
-function makeInterval(interval = 1) {
+function wait(interval = 1) {
   return new Promise((resolve) => setTimeout(resolve, interval * 1000));
 }
 
