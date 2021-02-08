@@ -33,6 +33,7 @@ export function renderNumber(numRecords) {
   oneNumberDiv.setAttribute('class', 'numberOuter');
   // FIX ME : 동적인 값 저장에는 id보단 data attribute
   oneNumberDiv.setAttribute('id', `bar${index}`);
+  oneNumberDiv.dataset.key = `bar${index}`;
   const oneNumberInnerDiv = document.createElement("div");
   oneNumberInnerDiv.setAttribute('class', 'numberInner');
 
