@@ -26,10 +26,10 @@ export default class View {
 
   bindOnClickSortTypeBtns(handler) {
     $on(this.$sortTypeBtns, "click", ({ currentTarget, target }) => {
-      target.classList.add("selected");
+      target.classList.add(SORT_STATUS.SELECTED);
       for (const childNode of currentTarget.childNodes) {
         if (childNode !== target) {
-          childNode.classList && childNode.classList.remove("selected");
+          childNode.classList && childNode.classList.remove(SORT_STATUS.SELECTED);
         }
       }
 
@@ -180,7 +180,7 @@ export default class View {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
     const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
-    this.setSortItemColorFromStatus(sortItemElement, "sorted");
+    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.SORTED);
 
     if (duration) {
       const [currentXPos, currentYPos] = this.getSVGItemPosition(
@@ -205,10 +205,10 @@ export default class View {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
 
-    if (sortItemElement.classList.contains("pivot")) return;
+    if (sortItemElement.classList.contains(SORT_STATUS.PIVOT)) return;
 
     const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
-    this.setSortItemColorFromStatus(sortItemElement, "selected");
+    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.SELECTED);
 
     if (isMoveDown && duration) {
       const [currentXPos, currentYPos] = this.getSVGItemPosition(

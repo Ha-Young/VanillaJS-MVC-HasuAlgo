@@ -1,6 +1,6 @@
 import Model from "../model";
 import View from "../view";
-import CONSTANT, { SORT_TYPE, PIVOT_KINDS } from "../common/constant";
+import CONSTANT, { SORT_TYPE, PIVOT_KINDS, ARROW_TYPE, PIVOT_KINDS } from "../common/constant";
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -179,6 +179,7 @@ export default class Controller {
   }
 
   async insertionSort(sortList) {
+    this.model.taskQueue
     await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
 
     for (let i = 1; i < sortList.length; i++) {
@@ -242,7 +243,7 @@ export default class Controller {
         return;
       }
 
-      const pivotIndex = this.getPivotIndex(leftIndex, rightIndex, "mid");
+      const pivotIndex = this.getPivotIndex(leftIndex, rightIndex, PIVOT_KINDS.MID);
 
       await this.doUIWork([
         this.viewItemPivotColor.bind(this, pivotIndex),
@@ -259,8 +260,8 @@ export default class Controller {
 
       await this.doUIWork([
         this.viewItemSortedColor.bind(this, changePivotIndex),
-        this.viewRemoveArrow.bind(this, "left"),
-        this.viewRemoveArrow.bind(this, "right"),
+        this.viewRemoveArrow.bind(this, ARROW_TYPE.LEFT),
+        this.viewRemoveArrow.bind(this, ARROW_TYPE.RIGHT),
       ]);
 
       await this.doUIWork([
@@ -274,8 +275,8 @@ export default class Controller {
         const pivot = sortList[pivotIndex];
 
         await this.doUIWork([
-          this.viewAddArrow.bind(this, leftIndex, "left"),
-          this.viewAddArrow.bind(this, rightIndex, "right"),
+          this.viewAddArrow.bind(this, leftIndex, ARROW_TYPE.LEFT),
+          this.viewAddArrow.bind(this, rightIndex, ARROW_TYPE.RIGHT),
         ]);
 
         while (leftIndex <= rightIndex) {
@@ -283,7 +284,7 @@ export default class Controller {
             if (leftIndex !== pivotIndex) {
               this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
             }
-            await this.doUIWork([this.viewArrowMoveNext.bind(this, "left")]);
+            await this.doUIWork([this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT)]);
             leftIndex++;
           }
 
@@ -297,7 +298,7 @@ export default class Controller {
             if (rightIndex !== pivotIndex) {
               this.doUIWork([this.viewItemLarge.bind(this, rightIndex)]);
             }
-            await this.doUIWork([this.viewArrowMoveNext.bind(this, "right")]);
+            await this.doUIWork([this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT)]);
             rightIndex--;
           }
 
@@ -335,8 +336,8 @@ export default class Controller {
             if (leftIndex >= rightIndex) continue;
 
             await this.doUIWork([
-              this.viewArrowMoveNext.bind(this, "left"),
-              this.viewArrowMoveNext.bind(this, "right"),
+              this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT),
+              this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT),
             ]);
           }
         }
