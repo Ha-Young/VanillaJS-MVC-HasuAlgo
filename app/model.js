@@ -45,6 +45,8 @@ Model.prototype._quickSort = async function (start = 0, end = this.sortingList.l
 	await this._quickSort(start, ReferenceIndex - 1);
   await this._quickSort(ReferenceIndex, end);
 
+  setTimeout(showViewText(this.ENDING_COMMENT), this.DELAY);
+
 	return this.sortingList;
 };
 
