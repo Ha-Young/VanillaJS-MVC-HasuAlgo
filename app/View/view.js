@@ -1,4 +1,4 @@
-import leftArrow from './../../assets/images/leftArrow.png';
+import {sortType} from '../public/constants';
 
 // FIX ME : 쓸데없는 접미사 지우기
 const $contentDiv = document.querySelector('.content');
@@ -6,26 +6,11 @@ const $graphPannelDiv = document.querySelector("#graphPannel");
 const $shadowDiv = document.querySelector('.shadow');
 const $shadowTitleSpan = document.querySelector('.shadowTitle');
 const $errorMessageDiv = document.querySelector('.errorMessageDiv');
+const $backWardArrow = document.querySelector('.backwardArrow');
 
 // FIX ME : 어차피 동적인 파트도 아니니 만들었다 다시하기 보단 만들어놓고 숨기고 드러내는 처리로 수정
-export function bufferRender() {
-  $graphPannelDiv.innerHTML = '';
-  const graphPannelBufferDiv = document.createElement("div");
-  graphPannelBufferDiv.setAttribute('class', 'graphPannel--buffer');
-  graphPannelBufferDiv.style.height = '30%';
-
-  const arrowDivTag = document.createElement("div");
-  arrowDivTag.setAttribute('class', 'backwardArrow');
-  arrowDivTag.style.display = 'none';
-  arrowDivTag.addEventListener('click', backToInputPage);
-  
-  const arrowImageTag = document.createElement("img");
-  arrowImageTag.setAttribute('class', 'leftArrow');
-  arrowImageTag.setAttribute('src', leftArrow);
-  arrowDivTag.appendChild(arrowImageTag);
-
-  graphPannelBufferDiv.appendChild(arrowDivTag);
-  $graphPannelDiv.appendChild(graphPannelBufferDiv);
+export function addEventToBackArrow() {
+  $backWardArrow.addEventListener('click', backToInputPage);
 }
 
 async function backToInputPage() {
@@ -171,6 +156,26 @@ export function errorDivToggle (isDisplayed) {
 export function initGraphPannel() {
   // FIX ME : 콤마 통일
   $graphPannelDiv.innerHTML = "";
+}
+
+export function mainTitleHoverHandler () {
+  this.style.transform = 'translate(0px, -10px)';
+  this.style.fontSize = '50px';
+  this.style.textShadow = '1px 1px 5px #343a40';
+}
+
+export function mainTitleMouseOutHandler () {
+  this.style.transform = `translate(0px, 0px)`;
+  this.style.fontSize = ''
+  this.style.textShadow = '0px 0px 0px white';
+}
+
+export function mainTitleToggleHandler () {
+  if (this.innerText !== sortType.insertion) {
+    this.innerText = sortType.insertion;
+  } else {
+    this.innerText = sortType.quick;
+  }
 }
 
 // FIX ME : wait -> delay

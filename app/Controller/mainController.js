@@ -1,4 +1,5 @@
-import {bufferRender, renderNumber, finishMove, shadowBlink, showErrorMessage, errorDivToggle, initGraphPannel} from '../View/view';
+import {sortType} from '../public/constants';
+import {bufferRender, renderNumber, finishMove, shadowBlink, showErrorMessage, errorDivToggle, initGraphPannel, mainTitleHoverHandler, mainTitleMouseOutHandler, mainTitleToggleHandler, addEventToBackArrow} from '../View/view';
 import NumModel from '../Model/model';
 import insertionSort from './insertSort/insertSortController';
 import quickSort from './quickSort/quickSortController';
@@ -7,10 +8,6 @@ const submitButton = document.querySelector("#submitButton");
 const textBox = document.querySelector('#textBox');
 const mainTitle = document.querySelector('.mainTitle--h1');
 let numbersObjArray = [];
-
-const sortType = {
-  insertion: 'Insertion Sort'
-};
 
 submitButton.addEventListener('click', buttonClickEvent);
 async function buttonClickEvent() {
@@ -24,7 +21,7 @@ async function buttonClickEvent() {
   }
   
   const oneSectionPx = Number.parseInt(Math.round(950 / (numbersArray.length - 1)));
-  bufferRender();
+  addEventToBackArrow();
   numbersArray.forEach((el, index) => {
     const cordinateX = oneSectionPx * index;
     const cordinateY = 0;
@@ -52,7 +49,7 @@ async function buttonClickEvent() {
 function checkIfValidate(mainTitleText) {
   // err handling
   // FIX ME : 긴 표현이 중복 -> 변수 할당
-  // FIX ME : validation 로직 함수 분리
+  // FIX ME : validation 로직 함수 분리 -> done
   if (mainTitleText === 'Sorting' || !mainTitleText) {
     showErrorMessage('Please choose the sorting you want!');
     return false;
@@ -118,7 +115,7 @@ function isWordValidate(word) {
   word = word.replace(/[\s]/g, '').trim();
   word = Number.parseInt(word);
   // FIX ME : validation과 문자 나누는 역할 나누기
-  // FIX ME : 하드코딩 변수화
+  // FIX ME : 하드코딩 변수화 -> done
   // ???? : if를 각각 조건으로 쪼개는게 나을까...? 아니면 최대한 짧게 하기 위해 이렇게 두는게 나을까...?
   console.log(word);
   if(Number.isNaN(word) || word > WORD_LENGTH_LIMIT) {
@@ -133,27 +130,6 @@ function isWordValidate(word) {
 
 mainTitle.addEventListener('mouseover', mainTitleHoverHandler);
 
-// FIX ME : view로직 분리하기
-function mainTitleHoverHandler () {
-  this.style.transform = 'translate(0px, -10px)';
-  this.style.fontSize = '50px';
-  this.style.textShadow = '1px 1px 5px #343a40';
-}
-
 mainTitle.addEventListener('mouseout', mainTitleMouseOutHandler);
 
-function mainTitleMouseOutHandler () {
-  this.style.transform = `translate(0px, 0px)`;
-  this.style.fontSize = ''
-  this.style.textShadow = '0px 0px 0px white';
-}
-
 mainTitle.addEventListener('click', mainTitleToggleHandler);
-
-function mainTitleToggleHandler () {
-  if (this.innerText !== 'Insertion Sort') {
-    this.innerText = 'Insertion Sort';
-  } else {
-    this.innerText = 'Quick Sort';
-  }
-}

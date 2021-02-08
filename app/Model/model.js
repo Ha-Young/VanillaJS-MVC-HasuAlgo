@@ -8,15 +8,13 @@ export default function NumModel (value, index, cordinateX, cordinateY, height) 
 
 // FIX ME : 비구조화
 NumModel.prototype.getNumRecords = function () {
-  const returnObj = {
-    value : this.value,
-    index : this.index,
-    cordinateX : this.cordinateX,
-    cordinateY : this.cordinateY,
-    height : this.height
-  };
-
-  return returnObj;
+  return {
+    value,
+    index,
+    height,
+    cordinateX,
+    cordinateY
+  } = this;
 }
 
 NumModel.prototype.setNumRecords = function (value, index, cordinateX, cordinateY) {
