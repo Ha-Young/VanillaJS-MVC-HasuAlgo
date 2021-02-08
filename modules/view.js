@@ -9,10 +9,38 @@ export default class View {
     this.$content = document.querySelector(".content");
     this.$submitButton = document.querySelector(".submit");
     this.$startButton = document.querySelector(".start");
+    this.$blocksContainer;
+    this.$blocks;
+    this.blockWidth;
+    this.blockMargin;
+    this.DELAY = 200;
+    this.SPACE = 50;
 
     this.render = {
       generateBlocks: (data) => {
-        this.$content.innerHTML = this.template.show(data).trim();
+        this.$blocks = [];
+        const $blocksContainer = document.createElement("div");
+
+        data.forEach((datum) => {
+          const $block = document.createElement("div");
+          const $blockNumber = document.createElement("span");
+          $blocksContainer.classList.add("blocks-container");
+          $block.classList.add(datum.defaultClass, datum.colorState);
+          $block.style.cssText = `height: ${datum.height}px;`;
+          $block.setAttribute("data-distance", 0);
+          $blockNumber.classList.add(datum.numberSpan);
+          $blockNumber.textContent = datum.blockNumber;
+          $block.appendChild($blockNumber);
+          $blocksContainer.appendChild($block);
+
+          this.$blocks.push($block);
+        });
+
+        this.$content.appendChild($blocksContainer);
+        this.$blocksContainer = $blocksContainer;
+        const style = getComputedStyle(this.$blocks[0]);
+        this.blockWidth = parseInt(style.width.replace("px", ""), 10);
+        this.blockMargin = parseInt(style.margin.replace("px", ""), 10);
       },
       clearBlocks: () => {
         this._clearContent();
@@ -29,17 +57,13 @@ export default class View {
           this.$numbers.value = "";
           const selection = this.$sortSelection.options[this.$sortSelection.selectedIndex].text;
 
-          if (!this.isValid(input)) {
-            return;
-          }
+          if (!this.isValid(input)) return;
 
           handler(selection, input);
         });
         break;
       case "startSort":
-        this.$startButton.addEventListener("click", (event) => {
-          handler();
-        });
+        this.$startButton.addEventListener("click", event => handler());
         break;
       default:
         console.log("------");
@@ -47,8 +71,8 @@ export default class View {
   }
 
   checkBlocksSorted = () => {
-    const $blocks = [...document.querySelectorAll(".number-block")];
-    return $blocks.every($block => $block.classList.contains("sorted"));
+    const $blockList = [...document.querySelectorAll(".number-block")];
+    return $blockList.every($block => $block.classList.contains("sorted"));
   }
 
   isValid = (input) => {
@@ -85,58 +109,89 @@ export default class View {
   }
 
   swapBlocks = async (i, j) => {
-    if (i === j) return this._wait(200);
+    if (i === j) return this._wait(this.DELAY);
 
-    const $blockI = document.querySelectorAll(".number-block")[i];
-    const $blockJ = document.querySelectorAll(".number-block")[j];
-    const $siblingI = $blockI.nextSibling === $blockJ ? $blockI : $blockI.nextSibling;
-    const transformPropertyI = getComputedStyle($blockI).getPropertyValue("transform");
-    const transformPropertyJ = getComputedStyle($blockJ).getPropertyValue("transform");
+    const $blockI = this.$blocks[i];
+    const $blockJ = this.$blocks[j];
+    const gap = Math.abs(i - j) * (this.blockMargin * 2 + this.blockWidth);
+    this._moveBlocks($blockI, gap, false);
+    this._moveBlocks($blockJ, gap, true);
+    this.$blocks[i] = $blockJ;
+    this.$blocks[j] = $blockI;
 
-    $blockI.style.transform = transformPropertyJ;
-    $blockJ.style.transform = transformPropertyI;
+    await this._wait(this.DELAY);
+  }
 
-    await this._wait(100);
+  partitionBlocks = async (p) => {
+    this.$blocks.forEach(($block, i) => {
+      if (p > i) {
+        this._moveBlocks($block, this.SPACE, true);
+      }
 
-    this.$content.insertBefore($blockI, $blockJ);
-    this.$content.insertBefore($blockJ, $siblingI);
+      if (p < i) {
+        this._moveBlocks($block, this.SPACE, false);
+      }
+    });
 
-    await this._wait(100);
+    await this._wait(400);
+  }
+
+  gatherBlocks = async (p) => {
+    this.$blocks.forEach(($block, i) => {
+      if (p > i) {
+        this._moveBlocks($block, this.SPACE, false);
+      }
+
+      if (p < i) {
+        this._moveBlocks($block, this.SPACE, true);
+      }
+    });
+
+    await this._wait(400);
   }
 
   changePickedBlocksColor = async (i, j) => {
     if (j !== null) this._addColor(j);
 
     this._addColor(i);
-    await this._wait(200);
+    await this._wait(this.DELAY);
   }
 
   revertBlocksColor = async (i, j) => {
     if (j !== null) this._removeColor(j);
 
     this._removeColor(i);
-    await this._wait(200);
+    await this._wait(this.DELAY);
   }
 
   decideSorted = async (i) => {
     this._addColor(i, "sorted");
-    await this._wait(200);
+    await this._wait(this.DELAY);
   }
 
   changePivotBlockColor = async (i, blockState = "pivot") => {
-    const $block = document.querySelectorAll(".number-block")[i];
-    $block.classList.add(blockState);
-    await this._wait(200);
+    this.$blocks[i].classList.add(blockState);
+    await this._wait(this.DELAY);
+  }
+
+  _moveBlocks = ($block, movingDistance, isLeft) => {
+    const distance = parseInt($block.getAttribute("data-distance"), 10);
+
+    if (isLeft) {
+      $block.style.transform = `translateX(${distance - movingDistance}px)`;
+      $block.setAttribute("data-distance", distance - movingDistance);
+    } else {
+      $block.style.transform = `translateX(${distance + movingDistance}px)`;
+      $block.setAttribute("data-distance", distance + movingDistance);
+    }
   }
 
   _addColor = (i, color = "picked") => {
-    const $block = document.querySelectorAll(".number-block")[i];
-    $block.classList.add(color);
+    this.$blocks[i].classList.add(color);
   }
 
   _removeColor = (i, color = "picked") => {
-    const $block = document.querySelectorAll(".number-block")[i];
-    $block.classList.remove(color);
+    this.$blocks[i].classList.remove(color);
   }
 
   _clearContent = () => {

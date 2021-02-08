@@ -1,5 +1,3 @@
-import { merge } from "lodash";
-
 export default class Model {
   "use strict";
 
@@ -28,7 +26,7 @@ export default class Model {
   create = (selection, input, callback) => {
     this.data = [];
     this.sortType = selection;
-    this.numberArray = input.split(",").map(element => parseInt(element.trim(), 10));
+    this.numberArray = input.split(",").map(element => parseInt(element, 10));
 
     const maxNum = this._findMaxNum(this.numberArray);
     const maxHeight = this._findMaxHeight(this.sortType);
@@ -39,7 +37,6 @@ export default class Model {
         defaultClass: "number-block",
         colorState: "normal",
         height: standard * element,
-        transform: `translateX(${index * 40}px)`,
         numberSpan: "number-span",
         blockNumber: element
       };
@@ -81,15 +78,19 @@ export default class Model {
   quickSort = async (view) => {
     view.disableInputs();
     const i = await this._partition(0, this.numberArray.length - 1, view);
+    await view.partitionBlocks(i);
     await this._quickSort(0, i - 1, view);
     await this._quickSort(i + 1, this.numberArray.length - 1, view);
+    await view.gatherBlocks(i);
   }
 
   _quickSort = async (low, high, view) => {
     if (low < high) {
       const i = await this._partition(low, high, view);
+      await view.partitionBlocks(i);
       await this._quickSort(low, i - 1, view);
       await this._quickSort(i + 1, high, view);
+      await view.gatherBlocks(i);
     }
 
     if (low === high) await view.decideSorted(low);

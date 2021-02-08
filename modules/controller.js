@@ -42,14 +42,16 @@ export default class Controller {
         this.model.bubbleSort(this.view);
         break;
       case "Insertion Sort":
+        alert("Sorry for Inconviniece.\nIt's not ready yet.");
         break;
       case "Quick Sort":
         this.model.quickSort(this.view);
         break;
       case "Merge Sort":
+        alert("Sorry for Inconviniece.\nIt's not ready yet.");
         break;
       default:
-        alert("Sorry for Inconvinience.\nPlease select the type of the sort.");
+        throw new Error("Unavailable sort type. Please check the sort type.")
     }
   }
 }

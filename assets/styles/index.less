@@ -33,17 +33,24 @@ h1 {
   display: flex;
   text-align: center;
   align-items: flex-end;
-  position: relative;
+  justify-content: center;
   border: 1px solid black;
   border-radius: 10px;
-  width: 800px;
-  height: 800px;
+  width: 70vw;
+  height: 70vh;
+}
+
+.blocks-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 40vw;
+  width: 40vh;
 }
 
 .number-block {
   margin: 10px;
-  position: absolute;
-  left: 30%;
+  position: relative;
   width: 28px;
   max-height: 600px;
   transition: all 0.1s ease-in-out;
@@ -52,7 +59,7 @@ h1 {
 .number-span {
   position: absolute;
   top: -20px;
-  left: 4px;
+  left: 3px;
 }
 
 .normal {
