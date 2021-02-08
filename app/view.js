@@ -1,5 +1,7 @@
 export default function View() {
   this.HEIGHT_PERCENT = 90;
+  this.LIMIT_HEIGHT_PERCENT = 1;
+  this.LOWEST_HEIGHT_PERCENT = 5;
 
   this.$inputBox = document.getElementById('inputBox');
   this.$sortBox = document.getElementById('sortBox');
@@ -22,12 +24,17 @@ View.prototype.createBlock = function (sortList) {
   for (let i = 0; i < sortList.length; i++) {
     const $block = document.createElement('div');
     const $label = document.createElement('b');
+    const heightRatio = sortList[i] / highestValue * this.HEIGHT_PERCENT;
 
     $block.classList.add(this.styleClassName.BLOCK);
 
-    $block.style.height = `${sortList[i] / highestValue * this.HEIGHT_PERCENT}%`;
+    if (heightRatio < this.LIMIT_HEIGHT_PERCENT) {
+      heightRatio = this.LOWEST_HEIGHT_PERCENT;
+    }
+
+    $block.style.height = `${heightRatio}%`;
     $label.textContent = `${sortList[i]}`;
-    $label.style.height = `${sortList[i] / highestValue * this.HEIGHT_PERCENT}%`;
+    $label.style.height = `${heightRatio}%`;
 
     $block.appendChild($label);
     this.$sortBox.appendChild($block);
