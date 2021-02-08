@@ -16,7 +16,7 @@ export function addEventToBackArrow() {
 
 async function backToInputPage() {
   $graphPannelDiv.style.opacity = 0;
-  await wait(1000);
+  await delay(1000);
   $graphPannelDiv.style.display = 'none';
   $contentDiv.style.display = 'flex';
   $contentDiv.style.opacity = 1;
@@ -62,7 +62,7 @@ export async function beforeSorting(targetObj, cordinateY, timing, whichJump) {
   
   // FIX ME : 하드코딩된 컬러 변수화
   targetBarInnderDiv.style.backgroundColor = "#ac1717";
-  await wait(timing);
+  await delay(timing);
 }
 
 // FIX ME : 동기처리와 비동기처리는 나눠놓는것이 좋다.
@@ -78,7 +78,7 @@ export async function moveBar(targetObj, cordinateX, cordinateY, isShrink = true
     shirinkBar(targetObj, targetBarInnderDiv, cordinateY);
   }
 
-  await wait(1000);
+  await delay(1000);
 }
 
 function shirinkBar(targetObj, targetBarInnderDiv, cordinateY) {
@@ -100,7 +100,7 @@ export async function exchange(pivotObj, anotherObj) {
   const $targetBar1 = document.getElementById(`bar${pivotObj.index}`);
   const $targetBar2 = document.getElementById(`bar${anotherObj.index}`);
   
-  await wait(1000);
+  await delay(1000);
   
   const tempIndex = pivotObj.index;
   pivotObj.index = anotherObj.index;
@@ -120,14 +120,14 @@ export function moveBarNoWait(targetId, cordinateX, cordinateY) {
 export async function shadowBlink(shadowText) {
   $contentDiv.style.opacity = 0;
   $shadowTitleSpan.style.innerText = '';
-  await wait(1000);
+  await delay(1000);
   $contentDiv.style.display = 'none';
   $graphPannelDiv.style.display = 'inline-block';
   $graphPannelDiv.style.opacity = 1;
   $shadowDiv.style.display = 'flex';
-  await wait(1000);
+  await delay(1000);
   $shadowTitleSpan.innerText = shadowText;
-  await wait(3000);
+  await delay(3000);
   $shadowTitleSpan.innerText = '';
   $shadowDiv.style.display = 'none';
 }
@@ -138,12 +138,12 @@ export async function finishMove(resultArray) {
     await beforeSorting(numberObj, 0, 300, 'last');
   }
   $backArrowSpan.style.display = 'inline-block';
-  await wait(2000);
+  await delay(2000);
 }
 
 export function showErrorMessage (errorMsg) {
   // FIX ME : textContent를 이용
-  $errorMessageDiv.innerHTML = errorMsg;
+  $errorMessageDiv.textContent = errorMsg;
 }
 
 export function errorDivToggle (isDisplayed) {
@@ -181,7 +181,7 @@ export function mainTitleToggleHandler () {
 }
 
 // FIX ME : wait -> delay
-export function wait(second) {
+export function delay(second) {
   return new Promise((resolve, reject) => {
     setTimeout(resolve, second);
   })

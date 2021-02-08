@@ -1,4 +1,4 @@
-import {beforeSorting, moveBar, exchange, wait} from '../../View/view';
+import {beforeSorting, moveBar, exchange, delay} from '../../View/view';
 
 const pivotMovingUp = 0;
 const othersMovingYDistance = -80;
@@ -22,7 +22,7 @@ export default async function quickSort (numbersObjArray) {
     if (pivotIndex === i) continue;
     moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, othersMovingYDistance);
   }
-  await wait(1700);
+  await delay(1700);
 
   for (let i = 0; i < numbersObjArray.length; i++) {
     if (pivotIndex === i) continue;
@@ -56,7 +56,7 @@ export default async function quickSort (numbersObjArray) {
   for (let i = 0; i < numbersObjArray.length; i++) {
     moveBar(numbersObjArray[i], numbersObjArray[i].cordinateX, pivotMovingUp);
   }
-  await wait(1000);
+  await delay(1000);
   
   leftArray = await quickSort(leftArray);
   rightArray = await quickSort(rightArray);
