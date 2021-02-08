@@ -14,7 +14,7 @@ export default function View() {
   };
 }
 
-View.prototype._createBlock = function (sortList) {
+View.prototype.createBlock = function (sortList) {
   const highestValue = Math.max(...sortList);
 
   this.canPaint = true;
@@ -34,13 +34,13 @@ View.prototype._createBlock = function (sortList) {
   }
 };
 
-View.prototype._swapElements = function (rightElement, leftElement, swappedArray, delay) {
+View.prototype.swapElements = function (rightElement, leftElement, swappedArray, delay) {
   return new Promise(resolve => {
     const rightElementLocationX = this._getTargetTranslateX(rightElement);
     const leftElementLocationX = this._getTargetTranslateX(leftElement);
 
-    this._changeBlockStyle(this.styleClassName.TRANSITION, [rightElement, leftElement]);
-    this._changeBlockStyle(this.styleClassName.SELECT, [rightElement, leftElement]);
+    this.changeBlockStyle(this.styleClassName.TRANSITION, [rightElement, leftElement]);
+    this.changeBlockStyle(this.styleClassName.SELECT, [rightElement, leftElement]);
 
     rightElement.style.transform = `translateX(${leftElementLocationX - rightElementLocationX}px)`;
     leftElement.style.transform = `translateX(${rightElementLocationX - leftElementLocationX}px)`;
@@ -49,12 +49,12 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
       rightElement.style.transform = this.styleClassName.NONE;
       leftElement.style.transform = this.styleClassName.NONE;
 
-      this._changeBlockStyle(this.styleClassName.SELECT, [rightElement, leftElement]);
+      this.changeBlockStyle(this.styleClassName.SELECT, [rightElement, leftElement]);
 
       this.$sortBox.textContent = '';
 
       if (this.canPaint) {
-        this._createBlock(swappedArray);
+        this.createBlock(swappedArray);
       }
 
       resolve();
@@ -62,7 +62,7 @@ View.prototype._swapElements = function (rightElement, leftElement, swappedArray
   });
 };
 
-View.prototype._changeBlockStyle = function (className, elementList) {
+View.prototype.changeBlockStyle = function (className, elementList) {
   for (let i = 0; i < elementList.length; i++) {
     elementList[i].classList.toggle(className);
   }
@@ -72,10 +72,11 @@ View.prototype._getTargetTranslateX = function (target) {
   return target.getBoundingClientRect().x;
 };
 
-View.prototype._showText = function (text) {
+View.prototype.showText = function (text) {
   this.$commentBox.textContent = text;
 };
 
-View.prototype._clearText = function () {
+View.prototype.clearText = function () {
   this.$inputBox.value = '';
+  this.$sortBox.textContent = '';
 };

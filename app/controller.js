@@ -6,15 +6,15 @@ const view = new View();
 const model = new Model();
 
 function changeViewStyle(className, ...args) {
-  view._changeBlockStyle(className, args);
+  view.changeBlockStyle(className, args);
 }
 
 function showViewText(text) {
-  view._showText(text);
+  view.showText(text);
 }
 
 async function swapInView(rightElement, leftElement, swapList, delay) {
-  await view._swapElements(rightElement, leftElement, swapList, delay);
+  await view.swapElements(rightElement, leftElement, swapList, delay);
 }
 
 function init() {
@@ -63,31 +63,31 @@ function init() {
   $submitButton.addEventListener('click', function () {
     const inputValue = $inputBox.value;
 
-    sortingList = model._checkValue(inputValue);
+    sortingList = model.checkValue(inputValue);
 
     if (sortingList) {
       $submitButton.disabled = true;
 
-      view._createBlock(sortingList);
+      view.createBlock(sortingList);
     }
   });
 
   $selectBox.addEventListener('change', function () {
     switch ($selectBox.options[$selectBox.selectedIndex].text) {
       case selectOptions.BUBBLE_SORT:
-        view._showText(BUBBLESORT_COMMENT);
+        view.showText(BUBBLESORT_COMMENT);
 
         sortingMethod = selectOptions.BUBBLE_SORT;
         break;
 
       case selectOptions.QUICK_SORT:
-        view._showText(QUICKSORT_COMMENT);
+        view.showText(QUICKSORT_COMMENT);
 
         sortingMethod = selectOptions.QUICK_SORT;
         break;
 
       default:
-        view._showText(UNSELECT_COMMENT);
+        view.showText(UNSELECT_COMMENT);
 
         sortingMethod = selectOptions.NONE;
         break;
@@ -110,7 +110,7 @@ function init() {
           break;
 
         default:
-          view._showText(SELECT_COMMNET);
+          view.showText(SELECT_COMMNET);
 
           $playButton.disabled = false;
           break;
@@ -136,16 +136,16 @@ function init() {
 
     setTimeout(() => {
       model._resetBoard();
-      view._clearText();
+      view.clearText();
     }, 250);
   });
 
   $sidebarButton.addEventListener('click', function () {
-    view._changeBlockStyle(styleClassName.HIDDEN, [$sideDisplay]);
+    view.changeBlockStyle(styleClassName.HIDDEN, [$sideDisplay]);
   });
 
   $guideButton.addEventListener('click', function () {
-    view._changeBlockStyle(styleClassName.HIDDEN, [$userGuide]);
+    view.changeBlockStyle(styleClassName.HIDDEN, [$userGuide]);
   });
 
   document.addEventListener('click', clickEffect);

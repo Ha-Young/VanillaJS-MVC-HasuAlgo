@@ -135,7 +135,7 @@ Model.prototype._setSlower = function () {
   }
 };
 
-Model.prototype._checkValue = function (string) {
+Model.prototype.checkValue = function (string) {
   const stringList = string.split(',');
 
   if (this.LOW_LIMIT_LENGTH > stringList.length || stringList.length > this.HIGH_LIMIT_LENGTH) {
@@ -160,8 +160,6 @@ Model.prototype._checkValue = function (string) {
 };
 
 Model.prototype._resetBoard = function () {
-  this.$sortBox.textContent = '';
-
   this.sortingList = [];
   this.isStop = false;
 

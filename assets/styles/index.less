@@ -1,3 +1,12 @@
+@tool-button-border: linear-gradient(
+  to bottom right,
+#b827fc 0%,
+#2c90fc 25%,
+#b8fd33 50%,
+#fec837 75%,
+#fd1892 100%
+);
+
 html, body {
   box-sizing: border-box;
   margin: 0;
@@ -159,14 +168,7 @@ header .sidebar-button img {
 
 .tool-bar button:hover {
   border: 3px solid transparent;
-  border-image: linear-gradient(
-    to bottom right,
-  #b827fc 0%,
-  #2c90fc 25%,
-  #b8fd33 50%,
-  #fec837 75%,
-  #fd1892 100%
-  );
+  border-image: @tool-button-border;
   border-image-slice: 1;
 }
 
