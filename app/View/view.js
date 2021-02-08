@@ -1,14 +1,15 @@
 import {sortType} from '../public/constants';
 
 // FIX ME : 쓸데없는 접미사 지우기
-const $contentDiv = document.querySelector('.content');
+const $contentDiv = document.querySelector('#content');
 const $graphPannelDiv = document.querySelector("#graphPannel");
+const $graphCanvas = document.querySelector('.graphPannel--canvas');
 const $shadowDiv = document.querySelector('.shadow');
 const $shadowTitleSpan = document.querySelector('.shadowTitle');
 const $errorMessageDiv = document.querySelector('.errorMessageDiv');
 const $backWardArrow = document.querySelector('.backwardArrow');
 
-// FIX ME : 어차피 동적인 파트도 아니니 만들었다 다시하기 보단 만들어놓고 숨기고 드러내는 처리로 수정
+// FIX ME : 어차피 동적인 파트도 아니니 만들었다 다시하기 보단 만들어놓고 숨기고 드러내는 처리로 수정 -> done
 export function addEventToBackArrow() {
   $backWardArrow.addEventListener('click', backToInputPage);
 }
@@ -42,7 +43,7 @@ export function renderNumber(numRecords) {
   oneNumberDiv.style.transform = `translate(${cordinateX}px, ${cordinateY}px)`;
   
   oneNumberDiv.appendChild(oneNumberInnerDiv);
-  $graphPannelDiv.appendChild(oneNumberDiv);
+  $graphCanvas.append(oneNumberDiv);
 }
 
 export async function beforeSorting(targetObj, cordinateY, timing, whichJump) {
@@ -154,8 +155,8 @@ export function errorDivToggle (isDisplayed) {
 }
 
 export function initGraphPannel() {
-  // FIX ME : 콤마 통일
-  $graphPannelDiv.innerHTML = "";
+  // FIX ME : 콤마 통일 => done
+  $graphCanvas.innerHTML = '';
 }
 
 export function mainTitleHoverHandler () {

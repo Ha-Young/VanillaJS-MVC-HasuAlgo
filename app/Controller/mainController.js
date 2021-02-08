@@ -28,6 +28,7 @@ async function buttonClickEvent() {
     const heightVal = (20*el);
     const newNumObj = new NumModel(el, index, cordinateX, cordinateY, heightVal);
     numbersObjArray.push(newNumObj);
+    console.log(newNumObj.getNumRecords());
     renderNumber(newNumObj.getNumRecords());
   });
   
