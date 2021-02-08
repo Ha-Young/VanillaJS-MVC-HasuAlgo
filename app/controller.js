@@ -7,16 +7,16 @@ export default function Controller() {
 }
 
 Controller.prototype.clear = function () {
-  const $inputCountainer = document.querySelector(".input-container");
+  const $inputContainer = document.querySelector(".input-container");
   const $excuteButton = document.querySelector(".excute-button");
-  const inputClone = $inputCountainer.cloneNode(true);
+  const inputClone = $inputContainer.cloneNode(true);
   const buttonClone = $excuteButton.cloneNode(true);
 
-  $inputCountainer.parentNode.replaceChild(inputClone, $inputCountainer);
+  $inputContainer.parentNode.replaceChild(inputClone, $inputContainer);
   $excuteButton.parentNode.replaceChild(buttonClone, $excuteButton);
 };
 
-Controller.prototype.checkInput = function (inputValue) {
+Controller.prototype.validateInput = function (inputValue) {
   const trimed = inputValue.replace(/(\s*)/g, "");
   const splited = trimed.split(",");
   const hasFiveToTenLength = (5 <= splited.length && splited.length <= 10);

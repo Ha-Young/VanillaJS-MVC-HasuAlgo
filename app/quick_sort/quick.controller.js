@@ -1,6 +1,7 @@
 import Controller from '../controller.js';
 import QuickModel from './quick.model.js';
 import QuickView from './quick.view.js';
+import { DELAY } from '../constant.js';
 
 export default function QuickController() {
   this.model = new QuickModel();
@@ -14,16 +15,17 @@ export default function QuickController() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const inputValue = event.target.querySelector(".input-box").value;
-    const checked = this.checkInput(inputValue);
+    const $inputBox = event.target.querySelector(".input-box");
+    const validationResult = this.validateInput($inputBox.value);
 
-    if(!checked.isNumber) {
+    if(!validationResult.isNumber) {
       this.view.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요.","", 3000);
       return;
     }
 
-    this.model.setData(checked.dataSet);
+    this.model.setData(validationResult.dataSet);
     this.view.paintGraphs(this.model.getData());
+    $inputBox.value = "";
   }
 
   function handleClick() {
@@ -45,7 +47,6 @@ QuickController.prototype = Object.create(Controller.prototype);
 QuickController.prototype.construcor = QuickController;
 
 QuickController.prototype.startSort = async function (dataSet, from, to, fixedIndices) {
-  const DELAY = 500;
   const pivotIndex = from;
   let leftIndex = from + 1;
   let rightIndex = to;
@@ -57,7 +58,6 @@ QuickController.prototype.startSort = async function (dataSet, from, to, fixedIn
 
     if (dataSet.length - fixedIndices.length === 0) {
       this.finish(dataSet);
-      return;
     }
     return;
   }
@@ -104,7 +104,7 @@ QuickController.prototype.startSort = async function (dataSet, from, to, fixedIn
         await this.startSort(dataSet, pivotIndex, rightIndex - 1, fixedIndices);
         await this.startSort(dataSet, rightIndex + 1, to, fixedIndices);
       }
-      return;
+      break;
     }
   }
 };

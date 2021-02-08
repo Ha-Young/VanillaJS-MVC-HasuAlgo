@@ -32,7 +32,8 @@ QuickView.prototype.swap = async function (left, right, wait = identity, DELAY) 
   await wait(DELAY);
 };
 
-QuickView.prototype.paintGraphs = async function (data, fixedIndices = [], wait = identity, DELAY, pivotIndex) {
+QuickView.prototype.paintGraphs
+= async function (data, fixedIndices = [], wait = identity, DELAY, pivotIndex) {
   const maxSize = Math.max(...data);
 
   this.$graphs.textContent = "";

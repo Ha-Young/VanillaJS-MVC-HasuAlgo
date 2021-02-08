@@ -1,6 +1,7 @@
 import Controller from '../controller.js';
 import BubbleModel from './bubble.model.js';
 import BubbleView from './bubble.view.js';
+import { DELAY } from '../constant.js';
 
 export default function BubbleController() {
   this.model = new BubbleModel();
@@ -14,16 +15,17 @@ export default function BubbleController() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const inputValue = event.target.querySelector(".input-box").value;
-    const checked = this.checkInput(inputValue);
+    const $inputBox = event.target.querySelector(".input-box");
+    const validationResult = this.validateInput($inputBox.value);
 
-    if(!checked.isNumber) {
+    if(!validationResult.isNumber) {
       this.view.paintMessage("입력 데이터를 확인하세요. 5개 ~ 10개 필요.","", 3000);
       return;
     }
 
-    this.model.setData(checked.dataSet);
+    this.model.setData(validationResult.dataSet);
     this.view.paintGraphs(this.model.getData());
+    $inputBox.value = "";
   }
 
   function handleClick() {
@@ -42,7 +44,6 @@ BubbleController.prototype = Object.create(Controller.prototype);
 BubbleController.prototype.constructor = BubbleController;
 
 BubbleController.prototype.startSort = async function (dataSet) {
-  const DELAY = 500;
   const status = { index: 0, isSwaped: false , fixedIndices: [] };
 
   while (true) {

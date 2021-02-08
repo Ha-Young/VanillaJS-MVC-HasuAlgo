@@ -1,5 +1,5 @@
 export default function Model() {
-  this._storage = null;
+  this._storage = [];
 }
 
 Model.prototype.getData = function () {
