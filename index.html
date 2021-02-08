@@ -7,6 +7,33 @@
 </head>
 <body>
   <div class="root">
+    <section class="container">
+      <header class="title-box">
+        Sort Algorithm
+      </header>
+      <div class="user-input-container">
+        <div class="sort-select-box">
+          <div>
+            <input type="radio" name="sort-type" value="bubble-sort"/><label>Bubble Sort</label>
+          </div>
+          <div>
+            <input type="radio" name="sort-type" value="quick-sort"/><label>Quick Sort</label>
+          </div>
+        </div>
+        <input class="input-data-box" type="text" placeholder="Insert Data"/>
+        <div class="control-box">
+          <button class="play-button">Play</button>
+          <button class="stop-button">Stop</button>
+        </div>
+      </div>
+      <main class="animation-container">
+        <div  class="status-box">
+          Let's Sort!
+        </div>
+        <div class="animation-box">
+        </div>
+      </main>
+    </section>
   </div>
   <script src="./app/index.js"></script>
 </body>
