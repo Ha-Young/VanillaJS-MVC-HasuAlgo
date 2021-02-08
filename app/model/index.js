@@ -1,5 +1,5 @@
 import CONSTANT, { ITEM, THEME, SORT_TYPE } from "../common/constant";
-import { SortItemList } from "../common/typeDef";
+import { SortItemList, ArrowTaskType } from "../common/typeDef";
 
 export default class Model {
   constructor() {
