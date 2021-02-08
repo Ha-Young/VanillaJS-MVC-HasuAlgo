@@ -1,4 +1,4 @@
-export default function numModel (value, index, cordinateX, cordinateY, height) {
+export default function NumModel (value, index, cordinateX, cordinateY, height) {
   this.value = value;
   this.index = index;
   this.height = height;
@@ -6,7 +6,8 @@ export default function numModel (value, index, cordinateX, cordinateY, height) 
   this.cordinateY = cordinateY;
 }
 
-numModel.prototype.getNumRecords = function () {
+// FIX ME : 비구조화
+NumModel.prototype.getNumRecords = function () {
   const returnObj = {
     value : this.value,
     index : this.index,
@@ -18,7 +19,7 @@ numModel.prototype.getNumRecords = function () {
   return returnObj;
 }
 
-numModel.prototype.setNumRecords = function (value, index, cordinateX, cordinateY) {
+NumModel.prototype.setNumRecords = function (value, index, cordinateX, cordinateY) {
   this.value = value;
   this.index = index;
   this.cordinateX = cordinateX;

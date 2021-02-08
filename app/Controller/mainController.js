@@ -1,5 +1,5 @@
 import {bufferRender, renderNumber, finishMove, shadowBlink, showErrorMessage, errorDivToggle, initGraphPannel} from '../View/view';
-import numModel from '../Model/model';
+import NumModel from '../Model/model';
 import insertionSort from './insertSort/insertSortController';
 import quickSort from './quickSort/quickSortController';
 
@@ -8,37 +8,18 @@ const textBox = document.querySelector('#textBox');
 const mainTitle = document.querySelector('.mainTitle--h1');
 let numbersObjArray = [];
 
+const sortType = {
+  insertion: 'Insertion Sort'
+};
+
 submitButton.addEventListener('click', buttonClickEvent);
-async function buttonClickEvent () {
-  const blank = " ";
-  const comma = ",";
+async function buttonClickEvent() {
   numbersObjArray = [];
   initGraphPannel();
-  // err handling
-  if (mainTitle.innerText === 'Sorting' || !mainTitle.innerText) {
-    showErrorMessage('Please choose the sorting you want!');
-    return;
-  }
 
-  const textBoxString = textBox.value.trim();
-  // err handling
-  if (!textBoxString) {
-    showErrorMessage('Please input numbers~');
-    return;
-  }
-
-  let numbersArray;
-  if (textBoxString.includes(comma)) {
-    numbersArray = splitString(textBoxString, comma);
-  } else if (textBoxString.includes(blank)) {
-    numbersArray = splitString(textBoxString, blank);
-  } else {
-    numbersArray = splitString(textBoxString, '');
-  }
-
-  // err hanling
-  if (numbersArray === -1) {
-    showErrorMessage('Sorry! You only can input the Number lower than 20');
+  const mainTitleText = mainTitle.innerText;
+  const numbersArray = checkIfValidate(mainTitleText);
+  if (!numbersArray) {
     return;
   }
   
@@ -48,47 +29,114 @@ async function buttonClickEvent () {
     const cordinateX = oneSectionPx * index;
     const cordinateY = 0;
     const heightVal = (20*el);
-    const newNumObj = new numModel(el, index, cordinateX, cordinateY, heightVal);
+    const newNumObj = new NumModel(el, index, cordinateX, cordinateY, heightVal);
     numbersObjArray.push(newNumObj);
     renderNumber(newNumObj.getNumRecords());
   });
   
+  textBox.value = '';
   errorDivToggle(true);
-  await shadowBlink(mainTitle.innerText);
-  if (mainTitle.innerText === 'Insertion Sort') {
-    const insertionResult = await insertionSort(numbersObjArray);
-    finishMove(insertionResult);
+  await shadowBlink(mainTitleText);
+  // FIX ME : 하드코딩 변수화 => done
+  // FIX ME : finishMove 중복 해결 => done
+  let sortingResult;
+  if (mainTitleText === sortType.insertion) {
+    sortingResult = await insertionSort(numbersObjArray);
   } else {
-    const quickResult = await quickSort(numbersObjArray);
-    finishMove(quickResult);
+    sortingResult = await quickSort(numbersObjArray);
   }
 
-  textBox.value = '';
+  finishMove(sortingResult);
 }
 
-function splitString (textBoxString, seperator) {
+function checkIfValidate(mainTitleText) {
+  // err handling
+  // FIX ME : 긴 표현이 중복 -> 변수 할당
+  // FIX ME : validation 로직 함수 분리
+  if (mainTitleText === 'Sorting' || !mainTitleText) {
+    showErrorMessage('Please choose the sorting you want!');
+    return false;
+  }
+
+  const textBoxString = textBox.value.trim();
+  // err handling
+  if (!textBoxString) {
+    showErrorMessage('Please input numbers~');
+    return false;
+  }
+  // FIX ME : 정규표현식 => ????
+  // FIX ME : 함수분리 => done
+  // FIX ME : 엣지케이스 처리 추가 => seperator를 정규표현식으로 해서 해결
+  const numbersArray = splitString(textBoxString, checkSeperator(textBoxString));
+
+  // err hanling
+  // FIX ME : error를 false로 => done
+  if (!numbersArray) {
+    showErrorMessage('Sorry! You only can input the Number lower than 20');
+    return false;
+  }
+
+  return numbersArray;
+}
+
+function checkSeperator(textBoxString) {
+  const COMMA = ',';
+  const BLANK = ' ';
+  if (textBoxString.includes(COMMA)) {
+    return /\s*,\s*/g;
+  } else if (textBoxString.includes(BLANK)) {
+    return /\s+/g;
+  } else {
+    return '';
+  }
+}
+
+function splitString(textBoxString, seperator) {
+  console.log(seperator);
   const splitedArray = textBoxString.split(seperator);
+  console.log(splitedArray);
   const returnArray = [];
   for (let word of splitedArray) {
-    word = word.replace(/[\s]/g, '').trim();
-    word = Number.parseInt(word);
-    if(Number.isNaN(word) || word > 20) {
-      return -1;
+    const checkedWord = isWordValidate(word);
+    console.log(checkedWord);
+    if (!checkedWord) {
+      return false;
     }
 
-    if (word !== '') {
-      returnArray.push(word);
+    if (checkedWord === -1) {
+      continue;
     }
+
+    returnArray.push(checkedWord);
   }
 
   return returnArray;
 }
 
+function isWordValidate(word) {
+  const WORD_LENGTH_LIMIT = 20;
+  word = word.replace(/[\s]/g, '').trim();
+  word = Number.parseInt(word);
+  // FIX ME : validation과 문자 나누는 역할 나누기
+  // FIX ME : 하드코딩 변수화
+  // ???? : if를 각각 조건으로 쪼개는게 나을까...? 아니면 최대한 짧게 하기 위해 이렇게 두는게 나을까...?
+  console.log(word);
+  if(Number.isNaN(word) || word > WORD_LENGTH_LIMIT) {
+    return false;
+  }
+  if (!word) {
+    return -1;
+  }
+
+  return word;
+}
+
 mainTitle.addEventListener('mouseover', mainTitleHoverHandler);
 
+// FIX ME : view로직 분리하기
 function mainTitleHoverHandler () {
-  this.style.transform = `translate(0px, -10px)`;
-  this.style.fontSize = '50px'
+  this.style.transform = 'translate(0px, -10px)';
+  this.style.fontSize = '50px';
   this.style.textShadow = '1px 1px 5px #343a40';
 }
 

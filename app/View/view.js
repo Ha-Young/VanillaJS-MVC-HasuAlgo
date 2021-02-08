@@ -1,12 +1,14 @@
 import leftArrow from './../../assets/images/leftArrow.png';
 
+// FIX ME : 쓸데없는 접미사 지우기
 const $contentDiv = document.querySelector('.content');
 const $graphPannelDiv = document.querySelector("#graphPannel");
 const $shadowDiv = document.querySelector('.shadow');
 const $shadowTitleSpan = document.querySelector('.shadowTitle');
 const $errorMessageDiv = document.querySelector('.errorMessageDiv');
 
-export function bufferRender () {
+// FIX ME : 어차피 동적인 파트도 아니니 만들었다 다시하기 보단 만들어놓고 숨기고 드러내는 처리로 수정
+export function bufferRender() {
   $graphPannelDiv.innerHTML = '';
   const graphPannelBufferDiv = document.createElement("div");
   graphPannelBufferDiv.setAttribute('class', 'graphPannel--buffer');
@@ -26,7 +28,7 @@ export function bufferRender () {
   $graphPannelDiv.appendChild(graphPannelBufferDiv);
 }
 
-async function backToInputPage () {
+async function backToInputPage() {
   $graphPannelDiv.style.opacity = 0;
   await wait(1000);
   $graphPannelDiv.style.display = 'none';
@@ -34,7 +36,7 @@ async function backToInputPage () {
   $contentDiv.style.opacity = 1;
 }
 
-export function renderNumber (numRecords) {
+export function renderNumber(numRecords) {
   const value = numRecords.value;
   const index = numRecords.index;
   const cordinateX = numRecords.cordinateX;
@@ -43,6 +45,7 @@ export function renderNumber (numRecords) {
 
   const oneNumberDiv = document.createElement("div");
   oneNumberDiv.setAttribute('class', 'numberOuter');
+  // FIX ME : 동적인 값 저장에는 id보단 data attribute
   oneNumberDiv.setAttribute('id', `bar${index}`);
   const oneNumberInnerDiv = document.createElement("div");
   oneNumberInnerDiv.setAttribute('class', 'numberInner');
@@ -57,7 +60,7 @@ export function renderNumber (numRecords) {
   $graphPannelDiv.appendChild(oneNumberDiv);
 }
 
-export async function beforeSorting (targetObj, cordinateY, timing, whichJump) {
+export async function beforeSorting(targetObj, cordinateY, timing, whichJump) {
   const $targetBar = document.querySelector(`#bar${targetObj.index}`);
   const targetBarInnderDiv = $targetBar.childNodes[0];
 
@@ -70,11 +73,13 @@ export async function beforeSorting (targetObj, cordinateY, timing, whichJump) {
     targetBarInnderDiv.style.animation = "jump 1.5s";
   }
   
+  // FIX ME : 하드코딩된 컬러 변수화
   targetBarInnderDiv.style.backgroundColor = "#ac1717";
   await wait(timing);
 }
 
-export async function moveBar (targetObj, cordinateX, cordinateY, isShrink = true) {
+// FIX ME : 동기처리와 비동기처리는 나눠놓는것이 좋다.
+export async function moveBar(targetObj, cordinateX, cordinateY, isShrink = true) {
   const $targetBar = document.querySelector(`#bar${targetObj.index}`);
   const targetBarInnderDiv = $targetBar.childNodes[0];
   
@@ -89,7 +94,7 @@ export async function moveBar (targetObj, cordinateX, cordinateY, isShrink = tru
   await wait(1000);
 }
 
-function shirinkBar (targetObj, targetBarInnderDiv, cordinateY) {
+function shirinkBar(targetObj, targetBarInnderDiv, cordinateY) {
   if (cordinateY > 0) {
     targetBarInnderDiv.style.height = '30px';
   } else {
@@ -97,7 +102,7 @@ function shirinkBar (targetObj, targetBarInnderDiv, cordinateY) {
   }
 }
 
-export async function exchange (pivotObj, anotherObj) {
+export async function exchange(pivotObj, anotherObj) {
   const tempX = pivotObj.cordinateX;
   pivotObj.cordinateX = anotherObj.cordinateX;
   anotherObj.cordinateX = tempX;
@@ -119,13 +124,13 @@ export async function exchange (pivotObj, anotherObj) {
   $targetBar2.setAttribute('id', `bar${anotherObj.index}`);
 }
 
-export function moveBarNoWait (targetId, cordinateX, cordinateY) {
+export function moveBarNoWait(targetId, cordinateX, cordinateY) {
   const $targetBar = document.querySelector(`#bar${targetId}`);
   $targetBar.focus();
   $targetBar.style.transform = `translate(${cordinateX}px, ${cordinateY}px)`;
 }
 
-export async function shadowBlink (shadowText) {
+export async function shadowBlink(shadowText) {
   $contentDiv.style.opacity = 0;
   $shadowTitleSpan.style.innerText = '';
   await wait(1000);
@@ -150,6 +155,7 @@ export async function finishMove(resultArray) {
 }
 
 export function showErrorMessage (errorMsg) {
+  // FIX ME : textContent를 이용
   $errorMessageDiv.innerHTML = errorMsg;
 }
 
@@ -162,14 +168,14 @@ export function errorDivToggle (isDisplayed) {
   $errorMessageDiv.style.display = 'block';
 }
 
-export function initGraphPannel () {
+export function initGraphPannel() {
+  // FIX ME : 콤마 통일
   $graphPannelDiv.innerHTML = "";
 }
 
+// FIX ME : wait -> delay
 export function wait(second) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve();
-    }, second);
+    setTimeout(resolve, second);
   })
 }

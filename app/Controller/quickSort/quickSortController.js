@@ -45,6 +45,7 @@ export default async function quickSort (numbersObjArray) {
     }
   }
 
+  // FIX ME : 굳이 for로 돌리지 않아도 되는건 foreach나 map으로
   for (let i = 0; i < pivotIndex; i++) {
     leftArray.push(numbersObjArray[i]);
   }
