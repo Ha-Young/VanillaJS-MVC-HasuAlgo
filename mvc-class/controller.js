@@ -25,7 +25,7 @@ export default class Controller {
       handleClickHelp: () => {
         this.view.displayHelpMessage();
       },
-    }
+    };
 
     this.view.addEventListeners(this.eventHandlers);
   }
