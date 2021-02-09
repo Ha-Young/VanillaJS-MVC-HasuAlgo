@@ -15,6 +15,7 @@ export default function Controller(model, view) {
   this.DELAY = 300;
   this.EXTENDED_DELAY = this.DELAY * 2;
   this.hasReset = false;
+  this.hasQuickFinished = false;
 
   this.sortType = {
     BUBBLE_SORT: "bubble-sort",
@@ -55,6 +56,8 @@ Controller.prototype.init = function() {
     }
 
     const validatedUserInput = this.model.getUserInputList();
+    
+
     this.view.hideSortSelectorAfterInputValidation(this.$userInput,
       this.$sortSelector,
       validatedUserInput);
@@ -133,12 +136,27 @@ Controller.prototype.confirmSelectedSortOption = function() {
 };
 
 Controller.prototype.quickSort = async function(userInputElements, left = 0, right = userInputElements.length-1) {
-  if (left <= right) {
+  if (left > right) {
+    return;
+  }
+
+ 
+
+    if (left <= right) {
+        if(this.hasQuickFinished){
+            this.view.setInstructionMessage(this.$instructionMessage, this.messageType.RETRY_MESSAGE);
+            this.view.toggleElement(this.$resetButton, this.viewType.HIDDEN_CLASSNAME, false);
+            return;
+          }
+
+
     const pivot = await this.placingPivotIdx(userInputElements, left, right);
     const updatedUserInputElements = this.model.getUserInputElements();
 
-    this.view.setInstructionMessage(this.$instructionMessage, this.messageType.RETRY_MESSAGE);
-    this.view.toggleElement(this.$resetButton, this.viewType.HIDDEN_CLASSNAME, false);
+        
+
+    // this.view.setInstructionMessage(this.$instructionMessage, this.messageType.RETRY_MESSAGE);
+    // this.view.toggleElement(this.$resetButton, this.viewType.HIDDEN_CLASSNAME, false);
 
     this.view.toggleElement(userInputElements[pivot], this.viewType.PIVOT_ELEMENT_COLOR, false);
     this.view.toggleElement(userInputElements[pivot], this.viewType.SORTED_ELEMENT_COLOR, true);
@@ -153,7 +171,21 @@ Controller.prototype.quickSort = async function(userInputElements, left = 0, rig
 
     await this.view.delay(this.EXTENDED_DELAY);
     await this.quickSort(updatedUserInputElements, pivot+1, right);
-  }
+    
+    await this.view.delay(this.EXTENDED_DELAY);
+    this.hasQuickFinished = true;
+
+ }
+
+ 
+
+//   if (left > right) {
+//     this.view.setInstructionMessage(this.$instructionMessage, this.messageType.RETRY_MESSAGE);
+//     this.view.toggleElement(this.$resetButton, this.viewType.HIDDEN_CLASSNAME, false);
+//     return;
+//   }
+
+  
 };
 
 Controller.prototype.placingPivotIdx = async function(quickSortElementsList, start, end) {
