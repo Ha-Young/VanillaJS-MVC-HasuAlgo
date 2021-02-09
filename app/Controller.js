@@ -102,12 +102,21 @@ Controller.prototype.validateUserInput = function() {
     return false;
   }
 
-  this.model.setUserInputList(userInputNumbers);
-  this.view.createElements(userInputNumbers, this.$sortDisplaySection);
-  this.view.setInstructionMessageAfterSubmit(this.$userInput, this.$instructionMessage, this.messageType.AFTER_SUBMIT_MESSAGE);
+  this.setModelUserInputList(userInputNumbers);
+  this.setScreenViewWithValidatedInput(userInputNumbers);
 
   return true;
 };
+
+Controller.prototype.setModelUserInputList = function(userInputNumbers) {
+  this.model.setUserInputList(userInputNumbers);
+}
+
+Controller.prototype.setScreenViewWithValidatedInput = function(userInputNumbers) {
+  this.view.createElements(userInputNumbers, this.$sortDisplaySection);
+  this.view.setInstructionMessageAfterSubmit(this.$userInput, this.$instructionMessage, this.messageType.AFTER_SUBMIT_MESSAGE);
+};
+
 
 Controller.prototype.confirmSelectedSortOption = function() {
   const userInputElements = this.$sortDisplaySection.children;
