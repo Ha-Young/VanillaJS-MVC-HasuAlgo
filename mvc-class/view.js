@@ -35,7 +35,7 @@ export default class View {
     target.classList.toggle("hidden");
   }
 
-  displayMessage(target, message){
+  displayMessage(target, message) {
     this.domElements[target].textContent = message;
   }
 
