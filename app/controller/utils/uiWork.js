@@ -55,7 +55,6 @@ export default class uiWork {
           this.doUIResetWork(uiTask.value);
           break;
         default:
-          console.log(uiTask);
           throw new Error('정의되지 않은 uiTask Type');
       }
     }
