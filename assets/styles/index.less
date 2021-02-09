@@ -3,7 +3,6 @@ html, body {
 }
 
 body {
-  background-color: #403F46;
   margin: 0;
   height: 100%;
 }
@@ -13,9 +12,56 @@ body {
 }
 
 header {
-  text-align: center;
   max-width: 500px;
   margin: 80px auto 20px;
+  text-align: center;
+  font-family: serif;
+}
+
+header h1 {
+  font-size: 38px;
+}
+
+header p {
+  font-size: 15px;
+}
+
+header form {
+  display: flex;
+  justify-content: space-between;
+}
+
+header form select {
+  width: 150px;
+  height: 35px;
+  font-family: serif;
+  font-size: 20px;
+  text-align-last: center;
+}
+
+header form select:focus, header form input:focus {
+  outline: none;
+}
+
+header form .input-text {
+  width: 270px;
+  height: 35px;
+  padding: 1px 10px;
+  font-size: 15px;
+}
+
+header form .submit-button {
+  width: 37px;
+  border-radius: 50%;
+  border: none;
+  font-size: 30px;
+  font-weight: 900;
+  background-color: transparent;
+}
+
+header form .submit-button:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 5px 10px #FEFFD1;
 }
 
 header p {
@@ -25,26 +71,48 @@ header p {
 section {
   max-width: 1000px;
   max-height: 750px;
-  margin: 0px auto 0px;
+  margin: 0px auto;
   text-align: center;
 }
 
-main {
+section main {
   display: flex;
   align-items: center;
   width: 1000px;
   height: 750px;
 }
 
-main div {
+section main div {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   flex: 1 1 0;
+  justify-content: center;
   max-height: 700px;
   margin: 25px;
+  background-color: white;
   text-align:center;
-  background-color: #E0D8CB;
+  font-size: 25px;
   transition: all 700ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
   transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+}
+
+.bgEffect {
+  background-color: black;
+}
+
+.off-lights {
+  opacity: 0.1;
+}
+
+.on-lights {
+  box-shadow: 0px 0px 20px 10px #FEFFD1;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.textEffect {
+  color: white;
+  text-shadow: 0px 0px 20px #FEFFD1;
 }

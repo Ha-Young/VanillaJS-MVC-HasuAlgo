@@ -1,25 +1,26 @@
-// Load application styles
+export { body, header, h1, warningSign, form, select, input, section, main }
+
 import '../assets/styles/index.less';
-import { changeStringToNumbers, bubbleSort, checkNumber } from './controller';
-import { paintDiv, showWarning } from './view';
+import { changeStringToNumbers, bubbleSort, checkNumber, makeChildElementsOfScreen } from './controller';
+import { setOnScreen, showWarningSign } from './view';
 
-// ================================
-// START YOUR APP HERE
-// ================================
-
-const header = document.querySelector("header");
-const warningSpace = header.querySelector("p");
-const form = document.querySelector(".js-form");
+const body = document.querySelector("body");
+const header = body.querySelector("header");
+const h1 = header.querySelector("h1");
+const warningSign = header.querySelector("p");
+const form = header.querySelector("form");
 const select = form.querySelector("select");
 const input = form.querySelector("input");
+const section = body.querySelector("section");
+const main = section.querySelector("main");
 
-const domArray = [];
+const childElementsOfScreen = [];
 
-function getinputValue (event) {
+function implementSortingAlgorithmsOnScreen (event) {
   event.preventDefault();
-  warningSpace.textContent = "";
+  warningSign.textContent = "";
 
-  const currentinputValue = input.value;
+  const userInputValue = input.value;
   input.value = "";
 
   if (select.selectedIndex === 1) {
@@ -27,25 +28,27 @@ function getinputValue (event) {
     return;
   }
 
-  const numbers = changeStringToNumbers(currentinputValue);
+  const numbers = changeStringToNumbers(userInputValue);
 
   if(!numbers.length || numbers.length < 5 || numbers.length > 10) {
-    return showWarning();
+    return showWarningSign();
   }
 
   if(!checkNumber(numbers)) {
-    return showWarning();
+    return showWarningSign();
   }
 
   for (let i = 0; i < numbers.length; i++) {
-    domArray.push(paintDiv(numbers[i], i));
+    const childElement = makeChildElementsOfScreen(numbers[i])
+    childElementsOfScreen.push(childElement);
+    setOnScreen(childElement);
   }
 
-  bubbleSort(numbers, domArray);
+  bubbleSort(numbers, childElementsOfScreen);
 }
 
 function init() {
-  form.addEventListener("submit", getinputValue);
+  form.addEventListener("submit", implementSortingAlgorithmsOnScreen);
 }
 
 init();

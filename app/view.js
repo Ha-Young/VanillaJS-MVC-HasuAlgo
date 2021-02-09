@@ -1,59 +1,62 @@
-const header = document.querySelector("header");
-const warningSpace = header.querySelector("p");
-const section = document.querySelector("section");
-const main = section.querySelector("main");
+import { body, h1, form, select, warningSign, main } from "./index";
+import { getTranslatedPositionValueOfCurrentElement } from "./controller";
 
-let alreadyCalled = false;
-let positionValue;
+let executionCheck = false;
+let distance;
 
-export function showWarning () {
-  warningSpace.textContent = `'최소 5개 ~ 최대 10개'의 숫자들을 입력해주세요.
-                              ex) 5, 4, 3, 2, 1`;
+export function showWarningSign() {
+  warningSign.textContent = `'최소 5개 ~ 최대 10개'의 숫자들을 입력해주세요. ex) 5, 4, 3, 2, 1`;
 }
 
-export function paintDiv (input) {
-  const div = document.createElement("div");
-  div.textContent = input;
-  div.style.height = `${50 + (input * 12)}px`;
-  div.classList.add("item");
-  main.appendChild(div);
-  return div;
+export function setOnScreen(childElement) {
+  body.classList.add("bgEffect");
+  h1.classList.add("hidden");
+  form.classList.add("hidden");
+  childElement.classList.add("off-lights");
+
+  main.appendChild(childElement);
 }
 
-export function swapView(frontIndex, backIndex, domArray) {
-   return new Promise(function (resolve) {
-     setTimeout(function () {
-      if (!alreadyCalled) {
-        positionValue = domArray[backIndex].getBoundingClientRect().x - domArray[frontIndex].getBoundingClientRect().x
-        alreadyCalled = true;
+export function swapFrontElementAndBackElement(frontIndex, backIndex, childElements) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      if (!executionCheck) {
+        distance = childElements[backIndex].getBoundingClientRect().x - childElements[frontIndex].getBoundingClientRect().x
+        executionCheck = true;
       }
 
-      function getCurrentPositionValue (currentIndex, domArray) {
-        const currentDomTransformString = domArray[currentIndex].style.transform
-        let currentPosition;
+      const positionValueOfFrontElement = getTranslatedPositionValueOfCurrentElement(frontIndex, childElements);
+      const positionValueOfBackElement = getTranslatedPositionValueOfCurrentElement(backIndex, childElements);
 
-        if (!currentDomTransformString) {
-          currentPosition = 0;
-        } else {
-        const stringRemovedFront = currentDomTransformString.split("translateX(");
-        const stringRemovedBack = stringRemovedFront[1].split("px)");
-        currentPosition = parseInt(stringRemovedBack)
-        }
+      let temp = childElements[frontIndex]
+      childElements[frontIndex] = childElements[backIndex];
+      childElements[backIndex] = temp;
 
-        return currentPosition;
-      }
-
-      const currentFrontPositionValue = getCurrentPositionValue(frontIndex, domArray);
-      const currentBackPositionValue = getCurrentPositionValue(backIndex, domArray);
-
-      let temp = domArray[frontIndex]
-      domArray[frontIndex] = domArray[backIndex];
-      domArray[backIndex] = temp;
-
-      domArray[backIndex].style.transform = `translateX(${currentFrontPositionValue + positionValue}px)`;
-      domArray[frontIndex].style.transform = `translateX(${currentBackPositionValue - positionValue}px)`;
+      childElements[frontIndex].style.transform = `translateX(${positionValueOfBackElement - distance}px)`;
+      childElements[backIndex].style.transform = `translateX(${positionValueOfFrontElement + distance}px)`;
 
       resolve();
     }, 700);
   });
  }
+
+export function turnOnLigthsOfSelectedElements(frontIndex, backIndex, childElements) {
+  childElements[frontIndex].classList.replace("off-lights", "on-lights");
+  childElements[backIndex].classList.replace("off-lights", "on-lights");
+}
+
+export function turnOffLigthsOfSelectedElements(frontIndex, backIndex, childElements) {
+  childElements[frontIndex].classList.replace("on-lights", "off-lights");
+  childElements[backIndex].classList.replace("on-lights", "off-lights");
+}
+
+export function turnOnAllChildElementsOfScreen(childElements) {
+  childElements.forEach(function (item) {
+    item.classList.replace("off-lights", "on-lights");
+  });
+}
+
+export function showNameOfSortingAlgorithm() {
+  h1.textContent = select.value;
+  h1.classList.replace("hidden", "textEffect");
+}
