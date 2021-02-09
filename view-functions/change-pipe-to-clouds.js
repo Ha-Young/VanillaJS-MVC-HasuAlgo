@@ -10,5 +10,5 @@ export default function changePipeToClouds(sortingBoard) {
   });
 
   const clouds = document.querySelector(".clouds-container");
-  clouds.style.cssText = "visibility: hidden";
+  clouds.classList.add("hidden");
 }
