@@ -30,18 +30,25 @@ export var SortItemList;
 export var StatusTask;
 
 /**
- * @typedef {{aIndex: number, bIndex: number}}
+ * @typedef {{type: 'all' | 'one', index: number, exceptIndexList: Array<number>}}
+ */
+export var ResetTask;
+
+/**
+ * @typedef {{fromIndex: number, toIndex: number}}
  */
 export var SwapTask;
 
 /**
  * @typedef {{commend: 'add' | 'move' | 'remove',
- *            type: 'left' | 'right'}}
+ *            type: 'left' | 'right',
+ *            index: number}}
  */
 export var ArrowTask;
 
 /**
- * @typedef {{taskType: 'status' | 'swap' | 'arrow', value: StatusTask | SwapTask | ArrowTask}
+ * @typedef {{taskType: 'status' | 'swap' | 'arrow' | 'reset',
+ *            value: StatusTask | SwapTask | ArrowTask | ResetTask}
  */
 export var UITask;
 

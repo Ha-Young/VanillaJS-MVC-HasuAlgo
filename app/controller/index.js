@@ -6,7 +6,10 @@ import CONSTANT, {
   ARROW_TYPE,
   STATUS_TYPE,
   UI_WORK_TYPE,
+  ARROW_COMMEND,
+  RESET_TYPE,
 } from "../common/constant";
+import { UiTaskSet, StatusTask, SwapTask, ArrowTask, ResetTask } from '../common/typeDef';
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -21,7 +24,7 @@ export default class Controller {
     this.model = model;
     this.view = view;
     this.isReadySort = false;
-    this.delayTimeOnChange = 500;
+    this.delayTimeOnChange = 2500;
 
     view.bindOnClickSortTypeBtns(this.setSortType.bind(this));
     view.bindOnClickSetBtn(this.setInitNumsView.bind(this));
@@ -55,6 +58,8 @@ export default class Controller {
     }
 
     this.view.writeRandomNum(randomNumbers.join(","));
+
+    this.view.initInfoMsg();
   }
 
   setNumsView(sortList) {
@@ -106,7 +111,6 @@ export default class Controller {
 
   sortAccordingType(sortType) {
     const sortList = [...this.model.sortList];
-
     switch (sortType) {
       case SORT_TYPE.INSERT:
         this.insertionSort(sortList);
@@ -117,30 +121,133 @@ export default class Controller {
         break;
     }
 
-    this.doUITaskProcess();
-    // .then(() => {
-    //   this.view.setInfoMsg("sort 완료!");
-    // });
+    this.doUITaskProcess().then(() => {
+      this.view.setInfoMsg("sort 완료!");
+    });
   }
 
-  doUITaskProcess() {
-    console.log(this.model.uiTaskQueue);
-    debugger;
+  async doUITaskProcess() {
     while (this.model.uiTaskQueue.checkTask()) {
       const uiTaskSet = this.model.uiTaskQueue.dequeue();
 
-      console.log(uiTaskSet);
+      await this.doUIWork(uiTaskSet);
     }
   }
 
-  doUIWork(uiTasks) {
+  /**
+   *
+   * @param {UiTaskSet} uiTaskSet
+   */
+  async doUIWork(uiTaskSet) {
     return new Promise((resolve) => {
-      for (const uiTask of uiTasks) {
-        uiTask();
-      }
+      this.doUIWorkOnTaskSet(uiTaskSet);
 
       setTimeout(resolve, this.delayTimeOnChange);
     });
+  }
+
+  doUIWorkOnTaskSet(uiTaskSet) {
+    for (const uiTask of uiTaskSet) {
+      switch (uiTask.type) {
+        case UI_WORK_TYPE.STATUS:
+          this.doUIStatusWork(uiTask.value);
+          break;
+        case UI_WORK_TYPE.SWAP:
+          this.doUISwapWork(uiTask.value);
+          break;
+        case UI_WORK_TYPE.ARROW:
+          this.doUIArrowWork(uiTask.value);
+          break;
+        case UI_WORK_TYPE.RESET:
+          this.doUIResetWork(uiTask.value);
+          break;
+        default:
+          console.log(uiTask);
+          throw new Error('정의되지 않은 uiTask Type');
+      }
+    }
+  }
+
+  /**
+   * @param {StatusTask} statusTask
+   */
+  doUIStatusWork(statusTask) {
+    const { type, index: targetIndex, moveOption } = statusTask;
+
+    switch (type) {
+      case STATUS_TYPE.SORTED:
+        this.viewItemSortedColor(targetIndex);
+        break;
+      case STATUS_TYPE.SELECTED:
+        this.viewItemSelect(targetIndex, moveOption);
+        break;
+      case STATUS_TYPE.CHECK:
+        this.viewItemCheckColor(targetIndex);
+        break;
+      case STATUS_TYPE.SMALL:
+        this.viewItemSmallColor(targetIndex);
+        break;
+      case STATUS_TYPE.LARGE:
+        this.viewItemLargeColor(targetIndex);
+        break;
+      case STATUS_TYPE.PIVOT:
+        this.viewItemPivotColor(targetIndex);
+        break;
+      default:
+        throw new Error('정의되지 않은 statusTask Type');
+    }
+  }
+
+  /**
+   *
+   * @param {SwapTask} swapTask
+   */
+  doUISwapWork(swapTask) {
+    const { fromIndex, toIndex } = swapTask;
+
+    this.viewItemChange(fromIndex, toIndex);
+    this.view.swapOnDomList(fromIndex, toIndex);
+  }
+
+  /**
+   *
+   * @param {ArrowTask} arrowTask
+   */
+  doUIArrowWork(arrowTask) {
+    const { commend, type, index } = arrowTask;
+
+    switch(commend) {
+      case ARROW_COMMEND.ADD:
+        this.viewAddArrow(index, type);
+        break;
+      case ARROW_COMMEND.MOVE:
+        this.viewArrowMoveNext(type);
+        break;
+      case ARROW_COMMEND.REMOVE:
+        this.viewRemoveArrow(type);
+        break;
+      default:
+        throw new Error('정의되지 않은 Arrow Commend');
+    }
+  }
+
+  /**
+   * 
+   * @param {ResetTask} resetTask 
+   */
+  doUIResetWork(resetTask) {
+    const { type, index, exceptIndexList } = resetTask;
+
+    switch(type) {
+      case RESET_TYPE.ONE:
+        this.viewItemResetStatus(index);
+        break;
+      case RESET_TYPE.ALL:
+        this.viewItemResetStatusAll(exceptIndexList);
+        break;
+      default:
+        throw new Error('정의되지 않은 Reset Type');
+    }
   }
 
   viewItemSortedColor(index) {
@@ -174,11 +281,11 @@ export default class Controller {
     this.view.setSortItemStatusPivot(index);
   }
 
-  viewItemSmall(index) {
+  viewItemSmallColor(index) {
     this.view.setSortItemStatusSmall(index);
   }
 
-  viewItemLarge(index) {
+  viewItemLargeColor(index) {
     this.view.setSortItemStatusLarge(index);
   }
 
@@ -186,47 +293,39 @@ export default class Controller {
     this.view.addArrow(index, arrowType);
   }
 
-  viewRemoveArrow(arrowKinds) {
-    this.view.removeArrow(arrowKinds);
+  viewRemoveArrow(arrowType) {
+    this.view.removeArrow(arrowType);
   }
 
-  viewArrowMoveNext(arrowKinds) {
-    this.view.moveArrowNext(arrowKinds, this.delayTimeOnChange);
+  viewArrowMoveNext(arrowType) {
+    this.view.moveArrowNext(arrowType, this.delayTimeOnChange);
   }
 
-  async insertionSort(sortList) {
+  insertionSort(sortList) {
     this.model.uiTaskQueue.enqueue([
       { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: 0 } },
     ]);
-    //await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
 
     for (let i = 1; i < sortList.length; i++) {
       let keyIndex = i;
 
       this.model.uiTaskQueue.enqueue([
-        { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SELECTED, index: keyIndex } },
+        { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SELECTED, index: keyIndex, moveOption: true } },
       ]);
-      //await this.doUIWork([this.viewItemSelect.bind(this, keyIndex, true)]);
 
       let checkIndex = keyIndex - 1;
 
       this.model.uiTaskQueue.enqueue([
         { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.CHECK, index: checkIndex } },
       ]);
-      //await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
 
       while (checkIndex >= 0) {
         if (sortList[checkIndex] > sortList[keyIndex]) {
           this.swapOnRealList(sortList, checkIndex, keyIndex);
 
           this.model.uiTaskQueue.enqueue([
-            { type: UI_WORK_TYPE.SWAP, value: { aIndex: checkIndex, bIndex: keyIndex} },
+            { type: UI_WORK_TYPE.SWAP, value: { fromIndex: checkIndex, toIndex: keyIndex} },
           ]);
-          // await this.doUIWork([
-          //   this.viewItemChange.bind(this, checkIndex, keyIndex),
-          // ]);
-
-          this.view.swapOnDomList(checkIndex, keyIndex);
 
           checkIndex--;
           keyIndex--;
@@ -236,10 +335,6 @@ export default class Controller {
               { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex + 1 } },
               { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex } },
             ]);
-            // await this.doUIWork([
-            //   this.viewItemSortedColor.bind(this, keyIndex + 1),
-            //   this.viewItemSortedColor.bind(this, keyIndex),
-            // ]);
             continue;
           }
 
@@ -247,20 +342,11 @@ export default class Controller {
             { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex + 1 } },
             { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.CHECK, index: checkIndex } },
           ]);
-
-          // await this.doUIWork([
-          //   this.viewItemSortedColor.bind(this, keyIndex + 1),
-          //   this.viewItemCheckColor.bind(this, checkIndex),
-          // ]);
         } else {
           this.model.uiTaskQueue.enqueue([
             { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex } },
             { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: checkIndex } },
           ]);
-          // await this.doUIWork([
-          //   this.viewItemSortedColor.bind(this, checkIndex),
-          //   this.viewItemSortedColor.bind(this, keyIndex),
-          // ]);
           break;
         }
       }
@@ -269,10 +355,10 @@ export default class Controller {
     return sortList;
   }
 
-  async quickSort(sortList) {
+  quickSort(sortList) {
     const sortedItemIndex = [];
 
-    return await async function _quickSort(
+    return function _quickSort(
       sortList,
       leftIndex = 0,
       rightIndex = sortList.length - 1
@@ -280,7 +366,9 @@ export default class Controller {
       if (leftIndex >= rightIndex) {
         sortedItemIndex.push(leftIndex);
 
-        await this.doUIWork([this.viewItemSortedColor.bind(this, leftIndex)]);
+        this.model.uiTaskQueue.enqueue([
+          { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: leftIndex } },
+        ]);
         return;
       }
 
@@ -290,9 +378,11 @@ export default class Controller {
         PIVOT_KINDS.MID
       );
 
-      await this.doUIWork([this.viewItemPivotColor.bind(this, pivotIndex)]);
+      this.model.uiTaskQueue.enqueue([
+        { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.PIVOT, index: pivotIndex } },
+      ]);
 
-      const [partitionIndex, changePivotIndex] = await divide.call(
+      const [partitionIndex, changePivotIndex] = divide.call(
         this,
         sortList,
         leftIndex,
@@ -301,57 +391,69 @@ export default class Controller {
       );
       sortedItemIndex.push(changePivotIndex);
 
-      await this.doUIWork([
-        this.viewItemSortedColor.bind(this, changePivotIndex),
-        this.viewRemoveArrow.bind(this, ARROW_TYPE.LEFT),
-        this.viewRemoveArrow.bind(this, ARROW_TYPE.RIGHT),
+      this.model.uiTaskQueue.enqueue([
+        { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: changePivotIndex } },
+        { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.REMOVE, type: ARROW_TYPE.LEFT } },
+        { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.REMOVE, type: ARROW_TYPE.RIGHT } },
       ]);
 
-      await this.doUIWork([
-        this.viewItemResetStatusAll.bind(this, sortedItemIndex),
+      this.model.uiTaskQueue.enqueue([
+        { type: UI_WORK_TYPE.RESET, value: { type: RESET_TYPE.ALL, exceptIndexList: [...sortedItemIndex] } },
       ]);
 
-      await _quickSort.call(this, sortList, leftIndex, partitionIndex - 1);
-      await _quickSort.call(this, sortList, partitionIndex, rightIndex);
+      _quickSort.call(this, sortList, leftIndex, partitionIndex - 1);
+      _quickSort.call(this, sortList, partitionIndex, rightIndex);
 
-      async function divide(sortList, leftIndex, rightIndex, pivotIndex) {
+      function divide(sortList, leftIndex, rightIndex, pivotIndex) {
         const pivot = sortList[pivotIndex];
 
-        await this.doUIWork([
-          this.viewAddArrow.bind(this, leftIndex, ARROW_TYPE.LEFT),
-          this.viewAddArrow.bind(this, rightIndex, ARROW_TYPE.RIGHT),
+        this.model.uiTaskQueue.enqueue([
+          { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.ADD,  type: ARROW_TYPE.LEFT, index: leftIndex} },
+          { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.ADD,  type: ARROW_TYPE.RIGHT, index: rightIndex} },
         ]);
 
         while (leftIndex <= rightIndex) {
           while (sortList[leftIndex] < pivot) {
+            const uiTaskSetForLeft = [];
             if (leftIndex !== pivotIndex) {
-              this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
+              uiTaskSetForLeft.push(
+                { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SMALL, index: leftIndex } }
+              );
             }
-            await this.doUIWork([
-              this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT),
-            ]);
+
+            uiTaskSetForLeft.push(
+              { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.MOVE,  type: ARROW_TYPE.LEFT } }
+            );
+
+            this.model.uiTaskQueue.enqueue(uiTaskSetForLeft);
             leftIndex++;
           }
 
           if (leftIndex !== pivotIndex) {
-            await this.doUIWork([
-              this.viewItemSelect.bind(this, leftIndex, false),
+            this.model.uiTaskQueue.enqueue([
+              { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SELECTED, index: leftIndex } },
             ]);
           }
 
           while (sortList[rightIndex] > pivot) {
+            const uiTaskSetForRight = [];
             if (rightIndex !== pivotIndex) {
-              this.doUIWork([this.viewItemLarge.bind(this, rightIndex)]);
+              uiTaskSetForRight.push(
+                { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.LARGE, index: rightIndex } }
+              );
             }
-            await this.doUIWork([
-              this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT),
-            ]);
+
+            uiTaskSetForRight.push(
+              { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.MOVE,  type: ARROW_TYPE.RIGHT } }
+            );
+
+            this.model.uiTaskQueue.enqueue(uiTaskSetForRight);
             rightIndex--;
           }
 
           if (leftIndex !== pivotIndex) {
-            await this.doUIWork([
-              this.viewItemSelect.bind(this, rightIndex, false),
+            this.model.uiTaskQueue.enqueue([
+              { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SELECTED, index: rightIndex } },
             ]);
           }
 
@@ -369,22 +471,20 @@ export default class Controller {
 
             this.swapOnRealList(sortList, leftIndex, rightIndex);
 
-            await this.doUIWork([
-              this.viewItemResetStatus.bind(this, leftIndex),
-              this.viewItemResetStatus.bind(this, rightIndex),
-              this.viewItemChange.bind(this, leftIndex, rightIndex),
+            this.model.uiTaskQueue.enqueue([
+              { type: UI_WORK_TYPE.RESET, value: { type: RESET_TYPE.ONE, index: leftIndex } },
+              { type: UI_WORK_TYPE.RESET, value: { type: RESET_TYPE.ONE, index: rightIndex } },
+              { type: UI_WORK_TYPE.SWAP, value: { fromIndex: leftIndex, toIndex: rightIndex } },
             ]);
-
-            this.view.swapOnDomList(leftIndex, rightIndex);
 
             leftIndex++;
             rightIndex--;
 
             if (leftIndex >= rightIndex) continue;
 
-            await this.doUIWork([
-              this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT),
-              this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT),
+            this.model.uiTaskQueue.enqueue([
+              { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.MOVE,  type: ARROW_TYPE.LEFT } },
+              { type: UI_WORK_TYPE.ARROW, value: { commend: ARROW_COMMEND.MOVE,  type: ARROW_TYPE.RIGHT } },
             ]);
           }
         }

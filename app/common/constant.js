@@ -57,10 +57,22 @@ export const ARROW_TYPE = {
   RIGHT: 'right',
 }
 
+export const RESET_TYPE = {
+  ALL: 'all',
+  ONE: 'one',
+}
+
+export const ARROW_COMMEND = {
+  ADD: 'add',
+  MOVE: 'move',
+  REMOVE: 'remove',
+}
+
 export const UI_WORK_TYPE = {
   STATUS: 'status',
   SWAP: 'swap',
   ARROW: 'arrow',
+  RESET: 'reset',
 }
 
 export default {
