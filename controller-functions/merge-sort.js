@@ -3,7 +3,6 @@ import divideCloudsInCanvas from "../view-functions/divide-clouds-in-canvas";
 import swapCloudsInCanvas from "../view-functions/swap-clouds-in-canvas";
 
 async function getMergeSortedArray(left, right) {
-  // let beforeMerge = [...left, ...right];
   let result = [];
   let leftArray = Array.from(left);
   let rightArray = Array.from(right);
@@ -45,16 +44,10 @@ export default async function mergeSort(array) {
   divideCloudsInCanvas(left, right);
   await delay();
 
-  let leftVal;
-  let rightVal;
-  let unMerged;
-  let merged;
-
-  await mergeSort(left).then(response => leftVal = response);
-  await mergeSort(right).then(response => rightVal = response);
-  unMerged = [...leftVal, ...rightVal];
-  
-  await getMergeSortedArray(leftVal, rightVal).then(response => merged = response);
+  let leftVal = await mergeSort(left);
+  let rightVal = await mergeSort(right);
+  let unMerged = [...leftVal, ...rightVal];
+  let merged = await getMergeSortedArray(leftVal, rightVal);
 
   swapCloudsInCanvas(merged, unMerged);
   await delay();
