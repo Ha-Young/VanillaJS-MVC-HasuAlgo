@@ -3,12 +3,12 @@ export default class Model {
     this.numbers = [];
     
     this.errors = {
-      inputNotEnough: "At least 5 inputs needed",
+      inputNotEnough: "At least 5 inputs required",
       inputOverLimit: "Upto 10 numbers allowed",
     };
   }
 
-  checkIfInputValid(input) {
+  checkInputValidation(input) {
     if (input.length < 5) {
       return [false, this.errors.inputNotEnough];
     }

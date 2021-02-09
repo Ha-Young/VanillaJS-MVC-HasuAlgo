@@ -46,9 +46,9 @@ export default async function mergeSort(array) {
 
   let leftVal = await mergeSort(left);
   let rightVal = await mergeSort(right);
-  let unMerged = [...leftVal, ...rightVal];
   let merged = await getMergeSortedArray(leftVal, rightVal);
-
+  
+  let unMerged = [...leftVal, ...rightVal];
   swapCloudsInCanvas(merged, unMerged);
   await delay();
 
