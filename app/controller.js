@@ -60,20 +60,23 @@ export default class Controller {
   }
 
   async bubbleSort(data) {
-    const DELAY_TIME = 500;
+    const DELAY_TIME = 1000;
 
     for (let j = 0; j < data.length; j++) {
       for (let i = 0; i < data.length; i++) {
+        let isSwap = false;
         if (data[i] > data[i + 1]) {
           const temp = data[i];
           data[i] = data[i + 1];
           data[i + 1] = temp;
+          isSwap = true;
         }
 
         const wait = this.delayAndRender({
           sortData: data,
           leftElement: i,
           rightElement: i + 1,
+          isSwap: isSwap
         }, DELAY_TIME);
 
         wait.then(this.view.render);
@@ -97,7 +100,7 @@ export default class Controller {
   }
 
   async partition(data, left, right) {
-    const delayTime = 500;
+    const DELAY_TIME = 1000;
     let pivotIndex;
     let pivot;
     let _left = left;
@@ -107,6 +110,7 @@ export default class Controller {
     pivot = data[pivotIndex];
 
     while (_left <= _right) {
+      let isSwap = false;
       if (_left + 1 >= _right) {
         _left = left;
         _right = right;
@@ -122,6 +126,7 @@ export default class Controller {
 
       if (_left <= _right) {
         let temp;
+        isSwap = true;
         temp = data[_left];
         data[_left] = data[_right];
         data[_right] = temp;
@@ -130,8 +135,9 @@ export default class Controller {
           sortData: data,
           leftElement: _left,
           rightElement: _right,
+          isSwap: isSwap,
           pivotIndex: pivotIndex
-        }, delayTime);
+        }, DELAY_TIME);
 
         wait.then(this.view.render);
         await wait;

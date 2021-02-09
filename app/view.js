@@ -1,5 +1,8 @@
-//import a from "../assets/images/chicken.jpg"
 export default class View {
+  constructor() {
+    this.barOriginalPosition = [];
+  }
+
   addEvent(target, event, handler) {
     document.querySelector(target).addEventListener(event, handler);
   }
@@ -25,40 +28,37 @@ export default class View {
 
     for (let i = 0; i < data.length; i++) {
       $animationBox.appendChild(document.createElement('div'));
+      $animationBox.children[i].dataset.id = i;
+      $animationBox.children[i].dataset.moveDistance = 0;
       $animationBox.children[i].textContent = data[i];
-      $animationBox.children[i].style.height = `${ANIMATION_BOX_HEIGHT * data[i] / maxData}px`;
+      $animationBox.children[i].style.cssText = `height: ${ANIMATION_BOX_HEIGHT * data[i] / maxData}px`;
     }
   }
 
   render(data) {
-    const {sortData, leftElement, rightElement} = data;
-    const $animationBox = document.querySelector('.animation-box');
+    const {sortData, leftElement, rightElement, isSwap} = data;
     const $statusBox = document.querySelector('.status-box');
     const $playElements = document.querySelectorAll('.play');
-    const $pivotElement = document.querySelectorAll('.pivot');
-    const leftBar = $animationBox.children[leftElement % sortData.length];
-    const rightBar = $animationBox.children[rightElement % sortData.length];
-    const maxData = Math.max(...sortData);
-    const animationBoxHeight = 200;
+    const leftBar = document.querySelector(`[data-id="${leftElement % sortData.length}"]`);
+    const rightBar = document.querySelector(`[data-id="${rightElement % sortData.length}"]`);
+    const distance = rightBar.getBoundingClientRect().x- leftBar.getBoundingClientRect().x;
 
+    $statusBox.textContent = 'Searching';
     Array.prototype.forEach.call($playElements, item => item.classList.remove('play'));
-    Array.prototype.forEach.call($pivotElement, item => item.classList.remove('pivot'));
-
     leftBar.classList.add('play');
     rightBar.classList.add('play');
 
-    console.log(leftBar.getBoundingClientRect())
-    //elem.getBoundingClientRect()
+    if (isSwap) {
+      const temp = leftBar.dataset.id;
 
-    leftBar.textContent = sortData[leftElement % sortData.length];
-    rightBar.textContent = sortData[(rightElement) % sortData.length];
-
-    leftBar.style.height = `${animationBoxHeight * sortData[leftElement % sortData.length] / maxData}px`;
-    rightBar.style.height = `${animationBoxHeight * sortData[rightElement % sortData.length] / maxData}px`;
-
-    $statusBox.textContent = 'Searching';
+      leftBar.dataset.moveDistance = parseInt(leftBar.dataset.moveDistance, 10) + distance;
+      rightBar.dataset.moveDistance = parseInt(rightBar.dataset.moveDistance, 10) - distance;
+      leftBar.style.transform = `translate(${leftBar.dataset.moveDistance}px)`;
+      rightBar.style.transform = `translate(${rightBar.dataset.moveDistance}px)`;
+      leftBar.dataset.id = rightBar.dataset.id;
+      rightBar.dataset.id = temp;
+    }
 
     return;
   }
 };
-
