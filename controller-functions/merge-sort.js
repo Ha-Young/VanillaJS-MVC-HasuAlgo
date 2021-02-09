@@ -1,7 +1,8 @@
 import delay from "../model-functions/delay";
+import swapCloudsInCanvas from "../view-functions/swap-clouds-in-canvas";
 
 async function getMergeSortedArray(left, right) {
-  let beforeMerge = [...left, ...right];
+  // let beforeMerge = [...left, ...right];
   let result = [];
   let leftArray = Array.from(left);
   let rightArray = Array.from(right);
@@ -27,10 +28,7 @@ async function getMergeSortedArray(left, right) {
     result.push(numberFromRight);
     result.push(...rightArray);
   }
-
-  this.view.swapCloudsInCanvas(result, beforeMerge);
-  await delay();
-
+  
   return result;
 }
 
@@ -48,14 +46,19 @@ async function divide(array) {
 
   let leftVal;
   let rightVal;
-  let result;
+  let unMerged;
+  let merged;
 
   await divide.call(this, left).then(response => leftVal = response);
   await divide.call(this, right).then(response => rightVal = response);
   
-  await getMergeSortedArray.call(this, leftVal, rightVal).then(response => result = response);
+  await getMergeSortedArray.call(this, leftVal, rightVal).then(response => merged = response);
 
-  return result;
+  unMerged = [...leftVal, ...rightVal];
+  swapCloudsInCanvas(merged, unMerged);
+  await delay();
+
+  return merged;
 }
 
 export default function mergeSort(array) {

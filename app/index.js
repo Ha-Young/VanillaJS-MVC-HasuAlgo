@@ -12,4 +12,3 @@ import View from "../mvc-class/view";
 // ================================
 
 const app = new Controller(new Model(), new View());
-
