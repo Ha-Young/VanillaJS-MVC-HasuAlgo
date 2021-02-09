@@ -1,5 +1,6 @@
 import CONSTANT, { ITEM, THEME, SORT_TYPE } from "../common/constant";
-import { SortItemList, ArrowTaskType } from "../common/typeDef";
+import UITaskQueue from './utils/taskQueue';
+import { SortItemList, SortItem, UITaskQueueType } from "../common/typeDef";
 
 export default class Model {
   constructor() {
@@ -7,6 +8,7 @@ export default class Model {
     this._sortMaxNum = -1;
     this._currentSortType = SORT_TYPE.INSERT;
     this._currentTheme = THEME.LIGHT_THEME;
+    this.uiTaskQueue = new UITaskQueue();
   }
 
   initData(data) {
@@ -95,8 +97,14 @@ export default class Model {
 
     return sortItemList;
   }
-
+  /**
+   * Format the contents of a sort list.
+   *
+   * @returns {SortItem} sort list items
+   *
+   */
   createSortItem(value, xPos) {
+    value
     const heightRatio = ITEM.MAX_HEIGHT / this._sortMaxNum;
     const rectHeight = value * heightRatio;
     const textYPos =

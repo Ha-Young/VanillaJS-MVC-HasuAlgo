@@ -24,26 +24,33 @@ export var SortItem;
 export var SortItemList;
 
 /**
- * @typedef {!{!index: number, !status: string, moveOption: boolean}}
+ * @typedef {{type: 'sorted' | 'selected' | 'check' | 'pivot' | 'small' | 'large',
+ *            index: number, moveOption: boolean}}
  */
-export var ItemStatusChange;
+export var StatusTask;
 
 /**
- * @typedef {!{aIndex: number, bIndex: number}}
+ * @typedef {{aIndex: number, bIndex: number}}
  */
-export var SwapItemPosition;
+export var SwapTask;
 
 /**
- * @typedef {{type: 'add' | 'move' | 'remove'}}
+ * @typedef {{commend: 'add' | 'move' | 'remove',
+ *            type: 'left' | 'right'}}
  */
-export var ArrowTaskType;
+export var ArrowTask;
 
 /**
- * @typedef {!{taskType: UIStatus || ArrowTaskType}}
+ * @typedef {{taskType: 'status' | 'swap' | 'arrow', value: StatusTask | SwapTask | ArrowTask}
  */
 export var UITask;
 
 /**
- * @typedef {!Array<UITask>}}
+ * @typedef {!Array<UITask>}
  */
-export var UITaskQueue;
+export var UITaskSet;
+
+/**
+ * @typedef {!Array<UITaskSet>}}
+ */
+export var UITaskQueueType;

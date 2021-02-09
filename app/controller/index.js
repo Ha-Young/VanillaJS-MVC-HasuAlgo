@@ -1,6 +1,12 @@
 import Model from "../model";
 import View from "../view";
-import CONSTANT, { SORT_TYPE, PIVOT_KINDS, ARROW_TYPE, PIVOT_KINDS } from "../common/constant";
+import CONSTANT, {
+  SORT_TYPE,
+  PIVOT_KINDS,
+  ARROW_TYPE,
+  STATUS_TYPE,
+  UI_WORK_TYPE,
+} from "../common/constant";
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -33,6 +39,7 @@ export default class Controller {
       const sortList = this.model.initData(inputData);
       this.setNumsView(sortList);
       this.isReadySort = true;
+      this.model.uiTaskQueue.reset();
     } catch (error) {
       this.view.setErrorMsg(error);
     }
@@ -98,23 +105,32 @@ export default class Controller {
   }
 
   sortAccordingType(sortType) {
-    debugger;
     const sortList = [...this.model.sortList];
-    let sortedListPromise;
 
     switch (sortType) {
       case SORT_TYPE.INSERT:
-        sortedListPromise = this.insertionSort(sortList);
+        this.insertionSort(sortList);
         break;
 
       case SORT_TYPE.QUICK:
-        sortedListPromise = this.quickSort(sortList);
+        this.quickSort(sortList);
         break;
     }
 
-    sortedListPromise.then(() => {
-      this.view.setInfoMsg('sort 완료!');
-    });
+    this.doUITaskProcess();
+    // .then(() => {
+    //   this.view.setInfoMsg("sort 완료!");
+    // });
+  }
+
+  doUITaskProcess() {
+    console.log(this.model.uiTaskQueue);
+    debugger;
+    while (this.model.uiTaskQueue.checkTask()) {
+      const uiTaskSet = this.model.uiTaskQueue.dequeue();
+
+      console.log(uiTaskSet);
+    }
   }
 
   doUIWork(uiTasks) {
@@ -179,24 +195,36 @@ export default class Controller {
   }
 
   async insertionSort(sortList) {
-    this.model.taskQueue
-    await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
+    this.model.uiTaskQueue.enqueue([
+      { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: 0 } },
+    ]);
+    //await this.doUIWork([this.viewItemSortedColor.bind(this, 0)]);
 
     for (let i = 1; i < sortList.length; i++) {
       let keyIndex = i;
-      await this.doUIWork([this.viewItemSelect.bind(this, keyIndex, true)]);
+
+      this.model.uiTaskQueue.enqueue([
+        { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SELECTED, index: keyIndex } },
+      ]);
+      //await this.doUIWork([this.viewItemSelect.bind(this, keyIndex, true)]);
 
       let checkIndex = keyIndex - 1;
 
-      await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
+      this.model.uiTaskQueue.enqueue([
+        { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.CHECK, index: checkIndex } },
+      ]);
+      //await this.doUIWork([this.viewItemCheckColor.bind(this, checkIndex)]);
 
       while (checkIndex >= 0) {
         if (sortList[checkIndex] > sortList[keyIndex]) {
           this.swapOnRealList(sortList, checkIndex, keyIndex);
 
-          await this.doUIWork([
-            this.viewItemChange.bind(this, checkIndex, keyIndex),
+          this.model.uiTaskQueue.enqueue([
+            { type: UI_WORK_TYPE.SWAP, value: { aIndex: checkIndex, bIndex: keyIndex} },
           ]);
+          // await this.doUIWork([
+          //   this.viewItemChange.bind(this, checkIndex, keyIndex),
+          // ]);
 
           this.view.swapOnDomList(checkIndex, keyIndex);
 
@@ -204,22 +232,35 @@ export default class Controller {
           keyIndex--;
 
           if (checkIndex < 0) {
-            await this.doUIWork([
-              this.viewItemSortedColor.bind(this, keyIndex + 1),
-              this.viewItemSortedColor.bind(this, keyIndex),
+            this.model.uiTaskQueue.enqueue([
+              { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex + 1 } },
+              { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex } },
             ]);
+            // await this.doUIWork([
+            //   this.viewItemSortedColor.bind(this, keyIndex + 1),
+            //   this.viewItemSortedColor.bind(this, keyIndex),
+            // ]);
             continue;
           }
 
-          await this.doUIWork([
-            this.viewItemSortedColor.bind(this, keyIndex + 1),
-            this.viewItemCheckColor.bind(this, checkIndex),
+          this.model.uiTaskQueue.enqueue([
+            { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex + 1 } },
+            { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.CHECK, index: checkIndex } },
           ]);
+
+          // await this.doUIWork([
+          //   this.viewItemSortedColor.bind(this, keyIndex + 1),
+          //   this.viewItemCheckColor.bind(this, checkIndex),
+          // ]);
         } else {
-          await this.doUIWork([
-            this.viewItemSortedColor.bind(this, checkIndex),
-            this.viewItemSortedColor.bind(this, keyIndex),
+          this.model.uiTaskQueue.enqueue([
+            { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: keyIndex } },
+            { type: UI_WORK_TYPE.STATUS, value: { type: STATUS_TYPE.SORTED, index: checkIndex } },
           ]);
+          // await this.doUIWork([
+          //   this.viewItemSortedColor.bind(this, checkIndex),
+          //   this.viewItemSortedColor.bind(this, keyIndex),
+          // ]);
           break;
         }
       }
@@ -243,11 +284,13 @@ export default class Controller {
         return;
       }
 
-      const pivotIndex = this.getPivotIndex(leftIndex, rightIndex, PIVOT_KINDS.MID);
+      const pivotIndex = this.getPivotIndex(
+        leftIndex,
+        rightIndex,
+        PIVOT_KINDS.MID
+      );
 
-      await this.doUIWork([
-        this.viewItemPivotColor.bind(this, pivotIndex),
-      ]);
+      await this.doUIWork([this.viewItemPivotColor.bind(this, pivotIndex)]);
 
       const [partitionIndex, changePivotIndex] = await divide.call(
         this,
@@ -284,7 +327,9 @@ export default class Controller {
             if (leftIndex !== pivotIndex) {
               this.doUIWork([this.viewItemSmall.bind(this, leftIndex)]);
             }
-            await this.doUIWork([this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT)]);
+            await this.doUIWork([
+              this.viewArrowMoveNext.bind(this, ARROW_TYPE.LEFT),
+            ]);
             leftIndex++;
           }
 
@@ -298,7 +343,9 @@ export default class Controller {
             if (rightIndex !== pivotIndex) {
               this.doUIWork([this.viewItemLarge.bind(this, rightIndex)]);
             }
-            await this.doUIWork([this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT)]);
+            await this.doUIWork([
+              this.viewArrowMoveNext.bind(this, ARROW_TYPE.RIGHT),
+            ]);
             rightIndex--;
           }
 
