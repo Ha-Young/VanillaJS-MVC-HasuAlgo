@@ -24,4 +24,3 @@ export default function handleInput(e) {
   this.view.toggleVisibility("mergeButton");
   this.view.toggleVisibility("startForm");
 }
-
