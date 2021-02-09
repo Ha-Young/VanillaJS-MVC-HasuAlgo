@@ -1,7 +1,7 @@
 import getFilteredNumbers from "./get-filtered-numbers";
 
 export default function handleInput(e) {
-  const key = e.key;
+  const { key } = e;
 
   if (key !== "Enter") {
     return false;
