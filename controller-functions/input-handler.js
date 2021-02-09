@@ -8,7 +8,7 @@ export default function handleInput(e) {
   }
 
   const inputValues = getFilteredNumbers(this.view);
-  const [isvalid, message] = this.model.checkInputValidation(inputValues);
+  const [isvalid, message] = this.checkInputValidation(inputValues);
 
   if (!isvalid) {
     this.view.displayMessage("alertBox", message);

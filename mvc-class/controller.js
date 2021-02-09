@@ -30,6 +30,18 @@ export default class Controller {
     this.view.addEventListeners(this.eventHandlers);
   }
 
+  checkInputValidation(input) {
+    if (input.length < 5) {
+      return [false, this.model.errors.inputNotEnough];
+    }
+
+    if (input.length > 10) {
+      return [false, this.model.errors.inputOverLimit];
+    }
+
+    return [true];
+  }
+
   runMergeSort() {
     mergeSort.call(this, this.model.numbers);
   }
