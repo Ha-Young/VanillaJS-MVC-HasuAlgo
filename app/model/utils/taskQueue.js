@@ -1,11 +1,27 @@
+import { UITaskSet } from '../../common/typeDef';
+
 export default function UITaskQueue() {
-  const taskQueue = [];
+  this.taskQueue = [];
 
   /**
-   *
-   * @param {} task
+   * @param {UITaskSet} taskSet
    */
-  this.add = function (task) {
-    taskQueue.push(task)
+  this.enqueue = function (taskSet) {
+    this.taskQueue.push(taskSet);
+  }
+
+  /**
+   * @return {UITaskSet} taskSet
+   */
+  this.dequeue = function () {
+    return this.taskQueue.shift();
+  }
+
+  this.checkTask = function () {
+    return this.taskQueue.length > 0 ? true : false;
+  }
+
+  this.reset = function () {
+    this.taskQueue = [];
   }
 }

@@ -43,7 +43,7 @@ export const PIVOT_KINDS = {
   END: 'end',
 };
 
-export const SORT_STATUS = {
+export const STATUS_TYPE = {
   SORTED: 'sorted',
   SELECTED: 'selected',
   CHECK: 'check',
@@ -55,6 +55,12 @@ export const SORT_STATUS = {
 export const ARROW_TYPE = {
   LEFT: 'left',
   RIGHT: 'right',
+}
+
+export const UI_WORK_TYPE = {
+  STATUS: 'status',
+  SWAP: 'swap',
+  ARROW: 'arrow',
 }
 
 export default {

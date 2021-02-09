@@ -8,7 +8,7 @@ import {
 import Templates from "./utils/templates";
 import { SortItemList } from "../common/typeDef";
 import { fromToTranslatePosition, positionFactory } from "./utils/animate";
-import { ITEM, ARROW, SORT_STATUS, ARROW_TYPE } from "../common/constant";
+import { ITEM, ARROW, STATUS_TYPE, ARROW_TYPE } from "../common/constant";
 
 export default class View {
   constructor() {
@@ -26,10 +26,10 @@ export default class View {
 
   bindOnClickSortTypeBtns(handler) {
     $on(this.$sortTypeBtns, "click", ({ currentTarget, target }) => {
-      target.classList.add(SORT_STATUS.SELECTED);
+      target.classList.add(STATUS_TYPE.SELECTED);
       for (const childNode of currentTarget.childNodes) {
         if (childNode !== target) {
-          childNode.classList && childNode.classList.remove(SORT_STATUS.SELECTED);
+          childNode.classList && childNode.classList.remove(STATUS_TYPE.SELECTED);
         }
       }
 
@@ -142,23 +142,23 @@ export default class View {
   setSortItemColorFromStatus(sortItemElement, status) {
     this.clearSortItemStatus(sortItemElement);
     switch (status) {
-      case SORT_STATUS.SORTED:
-        sortItemElement.classList.add(SORT_STATUS.SORTED);
+      case STATUS_TYPE.SORTED:
+        sortItemElement.classList.add(STATUS_TYPE.SORTED);
         break;
-      case SORT_STATUS.SELECTED:
-        sortItemElement.classList.add(SORT_STATUS.SELECTED);
+      case STATUS_TYPE.SELECTED:
+        sortItemElement.classList.add(STATUS_TYPE.SELECTED);
         break;
-      case SORT_STATUS.CHECK:
-        sortItemElement.classList.add(SORT_STATUS.CHECK);
+      case STATUS_TYPE.CHECK:
+        sortItemElement.classList.add(STATUS_TYPE.CHECK);
         break;
-      case SORT_STATUS.PIVOT:
-        sortItemElement.classList.add(SORT_STATUS.PIVOT);
+      case STATUS_TYPE.PIVOT:
+        sortItemElement.classList.add(STATUS_TYPE.PIVOT);
         break;
-      case SORT_STATUS.SMALL:
-        sortItemElement.classList.add(SORT_STATUS.SMALL);
+      case STATUS_TYPE.SMALL:
+        sortItemElement.classList.add(STATUS_TYPE.SMALL);
         break;
-      case SORT_STATUS.LARGE:
-        sortItemElement.classList.add(SORT_STATUS.LARGE);
+      case STATUS_TYPE.LARGE:
+        sortItemElement.classList.add(STATUS_TYPE.LARGE);
         break;
       default:
         throw new Error('Undefined Status Type Error');
@@ -180,7 +180,7 @@ export default class View {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
     const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
-    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.SORTED);
+    this.setSortItemColorFromStatus(sortItemElement, STATUS_TYPE.SORTED);
 
     if (duration) {
       const [currentXPos, currentYPos] = this.getSVGItemPosition(
@@ -205,10 +205,10 @@ export default class View {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
 
-    if (sortItemElement.classList.contains(SORT_STATUS.PIVOT)) return;
+    if (sortItemElement.classList.contains(STATUS_TYPE.PIVOT)) return;
 
     const sortItemRectHeight = this.getSortItemRectHeight(sortItemElement);
-    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.SELECTED);
+    this.setSortItemColorFromStatus(sortItemElement, STATUS_TYPE.SELECTED);
 
     if (isMoveDown && duration) {
       const [currentXPos, currentYPos] = this.getSVGItemPosition(
@@ -232,13 +232,13 @@ export default class View {
   setSortItemStatusCheck(index) {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
-    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.CHECK);
+    this.setSortItemColorFromStatus(sortItemElement, STATUS_TYPE.CHECK);
   }
 
   setSortItemStatusClear(index) {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
-    if (sortItemElement.classList.contains(SORT_STATUS.PIVOT)) return;
+    if (sortItemElement.classList.contains(STATUS_TYPE.PIVOT)) return;
     this.clearSortItemStatus(sortItemElement);
   }
 
@@ -250,8 +250,8 @@ export default class View {
     for (let i = 0; i < sortItemElements.length; i++) {
       const sortItemElement = sortItemElements[i];
       if (sortedIndexs.includes(i)) {
-        if (!sortItemElement.classList.contains(SORT_STATUS.SORTED)) {
-          this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.SORTED);
+        if (!sortItemElement.classList.contains(STATUS_TYPE.SORTED)) {
+          this.setSortItemColorFromStatus(sortItemElement, STATUS_TYPE.SORTED);
         }
         continue;
       }
@@ -290,25 +290,25 @@ export default class View {
   setSortItemStatusPivot(index) {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
-    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.PIVOT);
+    this.setSortItemColorFromStatus(sortItemElement, STATUS_TYPE.PIVOT);
   }
 
   setSortItemStatusSmall(index) {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
-    if (sortItemElement.classList.contains(SORT_STATUS.PIVOT)) return;
-    if (sortItemElement.classList.contains(SORT_STATUS.SORTED)) return;
+    if (sortItemElement.classList.contains(STATUS_TYPE.PIVOT)) return;
+    if (sortItemElement.classList.contains(STATUS_TYPE.SORTED)) return;
 
-    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.SMALL);
+    this.setSortItemColorFromStatus(sortItemElement, STATUS_TYPE.SMALL);
   }
 
   setSortItemStatusLarge(index) {
     if (index < 0) return;
     const sortItemElement = this.getSortItemElement(index);
-    if (sortItemElement.classList.contains(SORT_STATUS.PIVOT)) return;
-    if (sortItemElement.classList.contains(SORT_STATUS.SORTED)) return;
+    if (sortItemElement.classList.contains(STATUS_TYPE.PIVOT)) return;
+    if (sortItemElement.classList.contains(STATUS_TYPE.SORTED)) return;
 
-    this.setSortItemColorFromStatus(sortItemElement, SORT_STATUS.LARGE);
+    this.setSortItemColorFromStatus(sortItemElement, STATUS_TYPE.LARGE);
   }
 
   addArrow(index, arrowType) {
@@ -320,7 +320,7 @@ export default class View {
       sortItemElement
     );
 
-    if (arrowType === SORT_STATUS.PIVOT) {
+    if (arrowType === STATUS_TYPE.PIVOT) {
       const arrowXPos = ARROW.DISTANCE_XPOS;
       const arrowYPos = sortItemRectHeight + ARROW.DISTANCE_YPOS;
       this.makeArrowDOM(sortItemElement, arrowType, arrowXPos, arrowYPos);
