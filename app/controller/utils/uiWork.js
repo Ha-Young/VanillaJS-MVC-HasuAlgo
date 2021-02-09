@@ -35,6 +35,10 @@ export default class uiWork {
     });
   }
 
+  /**
+   *
+   * @param {UiTaskSet} uiTaskSet
+   */
   doUIWorkOnTaskSet(uiTaskSet) {
     for (const uiTask of uiTaskSet) {
       switch (uiTask.type) {
