@@ -11,10 +11,10 @@ export default class View {
     this.$startButton = document.querySelector(".start");
     this.$blocksContainer;
     this.$blocks;
-    this.blockWidth;
-    this.blockMargin;
+    this.$numberPointer;
+    this.gapUnit;
     this.DELAY = 200;
-    this.SPACE = 50;
+    this.SPACE = 30;
 
     this.render = {
       generateBlocks: (data) => {
@@ -39,8 +39,9 @@ export default class View {
         this.$content.appendChild($blocksContainer);
         this.$blocksContainer = $blocksContainer;
         const style = getComputedStyle(this.$blocks[0]);
-        this.blockWidth = parseInt(style.width.replace("px", ""), 10);
-        this.blockMargin = parseInt(style.margin.replace("px", ""), 10);
+        const blockWidth = parseInt(style.width.replace("px", ""), 10);
+        const blockMargin = parseInt(style.margin.replace("px", ""), 10);
+        this.gapUnit = blockMargin * 2 + blockWidth;
       },
       clearBlocks: () => {
         this._clearContent();
@@ -113,7 +114,7 @@ export default class View {
 
     const $blockI = this.$blocks[i];
     const $blockJ = this.$blocks[j];
-    const gap = Math.abs(i - j) * (this.blockMargin * 2 + this.blockWidth);
+    const gap = Math.abs(i - j) * this.gapUnit;
     this._moveBlocks($blockI, gap, false);
     this._moveBlocks($blockJ, gap, true);
     this.$blocks[i] = $blockJ;
@@ -136,18 +137,26 @@ export default class View {
     await this._wait(400);
   }
 
-  gatherBlocks = async (p) => {
-    this.$blocks.forEach(($block, i) => {
-      if (p > i) {
-        this._moveBlocks($block, this.SPACE, false);
-      }
+  gatherBlocks = async (l, h) => {
+    // this.$blocks.forEach(($block, i) => {
+    //   if (p > i) {
+    //     this._moveBlocks($block, this.SPACE, false);
+    //   }
 
-      if (p < i) {
-        this._moveBlocks($block, this.SPACE, true);
-      }
-    });
+    //   if (p < i) {
+    //     this._moveBlocks($block, this.SPACE, true);
+    //   }
+    // });
+    for (l; l < h; l++) {
+      const $block = this.$blocks[l];
+      const distance = parseInt($block.getAttribute("data-distance"), 10);
 
-    await this._wait(400);
+      while (distance % this.gapUnit) {
+        $block.style.transform = `translateX(${distance + this.SPACE}px)`;
+        $block.setAttribute("data-distance", distance + this.SPACE);
+        console.log("hi");
+      }
+    }
   }
 
   changePickedBlocksColor = async (i, j) => {
@@ -166,12 +175,39 @@ export default class View {
 
   decideSorted = async (i) => {
     this._addColor(i, "sorted");
+    this._removePivotPointer(i);
     await this._wait(this.DELAY);
   }
 
   changePivotBlockColor = async (i, blockState = "pivot") => {
     this.$blocks[i].classList.add(blockState);
+    this._pointPivot(i);
     await this._wait(this.DELAY);
+  }
+
+  _generatePointer = (value) => {
+    if (this.$numberPointer) {
+      return this.$numberPointer;
+    }
+
+    const $numberPointer = document.createElement("div");
+    const $pointerSpan = document.createElement("span");
+    $numberPointer.classList.add("number-pointer");
+    $pointerSpan.classList.add("pointer-span");
+    $pointerSpan.textContent = value;
+    $numberPointer.appendChild($pointerSpan);
+    this.$numberPointer = $numberPointer;
+    return $numberPointer;
+  }
+
+  _pointPivot = (i) => {
+    const $pivotPointer = this._generatePointer("pivot");
+    this.$blocks[i].appendChild($pivotPointer);
+  }
+
+  _removePivotPointer = (i) => {
+    const $pivotPointer = this.$blocks[i].querySelector(".number-pointer");
+    if ($pivotPointer) this.$blocks[i].removeChild($pivotPointer);
   }
 
   _moveBlocks = ($block, movingDistance, isLeft) => {

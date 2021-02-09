@@ -18,9 +18,9 @@ h1 {
 }
 
 .inputs-container {
+  width: 800px;
   border: 1px solid black;
   border-radius: 10px;
-  width: 800px;
 }
 
 .inputs-container * {
@@ -28,38 +28,64 @@ h1 {
 }
 
 .content {
-  margin: 20px auto;
-  padding: 10px;
   display: flex;
-  text-align: center;
   align-items: flex-end;
   justify-content: center;
-  border: 1px solid black;
-  border-radius: 10px;
+  margin: 20px auto;
+  padding: 10px;
   width: 70vw;
   height: 70vh;
+  border: 1px solid black;
+  border-radius: 10px;
 }
 
 .blocks-container {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: 40vw;
   width: 40vh;
+  height: 40vw;
 }
 
 .number-block {
   margin: 10px;
-  position: relative;
   width: 28px;
   max-height: 600px;
+  position: relative;
   transition: all 0.1s ease-in-out;
 }
 
 .number-span {
   position: absolute;
   top: -20px;
-  left: 3px;
+  left: 0px;
+}
+
+.number-pointer {
+  display:inline-block;
+  width:10px;
+  height:20px;
+  position:relative;
+  top: -70px;
+  background:#bdb2ff;
+}
+
+.number-pointer:after {
+  content:"";
+  width:0;
+  height:0;
+  position:absolute;
+  top:20px;
+  left:-10px;
+  border-style:solid;
+  border-width:20px 15px;
+  border-color:#bdb2ff transparent transparent transparent;
+}
+
+.pointer-span {
+  position: absolute;
+  top: -20px;
+  left: -10px;
 }
 
 .normal {

@@ -80,8 +80,9 @@ export default class Model {
     const i = await this._partition(0, this.numberArray.length - 1, view);
     await view.partitionBlocks(i);
     await this._quickSort(0, i - 1, view);
+    //view.gatherBlocks(0, i);
     await this._quickSort(i + 1, this.numberArray.length - 1, view);
-    await view.gatherBlocks(i);
+    //view.gatherBlocks(i, this.numberArray.length - 1);
   }
 
   _quickSort = async (low, high, view) => {
@@ -89,8 +90,9 @@ export default class Model {
       const i = await this._partition(low, high, view);
       await view.partitionBlocks(i);
       await this._quickSort(low, i - 1, view);
+      //view.gatherBlocks(low, i - 1);
       await this._quickSort(i + 1, high, view);
-      await view.gatherBlocks(i);
+      //view.gatherBlocks(i + 1, high);
     }
 
     if (low === high) await view.decideSorted(low);
@@ -102,6 +104,7 @@ export default class Model {
     changePickedBlocksColor,
     swapBlocks,
     revertBlocksColor,
+    removePivotPointer,
     decideSorted }) => {
     const pivot = this.numberArray[high];
     let i;
