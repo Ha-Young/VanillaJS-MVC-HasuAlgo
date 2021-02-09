@@ -33,7 +33,7 @@ async function getMergeSortedArray(left, right) {
   return result;
 }
 
-async function divide(array) {
+export default async function mergeSort(array) {
   if (array.length === 1) {
     return array;
   }
@@ -50,18 +50,14 @@ async function divide(array) {
   let unMerged;
   let merged;
 
-  await divide(left).then(response => leftVal = response);
-  await divide(right).then(response => rightVal = response);
+  await mergeSort(left).then(response => leftVal = response);
+  await mergeSort(right).then(response => rightVal = response);
+  unMerged = [...leftVal, ...rightVal];
   
   await getMergeSortedArray(leftVal, rightVal).then(response => merged = response);
 
-  unMerged = [...leftVal, ...rightVal];
   swapCloudsInCanvas(merged, unMerged);
   await delay();
 
   return merged;
-}
-
-export default function mergeSort(array) {
-  divide(array);
 }
