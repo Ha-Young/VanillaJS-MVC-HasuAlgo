@@ -17,7 +17,7 @@ export default async function bubbleSort(array) {
       break;
     }
     
-    let beforeSort = Array.from(numbers);
+    const beforeSort = Array.from(numbers);
 
     for (let j = 0; j < numbers.length - 1; j++) {
       if (numbers[j] > numbers[j + 1]) {
