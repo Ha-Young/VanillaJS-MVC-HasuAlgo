@@ -1,3 +1,5 @@
+import UItaskQueue from "../utils/taskQueue.js";
+
 export default class Controller {
   "use strict";
   /**
@@ -11,6 +13,7 @@ export default class Controller {
     this.model = Model;
     this.view = View;
     this.viewEvents = ["formSubmit", "startSort"];
+    this.taskQueue = new UItaskQueue();
 
     this.view.bind(this.viewEvents[0], (selection, input) => {
       this.setInitialState(selection, input);
@@ -39,13 +42,13 @@ export default class Controller {
 
     switch (sortType) {
       case "Bubble Sort":
-        this.model.bubbleSort(this.view);
+        this.model.bubbleSort(this.taskQueue, this.view);
         break;
       case "Insertion Sort":
         alert("Sorry for Inconviniece.\nIt's not ready yet.");
         break;
       case "Quick Sort":
-        this.model.quickSort(this.view);
+        this.model.quickSort(this.taskQueue, this.view);
         break;
       case "Merge Sort":
         alert("Sorry for Inconviniece.\nIt's not ready yet.");
@@ -53,5 +56,59 @@ export default class Controller {
       default:
         throw new Error("Unavailable sort type. Please check the sort type.")
     }
+
+    this.executeTask();
+  }
+
+  executeTask = async () => {
+    let currentTask = this.taskQueue.dequeue();
+
+    if (!currentTask) return;
+
+    this.handleTask(currentTask);
+    await this._wait(200);
+    this.executeTask();
+  }
+
+  handleTask = (task) => {
+    switch (task.name) {
+      case "changeBlocksColor":
+        this.view.changeBlocksColor.apply(this.view, task.parameters);
+        break;
+      case "revertBlocksColor":
+        this.view.revertBlocksColor.apply(this.view, task.parameters);
+        break;
+      case "swapBlocks":
+        this.view.swapBlocks.apply(this.view, task.parameters);
+        break;
+      case "decideSorted":
+        this.view.decideSorted.apply(this.view, task.parameters);
+        break;
+      case "pointPivot":
+        this.view.pointPivot.apply(this.view, task.parameters);
+        break;
+      case "partitionBlocks":
+        this.view.partitionBlocks.apply(this.view, task.parameters);
+        break;
+      case "gatherBlocks":
+        this.view.gatherBlocks.apply(this.view, task.parameters);
+        break;
+      case "enableInputs":
+        this.view.enableInputs();
+        break;
+      case "disableInputs":
+        this.view.disableInputs();
+        break;
+      default:
+        throw new Error("Wrong task name");
+    }
+  }
+
+  _wait(delay) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, delay);
+    })
   }
 }

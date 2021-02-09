@@ -1,8 +1,7 @@
 export default class View {
   "use strict";
 
-  constructor(template) {
-    this.template = template;
+  constructor() {
     this.$form = document.querySelector("form");
     this.$numbers = document.querySelector(".numbers");
     this.$sortSelection = document.querySelector(".sort-selection");
@@ -13,7 +12,6 @@ export default class View {
     this.$blocks;
     this.$numberPointer;
     this.gapUnit;
-    this.DELAY = 200;
     this.SPACE = 30;
 
     this.render = {
@@ -32,7 +30,6 @@ export default class View {
           $blockNumber.textContent = datum.blockNumber;
           $block.appendChild($blockNumber);
           $blocksContainer.appendChild($block);
-
           this.$blocks.push($block);
         });
 
@@ -109,8 +106,8 @@ export default class View {
     this.$startButton.disabled = false;
   }
 
-  swapBlocks = async (i, j) => {
-    if (i === j) return this._wait(this.DELAY);
+  swapBlocks = (i, j) => {
+    if (i === j) return;
 
     const $blockI = this.$blocks[i];
     const $blockJ = this.$blocks[j];
@@ -119,11 +116,9 @@ export default class View {
     this._moveBlocks($blockJ, gap, true);
     this.$blocks[i] = $blockJ;
     this.$blocks[j] = $blockI;
-
-    await this._wait(this.DELAY);
   }
 
-  partitionBlocks = async (p) => {
+  partitionBlocks = (p) => {
     this.$blocks.forEach(($block, i) => {
       if (p > i) {
         this._moveBlocks($block, this.SPACE, true);
@@ -133,56 +128,35 @@ export default class View {
         this._moveBlocks($block, this.SPACE, false);
       }
     });
-
-    await this._wait(400);
   }
 
-  gatherBlocks = async (l, h) => {
-    // this.$blocks.forEach(($block, i) => {
-    //   if (p > i) {
-    //     this._moveBlocks($block, this.SPACE, false);
-    //   }
-
-    //   if (p < i) {
-    //     this._moveBlocks($block, this.SPACE, true);
-    //   }
-    // });
-    for (l; l < h; l++) {
-      const $block = this.$blocks[l];
-      const distance = parseInt($block.getAttribute("data-distance"), 10);
-
-      while (distance % this.gapUnit) {
-        $block.style.transform = `translateX(${distance + this.SPACE}px)`;
-        $block.setAttribute("data-distance", distance + this.SPACE);
-        console.log("hi");
+  gatherBlocks = (p) => {
+    this.$blocks.forEach(($block, i) => {
+      if (p > i) {
+        this._moveBlocks($block, this.SPACE, false);
       }
-    }
+
+      if (p < i) {
+        this._moveBlocks($block, this.SPACE, true);
+      }
+    });
   }
 
-  changePickedBlocksColor = async (i, j) => {
-    if (j !== null) this._addColor(j);
+  changeBlocksColor = (i, j, state) => {
+    if (j !== null) this._addColor(j, state);
 
-    this._addColor(i);
-    await this._wait(this.DELAY);
+    this._addColor(i, state);
   }
 
-  revertBlocksColor = async (i, j) => {
-    if (j !== null) this._removeColor(j);
+  revertBlocksColor = (i, j, state) => {
+    if (j !== null) this._removeColor(j, state);
 
-    this._removeColor(i);
-    await this._wait(this.DELAY);
+    this._removeColor(i, state);
   }
 
-  decideSorted = async (i) => {
+  decideSorted = (i) => {
     this._addColor(i, "sorted");
     this._removePivotPointer(i);
-    await this._wait(this.DELAY);
-  }
-
-  changePivotBlockColor = async (i, blockState = "pivot") => {
-    this.$blocks[i].classList.add(blockState);
-    this._pointPivot(i);
-    await this._wait(this.DELAY);
   }
 
   _generatePointer = (value) => {
@@ -200,7 +174,7 @@ export default class View {
     return $numberPointer;
   }
 
-  _pointPivot = (i) => {
+  pointPivot = (i) => {
     const $pivotPointer = this._generatePointer("pivot");
     this.$blocks[i].appendChild($pivotPointer);
   }
@@ -222,25 +196,17 @@ export default class View {
     }
   }
 
-  _addColor = (i, color = "picked") => {
-    this.$blocks[i].classList.add(color);
+  _addColor = (i, state) => {
+    this.$blocks[i].classList.add(state);
   }
 
-  _removeColor = (i, color = "picked") => {
-    this.$blocks[i].classList.remove(color);
+  _removeColor = (i, state) => {
+    this.$blocks[i].classList.remove(state);
   }
 
   _clearContent = () => {
     while (this.$content.lastElementChild) {
       this.$content.removeChild(this.$content.lastElementChild);
     }
-  }
-
-  _wait(delay) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, delay);
-    })
   }
 }

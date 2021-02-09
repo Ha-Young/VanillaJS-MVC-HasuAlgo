@@ -1,3 +1,5 @@
+import { VIEW_METHODS } from "../commons/constants.js";
+
 export default class Model {
   "use strict";
 
@@ -49,87 +51,113 @@ export default class Model {
     callback(this.data);
   }
 
-  bubbleSort = async ({
-    changePickedBlocksColor,
-    swapBlocks,
-    revertBlocksColor,
-    decideSorted,
-    disableInputs,
-    enableInputs }) => {
-    disableInputs();
+  bubbleSort = (taskQueue) => {
+    let task;
+    task = this._createTask(VIEW_METHODS.DISABLE_INPUTS);
+    taskQueue.enqueue(task);
 
     for (let i = 0; i < this.numberArray.length; i++) {
       for (let j = 0; j < this.numberArray.length - i - 1; j++) {
-        await changePickedBlocksColor(j, j + 1);
+        task = this._createTask(VIEW_METHODS.CHANGE_BLOCKS_COLOR, j, j + 1, "picked");
+        taskQueue.enqueue(task);
 
         if (this.numberArray[j] > this.numberArray[j + 1]) {
-          await this._swap(j, j + 1, swapBlocks);
+          this._swap(j, j + 1);
+          task = this._createTask(VIEW_METHODS.SWAP_BLOCKS, j, j + 1);
+          taskQueue.enqueue(task);
         }
 
-        await revertBlocksColor(j, j + 1);
+        task = this._createTask(VIEW_METHODS.REVERT_BLOCKS_COLOR, j, j + 1, "picked");
+        taskQueue.enqueue(task);
       }
 
-      await decideSorted(this.numberArray.length - i - 1);
+      task = this._createTask(VIEW_METHODS.DECIDE_SORTED, this.numberArray.length - i - 1);
+      taskQueue.enqueue(task);
     }
 
-    enableInputs();
+    task = this._createTask(VIEW_METHODS.ENABLE_INPUTS);
+    taskQueue.enqueue(task);
   }
 
-  quickSort = async (view) => {
-    view.disableInputs();
-    const i = await this._partition(0, this.numberArray.length - 1, view);
-    await view.partitionBlocks(i);
-    await this._quickSort(0, i - 1, view);
-    //view.gatherBlocks(0, i);
-    await this._quickSort(i + 1, this.numberArray.length - 1, view);
-    //view.gatherBlocks(i, this.numberArray.length - 1);
+
+
+  quickSort = (taskQueue) => {
+    let task;
+    task = this._createTask(VIEW_METHODS.DISABLE_INPUTS);
+    taskQueue.enqueue(task);
+    const i = this._partition(taskQueue, 0, this.numberArray.length - 1);
+    task = this._createTask(VIEW_METHODS.PARTITION_BLOCKS, i);
+    taskQueue.enqueue(task);
+    this._quickSort(taskQueue, 0, i - 1);
+    this._quickSort(taskQueue, i + 1, this.numberArray.length - 1);
+    task = this._createTask(VIEW_METHODS.GATHER_BLOCKS, i);
+    taskQueue.enqueue(task);
+    task = this._createTask(VIEW_METHODS.ENABLE_INPUTS);
+    taskQueue.enqueue(task);
   }
 
-  _quickSort = async (low, high, view) => {
+  _quickSort = (taskQueue, low, high) => {
+    let task;
+
     if (low < high) {
-      const i = await this._partition(low, high, view);
-      await view.partitionBlocks(i);
-      await this._quickSort(low, i - 1, view);
-      //view.gatherBlocks(low, i - 1);
-      await this._quickSort(i + 1, high, view);
-      //view.gatherBlocks(i + 1, high);
+      const i = this._partition(taskQueue, low, high);
+      task = this._createTask(VIEW_METHODS.PARTITION_BLOCKS, i);
+      taskQueue.enqueue(task);
+      this._quickSort(taskQueue, low, i - 1);
+      this._quickSort(taskQueue, i + 1, high);
+      task = this._createTask(VIEW_METHODS.GATHER_BLOCKS, i);
+      taskQueue.enqueue(task);
     }
 
-    if (low === high) await view.decideSorted(low);
-    if (low === this.numberArray.length - 1) view.enableInputs();
+    if (low === high) {
+      task = this._createTask(VIEW_METHODS.DECIDE_SORTED, low);
+      taskQueue.enqueue(task);
+    }
   }
 
-  _partition = async (low, high, {
-    changePivotBlockColor,
-    changePickedBlocksColor,
-    swapBlocks,
-    revertBlocksColor,
-    removePivotPointer,
-    decideSorted }) => {
+  _partition = (taskQueue, low, high) => {
     const pivot = this.numberArray[high];
     let i;
     let index = low;
-
-    await changePivotBlockColor(high);
+    let task;
+    task = this._createTask(VIEW_METHODS.POINT_PIVOT, high);
+    taskQueue.enqueue(task);
+    task = this._createTask(VIEW_METHODS.CHANGE_BLOCKS_COLOR, high, null, "pivot");
+    taskQueue.enqueue(task);
 
     for (i = low; i < high; i++) {
       let areEqualBlocks = (i === index || this.numberArray[i] >= pivot)
 
-      await changePickedBlocksColor(i, areEqualBlocks ? null : index);
+      task = this._createTask(VIEW_METHODS.CHANGE_BLOCKS_COLOR, i, areEqualBlocks ? null : index, "picked");
+      taskQueue.enqueue(task);
 
       if (this.numberArray[i] < pivot) {
-        await this._swap(index, i, swapBlocks);
+        this._swap(index, i);
+        task = this._createTask(VIEW_METHODS.SWAP_BLOCKS, index, i);
+        taskQueue.enqueue(task);
         index++;
       }
 
-      await revertBlocksColor(i, areEqualBlocks ? null : index - 1);
+      task = this._createTask(VIEW_METHODS.REVERT_BLOCKS_COLOR, i, areEqualBlocks ? null : index - 1, "picked");
+      taskQueue.enqueue(task);
     }
 
-    await this._swap(index, high, swapBlocks);
-    await revertBlocksColor(high, index);
-    await decideSorted(index);
+    this._swap(index, high);
+    task = this._createTask(VIEW_METHODS.SWAP_BLOCKS, index, high);
+    taskQueue.enqueue(task);
+    task = this._createTask(VIEW_METHODS.REVERT_BLOCKS_COLOR, high, index, "picked");
+    taskQueue.enqueue(task);
+    task = this._createTask(VIEW_METHODS.DECIDE_SORTED, index);
+    taskQueue.enqueue(task);
 
     return index;
+  }
+
+  _createTask = (name, ...parameters) => {
+    return {
+      name,
+      parameters
+    };
   }
 
   _setStandard = (maxNum, maxHeight) => {
@@ -158,11 +186,9 @@ export default class Model {
     return max;
   }
 
-  _swap = (fromIndex, toIndex, callback) => {
+  _swap = (fromIndex, toIndex) => {
     const temp = this.numberArray[fromIndex];
     this.numberArray[fromIndex] = this.numberArray[toIndex];
     this.numberArray[toIndex] = temp;
-
-    return callback(fromIndex, toIndex);
   }
 }
