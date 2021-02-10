@@ -1,6 +1,8 @@
 import { body, h1, form, select, warningSign, main } from "./index";
 import { getTranslatedPositionValueOfCurrentElement } from "./controller";
 
+const SWAP_DELAY = 700;
+
 let executionCheck = false;
 let distance;
 
@@ -36,7 +38,7 @@ export function swapFrontElementAndBackElement(frontIndex, backIndex, childEleme
       childElements[backIndex].style.transform = `translateX(${positionValueOfFrontElement + distance}px)`;
 
       resolve();
-    }, 700);
+    }, SWAP_DELAY);
   });
  }
 
