@@ -132,11 +132,11 @@ export default class View {
   }
 
   addArrowDefSVG() {
-    this.$vizCanvas.innerHTML += this.template.arrowDef();
+    this.$vizCanvas.insertAdjacentHTML('beforeend', this.template.arrowDef());
   }
 
   makeArrowDOM(target, arrowType, xPos, yPos) {
-    target.innerHTML += this.template.arrow(arrowType, xPos, yPos);
+    target.insertAdjacentHTML('beforeend', this.template.arrow(arrowType, xPos, yPos));
   }
 
   setSortItemColorFromStatus(sortItemElement, status) {

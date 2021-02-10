@@ -24,7 +24,7 @@ export default class Controller {
     this.model = model;
     this.view = view;
     this.isReadySort = false;
-    this.delayTimeOnChange = 2500;
+    this.delayTimeOnChange = 700;
     this.uiWork = new UiWork(this);
 
     view.bindOnClickSortTypeBtns(this.setSortType.bind(this));
