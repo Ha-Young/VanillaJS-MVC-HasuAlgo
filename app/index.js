@@ -1,7 +1,7 @@
 export { body, header, h1, warningSign, form, select, input, section, main }
 
 import '../assets/styles/index.less';
-import { changeStringToNumbers, bubbleSort, checkNumber, makeChildElementsOfScreen } from './controller';
+import { changeStringToNumbers, bubbleSort, checkNotNumber, makeChildElementsOfScreen } from './controller';
 import { setOnScreen, showWarningSign } from './view';
 
 const body = document.querySelector("body");
@@ -30,11 +30,11 @@ function implementSortingAlgorithmsOnScreen(event) {
 
   const numbers = changeStringToNumbers(userInputValue);
 
-  if (!numbers.length || numbers.length < 5 || numbers.length > 10) {
+  if (checkNotNumber(numbers)) {
     return showWarningSign();
   }
 
-  if (!checkNumber(numbers)) {
+  if (!numbers.length || numbers.length < 5 || numbers.length > 10) {
     return showWarningSign();
   }
 
