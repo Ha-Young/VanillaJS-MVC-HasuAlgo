@@ -1,8 +1,9 @@
 export { body, header, h1, warningSign, form, select, input, section, main }
 
-import '../assets/styles/index.less';
-import { changeStringToNumbers, bubbleSort, checkNotNumber, makeChildElementsOfScreen } from './controller';
-import { setOnScreen, showWarningSign } from './view';
+import "../assets/styles/index.less";
+import { changeStringToNumbers, bubbleSort, checkNotNumber, makeChildElementsOfScreen } from "./controller";
+import { setOnScreen, showWarningSign } from "./view";
+import { warningMessage } from "./constants/message";
 
 const body = document.querySelector("body");
 const header = body.querySelector("header");
@@ -24,7 +25,7 @@ function implementSortingAlgorithmsOnScreen(event) {
   input.value = "";
 
   if (select.selectedIndex === 1) {
-    alert("아직 Insertion Sort는 준비되지 않았습니다.");
+    alert(warningMessage.NOT_DEVELOPED_INSERTION);
     return;
   }
 
