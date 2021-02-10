@@ -5,7 +5,7 @@ let executionCheck = false;
 let distance;
 
 export function showWarningSign() {
-  warningSign.textContent = `'최소 5개 ~ 최대 10개'의 숫자들을 입력해주세요. ex) 5, 4, 3, 2, 1`;
+  warningSign.textContent = `'최소 5개 ~ 최대 10개'의 숫자들을 입력해주세요. </br> ex) 5, 4, 3, 2, 1`;
 }
 
 export function setOnScreen(childElement) {

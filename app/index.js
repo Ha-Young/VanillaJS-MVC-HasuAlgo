@@ -16,7 +16,7 @@ const main = section.querySelector("main");
 
 const childElementsOfScreen = [];
 
-function implementSortingAlgorithmsOnScreen (event) {
+function implementSortingAlgorithmsOnScreen(event) {
   event.preventDefault();
   warningSign.textContent = "";
 
@@ -30,11 +30,11 @@ function implementSortingAlgorithmsOnScreen (event) {
 
   const numbers = changeStringToNumbers(userInputValue);
 
-  if(!numbers.length || numbers.length < 5 || numbers.length > 10) {
+  if (!numbers.length || numbers.length < 5 || numbers.length > 10) {
     return showWarningSign();
   }
 
-  if(!checkNumber(numbers)) {
+  if (!checkNumber(numbers)) {
     return showWarningSign();
   }
 
