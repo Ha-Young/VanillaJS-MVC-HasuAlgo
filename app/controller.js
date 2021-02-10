@@ -1,11 +1,7 @@
 import { turnOnLigthsOfSelectedElements, swapFrontElementAndBackElement, turnOffLigthsOfSelectedElements, turnOnAllChildElementsOfScreen, showNameOfSortingAlgorithm } from "./view";
 
 export function changeStringToNumbers(string) {
-  const numbers = string.split(",").map(function(item) {
-    return parseInt(item);
-  });
-
-  return numbers;
+  return string.split(",").map(item => parseInt(item));
 }
 
 export function checkNumber(numbers) {
