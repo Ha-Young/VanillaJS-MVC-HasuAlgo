@@ -70,7 +70,7 @@ export default class Model {
   }
 
   toggleTheme() {
-    this.currentTheme === THEME.LIGHT_THEME
+    return this.currentTheme === THEME.LIGHT_THEME
       ? (this._currentTheme = THEME.DARK_THEME)
       : (this._currentTheme = THEME.LIGHT_THEME);
   }
