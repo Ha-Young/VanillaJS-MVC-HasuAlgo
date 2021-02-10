@@ -1,22 +1,30 @@
-import { body, h1, form, select, warningSign, main } from "./index";
+import { $body, $h1, $form, $select, $warningSign, $section } from "./index";
 import { getTranslatedPositionValueOfCurrentElement } from "./controller";
+import { warningMessage } from "./constants/message";
 
 const SWAP_DELAY = 700;
 
 let executionCheck = false;
 let distance;
 
-export function showWarningSign() {
-  warningSign.textContent = `'최소 5개 ~ 최대 10개'의 숫자들을 입력해주세요. ex) 5, 4, 3, 2, 1`;
+export function showNotDevelopedSortingAlgorithm() {
+  $warningSign.textContent = warningMessage.NOT_DEVELOPED_SORTING_ALGORITHM;
 }
 
-export function setOnScreen(childElement) {
-  body.classList.add("bgEffect");
-  h1.classList.add("hidden");
-  form.classList.add("hidden");
-  childElement.classList.add("off-lights");
+export function showOnlyNumberSign() {
+  $warningSign.textContent = warningMessage.ONLY_NUMBER;
+}
 
-  main.appendChild(childElement);
+export function showCountLimitSign() {
+  $warningSign.textContent = warningMessage.COUNT_LIMIT;
+}
+
+export function setOnScreen(main) {
+  $body.classList.add("bgEffect");
+  $h1.classList.add("hidden");
+  $form.classList.add("hidden");
+
+  $section.appendChild(main);
 }
 
 export function swapFrontElementAndBackElement(frontIndex, backIndex, childElements) {
@@ -59,6 +67,6 @@ export function turnOnAllChildElementsOfScreen(childElements) {
 }
 
 export function showNameOfSortingAlgorithm() {
-  h1.textContent = select.value;
-  h1.classList.replace("hidden", "textEffect");
+  $h1.textContent = $select.value;
+  $h1.classList.replace("hidden", "textEffect");
 }

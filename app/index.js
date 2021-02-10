@@ -1,55 +1,55 @@
-export { body, header, h1, warningSign, form, select, input, section, main }
+export { $body, $header, $h1, $warningSign, $form, $select, $input, $section }
 
 import "../assets/styles/index.less";
 import { changeStringToNumbers, bubbleSort, checkNotNumber, makeChildElementsOfScreen } from "./controller";
-import { setOnScreen, showWarningSign } from "./view";
-import { warningMessage } from "./constants/message";
+import { setOnScreen, showOnlyNumberSign, showCountLimitSign, showNotDevelopedSortingAlgorithm } from "./view";
 
-const body = document.querySelector("body");
-const header = body.querySelector("header");
-const h1 = header.querySelector("h1");
-const warningSign = header.querySelector("p");
-const form = header.querySelector("form");
-const select = form.querySelector("select");
-const input = form.querySelector("input");
-const section = body.querySelector("section");
-const main = section.querySelector("main");
+const $body = document.querySelector("body");
+const $header = $body.querySelector("header");
+const $h1 = $header.querySelector("h1");
+const $warningSign = $header.querySelector("p");
+const $form = $header.querySelector("form");
+const $select = $form.querySelector("select");
+const $input = $form.querySelector("input");
+const $section = $body.querySelector("section");
 
 const childElementsOfScreen = [];
 
 function implementSortingAlgorithmsOnScreen(event) {
   event.preventDefault();
-  warningSign.textContent = "";
+  $warningSign.textContent = "";
 
-  const userInputValue = input.value;
-  input.value = "";
+  const userInputValue = $input.value;
+  $input.value = "";
 
-  if (select.selectedIndex === 1) {
-    alert(warningMessage.NOT_DEVELOPED_INSERTION);
-    return;
+  if ($select.selectedIndex === 1) {
+    return showNotDevelopedSortingAlgorithm();
   }
 
   const numbers = changeStringToNumbers(userInputValue);
 
   if (checkNotNumber(numbers)) {
-    return showWarningSign();
+    return showOnlyNumberSign();
   }
 
   if (!numbers.length || numbers.length < 5 || numbers.length > 10) {
-    return showWarningSign();
+    return showCountLimitSign();
   }
+
+  const main = document.createElement("main");
 
   for (let i = 0; i < numbers.length; i++) {
     const childElement = makeChildElementsOfScreen(numbers[i])
     childElementsOfScreen.push(childElement);
-    setOnScreen(childElement);
+    main.appendChild(childElement);
   }
 
+  setOnScreen(main);
   bubbleSort(numbers, childElementsOfScreen);
 }
 
 function init() {
-  form.addEventListener("submit", implementSortingAlgorithmsOnScreen);
+  $form.addEventListener("submit", implementSortingAlgorithmsOnScreen);
 }
 
 init();

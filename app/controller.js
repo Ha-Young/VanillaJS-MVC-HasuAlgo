@@ -13,6 +13,7 @@ export function makeChildElementsOfScreen(number) {
   div.textContent = number;
   div.style.height = `${50 + (number * 12)}px`;
   div.style.borderRadius = "50px";
+  div.classList.add("off-lights");
 
   return div;
 }
