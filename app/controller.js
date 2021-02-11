@@ -8,10 +8,16 @@ export function checkNotNumber(numbers) {
   return numbers.some(number => isNaN(number));
 }
 
-export function makeChildElementsOfScreen(number) {
+
+export function findLargestNumber(numbers) {
+  return Math.max(...numbers);
+}
+
+export function makeChildElementsOfScreen(number, largestNumber) {
   const div = document.createElement("div");
   div.textContent = number;
-  div.style.height = `${50 + (number * 12)}px`;
+  div.style.height = `${(number / largestNumber) * 100}%`;
+  div.style.minHeight = "50px";
   div.style.borderRadius = "50px";
   div.classList.add("off-lights");
 

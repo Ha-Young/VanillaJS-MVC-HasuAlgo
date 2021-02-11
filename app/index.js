@@ -1,7 +1,7 @@
 export { $body, $header, $h1, $warningSign, $form, $select, $input, $section }
 
 import "../assets/styles/index.less";
-import { changeStringToNumbers, bubbleSort, checkNotNumber, makeChildElementsOfScreen } from "./controller";
+import { changeStringToNumbers, bubbleSort, checkNotNumber, makeChildElementsOfScreen, findLargestNumber } from "./controller";
 import { setOnScreen, showOnlyNumberSign, showCountLimitSign, showNotDevelopedSortingAlgorithm } from "./view";
 
 const $body = document.querySelector("body");
@@ -15,7 +15,7 @@ const $section = $body.querySelector("section");
 
 const childElementsOfScreen = [];
 
-function implementSortingAlgorithmsOnScreen(event) {
+function handleFormSubmit(event) {
   event.preventDefault();
   $warningSign.textContent = "";
 
@@ -36,10 +36,12 @@ function implementSortingAlgorithmsOnScreen(event) {
     return showCountLimitSign();
   }
 
+  const largestNumber = findLargestNumber(numbers);
+
   const main = document.createElement("main");
 
   for (let i = 0; i < numbers.length; i++) {
-    const childElement = makeChildElementsOfScreen(numbers[i])
+    const childElement = makeChildElementsOfScreen(numbers[i], largestNumber)
     childElementsOfScreen.push(childElement);
     main.appendChild(childElement);
   }
@@ -49,7 +51,7 @@ function implementSortingAlgorithmsOnScreen(event) {
 }
 
 function init() {
-  $form.addEventListener("submit", implementSortingAlgorithmsOnScreen);
+  $form.addEventListener("submit", handleFormSubmit);
 }
 
 init();
