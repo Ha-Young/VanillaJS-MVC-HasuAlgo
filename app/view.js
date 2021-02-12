@@ -1,11 +1,34 @@
-import { $body, $h1, $form, $select, $warningSign, $section } from "./index";
-import { getTranslatedPositionValueOfCurrentElement } from "./controller";
+export { $form, $select, $input }
+
+import { bubbleSort, getTranslatedPositionValueOfCurrentElement } from "./controller";
 import { warningMessage } from "./constants/message";
+
+const $body = document.querySelector("body");
+const $header = $body.querySelector("header");
+const $h1 = $header.querySelector("h1");
+const $warningSign = $header.querySelector("p");
+const $form = $header.querySelector("form");
+const $select = $form.querySelector("select");
+const $input = $form.querySelector("input");
+const $section = $body.querySelector("section");
 
 const SWAP_DELAY = 700;
 
 let executionCheck = false;
 let distance;
+
+export function viewUserInput(content, numbers, childElements) {
+  setOnScreen(content);
+  bubbleSort(numbers, childElements);
+}
+
+export function resetWarningSign() {
+  $warningSign.textContent = "";
+}
+
+export function resetInputValue() {
+  $input.value = "";
+}
 
 export function showNotDevelopedSortingAlgorithm() {
   $warningSign.textContent = warningMessage.NOT_DEVELOPED_SORTING_ALGORITHM;
@@ -19,12 +42,12 @@ export function showCountLimitSign() {
   $warningSign.textContent = warningMessage.COUNT_LIMIT;
 }
 
-export function setOnScreen(main) {
+function setOnScreen(content) {
   $body.classList.add("bgEffect");
   $h1.classList.add("hidden");
   $form.classList.add("hidden");
 
-  $section.appendChild(main);
+  $section.appendChild(content);
 }
 
 export function swapFrontElementAndBackElement(frontIndex, backIndex, childElements) {

@@ -1,19 +1,63 @@
-import { turnOnLigthsOfSelectedElements, swapFrontElementAndBackElement, turnOffLigthsOfSelectedElements, turnOnAllChildElementsOfScreen, showNameOfSortingAlgorithm } from "./view";
+import { resetWarningSign, resetInputValue, viewUserInput, showNotDevelopedSortingAlgorithm, showOnlyNumberSign, showCountLimitSign,  turnOnLigthsOfSelectedElements, swapFrontElementAndBackElement, turnOffLigthsOfSelectedElements, turnOnAllChildElementsOfScreen, showNameOfSortingAlgorithm } from "./view";
+import { $select, $input } from "./view";
 
-export function changeStringToNumbers(string) {
+export function controlUserInput() {
+  const userInputValue = getUserInputValue();
+  const numbers = changeStringToNumbers(userInputValue);
+  const childElementsOfScreen = [];
+
+  resetWarningSign();
+  resetInputValue();
+
+  if ($select.selectedIndex === 1) {
+    return showNotDevelopedSortingAlgorithm();
+  }
+
+  if (!verifyNumbers(numbers)) {
+    return;
+  };
+
+  const $main = document.createElement("main");
+  const largestNumber = findLargestNumber(numbers);
+
+  for (let i = 0; i < numbers.length; i++) {
+    const childElement = makeChildElementsOfScreen(numbers[i], largestNumber)
+    childElementsOfScreen.push(childElement);
+    $main.appendChild(childElement);
+  }
+
+  viewUserInput($main, numbers, childElementsOfScreen);
+}
+
+function getUserInputValue() {
+  return $input.value;
+}
+
+function verifyNumbers(numbers) {
+  if (checkNotNumber(numbers)) {
+    return showOnlyNumberSign();
+  }
+
+  if (!numbers.length || numbers.length < 5 || numbers.length > 10) {
+    return showCountLimitSign();
+  }
+
+  return numbers;
+}
+
+function changeStringToNumbers(string) {
   return string.split(",").map(item => parseInt(item));
 }
 
-export function checkNotNumber(numbers) {
+function checkNotNumber(numbers) {
   return numbers.some(number => isNaN(number));
 }
 
-
-export function findLargestNumber(numbers) {
+function findLargestNumber(numbers) {
   return Math.max(...numbers);
 }
 
-export function makeChildElementsOfScreen(number, largestNumber) {
+function makeChildElementsOfScreen(number, largestNumber) {
   const div = document.createElement("div");
   div.textContent = number;
   div.style.height = `${(number / largestNumber) * 100}%`;
@@ -22,6 +66,14 @@ export function makeChildElementsOfScreen(number, largestNumber) {
   div.classList.add("off-lights");
 
   return div;
+}
+
+function delay(time) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      resolve();
+    }, time);
+  })
 }
 
 export async function bubbleSort(numbers, childElements) {
@@ -61,12 +113,4 @@ export function getTranslatedPositionValueOfCurrentElement(index, childElements)
   }
 
   return positionValue;
-}
-
-function delay(time) {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve();
-    }, time);
-  })
 }
