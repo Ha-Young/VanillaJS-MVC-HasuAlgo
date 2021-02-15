@@ -2,6 +2,36 @@
 @margin: 5px;
 @button-font-size: 20px;
 
+@neon-text-shadow:
+  0 0 6px rgba(202, 228, 225, 0.92),
+  0 0 30px rgba(202, 228, 225, 0.34),
+  0 0 12px rgba(30, 132, 242, 0.52),
+  0 0 21px rgba(30, 132, 242, 0.92),
+  0 0 34px rgba(30, 132, 242, 0.78),
+  0 0 54px rgba(30, 132, 242, 0.92);
+@neon-box-shadow:
+  0 0 1px #fff,
+  inset 0 0 1px #fff,
+  0 0 2px #92c2de,
+  inset 0 0 2px #92c2de,
+  0 0 4px #92c2de,
+  inset 0 0 4px #92c2de;
+
+.flex-setting-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background-gradient {
+  background: rgb(49, 50, 71);
+  background: radial-gradient(
+    circle,
+    rgba(49, 50, 71, 1) 0%,
+    rgba(21, 22, 40, 1) 100%
+  );
+}
+
 * {
   font-family: "Italianno", cursive;
   border-radius: 8px;
@@ -14,12 +44,7 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
-  background: rgb(49, 50, 71);
-  background: radial-gradient(
-    circle,
-    rgba(49, 50, 71, 1) 0%,
-    rgba(21, 22, 40, 1) 100%
-  );
+  .background-gradient();
   color: #ebecf0;
 }
 
@@ -35,11 +60,9 @@ h1 {
   animation: flicker 1.5s infinite alternate;
 }
 
-.sorting-algorithms {
-  display: flex;
+.sorting-container {
+  .flex-setting-center();
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   max-width: 120vh;
   height: 100%;
   margin: 0 auto;
@@ -47,22 +70,15 @@ h1 {
 }
 
 .sorting__input {
+  .background-gradient();
   outline: none;
   margin: @margin;
   font-size: @button-font-size;
-  background: rgb(49, 50, 71);
-  background: radial-gradient(
-    circle,
-    rgba(49, 50, 71, 1) 0%,
-    rgba(21, 22, 40, 1) 100%
-  );
   color: #ebecf0;
 }
 
 .sorting__queue {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .flex-setting-center();
   width: 500px;
   height: 50px;
   margin: @margin;
@@ -73,16 +89,11 @@ h1 {
 }
 
 .sorting__select-sort {
+  .background-gradient();
   margin: @margin;
   width: 13vh;
   height: 5vh;
   font-size: 1.5em;
-  background: rgb(49, 50, 71);
-  background: radial-gradient(
-    circle,
-    rgba(49, 50, 71, 1) 0%,
-    rgba(21, 22, 40, 1) 100%
-  );
   color: #ebecf0;
   cursor: pointer;
   outline: none;
@@ -95,25 +106,18 @@ h1 {
 .paint-button,
 .sort-button,
 .reset-button {
+  .background-gradient();
   width: 8vh;
   margin: @margin;
   font-size: @button-font-size;
-  background: rgb(49, 50, 71);
-  background: radial-gradient(
-    circle,
-    rgba(49, 50, 71, 1) 0%,
-    rgba(21, 22, 40, 1) 100%
-  );
   color: #ebecf0;
   outline: none;
   cursor: pointer;
 }
 
 .display-container {
+  .flex-setting-center();
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 120vh;
   height: 60vh;
   margin: @margin;
@@ -141,8 +145,8 @@ h1 {
 
 .bubble {
   width: 8vh;
-  max-height: 400px;
-  min-height: 30px;
+  max-height: 50vh;
+  min-height: 1vh;
   vertical-align: middle;
 }
 
@@ -160,7 +164,7 @@ h1 {
   transition: all linear 0.6s;
 }
 
-.sort,
+.compare,
 .sorted {
   box-shadow: inset 0 0 8px #fff, inset 3px 0 10px #92c2de,
     inset -3px 0 10px #92c2de, inset 3px 0 50px #92c2de,
@@ -187,10 +191,7 @@ h1 {
   54%,
   56%,
   100% {
-    text-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
-      0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(30, 132, 242, 0.52),
-      0 0 21px rgba(30, 132, 242, 0.92), 0 0 34px rgba(30, 132, 242, 0.78),
-      0 0 54px rgba(30, 132, 242, 0.92);
+    text-shadow: @neon-text-shadow;
   }
 
   20%,
@@ -202,10 +203,7 @@ h1 {
 
 @keyframes neon {
   from {
-    text-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
-      0 0 30px rgba(202, 228, 225, 0.34), 0 0 12px rgba(30, 132, 242, 0.52),
-      0 0 21px rgba(30, 132, 242, 0.92), 0 0 34px rgba(30, 132, 242, 0.78),
-      0 0 54px rgba(30, 132, 242, 0.92);
+    text-shadow: @neon-text-shadow;
   }
   to {
     text-shadow: 0 0 6px rgba(202, 228, 225, 0.98),
@@ -213,24 +211,12 @@ h1 {
       0 0 22px rgba(30, 132, 242, 0.84), 0 0 38px rgba(30, 132, 242, 0.88),
       0 0 60px rgba(30, 132, 242, 1);
 
-      box-shadow:
-      0 0 1px #fff,
-      inset 0 0 1px #fff,
-      0 0 2px #92c2de,
-      inset 0 0 2px #92c2de,
-      0 0 4px #92c2de,
-      inset 0 0 4px #92c2de;
+      box-shadow: @neon-box-shadow;
   }
 }
 
 @keyframes neon-border {
   100% {
-    box-shadow:
-    0 0 1px #fff,
-    inset 0 0 1px #fff,
-    0 0 2px #92c2de,
-    inset 0 0 2px #92c2de,
-    0 0 4px #92c2de,
-    inset 0 0 4px #92c2de;
+    box-shadow: @neon-box-shadow;
   }
 }

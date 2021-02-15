@@ -1,11 +1,11 @@
-import Model from './Model';
-import Controller from './Controller';
-import View from './View';
+import Controller from "../app/Controller/index";
+import Model from "../app/Model/index";
+import View from "../app/View/index";
 
 function App() {
-  const model = new Model();
-  const view = new View();
-  new Controller(model, view);
+  this.model = new Model();
+  this.view = new View();
+  new Controller(this.model, this.view);
 }
 
 export default App;
