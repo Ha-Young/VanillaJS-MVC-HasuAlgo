@@ -1,14 +1,16 @@
 // ================================
 // START YOUR Model HERE
+//
+// https://developer.mozilla.org/ko/docs/Glossary/MVC
+//
 // ================================
 
 const model = (function () {
-  const currentTaskIndex = 0;
   const queue = [];
 
   return {
-    addTask: () => {},
-    getCurrentTaskIndex: () => currentTaskIndex,
+    addTask: (task) => {},
+    getCurrentTask: () => {},
   };
 })();
 

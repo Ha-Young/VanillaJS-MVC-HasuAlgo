@@ -1,5 +1,8 @@
 // ================================
 // START YOUR Controller HERE
+//
+// https://developer.mozilla.org/ko/docs/Glossary/MVC
+//
 // ================================
 
 import model from "./model";

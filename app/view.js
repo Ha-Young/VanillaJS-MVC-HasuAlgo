@@ -1,5 +1,8 @@
 // ================================
 // START YOUR View HERE
+//
+// https://developer.mozilla.org/ko/docs/Glossary/MVC
+//
 // ================================
 
 const view = (function () {
